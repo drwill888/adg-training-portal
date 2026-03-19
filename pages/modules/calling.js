@@ -181,7 +181,7 @@ const Summary = ({ resp, name }) => {
     setTimeout(() => sP("Discerning patterns and themes..."), 2000);
     setTimeout(() => sP("Crafting your Calling Blueprint..."), 4500);
     try {
-      const r = await fetch("https://api.anthropic.com/v1/messages", {
+      const r = await fetch("/api/claude", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, messages: [{ role: "user", content: MODULE.aiRole + "\nThe leader\'s name is " + name + ".\n\nBased on their training responses, create a personalized Calling Blueprint:\n1. **Identity Foundation** — Reflect who they are. Address by name.\n2. **The Burden They Carry** — Synthesize themes. Name the pattern.\n3. **Gift & Strength Profile** — Summarize their unique mix.\n4. **Current Season & Assignment** — Affirm where they are.\n5. **Prophetic Trajectory** — Cast vision from their words.\n6. **Calling Declaration** — Refine theirs or draft one.\n\nTone: Warm, authoritative, prophetic, structured. Scripture sparingly. Under 600 words. Specific to THEIR words.\n\n---\n\nTHEIR RESPONSES:\n\n" + body }] }),
       });
