@@ -1,4 +1,3 @@
- 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
@@ -22,12 +21,8 @@ export default async function handler(req, res) {
 }
 ```
 
-Then **File → Save** and close Notepad.
-
----
-
-Then run:
+Click **File → Save**, close Notepad, then run:
 ```
 git add .
-git commit -m "Fix Claude API route"
+git commit -m "Clean up claude API route"
 git push
