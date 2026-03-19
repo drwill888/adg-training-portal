@@ -21,8 +21,8 @@ export default async function handler(req, res) {
 }
 ```
 
-Click **File → Save**, close Notepad, then run:
+**File → Save**, close Notepad, then run:
 ```
 git add .
-git commit -m "Clean up claude API route"
+git commit -m "Fix claude.js syntax"
 git push
