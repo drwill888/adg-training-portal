@@ -1,103 +1,72 @@
 // pages/login.js
 import { useState } from 'react'
+import { supabase } from '../lib/supabase'
 import Head from 'next/head'
-
-const colors = {
-  navy: '#021A35', navyLight: '#0a2a4d',
-  gold: '#C8A951', skyBlue: '#00AEEF',
-  white: '#FFFFFF', offWhite: '#F8F9FC',
-  gray200: '#e2e6ed', gray300: '#c8cdd6',
-  gray500: '#6b7280', gray700: '#374151',
-  red: '#EE3124',
-}
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
-  const [sent, setSent] = useState(false)
+  const [password, setPassword] = useState('')
+  const [isSignUp, setIsSignUp] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   const handleSubmit = async () => {
-    if (!email || !name) {
-      setError('Please enter your name and email.')
-      return
-    }
+    if (!email || !password) { setError('Email and password required'); return }
     setLoading(true)
     setError('')
 
-    try {
-      const res = await fetch('/api/send-magic-link', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name }),
-      })
-      const data = await res.json()
-      if (!res.ok) {
-        setError(data.error || 'Something went wrong.')
-        setLoading(false)
-      } else {
-        setSent(true)
-        setLoading(false)
-      }
-    } catch (err) {
-      setError('Network error: ' + err.message)
-      setLoading(false)
+    if (isSignUp) {
+      const { error } = await supabase.auth.signUp({ email, password })
+      if (error) { setError(error.message); setLoading(false); return }
+      window.location.href = '/'
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      if (error) { setError(error.message); setLoading(false); return }
+      window.location.href = '/'
     }
   }
+
+  const navy = '#021A35', gold = '#C8A951', gray = '#6b7280'
 
   return (
     <>
       <Head><title>Sign In | 5C Leadership Blueprint</title></Head>
-      <div style={{ minHeight: '100vh', background: colors.navy, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Raleway', sans-serif", padding: '20px' }}>
-        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet" />
-        <div style={{ background: colors.white, borderRadius: 16, padding: '48px 40px', width: '100%', maxWidth: 440, boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F8F9FC', fontFamily: "'Raleway', sans-serif" }}>
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet" />
+        <div style={{ width: '100%', maxWidth: 420, padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: 32 }}>
-            <div style={{ width: 56, height: 56, borderRadius: '50%', background: colors.navy, margin: '0 auto 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, color: colors.gold, fontWeight: 700 }}>✦</div>
-            <h1 style={{ fontSize: 22, fontWeight: 700, color: colors.navy, margin: '0 0 4px', fontFamily: "'Cormorant Garamond', serif" }}>5C Leadership Blueprint</h1>
-            <p style={{ fontSize: 13, color: colors.gray500, margin: 0, fontStyle: 'italic' }}>Awakening Destiny Global</p>
+            <h1 style={{ color: navy, fontSize: 24, fontWeight: 700, margin: '0 0 4px' }}>5C Leadership Blueprint</h1>
+            <p style={{ color: gold, fontSize: 13, margin: 0, fontStyle: 'italic' }}>Awakening Destiny Global</p>
           </div>
-
-          {!sent ? (<>
-            <p style={{ fontSize: 14, color: colors.gray700, textAlign: 'center', marginBottom: 28, lineHeight: 1.6 }}>Enter your name and email to receive your secure sign-in link.</p>
-
+          <div style={{ background: '#fff', borderRadius: 12, padding: 32, boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
+            <h2 style={{ color: navy, fontSize: 18, fontWeight: 700, margin: '0 0 24px' }}>
+              {isSignUp ? 'Create Account' : 'Sign In'}
+            </h2>
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: colors.navy, marginBottom: 6, letterSpacing: '0.05em' }}>FULL NAME</label>
-              <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Your name"
-                style={{ width: '100%', padding: '12px 14px', borderRadius: 8, fontSize: 14, border: `1.5px solid ${colors.gray200}`, outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box', color: colors.navy }}
-                onFocus={e => e.target.style.borderColor = colors.gold}
-                onBlur={e => e.target.style.borderColor = colors.gray200} />
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: navy, marginBottom: 6 }}>Email</label>
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e6ed', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none' }}
+                placeholder="your@email.com" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
             </div>
-
             <div style={{ marginBottom: 24 }}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: colors.navy, marginBottom: 6, letterSpacing: '0.05em' }}>EMAIL ADDRESS</label>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="your@email.com"
-                onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-                style={{ width: '100%', padding: '12px 14px', borderRadius: 8, fontSize: 14, border: `1.5px solid ${colors.gray200}`, outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box', color: colors.navy }}
-                onFocus={e => e.target.style.borderColor = colors.gold}
-                onBlur={e => e.target.style.borderColor = colors.gray200} />
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: navy, marginBottom: 6 }}>Password</label>
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)}
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e6ed', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none' }}
+                placeholder="••••••••" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
             </div>
-
-            {error && (
-              <div style={{ padding: '10px 14px', background: '#FEF2F2', borderRadius: 8, marginBottom: 16, borderLeft: `3px solid ${colors.red}` }}>
-                <p style={{ fontSize: 13, color: colors.red, margin: 0 }}>{error}</p>
-              </div>
-            )}
-
+            {error && <p style={{ color: '#EE3124', fontSize: 13, marginBottom: 16 }}>{error}</p>}
             <button onClick={handleSubmit} disabled={loading}
-              style={{ width: '100%', padding: '14px', borderRadius: 8, fontSize: 14, fontWeight: 700, border: 'none', cursor: loading ? 'default' : 'pointer', background: loading ? colors.gray300 : `linear-gradient(135deg, ${colors.navy}, ${colors.navyLight})`, color: colors.white, transition: 'all 0.2s', fontFamily: 'inherit' }}>
-              {loading ? 'Sending...' : 'Send My Sign-In Link →'}
+              style={{ width: '100%', padding: '12px', background: navy, color: '#FDD20D', border: 'none', borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: loading ? 'default' : 'pointer', opacity: loading ? 0.7 : 1 }}>
+              {loading ? 'Please wait...' : isSignUp ? 'Create Account' : 'Sign In'}
             </button>
-          </>) : (
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#F0FDF4', margin: '0 auto 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>✓</div>
-              <h2 style={{ fontSize: 20, fontWeight: 700, color: colors.navy, marginBottom: 12 }}>Check your email</h2>
-              <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.7, marginBottom: 8 }}>We sent a sign-in link to</p>
-              <p style={{ fontSize: 14, fontWeight: 600, color: colors.navy, marginBottom: 20 }}>{email}</p>
-              <p style={{ fontSize: 13, color: colors.gray500, lineHeight: 1.6 }}>Click the link in the email to access your Leadership Blueprint. The link expires in 1 hour.</p>
-              <button onClick={() => setSent(false)} style={{ marginTop: 24, fontSize: 13, color: colors.gold, background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, fontFamily: 'inherit' }}>← Use a different email</button>
-            </div>
-          )}
+            <p style={{ textAlign: 'center', marginTop: 16, fontSize: 13, color: gray }}>
+              {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
+              <span onClick={() => { setIsSignUp(!isSignUp); setError('') }}
+                style={{ color: '#0172BC', cursor: 'pointer', fontWeight: 600 }}>
+                {isSignUp ? 'Sign In' : 'Sign Up'}
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </>
