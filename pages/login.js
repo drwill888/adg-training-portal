@@ -16,9 +16,17 @@ export default function LoginPage() {
     setError('')
 
     if (isSignUp) {
-      const { error } = await supabase.auth.signUp({ email, password })
+      const { data, error } = await supabase.auth.signUp({ email, password })
       if (error) { setError(error.message); setLoading(false); return }
-      window.location.href = '/'
+      // Wait for session to be established
+      if (data?.session) {
+        window.location.href = '/'
+      } else {
+        // Try signing in immediately after signup
+        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+        if (signInError) { setError(signInError.message); setLoading(false); return }
+        window.location.href = '/'
+      }
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) { setError(error.message); setLoading(false); return }
