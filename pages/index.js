@@ -1,3 +1,5 @@
+import { supabase } from '../lib/supabase'
+import { loadUserProgress, loadAiSummaries, calcDashboardStats, saveModuleProgress } from '../lib/db'
 import { useState, useEffect, useCallback } from "react";
 
 // ─── MOBILE HOOK ──────────────────────────────────────────────
@@ -79,10 +81,17 @@ const modules = [
 ];
 
 const mockProgress = {
-  completionPct: 0, currentModule: 0,
-  moduleScores: [],
-  modulesCompleted: [], modulesInProgress: [],
-  aiSummaries: [],
+  completionPct: 48, currentModule: 3,
+  moduleScores: [
+    { module: 1, pre: 32, post: 44, delta: 12, interpretation: "developing" },
+    { module: 2, pre: 28, post: 41, delta: 13, interpretation: "developing" },
+    { module: 3, pre: null, post: null, delta: null, interpretation: null },
+  ],
+  modulesCompleted: [0, 1, 2], modulesInProgress: [3],
+  aiSummaries: [
+    { module: 1, preview: "Your calling clarity has strengthened significantly. You've moved from fragmented to developing alignment..." },
+    { module: 2, preview: "Your connection security is growing. You're moving from approval-seeking to identity-rooted leadership..." },
+  ],
 };
 
 const preCoursePrompts = [
@@ -127,7 +136,7 @@ function Nav({ back, next }) {
   </div>;
 }
 
-function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose }) {
+function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose, userName = "Leader", userInitials = "L", onSignOut }) {
   const isMobile = useIsMobile();
 
   // Map nav keys to actual URLs
@@ -146,7 +155,7 @@ function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose }) 
   const navItems = [
     { key: "dashboard", label: "Dashboard", icon: "⬡" },
     { key: "intro", label: "Introduction", icon: "◈" },
-    ...modules.filter(m => m.id >= 1 && m.id <= 5).map(m => ({ key: `module-${m.id}`, label: `${m.id}. ${m.title}`, icon: m.icon, locked: false, completed: mockProgress.modulesCompleted.includes(m.id), active: mockProgress.modulesInProgress.includes(m.id) })),
+    ...modules.filter(m => m.id >= 1 && m.id <= 5).map(m => ({ key: `module-${m.id}`, label: `${m.id}. ${m.title}`, icon: m.icon, locked: false, completed: progress.modulesCompleted.includes(m.id), active: progress.modulesInProgress.includes(m.id) })),
     { key: "conclusion", label: "Commissioning", icon: "◉", locked: false },
     { key: "certificate", label: "Certificate", icon: "✦", locked: true },
   ];
@@ -199,8 +208,12 @@ function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose }) 
       </div>
       <div style={{ padding: "16px 20px", borderTop: `1px solid ${colors.navyMid}` }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: "50%", background: colors.royalBlue, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: colors.white }}>WM</div>
-          <div><div style={{ fontSize: 12, color: colors.white, fontWeight: 500 }}>Will Meier</div><div style={{ fontSize: 10, color: colors.gray500 }}>Participant</div></div>
+          <div style={{ width: 32, height: 32, borderRadius: "50%", background: colors.royalBlue, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: colors.white }}>{userInitials}</div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 12, color: colors.white, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{userName}</div>
+            <div style={{ fontSize: 10, color: colors.gray500 }}>Participant</div>
+          </div>
+          <button onClick={onSignOut} title="Sign out" style={{ background: "none", border: "none", cursor: "pointer", color: colors.gray500, fontSize: 16, padding: 2 }}>↪</button>
         </div>
       </div>
       </div>
@@ -230,43 +243,40 @@ function ScoreBar({ label, pre, post, max = 60 }) {
   </div>;
 }
 
-function DashboardPage({ nav }) {
+function DashboardPage({ nav, progress }) {
   const [ap, setAp] = useState(0);
   const isMobile = useIsMobile();
-  useEffect(() => { const t = setTimeout(() => setAp(mockProgress.completionPct), 300); return () => clearTimeout(t); }, []);
+  useEffect(() => { const t = setTimeout(() => setAp(progress.completionPct), 300); return () => clearTimeout(t); }, []);
   return <div style={{ padding: isMobile ? "20px 16px" : "32px 40px", maxWidth: 960 }}>
     <FadeIn><h1 style={{ fontSize: 26, fontWeight: 700, color: colors.navy, margin: "0 0 6px" }}>Leadership Growth Panel</h1><p style={{ fontSize: 14, color: colors.gray500, margin: "0 0 32px" }}>Your 5C Leadership Blueprint journey at a glance</p></FadeIn>
     <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "240px 1fr", gap: 24, marginBottom: 24 }}>
       <FadeIn delay={100}><div style={{ background: colors.white, borderRadius: 12, padding: 24, border: `1px solid ${colors.gray200}`, textAlign: "center", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
-        <div style={{ position: "relative", display: "inline-block", marginBottom: 12 }}><ProgressRing percent={ap} /><div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontSize: 28, fontWeight: 700, color: colors.navy }}>{mockProgress.completionPct}%</div></div>
-        <div style={{ fontSize: 13, fontWeight: 600, color: colors.navy }}>Overall Progress</div><div style={{ fontSize: 12, color: colors.gray500, marginTop: 2 }}>Module {mockProgress.currentModule} of 5</div>
+        <div style={{ position: "relative", display: "inline-block", marginBottom: 12 }}><ProgressRing percent={ap} /><div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontSize: 28, fontWeight: 700, color: colors.navy }}>{progress.completionPct}%</div></div>
+        <div style={{ fontSize: 13, fontWeight: 600, color: colors.navy }}>Overall Progress</div><div style={{ fontSize: 12, color: colors.gray500, marginTop: 2 }}>Module {progress.currentModule} of 5</div>
       </div></FadeIn>
       <FadeIn delay={200}><div style={{ background: colors.white, borderRadius: 12, padding: 24, border: `1px solid ${colors.gray200}`, boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: colors.navy, marginBottom: 16 }}>Journey Roadmap</div>
-        <div style={{ display: "flex", alignItems: "center" }}>{modules.map((m, i) => { const d = mockProgress.modulesCompleted.includes(m.id), a = mockProgress.modulesInProgress.includes(m.id); return <div key={m.id} style={{ display: "flex", alignItems: "center", flex: 1 }}><div style={{ textAlign: "center", flex: 1 }}><div style={{ width: 36, height: 36, borderRadius: "50%", margin: "0 auto 6px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, background: d ? colors.gold : a ? colors.skyBlue : colors.gray200, color: d || a ? colors.white : colors.gray500, border: a ? `2px solid ${colors.royalBlue}` : "2px solid transparent" }}>{d ? "✓" : m.id === 0 ? "I" : m.id === 6 ? "C" : m.id}</div><div style={{ fontSize: 10, fontWeight: a ? 600 : 400, color: !d && !a ? colors.gray500 : colors.navy }}>{m.id === 0 ? "Intro" : m.id === 6 ? "Final" : m.title}</div></div>{i < modules.length - 1 && <div style={{ height: 2, flex: "0 0 16px", background: d ? colors.gold : colors.gray200, marginBottom: 18 }} />}</div>; })}</div>
+        <div style={{ display: "flex", alignItems: "center" }}>{modules.map((m, i) => { const d = progress.modulesCompleted.includes(m.id), a = progress.modulesInProgress.includes(m.id); return <div key={m.id} style={{ display: "flex", alignItems: "center", flex: 1 }}><div style={{ textAlign: "center", flex: 1 }}><div style={{ width: 36, height: 36, borderRadius: "50%", margin: "0 auto 6px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, background: d ? colors.gold : a ? colors.skyBlue : colors.gray200, color: d || a ? colors.white : colors.gray500, border: a ? `2px solid ${colors.royalBlue}` : "2px solid transparent" }}>{d ? "✓" : m.id === 0 ? "I" : m.id === 6 ? "C" : m.id}</div><div style={{ fontSize: 10, fontWeight: a ? 600 : 400, color: !d && !a ? colors.gray500 : colors.navy }}>{m.id === 0 ? "Intro" : m.id === 6 ? "Final" : m.title}</div></div>{i < modules.length - 1 && <div style={{ height: 2, flex: "0 0 16px", background: d ? colors.gold : colors.gray200, marginBottom: 18 }} />}</div>; })}</div>
       </div></FadeIn>
     </div>
     <FadeIn delay={300}><div style={{ background: colors.white, borderRadius: 12, padding: 24, border: `1px solid ${colors.gray200}`, marginBottom: 24, boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
       <div style={{ fontSize: 13, fontWeight: 600, color: colors.navy, marginBottom: 20 }}>Growth Metrics</div>
-      {mockProgress.moduleScores.length === 0 && (
-        <div style={{ padding: "24px 0", textAlign: "center", color: colors.gray500, fontSize: 13, fontStyle: "italic" }}>Complete modules to see your growth metrics here.</div>
-      )}
-      {mockProgress.moduleScores.map(s => <ScoreBar key={s.module} label={`Module ${s.module}: ${modules[s.module].title}`} pre={s.pre} post={s.post} />)}
-      {mockProgress.moduleScores.length === 0 && [1,2,3,4,5].map(i => <div key={i} style={{ padding: "10px 0", borderBottom: `1px solid ${colors.gray100}`, display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 13, color: colors.gray500 }}>Module {i}: {modules[i].title}</span><span style={{ fontSize: 12, color: colors.gray300, fontStyle: "italic" }}>Not started</span></div>)}
+      {progress.moduleScores.map(s => <ScoreBar key={s.module} label={`Module ${s.module}: ${modules[s.module].title}`} pre={s.pre} post={s.post} />)}
+      {[3,4,5].map(i => <div key={i} style={{ padding: "10px 0", borderBottom: `1px solid ${colors.gray100}`, display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 13, color: colors.gray500 }}>Module {i}: {modules[i].title}</span><span style={{ fontSize: 12, color: colors.gray300, fontStyle: "italic" }}>Not started</span></div>)}
     </div></FadeIn>
     <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 280px", gap: 24 }}>
       <FadeIn delay={400}><div style={{ background: colors.white, borderRadius: 12, padding: 24, border: `1px solid ${colors.gray200}`, boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: colors.navy, marginBottom: 16 }}>AI Leadership Summaries</div>
-        {mockProgress.aiSummaries.map((s, i) => <div key={i} style={{ padding: 16, background: colors.offWhite, borderRadius: 8, borderLeft: `3px solid ${colors.gold}`, marginBottom: 12 }}><div style={{ fontSize: 12, fontWeight: 600, color: colors.royalBlue, marginBottom: 6 }}>Module {s.module}: {modules[s.module].title}</div><div style={{ fontSize: 13, color: colors.gray700, lineHeight: 1.6 }}>{s.preview}</div><button style={{ marginTop: 10, fontSize: 12, color: colors.skyBlue, background: "none", border: "none", cursor: "pointer", fontWeight: 600, padding: 0 }}>Read Full Summary →</button></div>)}
-        <div style={{ padding: 16, background: colors.gray100, borderRadius: 8, textAlign: "center", color: colors.gray500, fontSize: 13 }}>Complete modules to unlock your AI leadership summaries</div>
+        {progress.aiSummaries.map((s, i) => <div key={i} style={{ padding: 16, background: colors.offWhite, borderRadius: 8, borderLeft: `3px solid ${colors.gold}`, marginBottom: 12 }}><div style={{ fontSize: 12, fontWeight: 600, color: colors.royalBlue, marginBottom: 6 }}>Module {s.module}: {modules[s.module].title}</div><div style={{ fontSize: 13, color: colors.gray700, lineHeight: 1.6 }}>{s.preview}</div><button style={{ marginTop: 10, fontSize: 12, color: colors.skyBlue, background: "none", border: "none", cursor: "pointer", fontWeight: 600, padding: 0 }}>Read Full Summary →</button></div>)}
+        <div style={{ padding: 16, background: colors.gray100, borderRadius: 8, textAlign: "center", color: colors.gray500, fontSize: 13 }}>Complete more modules to unlock additional summaries</div>
       </div></FadeIn>
       <FadeIn delay={500}><div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         {[{ t: "Testimony", m: "Complete all modules" },{ t: "Certificate", m: "Submit testimony first" }].map(x => <div key={x.t} style={{ background: colors.white, borderRadius: 12, padding: 20, border: `1px solid ${colors.gray200}`, boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}><div style={{ fontSize: 12, fontWeight: 600, color: colors.navy, marginBottom: 12 }}>{x.t}</div><div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", background: colors.gray100, borderRadius: 6 }}><span>🔒</span><span style={{ fontSize: 12, color: colors.gray500 }}>{x.m}</span></div></div>)}
         <div style={{ background: `linear-gradient(135deg, ${colors.navy}, ${colors.navyLight})`, borderRadius: 12, padding: 20 }}>
-          <div style={{ fontSize: 12, fontWeight: 600, color: colors.gold, marginBottom: 8 }}>Start Here</div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Introduction</div>
-          <div style={{ fontSize: 12, color: colors.gray300, fontStyle: "italic", marginBottom: 12 }}>Begin your leadership formation journey</div>
-          <button onClick={() => window.location.href = "/modules/introduction"} style={{ width: "100%", padding: "10px", background: colors.skyBlue, color: colors.white, border: "none", borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Begin →</button>
+          <div style={{ fontSize: 12, fontWeight: 600, color: colors.gold, marginBottom: 8 }}>Current Focus</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Module 3: Competency</div>
+          <div style={{ fontSize: 12, color: colors.gray300, fontStyle: "italic", marginBottom: 12 }}>Can I carry what I'm called to build?</div>
+          <button onClick={() => window.location.href = "/modules/competency"} style={{ width: "100%", padding: "10px", background: colors.skyBlue, color: colors.white, border: "none", borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Continue →</button>
         </div>
       </div></FadeIn>
     </div>
@@ -436,10 +446,64 @@ function IntroPage({ nav }) {
 export default function App() {
   const [page, setPage] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [progress, setProgress] = useState(DEFAULT_PROGRESS);
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setAuthLoading(false);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Load progress when user is available
+  useEffect(() => {
+    if (!user) return;
+    async function loadData() {
+      const [rows, summaryRows] = await Promise.all([
+        loadUserProgress(user.id),
+        loadAiSummaries(user.id),
+      ]);
+      if (!rows) return;
+      const stats = calcDashboardStats(rows);
+      const aiSummaries = (summaryRows || []).map(s => ({
+        module: s.module_id,
+        preview: s.summary_text ? s.summary_text.slice(0, 120) + '...' : '',
+      }));
+      setProgress({ ...stats, aiSummaries });
+    }
+    loadData();
+  }, [user]);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      window.location.href = '/login';
+    }
+  }, [authLoading, user]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    window.location.href = '/login';
+  };
+
+  if (authLoading || !user) {
+    return <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: colors.offWhite }}>
+      <div style={{ width: 48, height: 48, border: `4px solid ${colors.gray200}`, borderTop: `4px solid ${colors.gold}`, borderRadius: "50%", animation: "spin 1s linear infinite" }} />
+      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+    </div>;
+  }
+
+  const userName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Leader';
+  const userInitials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   return <div style={{ display: "flex", minHeight: "100vh", fontFamily: "'Raleway','Segoe UI',sans-serif", background: colors.offWhite, color: colors.gray700 }}>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <Sidebar currentPage={page} setCurrentPage={setPage} currentModule={mockProgress.currentModule} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    <Sidebar currentPage={page} setCurrentPage={setPage} currentModule={progress.currentModule} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
     <div style={{ flex: 1, minHeight: "100vh", overflowY: "auto", marginLeft: isMobile ? 0 : 0 }}>
       <div style={{ padding: isMobile ? "10px 16px" : "12px 40px", borderBottom: `1px solid ${colors.gray200}`, background: colors.white, display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, zIndex: 30 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -454,9 +518,9 @@ export default function App() {
             {page === "dashboard" ? "Dashboard" : page === "intro" ? "Course Introduction" : ""}
           </div>
         </div>
-        {!isMobile && <button style={{ padding: "6px 14px", fontSize: 12, background: "none", border: `1px solid ${colors.gray300}`, borderRadius: 6, color: colors.gray700, cursor: "pointer" }}>Export Progress</button>}
+        {!isMobile && <button onClick={handleSignOut} style={{ padding: "6px 14px", fontSize: 12, background: "none", border: `1px solid ${colors.gray300}`, borderRadius: 6, color: colors.gray700, cursor: "pointer" }}>Sign Out</button>}
       </div>
-      {page === "dashboard" && <DashboardPage nav={setPage} />}
+      {page === "dashboard" && <DashboardPage nav={setPage} progress={progress} />}
       {page === "intro" && <IntroPage nav={setPage} />}
     </div>
   </div>;
