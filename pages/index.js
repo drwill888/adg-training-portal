@@ -39,17 +39,17 @@ p{font-size:12px;line-height:1.6}table{border-collapse:collapse;width:100%;margi
 th{background:#021A35;color:#fff;padding:8px;font-size:11px;text-align:left}td{font-size:11px}
 .footer{margin-top:40px;border-top:2px solid #C8A951;padding-top:12px;font-size:10px;color:#888;text-align:center}
 </style></head><body>
-<h1>5C Leadership Blueprint \u2014 ${title}</h1>
-<p style="color:#888;">Awakening Destiny Global \u2022 ${now}</p>
+<h1>5C Leadership Blueprint — ${title}</h1>
+<p style="color:#888;">Awakening Destiny Global • ${now}</p>
 ${diagnostic ? `<h2>Diagnostic Scores</h2>
 <table><tr><th>#</th><th>Statement</th><th>Pre</th><th>Post</th></tr>${scoreRows}</table>
 <p><b>Pre-Total:</b> ${preTotal}/60 &nbsp;&nbsp; <b>Post-Total:</b> ${postTotal}/60</p>` : ""}
 ${refEntries ? `<h2>Reflections &amp; Responses</h2>${refEntries}` : ""}
 ${aiSection ? `<h2>AI Leadership Summary</h2>${aiSection}` : ""}
-<div class="footer"><p>\u00A9 Awakening Destiny Global \u2022 awakeningdestiny.global</p>
-<p>5C Leadership Blueprint \u2014 Developing Leaders \u2022 Creating Champions</p></div>
+<div class="footer"><p>© Awakening Destiny Global • awakeningdestiny.global</p>
+<p>5C Leadership Blueprint — Developing Leaders • Creating Champions</p></div>
 </body></html>`;
-  const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+  const blob = new Blob(["﻿", html], { type: "application/msword" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url; a.download = `My_${title.replace(/\s+/g,"_")}_Blueprint.doc`;
@@ -136,11 +136,25 @@ function Nav({ back, next }) {
 
 function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose }) {
   const isMobile = useIsMobile();
+
+  // Map nav keys to actual URLs
+  const getHref = (key) => {
+    if (key === "dashboard") return "/";
+    if (key === "intro") return "/modules/introduction";
+    if (key === "conclusion") return "/modules/commissioning";
+    if (key.startsWith("module-")) {
+      const id = parseInt(key.split("-")[1]);
+      const mod = modules.find(m => m.id === id);
+      if (mod) return `/modules/${mod.title.toLowerCase()}`;
+    }
+    return null;
+  };
+
   const navItems = [
     { key: "dashboard", label: "Dashboard", icon: "⬡" },
     { key: "intro", label: "Introduction", icon: "◈" },
-    ...modules.filter(m => m.id >= 1 && m.id <= 5).map(m => ({ key: `module-${m.id}`, label: `${m.id}. ${m.title}`, icon: m.icon, locked: m.id > currentModule + 1, completed: mockProgress.modulesCompleted.includes(m.id), active: mockProgress.modulesInProgress.includes(m.id) })),
-    { key: "conclusion", label: "Commissioning", icon: "◉", locked: true },
+    ...modules.filter(m => m.id >= 1 && m.id <= 5).map(m => ({ key: `module-${m.id}`, label: `${m.id}. ${m.title}`, icon: m.icon, locked: false, completed: mockProgress.modulesCompleted.includes(m.id), active: mockProgress.modulesInProgress.includes(m.id) })),
+    { key: "conclusion", label: "Commissioning", icon: "◉", locked: false },
     { key: "certificate", label: "Certificate", icon: "✦", locked: true },
   ];
   return (
@@ -168,8 +182,18 @@ function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose }) 
       <div style={{ padding: "12px 0", flex: 1, overflowY: "auto" }}>
         {navItems.map(item => {
           const act = currentPage === item.key, lk = item.locked, done = item.completed;
+          const href = getHref(item.key);
+          const handleClick = () => {
+            if (lk) return;
+            if (href && href !== "/" && href !== "/modules/introduction") {
+              window.location.href = href;
+            } else {
+              setCurrentPage(item.key);
+              if (isMobile) onClose();
+            }
+          };
           return (
-            <div key={item.key} onClick={() => { if (!lk) { setCurrentPage(item.key); if (isMobile) onClose(); } }}
+            <div key={item.key} onClick={handleClick}
               style={{ padding: "10px 20px", cursor: lk ? "default" : "pointer", display: "flex", alignItems: "center", gap: 10, background: act ? colors.navyLight : "transparent", borderLeft: act ? `3px solid ${colors.gold}` : "3px solid transparent", opacity: lk ? 0.35 : 1, transition: "all 0.2s ease" }}
               onMouseEnter={e => { if (!lk && !act) e.currentTarget.style.background = colors.navyLight; }}
               onMouseLeave={e => { if (!act) e.currentTarget.style.background = "transparent"; }}>
@@ -246,7 +270,7 @@ function DashboardPage({ nav }) {
           <div style={{ fontSize: 12, fontWeight: 600, color: colors.gold, marginBottom: 8 }}>Current Focus</div>
           <div style={{ fontSize: 15, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Module 3: Competency</div>
           <div style={{ fontSize: 12, color: colors.gray300, fontStyle: "italic", marginBottom: 12 }}>Can I carry what I'm called to build?</div>
-          <button onClick={() => nav("module-3")} style={{ width: "100%", padding: "10px", background: colors.skyBlue, color: colors.white, border: "none", borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Continue →</button>
+          <button onClick={() => window.location.href = "/modules/competency"} style={{ width: "100%", padding: "10px", background: colors.skyBlue, color: colors.white, border: "none", borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Continue →</button>
         </div>
       </div></FadeIn>
     </div>
@@ -399,7 +423,7 @@ function IntroPage({ nav }) {
         </div>
 
         <div style={{ textAlign: "center" }}>
-          <button onClick={() => nav("module-1")} style={{
+          <button onClick={() => window.location.href = "/modules/calling"} style={{
             padding: "14px 48px", background: `linear-gradient(135deg, ${colors.navy}, ${colors.royalBlue})`,
             color: colors.white, border: "none", borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: "pointer",
             boxShadow: "0 4px 12px rgba(1,114,188,0.3)", transition: "all 0.3s",
