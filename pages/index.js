@@ -480,17 +480,21 @@ export default function App() {
   useEffect(() => {
     if (!user) return;
     async function loadData() {
-      const [rows, summaryRows] = await Promise.all([
-        loadUserProgress(user.id),
-        loadAiSummaries(user.id),
-      ]);
-      if (!rows) return;
-      const stats = calcDashboardStats(rows);
-      const aiSummaries = (summaryRows || []).map(s => ({
-        module: s.module_id,
-        preview: s.summary_text ? s.summary_text.slice(0, 120) + '...' : '',
-      }));
-      setProgress({ ...stats, aiSummaries });
+      try {
+        const [rows, summaryRows] = await Promise.all([
+          loadUserProgress(user.id),
+          loadAiSummaries(user.id),
+        ]);
+        const stats = calcDashboardStats(rows || []);
+        const aiSummaries = (summaryRows || []).map(s => ({
+          module: s.module_id,
+          preview: s.summary_text ? s.summary_text.slice(0, 120) + '...' : '',
+        }));
+        setProgress({ ...stats, aiSummaries });
+      } catch (err) {
+        console.error('loadData error:', err);
+        // Keep default progress on error
+      }
     }
     loadData();
   }, [user]);
