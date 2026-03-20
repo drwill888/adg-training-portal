@@ -140,7 +140,7 @@ function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose }) 
   // Map nav keys to actual URLs
   const getHref = (key) => {
     if (key === "dashboard") return "/";
-    if (key === "intro") return "/modules/introduction";
+    if (key === "intro") return null;
     if (key === "conclusion") return "/modules/commissioning";
     if (key.startsWith("module-")) {
       const id = parseInt(key.split("-")[1]);
@@ -185,8 +185,12 @@ function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose }) 
           const href = getHref(item.key);
           const handleClick = () => {
             if (lk) return;
-            const dest = getHref(item.key);
-            window.location.href = dest || "/";
+            if (href && href !== "/" && href !== "/modules/introduction") {
+              window.location.href = href;
+            } else {
+              setCurrentPage(item.key);
+              if (isMobile) onClose();
+            }
           };
           return (
             <div key={item.key} onClick={handleClick}
