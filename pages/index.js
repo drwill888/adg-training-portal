@@ -14,7 +14,7 @@ function useIsMobile(breakpoint = 768) {
   return isMobile;
 }
 
-// ─── WORD DOC DOWNLOAD ───────────────────────────────────────
+// ─── WORD DOC DOWNLOAD  ───────────────────────────────────────
 function downloadWordDoc(title, refs, scores, diagnostic, aiSummary) {
   const now = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
   const preTotal = diagnostic ? diagnostic.reduce((s, q) => s + (scores[`pre-${q.num}`] || 0), 0) : 0;
