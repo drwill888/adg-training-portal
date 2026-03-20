@@ -1,4 +1,61 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+
+// ─── MOBILE HOOK ──────────────────────────────────────────────
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < breakpoint : false
+  );
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, [breakpoint]);
+  return isMobile;
+}
+
+// ─── WORD DOC DOWNLOAD ───────────────────────────────────────
+function downloadWordDoc(title, refs, scores, diagnostic, aiSummary) {
+  const now = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  const preTotal = diagnostic ? diagnostic.reduce((s, q) => s + (scores[`pre-${q.num}`] || 0), 0) : 0;
+  const postTotal = diagnostic ? diagnostic.reduce((s, q) => s + (scores[`post-${q.num}`] || 0), 0) : 0;
+  const scoreRows = diagnostic ? diagnostic.map(q =>
+    `<tr><td style="padding:6px;border:1px solid #ccc;font-size:11px;">${q.num}</td>
+     <td style="padding:6px;border:1px solid #ccc;font-size:11px;">${q.text}</td>
+     <td style="padding:6px;border:1px solid #ccc;text-align:center;font-size:11px;">${scores[`pre-${q.num}`] || "-"}</td>
+     <td style="padding:6px;border:1px solid #ccc;text-align:center;font-size:11px;">${scores[`post-${q.num}`] || "-"}</td></tr>`
+  ).join("") : "";
+  const refEntries = Object.entries(refs).filter(([,v]) => v).map(([k, v]) =>
+    `<p style="margin:6px 0;font-size:12px;"><b>${k.replace(/-/g," ")}:</b> ${v}</p>`
+  ).join("");
+  const aiSection = aiSummary ? Object.entries(aiSummary).map(([k, v]) =>
+    `<p style="margin:6px 0;font-size:12px;"><b>${k.replace(/_/g," ")}:</b> ${v}</p>`
+  ).join("") : "";
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8"><title>${title}</title>
+<style>body{font-family:Georgia,serif;color:#1a1a1a;max-width:700px;margin:0 auto;padding:40px 20px}
+h1{color:#021A35;font-size:22px;border-bottom:3px solid #C8A951;padding-bottom:8px}
+h2{color:#021A35;font-size:16px;margin-top:24px;border-bottom:1px solid #ddd;padding-bottom:4px}
+p{font-size:12px;line-height:1.6}table{border-collapse:collapse;width:100%;margin:12px 0}
+th{background:#021A35;color:#fff;padding:8px;font-size:11px;text-align:left}td{font-size:11px}
+.footer{margin-top:40px;border-top:2px solid #C8A951;padding-top:12px;font-size:10px;color:#888;text-align:center}
+</style></head><body>
+<h1>5C Leadership Blueprint \u2014 ${title}</h1>
+<p style="color:#888;">Awakening Destiny Global \u2022 ${now}</p>
+${diagnostic ? `<h2>Diagnostic Scores</h2>
+<table><tr><th>#</th><th>Statement</th><th>Pre</th><th>Post</th></tr>${scoreRows}</table>
+<p><b>Pre-Total:</b> ${preTotal}/60 &nbsp;&nbsp; <b>Post-Total:</b> ${postTotal}/60</p>` : ""}
+${refEntries ? `<h2>Reflections &amp; Responses</h2>${refEntries}` : ""}
+${aiSection ? `<h2>AI Leadership Summary</h2>${aiSection}` : ""}
+<div class="footer"><p>\u00A9 Awakening Destiny Global \u2022 awakeningdestiny.global</p>
+<p>5C Leadership Blueprint \u2014 Developing Leaders \u2022 Creating Champions</p></div>
+</body></html>`;
+  const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = `My_${title.replace(/\s+/g,"_")}_Blueprint.doc`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 250);
+}
 
 const colors = {
   navy: "#021A35", navyLight: "#0a2a4d", navyMid: "#132f50",
@@ -77,7 +134,8 @@ function Nav({ back, next }) {
   </div>;
 }
 
-function Sidebar({ currentPage, setCurrentPage, currentModule }) {
+function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose }) {
+  const isMobile = useIsMobile();
   const navItems = [
     { key: "dashboard", label: "Dashboard", icon: "⬡" },
     { key: "intro", label: "Introduction", icon: "◈" },
@@ -86,7 +144,20 @@ function Sidebar({ currentPage, setCurrentPage, currentModule }) {
     { key: "certificate", label: "Certificate", icon: "✦", locked: true },
   ];
   return (
-    <div style={{ width: 260, minHeight: "100vh", background: colors.navy, borderRight: `1px solid ${colors.navyMid}`, flexShrink: 0, display: "flex", flexDirection: "column" }}>
+    <>
+      {/* Mobile overlay backdrop */}
+      {isMobile && open && (
+        <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 49 }} />
+      )}
+      <div style={{
+        width: 260, minHeight: "100vh", background: colors.navy, borderRight: `1px solid ${colors.navyMid}`,
+        flexShrink: 0, display: "flex", flexDirection: "column",
+        ...(isMobile ? {
+          position: "fixed", top: 0, left: 0, zIndex: 50, height: "100vh", overflowY: "auto",
+          transform: open ? "translateX(0)" : "translateX(-100%)",
+          transition: "transform 0.3s ease",
+        } : {}),
+      }}>
       <div style={{ padding: "20px 16px 16px", borderBottom: `1px solid ${colors.navyMid}` }}>
         <div style={{ background: colors.white, borderRadius: 8, padding: "10px 12px 8px", marginBottom: 10 }}>
           <img src={LOGO_SRC} alt="Awakening Destiny Global" style={{ width: "100%", height: "auto", display: "block" }} />
@@ -98,7 +169,7 @@ function Sidebar({ currentPage, setCurrentPage, currentModule }) {
         {navItems.map(item => {
           const act = currentPage === item.key, lk = item.locked, done = item.completed;
           return (
-            <div key={item.key} onClick={() => !lk && setCurrentPage(item.key)}
+            <div key={item.key} onClick={() => { if (!lk) { setCurrentPage(item.key); if (isMobile) onClose(); } }}
               style={{ padding: "10px 20px", cursor: lk ? "default" : "pointer", display: "flex", alignItems: "center", gap: 10, background: act ? colors.navyLight : "transparent", borderLeft: act ? `3px solid ${colors.gold}` : "3px solid transparent", opacity: lk ? 0.35 : 1, transition: "all 0.2s ease" }}
               onMouseEnter={e => { if (!lk && !act) e.currentTarget.style.background = colors.navyLight; }}
               onMouseLeave={e => { if (!act) e.currentTarget.style.background = "transparent"; }}>
@@ -115,7 +186,8 @@ function Sidebar({ currentPage, setCurrentPage, currentModule }) {
           <div><div style={{ fontSize: 12, color: colors.white, fontWeight: 500 }}>Will Meier</div><div style={{ fontSize: 10, color: colors.gray500 }}>Participant</div></div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 
@@ -143,10 +215,11 @@ function ScoreBar({ label, pre, post, max = 60 }) {
 
 function DashboardPage({ nav }) {
   const [ap, setAp] = useState(0);
+  const isMobile = useIsMobile();
   useEffect(() => { const t = setTimeout(() => setAp(mockProgress.completionPct), 300); return () => clearTimeout(t); }, []);
-  return <div style={{ padding: "32px 40px", maxWidth: 960 }}>
+  return <div style={{ padding: isMobile ? "20px 16px" : "32px 40px", maxWidth: 960 }}>
     <FadeIn><h1 style={{ fontSize: 26, fontWeight: 700, color: colors.navy, margin: "0 0 6px" }}>Leadership Growth Panel</h1><p style={{ fontSize: 14, color: colors.gray500, margin: "0 0 32px" }}>Your 5C Leadership Blueprint journey at a glance</p></FadeIn>
-    <div style={{ display: "grid", gridTemplateColumns: "240px 1fr", gap: 24, marginBottom: 24 }}>
+    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "240px 1fr", gap: 24, marginBottom: 24 }}>
       <FadeIn delay={100}><div style={{ background: colors.white, borderRadius: 12, padding: 24, border: `1px solid ${colors.gray200}`, textAlign: "center", boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
         <div style={{ position: "relative", display: "inline-block", marginBottom: 12 }}><ProgressRing percent={ap} /><div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontSize: 28, fontWeight: 700, color: colors.navy }}>{mockProgress.completionPct}%</div></div>
         <div style={{ fontSize: 13, fontWeight: 600, color: colors.navy }}>Overall Progress</div><div style={{ fontSize: 12, color: colors.gray500, marginTop: 2 }}>Module {mockProgress.currentModule} of 5</div>
@@ -161,7 +234,7 @@ function DashboardPage({ nav }) {
       {mockProgress.moduleScores.map(s => <ScoreBar key={s.module} label={`Module ${s.module}: ${modules[s.module].title}`} pre={s.pre} post={s.post} />)}
       {[3,4,5].map(i => <div key={i} style={{ padding: "10px 0", borderBottom: `1px solid ${colors.gray100}`, display: "flex", justifyContent: "space-between" }}><span style={{ fontSize: 13, color: colors.gray500 }}>Module {i}: {modules[i].title}</span><span style={{ fontSize: 12, color: colors.gray300, fontStyle: "italic" }}>Not started</span></div>)}
     </div></FadeIn>
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 24 }}>
+    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 280px", gap: 24 }}>
       <FadeIn delay={400}><div style={{ background: colors.white, borderRadius: 12, padding: 24, border: `1px solid ${colors.gray200}`, boxShadow: "0 1px 3px rgba(0,0,0,0.06)" }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: colors.navy, marginBottom: 16 }}>AI Leadership Summaries</div>
         {mockProgress.aiSummaries.map((s, i) => <div key={i} style={{ padding: 16, background: colors.offWhite, borderRadius: 8, borderLeft: `3px solid ${colors.gold}`, marginBottom: 12 }}><div style={{ fontSize: 12, fontWeight: 600, color: colors.royalBlue, marginBottom: 6 }}>Module {s.module}: {modules[s.module].title}</div><div style={{ fontSize: 13, color: colors.gray700, lineHeight: 1.6 }}>{s.preview}</div><button style={{ marginTop: 10, fontSize: 12, color: colors.skyBlue, background: "none", border: "none", cursor: "pointer", fontWeight: 600, padding: 0 }}>Read Full Summary →</button></div>)}
@@ -186,11 +259,12 @@ function IntroPage({ nav }) {
   const [committed, setCommitted] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiSummary, setAiSummary] = useState(null);
+  const isMobile = useIsMobile();
   const secs = ["overview","why","objectives","structure","map","reflection","commitment","summary"];
   const acc = [colors.skyBlue, colors.royalBlue, colors.orange, colors.red, colors.gold];
   const dist = ["Calling vs. Assignment","Orphan vs. Son","Anointed Only vs. Prepared","Reactive vs. Refined","Scattered vs. Converged"];
 
-  return <div style={{ padding: "32px 40px", maxWidth: 780 }}>
+  return <div style={{ padding: isMobile ? "20px 16px" : "32px 40px", maxWidth: 780 }}>
     <div style={{ display: "flex", gap: 4, marginBottom: 32 }}>{secs.map((x, i) => <div key={x} style={{ flex: 1, height: 4, borderRadius: 2, background: i <= s ? colors.gold : colors.gray200, transition: "background 0.3s", cursor: "pointer" }} onClick={() => setS(i)} />)}</div>
 
     {s === 0 && <FadeIn>
@@ -204,7 +278,7 @@ function IntroPage({ nav }) {
         <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.7, margin: "12px 0 0" }}>The 5C Leadership Blueprint is not information transfer. It is leadership formation. It is designed to move you from potential to precision — from fragmented growth to integrated impact.</p>
       </div>
       <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.7, marginBottom: 24 }}>This framework is built on five interconnected dimensions. They are not separate compartments. They are a progression. Each builds on the previous. Skip one, and the structure weakens.</p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12, marginBottom: 8 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(5, 1fr)", gap: 12, marginBottom: 8 }}>
         {modules.filter(m => m.id >= 1 && m.id <= 5).map((m, i) => <div key={m.id} style={{ background: colors.white, borderRadius: 10, padding: 16, textAlign: "center", border: `1px solid ${colors.gray200}`, borderTop: `3px solid ${acc[i]}` }}><div style={{ fontSize: 22, marginBottom: 6 }}>{m.icon}</div><div style={{ fontSize: 13, fontWeight: 700, color: colors.navy, marginBottom: 4 }}>{m.title}</div><div style={{ fontSize: 11, color: colors.gray500, fontStyle: "italic" }}>{m.subtitle}</div></div>)}
       </div>
       <Nav next={{ onClick: () => setS(1) }} />
@@ -339,729 +413,31 @@ function IntroPage({ nav }) {
   </div>;
 }
 
-// ========================
-// MODULE 3: COMPETENCY
-// ========================
-
-function CompetencyPage({ nav }) {
-  const [s, setS] = useState(0);
-  const [ref, setRef] = useState({});
-  const [scores, setScores] = useState({});
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiSummary, setAiSummary] = useState(null);
-  const secs = ["activation","pre-diag","teaching","p1","p2","p3","p4","p5","exemplar","stages","post-diag","commitment","summary"];
-  const secLabels = ["Opening","Pre-Diag","Teaching","P1","P2","P3","P4","P5","Exemplar","Stages","Post-Diag","Commit","Summary"];
-
-  const preTotal = competencyDiagnostic.reduce((sum, q) => sum + (scores[`pre-${q.num}`] || 0), 0);
-  const postTotal = competencyDiagnostic.reduce((sum, q) => sum + (scores[`post-${q.num}`] || 0), 0);
-  const preDone = competencyDiagnostic.every(q => scores[`pre-${q.num}`] != null);
-  const postDone = competencyDiagnostic.every(q => scores[`post-${q.num}`] != null);
-
-  const goSummary = () => {
-    setS(12); setAiLoading(true);
-    setTimeout(() => {
-      setAiSummary({
-        growth: `Your Competency diagnostic moved from ${preTotal}/60 (pre) to ${postTotal}/60 (post), a growth of +${postTotal - preTotal} points. This indicates ${postTotal - preTotal >= 10 ? "significant advancement" : postTotal - preTotal >= 5 ? "meaningful development" : "early-stage formation"} in competency clarity and skill alignment.`,
-        strengths: "Your strongest area is Learning Posture — you demonstrate a willingness to receive feedback, name gaps honestly, and view every assignment as a development opportunity. This is the raw material of compounding growth. Leaders who stay teachable build capacity that outlasts talent alone.",
-        growth_edge: "The area with the most room for development is Preparation & Stewardship. Having a structured growth plan — not just aspirational goals — that connects skill development to calling is what separates leaders who plateau from leaders who compound. This is your next frontier.",
-        observation: "Your reflections reveal a leader who understands the distinction between gifting and training, between anointing and preparation. You have named specific skill gaps without defensiveness — and that honesty is the foundation of all genuine competency development. God builds on what is surrendered, not what is protected.",
-        next: "As you move into Module 4: Capacity, carry your competency growth plan with you. The question shifts from 'Can I carry what I'm called to build?' to 'Can I sustain what I'm building?' — competency gets you to the table, but capacity keeps you there."
-      });
-      setAiLoading(false);
-    }, 3000);
-  };
-
-  return <div style={{ padding: "32px 40px", maxWidth: 780 }}>
-    {/* Progress bar */}
-    <div style={{ display: "flex", gap: 3, marginBottom: 8 }}>
-      {secs.map((x, i) => <div key={x} style={{ flex: 1, height: 4, borderRadius: 2, background: i <= s ? colors.orange : colors.gray200, transition: "background 0.3s", cursor: "pointer" }} onClick={() => setS(i)} />)}
-    </div>
-    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 28 }}>
-      {secLabels.map((l, i) => <div key={i} style={{ fontSize: 8, color: i <= s ? colors.orange : colors.gray300, textAlign: "center", flex: 1 }}>{l}</div>)}
-    </div>
-
-    {/* Module header */}
-    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24, padding: "12px 16px", background: `linear-gradient(135deg, ${colors.orange}10, ${colors.orange}05)`, borderRadius: 10, border: `1px solid ${colors.orange}30` }}>
-      <div style={{ width: 40, height: 40, borderRadius: 10, background: colors.orange, display: "flex", alignItems: "center", justifyContent: "center", color: colors.white, fontSize: 18, fontWeight: 700 }}>3</div>
-      <div><div style={{ fontSize: 16, fontWeight: 700, color: colors.navy }}>Competency</div><div style={{ fontSize: 12, color: colors.gray500, fontStyle: "italic" }}>Can I carry what I'm called to build?</div></div>
-    </div>
-
-    {/* S0: Opening Activation */}
-    {s === 0 && <FadeIn>
-      <SectionHeader tag="OPENING ACTIVATION" title="Prepare Your Heart" subtitle="Before we teach, we listen. Sit with these questions for three minutes. Write what surfaces — not what sounds right." />
-      <ReflectionPrompt prompt="If God expanded your assignment tomorrow — doubled the scope, the influence, the weight — would your current skill set be ready? Where would the gap show first?" value={ref["oa-1"]} onChange={v => setRef(p => ({...p, "oa-1": v}))} />
-      <ReflectionPrompt prompt="Think of a leader you deeply respect. What competency do they carry that you admire — and what would it take for you to develop the same?" value={ref["oa-2"]} onChange={v => setRef(p => ({...p, "oa-2": v}))} />
-      <Nav back={{ onClick: () => nav("module-2"), label: "Back to Connection" }} next={{ onClick: () => setS(1) }} />
-    </FadeIn>}
-
-    {/* S1: Pre-Diagnostic */}
-    {s === 1 && <FadeIn>
-      <DiagnosticSection title="Competency Diagnostic" subtitle="Rate each statement honestly from 1 to 5. This is a mirror, not a test. Let it reveal where you are so you can build from truth." questions={competencyDiagnostic} scores={scores} setScores={setScores} phase="pre" />
-      <Nav back={{ onClick: () => setS(0) }} next={{ onClick: () => setS(2), label: "Begin Teaching", disabled: !preDone }} />
-    </FadeIn>}
-
-    {/* S2: Core Teaching */}
-    {s === 2 && <FadeIn>
-      <SectionHeader tag="CORE TEACHING" title="What Competency Actually Is" />
-      <Scripture text="Do you see a man skillful in his work? He will stand before kings; he will not stand before obscure men." ref="Proverbs 22:29" />
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 12 }}><strong style={{ color: colors.navy }}>Competency is the developed ability to execute with excellence what you have been called and connected to carry.</strong></p>
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 12 }}>It is the integration of skill, knowledge, and wisdom applied to a specific domain. It is not giftedness alone. It is not anointing alone. It is giftedness trained, tested, and proven reliable under weight. Calling tells you what to build. Connection tells you whose you are. Competency asks the harder question: <em>Can you actually carry what you've been entrusted with?</em></p>
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 16 }}>Many leaders carry a legitimate calling but lack the developed skill to execute it at the level the assignment demands. The result is frustration, inconsistency, and broken trust. God does not bypass preparation. He sanctifies it. Competency is how calling becomes credible in the earth.</p>
-      <ReflectionPrompt prompt="In your own words, what competency does your current assignment demand most — and how prepared are you to deliver it?" value={ref["ct-1"]} onChange={v => setRef(p => ({...p, "ct-1": v}))} />
-
-      <h3 style={{ fontSize: 18, fontWeight: 700, color: colors.navy, margin: "28px 0 12px" }}>Competency & Skill: The Macro and the Micro</h3>
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 12 }}><strong style={{ color: colors.navy }}>Competency is the macro — the structural capacity to carry weight with credibility.</strong> Skill is the micro — the specific, trainable ability applied in a given context. Competency endures across assignments. Skills adapt to seasons.</p>
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 16 }}>Many leaders confuse the two. They collect certifications without building structural competency. Others have deep competency in one domain but no transferable skill framework. The macro gives you the posture of a builder. The micro gives you the tools for this build. You need both — and knowing which one you lack determines your growth plan.</p>
-      <ContrastTable leftTitle="COMPETENCY (Macro)" rightTitle="SKILL (Micro)" rows={[
-        ["The structural capacity","The specific tool"],
-        ["Endures across assignments","Adapts to seasons"],
-        ["Built through faithful execution","Acquired through training & practice"],
-        ["Proven under pressure","Demonstrated in tasks"],
-        ["Creates credibility and trust","Creates efficiency and output"],
-        ["The weight-bearing wall","The finish carpentry"],
-      ]} />
-      <ReflectionPrompt prompt="What is your macro competency — the structural capacity that remains constant regardless of your role or title?" value={ref["ct-2"]} onChange={v => setRef(p => ({...p, "ct-2": v}))} />
-      <ReflectionPrompt prompt="What specific skills does your current assignment require that you are still developing?" value={ref["ct-3"]} onChange={v => setRef(p => ({...p, "ct-3": v}))} />
-      <ReflectionPrompt prompt="Where have you confused skill acquisition (collecting certifications, courses, credentials) with genuine competency development (tested capacity under real weight)?" value={ref["ct-4"]} onChange={v => setRef(p => ({...p, "ct-4": v}))} />
-      <Nav back={{ onClick: () => setS(1) }} next={{ onClick: () => setS(3) }} />
-    </FadeIn>}
-
-    {/* S3: Principle 1 */}
-    {s === 3 && <FadeIn>
-      <SectionHeader tag="GOVERNING PRINCIPLES" title="Principle 1" />
-      <PrincipleSection num={1} title="Anointing Without Preparation Is Incomplete"
-        scripture="Do your best to present yourself to God as one approved, a worker who has no need to be ashamed, rightly handling the word of truth." scriptureRef="2 Timothy 2:15"
-        teaching={["<strong>Anointing attracts attention. Competency retains trust.</strong> Many leaders have been given genuine grace — legitimate spiritual authority and anointing. But anointing without developed competency produces leaders who can start movements but cannot sustain institutions. The Spirit empowers, but He does not bypass the stewardship of skill.", "Consider this: the anointing opens the door. But competency is what keeps you in the room. A leader who is prophetically accurate but organizationally chaotic will eventually lose influence — not because the gift was false, but because the vessel was unprepared. God does not anoint negligence. He anoints faithfulness, and faithfulness includes the discipline of preparation.", "This is not a critique of spiritual gifting — it is a call to honor it. If God gave you a mandate, He expects you to develop the capacity to execute it. Anointing and preparation are not opposites. They are partners. The most dangerous leader is the one who believes their gift exempts them from the work of development."]}
-        prompts={["Where have you relied on anointing to compensate for undeveloped skill? What was the cost?","What area of preparation have you been avoiding — and what would change if you finally engaged it?"]}
-        responses={ref} setResponses={setRef} />
-      <Nav back={{ onClick: () => setS(2) }} next={{ onClick: () => setS(4) }} />
-    </FadeIn>}
-
-    {/* S4: Principle 2 */}
-    {s === 4 && <FadeIn>
-      <PrincipleSection num={2} title="Competency Is Built in Assignment, Not Theory"
-        scripture="Whatever your hand finds to do, do it with your might." scriptureRef="Ecclesiastes 9:10"
-        teaching={["<strong>You cannot develop competency in a classroom alone. Competency is forged in the furnace of real responsibility.</strong> Theory informs. But assignment transforms. The leader who waits until they feel ready will never begin. Readiness is not a feeling — it is a decision to be faithful with what is in front of you.", "Joseph did not become a master administrator by studying management principles. He became competent by managing Potiphar's house, then managing a prison — long before he managed a nation. Each assignment built on the previous one. Each season of faithfulness developed a new layer of structural capacity that the next season would demand.", "Stop waiting for the ideal assignment to develop your competency. The assignment you have — the one that feels too small, too messy, too beneath your calling — is the exact environment God is using to build something in you that theory alone cannot produce. Excellence in the current assignment is the gateway to the next one."]}
-        prompts={["What current assignment — even a small or unglamorous one — is actively developing competency that your future will require?","Where are you waiting for the 'right' assignment before engaging fully? What would shift if you treated this season as your training ground?"]}
-        responses={ref} setResponses={setRef} />
-      <Nav back={{ onClick: () => setS(3) }} next={{ onClick: () => setS(5) }} />
-    </FadeIn>}
-
-    {/* S5: Principle 3 */}
-    {s === 5 && <FadeIn>
-      <PrincipleSection num={3} title="Excellence Honors God and Opens Doors"
-        scripture="Whatever you do, work heartily, as for the Lord and not for men." scriptureRef="Colossians 3:23"
-        teaching={["<strong>Excellence is not perfectionism. It is the consistent commitment to steward every assignment — public or private — as if God Himself commissioned it.</strong> Because He did. Mediocrity in the name of humility is still mediocrity. And mediocrity does not open doors that require trust.", "There is a theological weight to excellence that many leaders miss. When you deliver excellent work, you are not performing for human approval — you are demonstrating that what God entrusted to you is being handled with honor. Excellence builds a reputation that precedes you into rooms your ambition could never access. Proverbs says it plainly: the skillful worker stands before kings.", "This does not mean perfection. Perfection is a prison. Excellence is a posture — a refusal to offer God or people what cost you nothing. It means the proposal is thorough, the follow-through is reliable, the details are considered, and the execution reflects the weight of the calling behind it. When people encounter your work, do they encounter someone who stewards with care — or someone who coasts on gifting?"]}
-        prompts={["Where in your leadership have you settled for 'good enough' when the assignment required excellence? What would change if you raised your standard?","What is one area of your current work where increased excellence would measurably increase your credibility and trust?"]}
-        responses={ref} setResponses={setRef} />
-      <Nav back={{ onClick: () => setS(4) }} next={{ onClick: () => setS(6) }} />
-    </FadeIn>}
-
-    {/* S6: Principle 4 */}
-    {s === 6 && <FadeIn>
-      <PrincipleSection num={4} title="Skill Gaps Are Not Disqualifications — They Are Development Zones"
-        scripture="For we are his workmanship, created in Christ Jesus for good works, which God prepared beforehand, that we should walk in them." scriptureRef="Ephesians 2:10"
-        teaching={["<strong>A skill gap is not a character flaw. It is a growth edge.</strong> The leader who hides their gaps protects their ego but stunts their development. The leader who names their gaps honestly creates a pathway for targeted, accelerated growth that compounds over time.", "Too many leaders treat incompetence as something to manage rather than something to develop. They delegate around their weakness instead of developing through it. There is a place for delegation — but there is a difference between strategic delegation and avoidance. If the gap is connected to your calling, you cannot permanently outsource it. You must grow into it.", "This principle requires humility — and humility is not weakness. Humility is the operational posture of a learner. The most competent leaders you will ever encounter are the ones who can say 'I don't know yet — but I'm building.' That honesty disarms pretension, attracts mentorship, and accelerates development faster than any certification program."]}
-        prompts={["Name your top three skill gaps honestly — without defensiveness or excuse. What would it look like to actively develop each one over the next 90 days?","Where have you been managing a gap through avoidance or delegation when the calling actually requires you to grow into it?"]}
-        responses={ref} setResponses={setRef} />
-      <Nav back={{ onClick: () => setS(5) }} next={{ onClick: () => setS(7) }} />
-    </FadeIn>}
-
-    {/* S7: Principle 5 */}
-    {s === 7 && <FadeIn>
-      <PrincipleSection num={5} title="Competency Must Be Assessed Honestly"
-        scripture="Examine yourselves, to see whether you are in the faith. Test yourselves." scriptureRef="2 Corinthians 13:5"
-        teaching={["<strong>What you do not assess, you cannot develop.</strong> Honest self-evaluation — combined with external feedback — is the engine of competency growth. Leaders who avoid assessment protect their comfort but forfeit their potential. The diagnostic is not an attack. It is a gift.", "There are two errors in competency assessment. The first is overestimation — believing you are more skilled than you are because you have never submitted your work to honest evaluation. The second is underestimation — believing you are less capable than you are because shame or insecurity distorts the mirror. Both errors produce the same result: misalignment between what you carry and what you build.", "Build a rhythm of honest assessment into your leadership life. Seek feedback quarterly from those who see your work — not those who only see your platform. Ask the uncomfortable question: 'Where am I falling short — and what would it take to close the gap?' The leader who builds this discipline will outpace the naturally talented leader who avoids it every single time."]}
-        prompts={["When was the last time you received honest, unsolicited feedback on your competency — not your character or your calling, but your actual skill? What did it reveal?","Who in your life has both the proximity and the courage to tell you where you are falling short? If no one comes to mind — that is the gap."]}
-        responses={ref} setResponses={setRef} />
-      <Nav back={{ onClick: () => setS(6) }} next={{ onClick: () => setS(8) }} />
-    </FadeIn>}
-
-    {/* S8: Leadership Exemplar */}
-    {s === 8 && <FadeIn>
-      <SectionHeader tag="LEADERSHIP EXEMPLAR" title="Joseph: The Prepared Builder" subtitle="Genesis 39–41" />
-      <Scripture text="The LORD was with Joseph, and he became a successful man... his master saw that the LORD was with him and that the LORD caused all that he did to succeed in his hands." ref="Genesis 39:2–3" />
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 12 }}>Joseph carried a legitimate calling from the age of seventeen — dreams of authority and influence that were prophetic in origin. But between the dream and the throne, God did not send Joseph to a leadership academy. He sent him to Potiphar's house. Then to a prison. Each assignment looked like a demotion. Each environment built a layer of competency that the palace would eventually demand.</p>
-      <Scripture text="And Pharaoh said to Joseph, 'Since God has shown you all this, there is none so discerning and wise as you are.'" ref="Genesis 41:39" />
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 12 }}>When Pharaoh looked at Joseph, he did not see a dreamer. He saw a man who had been tested under pressure and proven competent to administrate a nation. The anointing got Joseph the audience. The competency earned him the assignment. Joseph did not just interpret the dream — he presented a detailed economic strategy, complete with implementation phases and logistical infrastructure. That level of operational clarity was not spiritual gifting alone. It was the fruit of years of faithful, excellent execution in assignments no one applauded.</p>
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 8 }}><strong style={{ color: colors.navy }}>Joseph's Pattern:</strong> Gift → Preparation in Obscurity → Proven Under Pressure → Entrusted With Authority</p>
-
-      <div style={{ padding: 16, background: colors.offWhite, borderRadius: 10, borderLeft: `3px solid ${colors.orange}`, marginTop: 16, marginBottom: 8 }}>
-        <div style={{ fontSize: 11, fontWeight: 600, color: colors.orange, letterSpacing: "0.1em", marginBottom: 12 }}>COACHING QUESTIONS</div>
-        <ReflectionPrompt prompt="What 'Potiphar's house' or 'prison' assignment are you in right now — one that looks like a demotion but is actually building competency for what's ahead?" value={ref["ex-1"]} onChange={v => setRef(p => ({...p, "ex-1": v}))} />
-        <ReflectionPrompt prompt="Joseph didn't just interpret the dream — he presented a strategy. Where has God asked you to move beyond spiritual insight and deliver operational excellence?" value={ref["ex-2"]} onChange={v => setRef(p => ({...p, "ex-2": v}))} />
-        <ReflectionPrompt prompt="What competency has your hidden season actually built in you — even if no one has seen it yet?" value={ref["ex-3"]} onChange={v => setRef(p => ({...p, "ex-3": v}))} />
-      </div>
-      <Nav back={{ onClick: () => setS(7) }} next={{ onClick: () => setS(9) }} />
-    </FadeIn>}
-
-    {/* S9: Three Stages */}
-    {s === 9 && <FadeIn>
-      <SectionHeader tag="DEVELOPMENTAL STAGES" title="How Competency Develops" subtitle="Competency is not static. It matures through distinct stages. Knowing where you are determines what you build next." />
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 20 }}>
-        {[
-          { stage: "Stage 1", title: "Awareness", desc: "Recognizing what you don't know. You begin to see the gap between your gifting and your developed ability. This is the humility stage — where honesty replaces assumption and you stop confusing anointing with preparation. Most leaders stall here because naming the gap feels like admitting failure.", ref: "Proverbs 1:7" },
-          { stage: "Stage 2", title: "Acquisition", desc: "Actively developing skills through training, mentorship, and applied practice. This is the discipline stage — where knowledge becomes applied, feedback is welcomed, and reps replace theory. Growth is measurable because the leader has a plan, not just a desire.", ref: "Proverbs 4:7" },
-          { stage: "Stage 3", title: "Application", desc: "Deploying competency under real pressure with proven results. This is the stewardship stage — where skill is trusted because it has been tested. Others entrust you with weight not because of your title, but because of your track record. Competency becomes your credibility.", ref: "Genesis 41:39–40" },
-        ].map((st, i) => (
-          <div key={i} style={{ padding: 16, background: i === 2 ? colors.navy : colors.white, borderRadius: 10, border: `1px solid ${i === 2 ? colors.navy : colors.gray200}` }}>
-            <div style={{ fontSize: 10, fontWeight: 600, color: i === 2 ? colors.gold : colors.gray500, marginBottom: 4 }}>{st.stage}</div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: i === 2 ? colors.white : colors.navy, marginBottom: 6 }}>{st.title}</div>
-            <div style={{ fontSize: 12, color: i === 2 ? colors.gray300 : colors.gray700, lineHeight: 1.6 }}>{st.desc}</div>
-            <div style={{ fontSize: 11, color: i === 2 ? colors.gray300 : colors.gray500, fontStyle: "italic", marginTop: 6 }}>{st.ref}</div>
-          </div>
-        ))}
-      </div>
-      <div style={{ padding: 14, background: colors.offWhite, borderRadius: 8, borderLeft: `3px solid ${colors.gold}`, marginBottom: 16 }}>
-        <div style={{ fontSize: 13, color: colors.navy, fontWeight: 600 }}>Transition Marker</div>
-        <div style={{ fontSize: 13, color: colors.gray700, fontStyle: "italic", marginTop: 4 }}>You stop asking "What am I gifted at?" and start asking "What has my faithfulness proven I can carry?"</div>
-      </div>
-      <ReflectionPrompt prompt="Which stage are you in right now — across your primary calling domain? What evidence supports your answer?" value={ref["st-1"]} onChange={v => setRef(p => ({...p, "st-1": v}))} />
-      <Nav back={{ onClick: () => setS(8) }} next={{ onClick: () => setS(10), label: "Take Post-Diagnostic" }} />
-    </FadeIn>}
-
-    {/* S10: Post-Diagnostic */}
-    {s === 10 && <FadeIn>
-      <DiagnosticSection title="Competency Diagnostic (Post)" subtitle="Take the same diagnostic again. Rate based on where you are NOW after processing the teaching. Be honest about what shifted." questions={competencyDiagnostic} scores={scores} setScores={setScores} phase="post" />
-      {preDone && postDone && <div style={{ padding: 16, background: colors.navy, borderRadius: 10, marginTop: 16 }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: colors.gold, marginBottom: 4 }}>Growth: {preTotal}/60 → {postTotal}/60</div>
-        <div style={{ fontSize: 13, color: colors.gray300 }}>Delta: <span style={{ color: postTotal > preTotal ? "#4ade80" : colors.white, fontWeight: 700 }}>{postTotal > preTotal ? "+" : ""}{postTotal - preTotal}</span></div>
-      </div>}
-      <ReflectionPrompt prompt="What did this diagnostic reveal about where you are? What surprised you?" value={ref["diag-reflect"]} onChange={v => setRef(p => ({...p, "diag-reflect": v}))} />
-      <Nav back={{ onClick: () => setS(9) }} next={{ onClick: () => setS(11), label: "Make Your Commitment", disabled: !postDone, gold: true }} />
-    </FadeIn>}
-
-    {/* S11: Commitment */}
-    {s === 11 && <FadeIn>
-      <SectionHeader tag="MY COMPETENCY COMMITMENT" title="From Capacity to Credibility" subtitle="Competency is where calling becomes executable. This is where potential becomes proven." />
-      {[
-        { key: "cm-1", label: "1. My Competency Thesis", prompt: "In one sentence, name the core competency your calling demands — the developed ability that, if strengthened, would most accelerate your impact." },
-        { key: "cm-2", label: "2. My Current Skill Inventory", prompt: "List the top five skills you currently bring to your assignment. Be specific — not 'leadership' but 'strategic planning,' 'financial modeling,' 'team development,' 'public communication,' etc." },
-        { key: "cm-3", label: "3. My Top Three Skill Gaps", prompt: "Name three specific skill gaps between where you are and where your calling requires you to operate. No shame — just honesty." },
-        { key: "cm-4", label: "4. My 90-Day Growth Plan", prompt: "For each skill gap above, identify one concrete action you will take in the next 90 days: a course, a mentor conversation, a stretch assignment, deliberate practice." },
-        { key: "cm-5", label: "5. My Excellence Standard", prompt: "Define what excellence looks like in your current assignment. Not perfection — but the standard you will hold yourself to as an act of worship and stewardship." },
-        { key: "cm-6", label: "6. My Next Step of Development", prompt: "Not the three-year plan. The next step. What one skill-building action will you take within 7 days?" },
-        { key: "cm-7", label: "7. My Accountability", prompt: "Who will assess your competency honestly — not just affirm your calling? Who has the proximity and courage to tell you where you're falling short?" },
-      ].map(item => (
-        <div key={item.key} style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: colors.orange, marginBottom: 6 }}>{item.label}</div>
-          <ReflectionPrompt prompt={item.prompt} value={ref[item.key]} onChange={v => setRef(p => ({...p, [item.key]: v}))} />
-        </div>
-      ))}
-      <Nav back={{ onClick: () => setS(10) }} next={{ onClick: goSummary, label: "Generate My Summary", gold: true }} />
-    </FadeIn>}
-
-    {/* S12: AI Summary */}
-    {s === 12 && <FadeIn>
-      <SectionHeader tag="AI LEADERSHIP SUMMARY" title="Module 3: Competency — Your Growth Report" subtitle="Generated from your diagnostics, reflections, and commitments" />
-
-      {aiLoading && <div style={{ textAlign: "center", padding: "60px 0" }}>
-        <div style={{ width: 48, height: 48, border: `4px solid ${colors.gray200}`, borderTop: `4px solid ${colors.orange}`, borderRadius: "50%", margin: "0 auto 20px", animation: "spin 1s linear infinite" }} />
-        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
-        <div style={{ fontSize: 15, fontWeight: 600, color: colors.navy, marginBottom: 8 }}>Generating your Competency summary...</div>
-        <div style={{ fontSize: 13, color: colors.gray500 }}>Analyzing diagnostics, reflections, and commitments</div>
-      </div>}
-
-      {!aiLoading && aiSummary && <>
-        {/* Score summary card */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 24 }}>
-          <div style={{ background: colors.white, borderRadius: 10, padding: 16, textAlign: "center", border: `1px solid ${colors.gray200}` }}>
-            <div style={{ fontSize: 10, color: colors.gray500, marginBottom: 4 }}>PRE-SCORE</div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: colors.gray500 }}>{preTotal}<span style={{ fontSize: 14 }}>/60</span></div>
-          </div>
-          <div style={{ background: colors.white, borderRadius: 10, padding: 16, textAlign: "center", border: `1px solid ${colors.gray200}` }}>
-            <div style={{ fontSize: 10, color: colors.gray500, marginBottom: 4 }}>POST-SCORE</div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: colors.navy }}>{postTotal}<span style={{ fontSize: 14 }}>/60</span></div>
-          </div>
-          <div style={{ background: colors.navy, borderRadius: 10, padding: 16, textAlign: "center" }}>
-            <div style={{ fontSize: 10, color: colors.gray300, marginBottom: 4 }}>GROWTH</div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: colors.gold }}>+{postTotal - preTotal}</div>
-          </div>
-        </div>
-
-        <div style={{ background: `linear-gradient(135deg, ${colors.navy}, ${colors.navyLight})`, borderRadius: 12, padding: 24, marginBottom: 24 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-            <div style={{ width: 36, height: 36, borderRadius: "50%", background: colors.orange, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, color: colors.white, fontWeight: 700 }}>3</div>
-            <div><div style={{ fontSize: 14, fontWeight: 700, color: colors.white }}>Competency — Leadership Growth Summary</div><div style={{ fontSize: 11, color: colors.gray300 }}>5C Leadership Blueprint • Module 3</div></div>
-          </div>
-          {[
-            { label: "Growth Analysis", text: aiSummary.growth, accent: colors.orange },
-            { label: "Key Strength", text: aiSummary.strengths, accent: colors.gold },
-            { label: "Growth Edge", text: aiSummary.growth_edge, accent: colors.skyBlue },
-            { label: "Formative Observation", text: aiSummary.observation, accent: colors.orange },
-            { label: "Looking Ahead", text: aiSummary.next, accent: colors.gold },
-          ].map((item, i) => (
-            <div key={i} style={{ marginBottom: i < 4 ? 16 : 0, padding: 16, background: "rgba(255,255,255,0.06)", borderRadius: 8, borderLeft: `3px solid ${item.accent}` }}>
-              <div style={{ fontSize: 11, fontWeight: 600, color: item.accent, letterSpacing: "0.05em", marginBottom: 6 }}>{item.label.toUpperCase()}</div>
-              <div style={{ fontSize: 13, color: colors.gray200, lineHeight: 1.7 }}>{item.text}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Competency thesis highlight */}
-        {ref["cm-1"] && <div style={{ padding: 20, background: colors.offWhite, borderRadius: 12, border: `2px solid ${colors.orange}`, marginBottom: 24, textAlign: "center" }}>
-          <div style={{ fontSize: 11, fontWeight: 600, color: colors.orange, letterSpacing: "0.1em", marginBottom: 8 }}>MY COMPETENCY THESIS</div>
-          <div style={{ fontSize: 16, fontWeight: 600, color: colors.navy, lineHeight: 1.6, fontStyle: "italic" }}>"{ref["cm-1"]}"</div>
-        </div>}
-
-        <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
-          <button style={{ flex: 1, padding: "14px 20px", background: colors.white, border: `1.5px solid ${colors.navy}`, borderRadius: 8, fontSize: 13, fontWeight: 600, color: colors.navy, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-            <span style={{ fontSize: 16 }}>📄</span> Download Summary & Reflections (.docx)
-          </button>
-        </div>
-
-        <div style={{ textAlign: "center" }}>
-          <button onClick={() => nav("module-4")} style={{ padding: "14px 48px", background: `linear-gradient(135deg, ${colors.navy}, ${colors.royalBlue})`, color: colors.white, border: "none", borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 12px rgba(1,114,188,0.3)" }}>Begin Module 4: Capacity →</button>
-          <p style={{ fontSize: 13, color: colors.gray500, fontStyle: "italic", marginTop: 12 }}>"Competency is how calling becomes credible in the earth."</p>
-        </div>
-        <div style={{ marginTop: 16 }}><BackBtn onClick={() => setS(11)} label="Back to Commitment" /></div>
-      </>}
-    </FadeIn>}
-  </div>;
-}
-
 export default function App() {
-  const [page, setPage] = useState("module-3");
+  const [page, setPage] = useState("dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isMobile = useIsMobile();
   return <div style={{ display: "flex", minHeight: "100vh", fontFamily: "'Raleway','Segoe UI',sans-serif", background: colors.offWhite, color: colors.gray700 }}>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <Sidebar currentPage={page} setCurrentPage={setPage} currentModule={mockProgress.currentModule} />
-    <div style={{ flex: 1, minHeight: "100vh", overflowY: "auto" }}>
-      <div style={{ padding: "12px 40px", borderBottom: `1px solid ${colors.gray200}`, background: colors.white, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ fontSize: 13, color: colors.gray500 }}>{page === "dashboard" ? "Dashboard" : page === "intro" ? "Course Introduction" : page === "module-1" ? "Module 1: Calling" : page === "module-3" ? "Module 3: Competency" : `Module ${page.split("-")[1]}`}</div>
-        <button style={{ padding: "6px 14px", fontSize: 12, background: "none", border: `1px solid ${colors.gray300}`, borderRadius: 6, color: colors.gray700, cursor: "pointer" }}>Export Progress</button>
+    <Sidebar currentPage={page} setCurrentPage={setPage} currentModule={mockProgress.currentModule} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    <div style={{ flex: 1, minHeight: "100vh", overflowY: "auto", marginLeft: isMobile ? 0 : 0 }}>
+      <div style={{ padding: isMobile ? "10px 16px" : "12px 40px", borderBottom: `1px solid ${colors.gray200}`, background: colors.white, display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, zIndex: 30 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {isMobile && (
+            <button onClick={() => setSidebarOpen(s => !s)} style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", flexDirection: "column", gap: 5 }}>
+              <div style={{ width: 22, height: 2, background: colors.navy, borderRadius: 2 }} />
+              <div style={{ width: 22, height: 2, background: colors.navy, borderRadius: 2 }} />
+              <div style={{ width: 22, height: 2, background: colors.navy, borderRadius: 2 }} />
+            </button>
+          )}
+          <div style={{ fontSize: isMobile ? 12 : 13, color: colors.gray500 }}>
+            {page === "dashboard" ? "Dashboard" : page === "intro" ? "Course Introduction" : ""}
+          </div>
+        </div>
+        {!isMobile && <button style={{ padding: "6px 14px", fontSize: 12, background: "none", border: `1px solid ${colors.gray300}`, borderRadius: 6, color: colors.gray700, cursor: "pointer" }}>Export Progress</button>}
       </div>
       {page === "dashboard" && <DashboardPage nav={setPage} />}
       {page === "intro" && <IntroPage nav={setPage} />}
-      {page === "module-1" && <CallingPage nav={setPage} />}
-      {page === "module-3" && <CompetencyPage nav={setPage} />}
     </div>
-  </div>;
-}
-
-// ========================
-// SHARED MODULE COMPONENTS
-// ========================
-
-function LikertQuestion({ q, value, onChange }) {
-  return (
-    <div style={{ padding: "14px 0", borderBottom: `1px solid ${colors.gray100}` }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
-        <div style={{ flex: 1 }}>
-          <span style={{ fontSize: 13, fontWeight: 600, color: colors.navy }}>{q.num}. </span>
-          <span style={{ fontSize: 13, color: colors.gray700 }}>{q.text}</span>
-          {q.ref && <span style={{ fontSize: 11, color: colors.gray500, fontStyle: "italic" }}> ({q.ref})</span>}
-        </div>
-        <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
-          {[1,2,3,4,5].map(n => (
-            <div key={n} onClick={() => onChange(n)} style={{
-              width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "all 0.15s",
-              background: value === n ? colors.navy : colors.white,
-              color: value === n ? colors.gold : colors.gray500,
-              border: value === n ? `2px solid ${colors.navy}` : `1.5px solid ${colors.gray300}`,
-            }}>{n}</div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function DiagnosticSection({ title, subtitle, questions, scores, setScores, phase, onComplete }) {
-  const allDone = questions.every(q => scores[`${phase}-${q.num}`] != null);
-  const total = questions.reduce((sum, q) => sum + (scores[`${phase}-${q.num}`] || 0), 0);
-  const cats = [...new Set(questions.map(q => q.cat))];
-
-  return <>
-    <div style={{ marginBottom: 24 }}>
-      <div style={{ fontSize: 11, letterSpacing: "0.15em", color: colors.gold, fontWeight: 600, marginBottom: 6 }}>{phase === "pre" ? "PRE-MODULE DIAGNOSTIC" : "POST-MODULE DIAGNOSTIC"}</div>
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: colors.navy, margin: "0 0 8px" }}>{title}</h2>
-      <p style={{ fontSize: 14, color: colors.gray500, fontStyle: "italic" }}>{subtitle}</p>
-      <div style={{ fontSize: 12, color: colors.gray700, marginTop: 8, padding: "8px 12px", background: colors.gray100, borderRadius: 6 }}>
-        1 = Strongly Disagree &nbsp;|&nbsp; 2 = Disagree &nbsp;|&nbsp; 3 = Neutral &nbsp;|&nbsp; 4 = Agree &nbsp;|&nbsp; 5 = Strongly Agree
-      </div>
-    </div>
-    {cats.map(cat => (
-      <div key={cat} style={{ marginBottom: 20 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: colors.royalBlue, letterSpacing: "0.05em", marginBottom: 4 }}>{cat.toUpperCase()}</div>
-        {questions.filter(q => q.cat === cat).map(q => (
-          <LikertQuestion key={q.num} q={q} value={scores[`${phase}-${q.num}`]} onChange={v => setScores(p => ({ ...p, [`${phase}-${q.num}`]: v }))} />
-        ))}
-      </div>
-    ))}
-    {allDone && <div style={{ padding: 16, background: colors.offWhite, borderRadius: 10, border: `1px solid ${colors.gold}`, marginTop: 16 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div><div style={{ fontSize: 14, fontWeight: 700, color: colors.navy }}>Your Score: {total} / 60</div>
-          <div style={{ fontSize: 12, color: colors.gray500, marginTop: 2 }}>{total >= 50 ? "Strong alignment. Steward and multiply." : total >= 40 ? "Developing clarity. Sharpen through mentoring and obedience." : total >= 30 ? "Emerging clarity. Deeper formation and community needed." : "Fragmented alignment. Prioritize mentorship and identity work."}</div>
-        </div>
-        <div style={{ fontSize: 28, fontWeight: 700, color: total >= 50 ? colors.gold : total >= 40 ? colors.skyBlue : total >= 30 ? colors.orange : colors.red }}>{total}</div>
-      </div>
-    </div>}
-  </>;
-}
-
-function ReflectionPrompt({ prompt, value, onChange }) {
-  return (
-    <div style={{ marginBottom: 20 }}>
-      <label style={{ display: "block", fontSize: 14, fontWeight: 600, color: colors.navy, marginBottom: 8, lineHeight: 1.5 }}>{prompt}</label>
-      <textarea value={value || ""} onChange={e => onChange(e.target.value)} rows={3}
-        style={{ width: "100%", padding: 14, borderRadius: 8, fontSize: 14, border: `1px solid ${value ? colors.gold : colors.gray300}`, background: colors.white, resize: "vertical", lineHeight: 1.6, outline: "none", fontFamily: "inherit", boxSizing: "border-box" }}
-        onFocus={e => e.target.style.borderColor = colors.skyBlue} onBlur={e => e.target.style.borderColor = value ? colors.gold : colors.gray300} />
-    </div>
-  );
-}
-
-function SectionHeader({ tag, title, subtitle }) {
-  return <div style={{ marginBottom: 24 }}>
-    {tag && <div style={{ fontSize: 11, letterSpacing: "0.15em", color: colors.gold, fontWeight: 600, marginBottom: 6 }}>{tag}</div>}
-    <h2 style={{ fontSize: 22, fontWeight: 700, color: colors.navy, margin: "0 0 8px" }}>{title}</h2>
-    {subtitle && <p style={{ fontSize: 14, color: colors.gray500, fontStyle: "italic", margin: 0 }}>{subtitle}</p>}
-  </div>;
-}
-
-function Scripture({ text, ref }) {
-  return <div style={{ padding: 16, background: colors.offWhite, borderRadius: 8, borderLeft: `3px solid ${colors.gold}`, margin: "16px 0", fontStyle: "italic" }}>
-    <div style={{ fontSize: 14, color: colors.navy, lineHeight: 1.7 }}>{text}</div>
-    <div style={{ fontSize: 12, color: colors.gray500, marginTop: 6 }}>— {ref}</div>
-  </div>;
-}
-
-function ContrastTable({ left, right, leftTitle, rightTitle, rows }) {
-  return <div style={{ borderRadius: 10, overflow: "hidden", border: `1px solid ${colors.gray200}`, marginBottom: 20 }}>
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-      <div style={{ padding: "10px 16px", background: colors.gray200, fontWeight: 700, fontSize: 12, color: colors.navy }}>{leftTitle}</div>
-      <div style={{ padding: "10px 16px", background: colors.navy, fontWeight: 700, fontSize: 12, color: colors.gold }}>{rightTitle}</div>
-    </div>
-    {rows.map((row, i) => <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", borderTop: `1px solid ${colors.gray100}` }}>
-      <div style={{ padding: "8px 16px", fontSize: 13, color: colors.gray700, background: i % 2 === 0 ? colors.white : colors.offWhite }}>{row[0]}</div>
-      <div style={{ padding: "8px 16px", fontSize: 13, color: colors.white, background: i % 2 === 0 ? colors.navyLight : colors.navy }}>{row[1]}</div>
-    </div>)}
-  </div>;
-}
-
-function PrincipleSection({ num, title, scripture, scriptureRef, teaching, prompts, responses, setResponses }) {
-  const teachingArr = Array.isArray(teaching) ? teaching : [teaching];
-  return <>
-    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-      <div style={{ width: 36, height: 36, borderRadius: "50%", background: colors.navy, display: "flex", alignItems: "center", justifyContent: "center", color: colors.gold, fontSize: 14, fontWeight: 700, flexShrink: 0 }}>{num}</div>
-      <h3 style={{ fontSize: 18, fontWeight: 700, color: colors.navy, margin: 0 }}>{title}</h3>
-    </div>
-    <Scripture text={scripture} ref={scriptureRef} />
-    {teachingArr.map((t, i) => <p key={i} style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 12 }} dangerouslySetInnerHTML={{ __html: t }} />)}
-    <div style={{ padding: 16, background: colors.offWhite, borderRadius: 10, borderLeft: `3px solid ${colors.skyBlue}`, marginBottom: 8 }}>
-      <div style={{ fontSize: 11, fontWeight: 600, color: colors.skyBlue, letterSpacing: "0.1em", marginBottom: 12 }}>PAUSE & PROCESS</div>
-      {prompts.map((p, i) => <ReflectionPrompt key={i} prompt={p} value={responses[`p${num}-${i}`]} onChange={v => setResponses(prev => ({ ...prev, [`p${num}-${i}`]: v }))} />)}
-    </div>
-  </>;
-}
-
-// ========================
-// MODULE 1: CALLING
-// ========================
-
-const callingDiagnostic = [
-  { num: 1, cat: "Clarity & Articulation", text: "I can clearly articulate my calling in one sentence." },
-  { num: 2, cat: "Clarity & Articulation", text: "My daily decisions align with that calling." },
-  { num: 3, cat: "Clarity & Articulation", text: "I know what I am not called to do." },
-  { num: 4, cat: "Alignment & Grace", text: "My current responsibilities reflect my design." },
-  { num: 5, cat: "Alignment & Grace", text: "I experience grace, not constant striving, in my assignment." },
-  { num: 6, cat: "Alignment & Grace", text: "I feel burdened but not crushed by responsibility." },
-  { num: 7, cat: "Confirmation & Community", text: "Mature leaders have affirmed my calling." },
-  { num: 8, cat: "Confirmation & Community", text: "I seek counsel in major decisions." },
-  { num: 9, cat: "Confirmation & Community", text: "I receive correction without defensiveness." },
-  { num: 10, cat: "Conviction & Endurance", text: "Opposition does not easily shake my calling." },
-  { num: 11, cat: "Conviction & Endurance", text: "I would remain faithful even without recognition." },
-  { num: 12, cat: "Conviction & Endurance", text: "I feel accountable before God for my calling.", ref: "Luke 12:48" },
-];
-
-const competencyDiagnostic = [
-  { num: 1, cat: "Skill Alignment", text: "The skills I use daily are directly connected to my calling and current assignment." },
-  { num: 2, cat: "Skill Alignment", text: "I can name specific competencies that my calling requires — and I am actively developing them." },
-  { num: 3, cat: "Skill Alignment", text: "I know the difference between what I'm gifted at and what I'm trained in." },
-  { num: 4, cat: "Preparation & Stewardship", text: "I invest consistent time and resources into developing my professional and leadership skills." },
-  { num: 5, cat: "Preparation & Stewardship", text: "I have a growth plan — not just goals — that connects skill development to calling." },
-  { num: 6, cat: "Preparation & Stewardship", text: "I pursue excellence as an act of worship, not a performance metric.", ref: "Colossians 3:23" },
-  { num: 7, cat: "Credibility & Trust", text: "People trust me with responsibility because of demonstrated competence, not just charisma." },
-  { num: 8, cat: "Credibility & Trust", text: "I have a track record of completing what I start with excellence." },
-  { num: 9, cat: "Credibility & Trust", text: "My competency has opened doors that my anointing alone could not." },
-  { num: 10, cat: "Learning Posture", text: "I actively seek feedback and correction on my performance — not just affirmation." },
-  { num: 11, cat: "Learning Posture", text: "I can identify my top three skill gaps without defensiveness." },
-  { num: 12, cat: "Learning Posture", text: "I view every assignment — even small or hidden ones — as a competency-building opportunity.", ref: "Luke 16:10" },
-];
-
-function CallingPage({ nav }) {
-  const [s, setS] = useState(0);
-  const [ref, setRef] = useState({});
-  const [scores, setScores] = useState({});
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiSummary, setAiSummary] = useState(null);
-  const secs = ["activation","pre-diag","teaching","p1","p2","p3","p4","p5","exemplar","stages","post-diag","commitment","summary"];
-  const secLabels = ["Opening","Pre-Diag","Teaching","P1","P2","P3","P4","P5","Exemplar","Stages","Post-Diag","Commit","Summary"];
-
-  const preTotal = callingDiagnostic.reduce((sum, q) => sum + (scores[`pre-${q.num}`] || 0), 0);
-  const postTotal = callingDiagnostic.reduce((sum, q) => sum + (scores[`post-${q.num}`] || 0), 0);
-  const preDone = callingDiagnostic.every(q => scores[`pre-${q.num}`] != null);
-  const postDone = callingDiagnostic.every(q => scores[`post-${q.num}`] != null);
-
-  const goSummary = () => {
-    setS(12); setAiLoading(true);
-    setTimeout(() => {
-      setAiSummary({
-        growth: `Your Calling diagnostic moved from ${preTotal}/60 (pre) to ${postTotal}/60 (post), a growth of +${postTotal - preTotal} points. This indicates ${postTotal - preTotal >= 10 ? "significant movement" : postTotal - preTotal >= 5 ? "meaningful growth" : "early-stage formation"} in calling clarity.`,
-        strengths: "Your strongest area is Conviction & Endurance — you demonstrate resilience and accountability that will anchor every other dimension. This is the root system that sustains leaders through hidden seasons.",
-        growth_edge: "The area with the most room for development is Clarity & Articulation. Being able to name your calling in one sentence — and filter every decision through it — is the foundation for everything that follows in Connection, Competency, Capacity, and Convergence.",
-        observation: "Your reflection responses reveal a leader in active formation. You named specific tensions, acknowledged gaps honestly, and identified concrete next steps. This is the posture of a leader who is ready to be shaped — not just informed.",
-        next: "As you move into Module 2: Connection, carry your calling thesis with you. The question shifts from 'Who was I designed to become?' to 'Whose am I?' — and your answer to the first question will anchor everything in the second."
-      });
-      setAiLoading(false);
-    }, 3000);
-  };
-
-  return <div style={{ padding: "32px 40px", maxWidth: 780 }}>
-    {/* Progress bar */}
-    <div style={{ display: "flex", gap: 3, marginBottom: 8 }}>
-      {secs.map((x, i) => <div key={x} style={{ flex: 1, height: 4, borderRadius: 2, background: i <= s ? colors.skyBlue : colors.gray200, transition: "background 0.3s", cursor: "pointer" }} onClick={() => setS(i)} />)}
-    </div>
-    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 28 }}>
-      {secLabels.map((l, i) => <div key={i} style={{ fontSize: 8, color: i <= s ? colors.royalBlue : colors.gray300, textAlign: "center", flex: 1 }}>{l}</div>)}
-    </div>
-
-    {/* Module header */}
-    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24, padding: "12px 16px", background: `linear-gradient(135deg, ${colors.skyBlue}10, ${colors.skyBlue}05)`, borderRadius: 10, border: `1px solid ${colors.skyBlue}30` }}>
-      <div style={{ width: 40, height: 40, borderRadius: 10, background: colors.skyBlue, display: "flex", alignItems: "center", justifyContent: "center", color: colors.white, fontSize: 18, fontWeight: 700 }}>1</div>
-      <div><div style={{ fontSize: 16, fontWeight: 700, color: colors.navy }}>Calling</div><div style={{ fontSize: 12, color: colors.gray500, fontStyle: "italic" }}>Who was I designed to become?</div></div>
-    </div>
-
-    {/* S0: Opening Activation */}
-    {s === 0 && <FadeIn>
-      <SectionHeader tag="OPENING ACTIVATION" title="Prepare Your Heart" subtitle="Before we teach, we listen. Sit with these questions for three minutes. Write what surfaces — not what sounds right." />
-      <ReflectionPrompt prompt="If no one was watching and no one would applaud, what would you still feel compelled to build, protect, or restore?" value={ref["oa-1"]} onChange={v => setRef(p => ({...p, "oa-1": v}))} />
-      <ReflectionPrompt prompt="When have you felt most aligned — most fully yourself in your purpose — even briefly? Describe that moment." value={ref["oa-2"]} onChange={v => setRef(p => ({...p, "oa-2": v}))} />
-      <Nav back={{ onClick: () => nav("intro"), label: "Back to Intro" }} next={{ onClick: () => setS(1) }} />
-    </FadeIn>}
-
-    {/* S1: Pre-Diagnostic */}
-    {s === 1 && <FadeIn>
-      <DiagnosticSection title="Calling Diagnostic" subtitle="Rate each statement honestly from 1 to 5. This is a mirror, not a test. Let it reveal where you are so you can build from truth." questions={callingDiagnostic} scores={scores} setScores={setScores} phase="pre" />
-      <Nav back={{ onClick: () => setS(0) }} next={{ onClick: () => setS(2), label: "Begin Teaching", disabled: !preDone }} />
-    </FadeIn>}
-
-    {/* S2: Core Teaching */}
-    {s === 2 && <FadeIn>
-      <SectionHeader tag="CORE TEACHING" title="What Calling Actually Is" />
-      <Scripture text="Before I formed you in the womb I knew you, before you were born I set you apart." ref="Jeremiah 1:5" />
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 12 }}><strong style={{ color: colors.navy }}>Calling is the divine design and grace assignment placed within a person before platform, position, or performance.</strong></p>
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 12 }}>Calling answers three questions: Why do I exist? What grace rests uniquely on my life? What responsibility accompanies that grace?</p>
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 16 }}>Leadership that begins with ambition ends in exhaustion. Leadership that begins with design builds legacy. Your calling is not something you create — it is something you discover, steward, and walk worthy of.</p>
-      <ReflectionPrompt prompt="In your own words, how would you define your calling right now — even if it's incomplete?" value={ref["ct-1"]} onChange={v => setRef(p => ({...p, "ct-1": v}))} />
-
-      <h3 style={{ fontSize: 18, fontWeight: 700, color: colors.navy, margin: "28px 0 12px" }}>Calling & Assignment: The Macro and the Micro</h3>
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 12 }}><strong style={{ color: colors.navy }}>Calling is the macro — the ecosystem. Your lifetime design.</strong> Assignment is the micro — the specific expression in this season. The calling remains. The assignment evolves.</p>
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 16 }}>Many leaders confuse the two. They treat a seasonal assignment as their permanent identity — and when the season shifts, they feel lost. Others chase new assignments without ever anchoring to the calling underneath. The macro gives stability. The micro gives focus. You need both.</p>
-      <ContrastTable leftTitle="CALLING (Macro)" rightTitle="ASSIGNMENT (Micro)" rows={[
-        ["The ecosystem","The expression"],
-        ["Lifetime scope","Season-specific"],
-        ["Who you are designed to become","What you are responsible for now"],
-        ["Deepens over time","Shifts with seasons and context"],
-        ["Your identity and grace","Your current role and mandate"],
-        ["The root system","The fruit in season"],
-      ]} />
-      <ReflectionPrompt prompt="What is your calling (macro) — the lifetime territory God assigned you to steward?" value={ref["ct-2"]} onChange={v => setRef(p => ({...p, "ct-2": v}))} />
-      <ReflectionPrompt prompt="What is your current assignment (micro) — the specific expression of that calling in this season?" value={ref["ct-3"]} onChange={v => setRef(p => ({...p, "ct-3": v}))} />
-      <ReflectionPrompt prompt="Is there anything you're carrying right now that is not traceable back to your calling? Name it." value={ref["ct-4"]} onChange={v => setRef(p => ({...p, "ct-4": v}))} />
-      <Nav back={{ onClick: () => setS(1) }} next={{ onClick: () => setS(3) }} />
-    </FadeIn>}
-
-    {/* S3: Principle 1 */}
-    {s === 3 && <FadeIn>
-      <SectionHeader tag="GOVERNING PRINCIPLES" title="Principle 1" />
-      <PrincipleSection num={1} title="Design Precedes Deployment"
-        scripture="Before I formed you in the womb I knew you." scriptureRef="Jeremiah 1:5"
-        teaching={["<strong>God forms before He sends.</strong> If deployment precedes design clarity, instability follows. You cannot build what you have not been shaped to carry.", "Many leaders rush into assignment before their identity has been settled. The result is leadership built on ambition rather than design — and ambition without design produces burnout, not legacy.", "If you are in a formation season right now — where nothing external is happening — resist the urge to force movement. What the world calls delay, God calls development. The hidden season is not punishment. It is preparation."]}
-        prompts={["Where in your life have you been deployed before you were formed? What was the result?","If you're in a formation season right now — where nothing external is happening — what might God be building in you that you cannot yet see?"]}
-        responses={ref} setResponses={setRef} />
-      <Nav back={{ onClick: () => setS(2) }} next={{ onClick: () => setS(4) }} />
-    </FadeIn>}
-
-    {/* S4: Principle 2 */}
-    {s === 4 && <FadeIn>
-      <PrincipleSection num={2} title="Calling Governs Decisions"
-        scripture="But one thing I do: forgetting what lies behind and straining forward to what lies ahead, I press on toward the goal." scriptureRef="Philippians 3:13–14"
-        teaching={["<strong>Your calling is not just inspiration. It is your decision-making filter.</strong> Every yes and every no should be traceable back to your calling. Good opportunities are everywhere. Aligned assignments are rare.", "Leaders who lack calling clarity say yes to everything that looks promising. The result is overextension, scattered energy, and a portfolio of commitments that may be good — but are not aligned. Calling gives you permission to say no to what does not belong to you.", "The question is never simply 'Is this a good opportunity?' The question is: 'Does this serve the calling God placed on my life in this season?' If the answer is no, the opportunity is not yours to carry — no matter how attractive it appears."]}
-        prompts={["Name one opportunity or commitment you are currently carrying that does not align with your calling. What would it cost to release it?","What decision are you facing right now that becomes clearer when filtered through your calling?"]}
-        responses={ref} setResponses={setRef} />
-      <Nav back={{ onClick: () => setS(3) }} next={{ onClick: () => setS(5) }} />
-    </FadeIn>}
-
-    {/* S5: Principle 3 */}
-    {s === 5 && <FadeIn>
-      <PrincipleSection num={3} title="Obscurity Prepares Authority"
-        scripture="One who is faithful in a very little is also faithful in much." scriptureRef="Luke 16:10"
-        teaching={["<strong>Hidden faithfulness builds structural integrity.</strong> Public authority without private formation eventually collapses. What the world calls delay, God calls development.", "Every significant leader in Scripture went through a hidden season. Moses had the wilderness. David had the fields. Joseph had the prison. Jesus had Nazareth. The hidden place is where character is forged, patience is deepened, and dependence on God replaces dependence on platform.", "If you are tempted to rush past formation and chase visibility, consider this: visibility without formation produces fragile leaders. Obscurity with faithfulness produces leaders who can carry weight without breaking."]}
-        prompts={["What hidden season are you in right now — or have you recently come through? What did it build in you?","Where are you tempted to rush past formation and chase visibility? What would patience produce that speed cannot?"]}
-        responses={ref} setResponses={setRef} />
-      <Nav back={{ onClick: () => setS(4) }} next={{ onClick: () => setS(6) }} />
-    </FadeIn>}
-
-    {/* S6: Principle 4 */}
-    {s === 6 && <FadeIn>
-      <PrincipleSection num={4} title="Calling Unfolds Progressively"
-        scripture="The path of the righteous is like the light of dawn, which shines brighter and brighter until full day." scriptureRef="Proverbs 4:18"
-        teaching={["<strong>God often reveals the next step — not the entire path.</strong> Impatience distorts calling. Faithfulness matures it. Obedience precedes clarity.", "Many leaders stall because they are waiting for the full blueprint before taking the first step. But calling unfolds progressively — each act of obedience unlocks the next level of revelation. You cannot see Step 5 from Step 1. You can only see Step 2.", "This is why faithfulness in small assignments matters. Each season builds on the previous one. The leader who despises small beginnings will never be entrusted with large ones. Your current obedience is the key to your next assignment."]}
-        prompts={["What is the next step of obedience you already know you need to take — even without the full picture?","Where are you waiting for the full blueprint before taking the first step? What would it look like to move anyway?"]}
-        responses={ref} setResponses={setRef} />
-      <Nav back={{ onClick: () => setS(5) }} next={{ onClick: () => setS(7) }} />
-    </FadeIn>}
-
-    {/* S7: Principle 5 */}
-    {s === 7 && <FadeIn>
-      <PrincipleSection num={5} title="Calling Must Be Confirmed in Community"
-        scripture="Do not neglect the gift you have, which was given you by prophecy when the council of elders laid their hands on you." scriptureRef="1 Timothy 4:14"
-        teaching={["<strong>Calling is never purely private.</strong> It is recognized and affirmed by mature leaders. Uninterpreted revelation leads to distortion. Calling matures through mentorship and accountability.", "Calling is not self-appointed. It is recognized, confirmed, and activated through the laying on of hands by mature, healthy prophetic leadership. Not every voice qualifies. The presbytery must be mature — not just gifted. Healthy — not just anointed.", "Prophetic words are not souvenirs. They are weapons. A confirmed word that is not fought for becomes a forgotten word — and a forgotten word produces a forfeited assignment. Write them down. Return to them. Wage war with them."]}
-        prompts={["Who has confirmed your calling? Not just encouraged you — confirmed it with authority and discernment.","If no one has confirmed your calling, who do you trust enough to speak into it? What is preventing you from seeking that confirmation?"]}
-        responses={ref} setResponses={setRef} />
-      <Nav back={{ onClick: () => setS(6) }} next={{ onClick: () => setS(8) }} />
-    </FadeIn>}
-
-    {/* S8: Leadership Exemplar */}
-    {s === 8 && <FadeIn>
-      <SectionHeader tag="LEADERSHIP EXEMPLAR" title="Jeremiah: The Reluctant Prophet" subtitle="Jeremiah 1:4–10; 20:7–9" />
-      <Scripture text="Ah, Lord GOD! Behold, I do not know how to speak, for I am only a youth." ref="Jeremiah 1:6" />
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 12 }}>Jeremiah's first response to his calling was resistance. He felt unqualified. He was young. He did not have the words. But God did not call Jeremiah based on his readiness — He called him based on His design. The calling was settled before the prophet was born.</p>
-      <Scripture text="If I say 'I will not mention Him,' there is in my heart as it were a burning fire shut up in my bones." ref="Jeremiah 20:9" />
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 12 }}>Years into his assignment, Jeremiah wanted to quit. The opposition was relentless. The fruit was invisible. But the fire would not let him stop. This is the mark of genuine calling — it outlasts your desire to walk away. You may doubt the timing. You may question the method. But the fire remains.</p>
-      <p style={{ fontSize: 14, color: colors.gray700, lineHeight: 1.8, marginBottom: 8 }}><strong style={{ color: colors.navy }}>Jeremiah's Pattern:</strong> Design → Resistance → Refinement → Endurance</p>
-
-      <div style={{ padding: 16, background: colors.offWhite, borderRadius: 10, borderLeft: `3px solid ${colors.orange}`, marginTop: 16, marginBottom: 8 }}>
-        <div style={{ fontSize: 11, fontWeight: 600, color: colors.orange, letterSpacing: "0.1em", marginBottom: 12 }}>COACHING QUESTIONS</div>
-        <ReflectionPrompt prompt="What insecurity are you using as an excuse for delayed obedience?" value={ref["ex-1"]} onChange={v => setRef(p => ({...p, "ex-1": v}))} />
-        <ReflectionPrompt prompt="Have you mistaken opposition for disqualification? Where?" value={ref["ex-2"]} onChange={v => setRef(p => ({...p, "ex-2": v}))} />
-        <ReflectionPrompt prompt="Is there a fire in you that you cannot silence — even when everything around you says quit? Describe it." value={ref["ex-3"]} onChange={v => setRef(p => ({...p, "ex-3": v}))} />
-      </div>
-      <Nav back={{ onClick: () => setS(7) }} next={{ onClick: () => setS(9) }} />
-    </FadeIn>}
-
-    {/* S9: Three Stages */}
-    {s === 9 && <FadeIn>
-      <SectionHeader tag="DEVELOPMENTAL STAGES" title="How Calling Develops" subtitle="Calling is not static. It matures through distinct stages. Knowing where you are helps you steward what this season requires." />
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 20 }}>
-        {[
-          { stage: "Stage 1", title: "Encounter", desc: "Revelation without clarity. You hear something but don't yet understand it. The call is real but undefined — more felt than articulated. You sense something is on your life but cannot yet name it.", ref: "1 Samuel 3:4" },
-          { stage: "Stage 2", title: "Interpretation", desc: "Mentorship and confirmation. Others help you interpret what God is saying. Mature leaders recognize what you carry and speak language over it. This is where calling gains definition through community.", ref: "1 Samuel 3:8–9" },
-          { stage: "Stage 3", title: "Stewardship", desc: "Faithful obedience over time. You steward the calling through seasons of fruitfulness and hiddenness alike. The calling is no longer something you question — it is something you carry with sobriety and accountability.", ref: "1 Samuel 3:19" },
-        ].map((st, i) => (
-          <div key={i} style={{ padding: 16, background: i === 2 ? colors.navy : colors.white, borderRadius: 10, border: `1px solid ${i === 2 ? colors.navy : colors.gray200}` }}>
-            <div style={{ fontSize: 10, fontWeight: 600, color: i === 2 ? colors.gold : colors.gray500, marginBottom: 4 }}>{st.stage}</div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: i === 2 ? colors.white : colors.navy, marginBottom: 6 }}>{st.title}</div>
-            <div style={{ fontSize: 12, color: i === 2 ? colors.gray300 : colors.gray700, lineHeight: 1.6 }}>{st.desc}</div>
-            <div style={{ fontSize: 11, color: i === 2 ? colors.gray300 : colors.gray500, fontStyle: "italic", marginTop: 6 }}>{st.ref}</div>
-          </div>
-        ))}
-      </div>
-      <div style={{ padding: 14, background: colors.offWhite, borderRadius: 8, borderLeft: `3px solid ${colors.gold}`, marginBottom: 16 }}>
-        <div style={{ fontSize: 13, color: colors.navy, fontWeight: 600 }}>Transition Marker</div>
-        <div style={{ fontSize: 13, color: colors.gray700, fontStyle: "italic", marginTop: 4 }}>You stop asking "What excites me?" and start asking "What must I steward?"</div>
-      </div>
-      <ReflectionPrompt prompt="Which stage are you in right now? What evidence supports your answer?" value={ref["st-1"]} onChange={v => setRef(p => ({...p, "st-1": v}))} />
-      <Nav back={{ onClick: () => setS(8) }} next={{ onClick: () => setS(10), label: "Take Post-Diagnostic" }} />
-    </FadeIn>}
-
-    {/* S10: Post-Diagnostic */}
-    {s === 10 && <FadeIn>
-      <DiagnosticSection title="Calling Diagnostic (Post)" subtitle="Take the same diagnostic again. Rate based on where you are NOW after processing the teaching. Be honest about what shifted." questions={callingDiagnostic} scores={scores} setScores={setScores} phase="post" />
-      {preDone && postDone && <div style={{ padding: 16, background: colors.navy, borderRadius: 10, marginTop: 16 }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: colors.gold, marginBottom: 4 }}>Growth: {preTotal}/60 → {postTotal}/60</div>
-        <div style={{ fontSize: 13, color: colors.gray300 }}>Delta: <span style={{ color: postTotal > preTotal ? "#4ade80" : colors.white, fontWeight: 700 }}>{postTotal > preTotal ? "+" : ""}{postTotal - preTotal}</span></div>
-      </div>}
-      <ReflectionPrompt prompt="What did this diagnostic reveal about where you are? What surprised you?" value={ref["diag-reflect"]} onChange={v => setRef(p => ({...p, "diag-reflect": v}))} />
-      <Nav back={{ onClick: () => setS(9) }} next={{ onClick: () => setS(11), label: "Make Your Commitment", disabled: !postDone, gold: true }} />
-    </FadeIn>}
-
-    {/* S11: Commitment */}
-    {s === 11 && <FadeIn>
-      <SectionHeader tag="MY CALLING COMMITMENT" title="From Revelation to Responsibility" subtitle="Calling must move from concept to embodiment. This is where revelation becomes responsibility." />
-      {[
-        { key: "cm-1", label: "1. My Calling Thesis", prompt: "Write your calling in one sentence. Not a paragraph. Not a vision statement. One sentence that captures what you are designed and graced to do." },
-        { key: "cm-2", label: "2. My Current Assignment", prompt: "Name the micro. What is the specific expression of that calling in this season?" },
-        { key: "cm-3", label: "3. Three Formative Moments", prompt: "Identify three defining experiences that shaped your calling — moments where purpose became clearer, even through pain." },
-        { key: "cm-4", label: "4. My Recurring Burden", prompt: "What breaks your heart consistently? What injustice, gap, or dysfunction do you feel compelled to address?" },
-        { key: "cm-5", label: "5. My Prophetic Record", prompt: "Write down the prophetic words spoken over your life. This is your arsenal. Keep it where you can return to it." },
-        { key: "cm-6", label: "6. My Next Step of Obedience", prompt: "Not the five-year plan. The next step. What one action will you take within 7 days to walk worthy of this calling?" },
-        { key: "cm-7", label: "7. My Accountability", prompt: "Who will you share this commitment with? A mentor, a peer, a trusted leader who can hold you to what you wrote?" },
-      ].map(item => (
-        <div key={item.key} style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: colors.royalBlue, marginBottom: 6 }}>{item.label}</div>
-          <ReflectionPrompt prompt={item.prompt} value={ref[item.key]} onChange={v => setRef(p => ({...p, [item.key]: v}))} />
-        </div>
-      ))}
-      <Nav back={{ onClick: () => setS(10) }} next={{ onClick: goSummary, label: "Generate My Summary", gold: true }} />
-    </FadeIn>}
-
-    {/* S12: AI Summary */}
-    {s === 12 && <FadeIn>
-      <SectionHeader tag="AI LEADERSHIP SUMMARY" title="Module 1: Calling — Your Growth Report" subtitle="Generated from your diagnostics, reflections, and commitments" />
-
-      {aiLoading && <div style={{ textAlign: "center", padding: "60px 0" }}>
-        <div style={{ width: 48, height: 48, border: `4px solid ${colors.gray200}`, borderTop: `4px solid ${colors.skyBlue}`, borderRadius: "50%", margin: "0 auto 20px", animation: "spin 1s linear infinite" }} />
-        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
-        <div style={{ fontSize: 15, fontWeight: 600, color: colors.navy, marginBottom: 8 }}>Generating your Calling summary...</div>
-        <div style={{ fontSize: 13, color: colors.gray500 }}>Analyzing diagnostics, reflections, and commitments</div>
-      </div>}
-
-      {!aiLoading && aiSummary && <>
-        {/* Score summary card */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 24 }}>
-          <div style={{ background: colors.white, borderRadius: 10, padding: 16, textAlign: "center", border: `1px solid ${colors.gray200}` }}>
-            <div style={{ fontSize: 10, color: colors.gray500, marginBottom: 4 }}>PRE-SCORE</div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: colors.gray500 }}>{preTotal}<span style={{ fontSize: 14 }}>/60</span></div>
-          </div>
-          <div style={{ background: colors.white, borderRadius: 10, padding: 16, textAlign: "center", border: `1px solid ${colors.gray200}` }}>
-            <div style={{ fontSize: 10, color: colors.gray500, marginBottom: 4 }}>POST-SCORE</div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: colors.navy }}>{postTotal}<span style={{ fontSize: 14 }}>/60</span></div>
-          </div>
-          <div style={{ background: colors.navy, borderRadius: 10, padding: 16, textAlign: "center" }}>
-            <div style={{ fontSize: 10, color: colors.gray300, marginBottom: 4 }}>GROWTH</div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: colors.gold }}>+{postTotal - preTotal}</div>
-          </div>
-        </div>
-
-        <div style={{ background: `linear-gradient(135deg, ${colors.navy}, ${colors.navyLight})`, borderRadius: 12, padding: 24, marginBottom: 24 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-            <div style={{ width: 36, height: 36, borderRadius: "50%", background: colors.skyBlue, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, color: colors.white, fontWeight: 700 }}>1</div>
-            <div><div style={{ fontSize: 14, fontWeight: 700, color: colors.white }}>Calling — Leadership Growth Summary</div><div style={{ fontSize: 11, color: colors.gray300 }}>5C Leadership Blueprint • Module 1</div></div>
-          </div>
-          {[
-            { label: "Growth Analysis", text: aiSummary.growth, accent: colors.skyBlue },
-            { label: "Key Strength", text: aiSummary.strengths, accent: colors.gold },
-            { label: "Growth Edge", text: aiSummary.growth_edge, accent: colors.orange },
-            { label: "Formative Observation", text: aiSummary.observation, accent: colors.skyBlue },
-            { label: "Looking Ahead", text: aiSummary.next, accent: colors.gold },
-          ].map((item, i) => (
-            <div key={i} style={{ marginBottom: i < 4 ? 16 : 0, padding: 16, background: "rgba(255,255,255,0.06)", borderRadius: 8, borderLeft: `3px solid ${item.accent}` }}>
-              <div style={{ fontSize: 11, fontWeight: 600, color: item.accent, letterSpacing: "0.05em", marginBottom: 6 }}>{item.label.toUpperCase()}</div>
-              <div style={{ fontSize: 13, color: colors.gray200, lineHeight: 1.7 }}>{item.text}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Calling thesis highlight */}
-        {ref["cm-1"] && <div style={{ padding: 20, background: colors.offWhite, borderRadius: 12, border: `2px solid ${colors.gold}`, marginBottom: 24, textAlign: "center" }}>
-          <div style={{ fontSize: 11, fontWeight: 600, color: colors.gold, letterSpacing: "0.1em", marginBottom: 8 }}>MY CALLING THESIS</div>
-          <div style={{ fontSize: 16, fontWeight: 600, color: colors.navy, lineHeight: 1.6, fontStyle: "italic" }}>"{ref["cm-1"]}"</div>
-        </div>}
-
-        <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
-          <button style={{ flex: 1, padding: "14px 20px", background: colors.white, border: `1.5px solid ${colors.navy}`, borderRadius: 8, fontSize: 13, fontWeight: 600, color: colors.navy, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-            <span style={{ fontSize: 16 }}>📄</span> Download Summary & Reflections (.docx)
-          </button>
-        </div>
-
-        <div style={{ textAlign: "center" }}>
-          <button onClick={() => nav("module-2")} style={{ padding: "14px 48px", background: `linear-gradient(135deg, ${colors.navy}, ${colors.royalBlue})`, color: colors.white, border: "none", borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 12px rgba(1,114,188,0.3)" }}>Begin Module 2: Connection →</button>
-          <p style={{ fontSize: 13, color: colors.gray500, fontStyle: "italic", marginTop: 12 }}>"Calling becomes real when responsibility increases."</p>
-        </div>
-        <div style={{ marginTop: 16 }}><BackBtn onClick={() => setS(11)} label="Back to Commitment" /></div>
-      </>}
-    </FadeIn>}
   </div>;
 }
