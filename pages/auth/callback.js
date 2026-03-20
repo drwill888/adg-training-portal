@@ -1,5 +1,4 @@
 // pages/auth/callback.js
-// Handles the magic link redirect from Supabase
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { supabase } from '../../lib/supabase'
@@ -9,61 +8,36 @@ export default function AuthCallback() {
   const [status, setStatus] = useState('Signing you in...')
 
   useEffect(() => {
-    const handleAuth = async () => {
-      try {
-        const { code, error: urlError } = router.query
-
-        if (urlError) {
-          setStatus('Link expired or invalid. Redirecting...')
-          setTimeout(() => router.replace('/login'), 2000)
-          return
-        }
-
-        if (code) {
-          // Supabase v2 PKCE flow — exchange code for session
-          const { error } = await supabase.auth.exchangeCodeForSession(code)
-          if (error) {
-            setStatus('Sign in failed. Redirecting...')
-            setTimeout(() => router.replace('/login'), 2000)
-            return
-          }
-          router.replace('/')
-          return
-        }
-
-        // Fallback: listen for auth state change (handles hash-based tokens)
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-          if (event === 'SIGNED_IN' && session) {
-            subscription.unsubscribe()
-            router.replace('/')
-          }
-        })
-
-        // Also check existing session
-        const { data: { session } } = await supabase.auth.getSession()
-        if (session) {
-          subscription.unsubscribe()
-          router.replace('/')
-          return
-        }
-
-        // Timeout fallback
-        setTimeout(() => {
-          subscription.unsubscribe()
-          setStatus('Link may have expired. Please try again.')
-          setTimeout(() => router.replace('/login'), 2500)
-        }, 8000)
-
-      } catch (err) {
-        setStatus('Something went wrong. Redirecting...')
-        setTimeout(() => router.replace('/login'), 2000)
+    // The Supabase JS client automatically detects and processes
+    // the access_token in the URL hash when it loads.
+    // We just need to listen for the SIGNED_IN event.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        subscription.unsubscribe()
+        router.replace('/')
       }
-    }
+    })
 
-    if (router.isReady) {
-      handleAuth()
+    // Also check immediately — token may already be processed
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        subscription.unsubscribe()
+        router.replace('/')
+      }
+    })
+
+    // Timeout: if nothing happens in 10s, send back to login
+    const timeout = setTimeout(() => {
+      subscription.unsubscribe()
+      setStatus('Link expired or already used. Redirecting to login...')
+      setTimeout(() => router.replace('/login'), 2000)
+    }, 10000)
+
+    return () => {
+      subscription.unsubscribe()
+      clearTimeout(timeout)
     }
-  }, [router.isReady, router.query])
+  }, [])
 
   return (
     <div style={{
@@ -80,6 +54,7 @@ export default function AuthCallback() {
         }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
         <p style={{ color: '#021A35', fontWeight: 600, fontSize: 16 }}>{status}</p>
+        <p style={{ color: '#6b7280', fontSize: 13, marginTop: 8 }}>Please wait...</p>
       </div>
     </div>
   )
