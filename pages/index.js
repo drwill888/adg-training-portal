@@ -183,23 +183,24 @@ function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose }) 
         {navItems.map(item => {
           const act = currentPage === item.key, lk = item.locked, done = item.completed;
           const href = getHref(item.key);
-          const handleClick = () => {
-            if (lk) return;
-            if (href) {
-              window.location.href = href;
-            } else {
-              setCurrentPage(item.key);
-              if (isMobile) onClose();
-            }
-          };
-          return (
-            <div key={item.key} onClick={handleClick}
-              style={{ padding: "10px 20px", cursor: lk ? "default" : "pointer", display: "flex", alignItems: "center", gap: 10, background: act ? colors.navyLight : "transparent", borderLeft: act ? `3px solid ${colors.gold}` : "3px solid transparent", opacity: lk ? 0.35 : 1, transition: "all 0.2s ease" }}
-              onMouseEnter={e => { if (!lk && !act) e.currentTarget.style.background = colors.navyLight; }}
-              onMouseLeave={e => { if (!act) e.currentTarget.style.background = "transparent"; }}>
+          // Use <a> tag for external page navigation, div for in-app state
+          const inner = (
+            <>
               <span style={{ fontSize: 14, width: 22, textAlign: "center", color: done ? colors.gold : act ? colors.skyBlue : colors.gray300 }}>{done ? "✓" : lk ? "🔒" : item.icon}</span>
               <span style={{ fontSize: 13, fontWeight: act ? 600 : 400, color: act ? colors.white : colors.gray300 }}>{item.label}</span>
               {item.active && <span style={{ marginLeft: "auto", fontSize: 9, background: colors.skyBlue, color: colors.white, padding: "2px 6px", borderRadius: 10, fontWeight: 600 }}>ACTIVE</span>}
+            </>
+          );
+          const sharedStyle = { padding: "10px 20px", display: "flex", alignItems: "center", gap: 10, background: act ? colors.navyLight : "transparent", borderLeft: act ? `3px solid ${colors.gold}` : "3px solid transparent", opacity: lk ? 0.35 : 1, transition: "all 0.2s ease", textDecoration: "none" };
+          if (href && !lk) {
+            return <a key={item.key} href={href} style={{ ...sharedStyle, cursor: "pointer" }}>{inner}</a>;
+          }
+          return (
+            <div key={item.key} onClick={() => { if (!lk) { setCurrentPage(item.key); if (isMobile) onClose(); } }}
+              style={{ ...sharedStyle, cursor: lk ? "default" : "pointer" }}
+              onMouseEnter={e => { if (!lk && !act) e.currentTarget.style.background = colors.navyLight; }}
+              onMouseLeave={e => { if (!act) e.currentTarget.style.background = "transparent"; }}>
+              {inner}
             </div>
           );
         })}
