@@ -5,6 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
+import { supabase } from '../../lib/supabase';
+import { saveModuleProgress, saveAiSummary } from '../../lib/db';
 
 // ─── BRAND PALETTE ───────────────────────────────────────────
 const NAVY    = "#021A35";
@@ -208,6 +210,14 @@ export default function CommissioningPage() {
   const topRef = useRef(null);
 
   useEffect(() => { topRef.current?.scrollIntoView({ behavior: "smooth" }); }, [step]);
+
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) setUserId(session.user.id);
+    });
+  }, []);
   const currentStep = STEPS[step];
   const totalScore = (obj) => Object.values(obj).reduce((a, b) => a + b, 0);
   const getInterp = (t) => {
@@ -245,7 +255,19 @@ Write a personalized Commissioning Word (450-550 words) that:
 Write in second person. Tone: apostolic, prophetic, direct, weighty. This is not a summary — it is a word. Use Scripture naturally and sparingly. No bullet points — flowing paragraphs. Let the final paragraph be the most powerful.`;
       const res = await fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt }) });
       const data = await res.json();
-      setAiSummary(data.response || data.content?.[0]?.text || "Generation failed.");
+      const summaryText = data.response || data.content?.[0]?.text || "Generation failed.";
+      setAiSummary(summaryText);
+      if (userId && summaryText !== "Generation failed.") {
+        const total = Object.values(scores).reduce((a, b) => a + b, 0);
+        await saveModuleProgress(userId, 6, "Commissioning", {
+          status: "completed",
+          pre_score: total,
+          reflections: responses,
+          commitments: commitments,
+          completed_at: new Date().toISOString(),
+        });
+        await saveAiSummary(userId, 6, "Commissioning", summaryText);
+      }
     } catch (err) { setAiSummary("Unable to generate. Please check your connection."); }
     setLoading(false);
   };
