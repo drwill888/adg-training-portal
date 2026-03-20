@@ -24,6 +24,7 @@ export default async function handler(req, res) {
         email,
         data: { full_name: name },
         create_user: true,
+        redirect_to: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://adg-training-portal.vercel.app'}/auth/callback`,
       }),
     })
 
