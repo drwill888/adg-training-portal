@@ -1,4 +1,6 @@
 // pages/api/send-magic-link.js
+import { createClient } from '@supabase/supabase-js'
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
@@ -9,33 +11,27 @@ export default async function handler(req, res) {
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!supabaseUrl || !supabaseKey) {
-    return res.status(500).json({ error: 'Supabase not configured. URL: ' + (supabaseUrl ? 'set' : 'missing') + ', Key: ' + (supabaseKey ? 'set' : 'missing') })
-  }
-
-  try {
-    const response = await fetch(`${supabaseUrl}/auth/v1/otp`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
-      },
-      body: JSON.stringify({
-        email,
-        data: { full_name: name },
-        create_user: true,
-        redirect_to: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://adg-training-portal.vercel.app'}/auth/callback`,
-      }),
+    return res.status(500).json({
+      error: `Supabase env vars missing. URL: ${supabaseUrl ? 'set' : 'MISSING'}, Key: ${supabaseKey ? 'set' : 'MISSING'}`
     })
-
-    const data = await response.json()
-
-    if (!response.ok) {
-      return res.status(400).json({ error: data.message || data.error || 'Failed to send magic link' })
-    }
-
-    return res.status(200).json({ success: true })
-  } catch (err) {
-    return res.status(500).json({ error: err.message })
   }
+
+  // Create a fresh server-side client
+  const supabase = createClient(supabaseUrl, supabaseKey)
+
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: 'https://adg-training-portal.vercel.app/auth/callback',
+      data: { full_name: name },
+      shouldCreateUser: true,
+    },
+  })
+
+  if (error) {
+    console.error('Magic link error:', error)
+    return res.status(400).json({ error: error.message })
+  }
+
+  return res.status(200).json({ success: true })
 }
