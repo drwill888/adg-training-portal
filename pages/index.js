@@ -185,12 +185,8 @@ function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose }) 
           const href = getHref(item.key);
           const handleClick = () => {
             if (lk) return;
-            if (href && href !== "/" && href !== "/modules/introduction") {
-              window.location.href = href;
-            } else {
-              setCurrentPage(item.key);
-              if (isMobile) onClose();
-            }
+            const dest = getHref(item.key);
+            window.location.href = dest || "/";
           };
           return (
             <div key={item.key} onClick={handleClick}
