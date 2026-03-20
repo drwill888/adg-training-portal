@@ -1,12 +1,25 @@
 // ═══════════════════════════════════════════════════════════════
-// MODULE 1: CALLING — Potential (Purpose) 
+// MODULE 1: CALLING — Potential (Purpose)
 // 5C Leadership Blueprint · Awakening Destiny Global
 // Pages Router: pages/modules/calling.js
 // ═══════════════════════════════════════════════════════════════
 import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import { supabase } from '../../lib/supabase';
-import { saveModuleProgress, saveAiSummary } from '../../lib/db';
+
+// ─── INLINE DB HELPERS ────────────────────────────────────────
+async function saveModuleProgress(userId, moduleId, moduleTitle, updates) {
+  await supabase.from('module_progress').upsert({
+    user_id: userId, module_id: moduleId, module_title: moduleTitle,
+    updated_at: new Date().toISOString(), ...updates,
+  }, { onConflict: 'user_id,module_id' });
+}
+async function saveAiSummary(userId, moduleId, moduleTitle, summaryText) {
+  await supabase.from('ai_summaries').upsert({
+    user_id: userId, module_id: moduleId, module_title: moduleTitle,
+    summary_text: summaryText, updated_at: new Date().toISOString(),
+  }, { onConflict: 'user_id,module_id' });
+}
 
 // ─── BRAND PALETTE ───────────────────────────────────────────
 const NAVY    = "#021A35";
