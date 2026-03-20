@@ -25,15 +25,15 @@ const connectionDiagnostic = [
   { num: 1,  cat: "Sonship & Identity",       text: "I lead from a settled sense of who I am, not from what I produce." },
   { num: 2,  cat: "Sonship & Identity",       text: "I do not need applause to feel confident in my assignment.", ref: "Matthew 3:17" },
   { num: 3,  cat: "Sonship & Identity",       text: "My identity remains stable when I am criticized or overlooked." },
-  { num: 4,  cat: "Discipline & Formation",   text: "I receive correction without defensiveness.", ref: "Hebrews 12:5\u201311" },
+  { num: 4,  cat: "Discipline & Formation",   text: "I receive correction without defensiveness.", ref: "Hebrews 12:5–11" },
   { num: 5,  cat: "Discipline & Formation",   text: "I see discipline as evidence of love, not rejection." },
   { num: 6,  cat: "Discipline & Formation",   text: "I seek out truth-tellers, not just encouragers." },
   { num: 7,  cat: "Security & Empowerment",   text: "I celebrate when others around me accelerate.", ref: "Philippians 2:3" },
   { num: 8,  cat: "Security & Empowerment",   text: "I freely release responsibility to develop others." },
-  { num: 9,  cat: "Security & Empowerment",   text: "I do not hoard influence \u2014 I distribute it." },
+  { num: 9,  cat: "Security & Empowerment",   text: "I do not hoard influence — I distribute it." },
   { num: 10, cat: "Solitude & Awareness",     text: "I maintain a rhythm of solitude that sustains my leadership.", ref: "Mark 1:35" },
   { num: 11, cat: "Solitude & Awareness",     text: "I can distinguish my own voice from the noise around me." },
-  { num: 12, cat: "Solitude & Awareness",     text: "I return to the Father\u2019s presence before I return to the platform." },
+  { num: 12, cat: "Solitude & Awareness",     text: "I return to the Father’s presence before I return to the platform." },
 ];
 
 // ─── STEPS ───────────────────────────────────────────────────
@@ -66,80 +66,80 @@ const ORPHAN_SON = [
 const PRINCIPLES = [
   {
     num: 1, title: "Sonship Precedes Service", ref: "Matthew 3:17",
-    scripture: "\u201CThis is My beloved Son, with whom I am well pleased.\u201D \u2014 Matthew 3:17",
+    scripture: "“This is My beloved Son, with whom I am well pleased.” — Matthew 3:17",
     paragraphs: [
       "Before miracles. Before public affirmation. Before visible fruit. The Father declared identity. Sonship preceded service. Approval preceded assignment.",
-      "Many leaders reverse this order. They serve to earn belonging. They perform to prove identity. They exhaust themselves building platforms that were never meant to replace the Father\u2019s voice. And when the applause fades or the results dry up, they collapse \u2014 because their identity was built on output, not origin.",
-      "Sonship is not a feeling. It is a positional reality. You are not beloved because you perform well. You perform well \u2014 eventually \u2014 because you are beloved. The order is non-negotiable."
+      "Many leaders reverse this order. They serve to earn belonging. They perform to prove identity. They exhaust themselves building platforms that were never meant to replace the Father’s voice. And when the applause fades or the results dry up, they collapse — because their identity was built on output, not origin.",
+      "Sonship is not a feeling. It is a positional reality. You are not beloved because you perform well. You perform well — eventually — because you are beloved. The order is non-negotiable."
     ],
     prompt: "Where in your leadership are you still serving to earn approval instead of leading from it?"
   },
   {
     num: 2, title: "Sonship Requires Discipline", ref: "Hebrews 12:6, 11",
-    scripture: "\u201CFor the Lord disciplines the one He loves, and chastises every son whom He receives.\u201D \u2014 Hebrews 12:6",
+    scripture: "“For the Lord disciplines the one He loves, and chastises every son whom He receives.” — Hebrews 12:6",
     paragraphs: [
-      "Belonging is not the absence of correction. It is the context for it. The Father does not discipline strangers \u2014 He disciplines sons. If you have never been corrected by God, you should be concerned, not comfortable.",
+      "Belonging is not the absence of correction. It is the context for it. The Father does not discipline strangers — He disciplines sons. If you have never been corrected by God, you should be concerned, not comfortable.",
       "Many leaders interpret correction as punishment. They receive a rebuke from a mentor and withdraw. They encounter a closed door and assume God has abandoned them. But Hebrews is clear: discipline is evidence of legitimacy.",
-      "Connection matures through formative obedience. The leader who cannot receive correction cannot carry greater weight. \u201CFor the moment all discipline seems painful rather than pleasant, but later it yields the peaceful fruit of righteousness.\u201D \u2014 Hebrews 12:11"
+      "Connection matures through formative obedience. The leader who cannot receive correction cannot carry greater weight. “For the moment all discipline seems painful rather than pleasant, but later it yields the peaceful fruit of righteousness.” — Hebrews 12:11"
     ],
     prompt: "When was the last time you received correction well? When was the last time you resisted it? What was the difference?"
   },
   {
     num: 3, title: "Identity Precedes Influence", ref: "Galatians 4:7; John 5:19",
-    scripture: "\u201CSo you are no longer a slave, but a son, and if a son, then an heir through God.\u201D \u2014 Galatians 4:7",
+    scripture: "“So you are no longer a slave, but a son, and if a son, then an heir through God.” — Galatians 4:7",
     paragraphs: [
-      "Secure sons do not seek identity through platform. They know who they are before anyone else affirms it. Influence flows from rooted identity \u2014 not the other way around. Leaders unsure of identity attempt to secure it through performance, titles, and visibility. They lead with anxiety. Secure sons lead without it.",
-      "This is also where connection becomes a decision-making filter. The question is not just \u201CIs this a good opportunity?\u201D but: \u201CAm I making this decision from security or from insecurity? From sonship or from striving?\u201D",
-      "Jesus\u2019 authority was relationally derived. \u201CThe Son can do nothing of His own accord, but only what He sees the Father doing.\u201D \u2014 John 5:19. His power flowed from alignment with the Father, not from independent ambition. Authority without intimacy becomes authoritarian."
+      "Secure sons do not seek identity through platform. They know who they are before anyone else affirms it. Influence flows from rooted identity — not the other way around. Leaders unsure of identity attempt to secure it through performance, titles, and visibility. They lead with anxiety. Secure sons lead without it.",
+      "This is also where connection becomes a decision-making filter. The question is not just “Is this a good opportunity?” but: “Am I making this decision from security or from insecurity? From sonship or from striving?”",
+      "Jesus’ authority was relationally derived. “The Son can do nothing of His own accord, but only what He sees the Father doing.” — John 5:19. His power flowed from alignment with the Father, not from independent ambition. Authority without intimacy becomes authoritarian."
     ],
     prompt: "Name a recent decision. Did you make it from security or insecurity? From sonship or striving? How can you tell?"
   },
   {
     num: 4, title: "Security Enables Empowerment", ref: "Philippians 2:3",
-    scripture: "\u201CDo nothing from selfish ambition or conceit, but in humility count others more significant than yourselves.\u201D \u2014 Philippians 2:3",
+    scripture: "“Do nothing from selfish ambition or conceit, but in humility count others more significant than yourselves.” — Philippians 2:3",
     paragraphs: [
       "Only secure sons elevate others freely. Insecure leaders compete. Secure leaders release. Insecure leaders hoard influence. Secure leaders multiply it.",
-      "Security eliminates comparison. When you know who you belong to, you are not threatened by someone else\u2019s acceleration. You celebrate it. You fund it. You create space for it.",
+      "Security eliminates comparison. When you know who you belong to, you are not threatened by someone else’s acceleration. You celebrate it. You fund it. You create space for it.",
       "Empowerment is the evidence of sonship maturity. The leader who cannot release others has not yet settled the identity question."
     ],
     prompt: "Who around you is rising? Are you celebrating their growth or feeling threatened by it? What does your honest answer reveal?",
-    prompt2: "What responsibility could you release to someone else right now that would develop them \u2014 but you\u2019ve been holding onto?"
+    prompt2: "What responsibility could you release to someone else right now that would develop them — but you’ve been holding onto?"
   },
   {
     num: 5, title: "Solitude Sustains Awareness", ref: "Mark 1:35",
-    scripture: "\u201CAnd rising very early in the morning, while it was still dark, He departed and went out to a desolate place, and there He prayed.\u201D \u2014 Mark 1:35",
+    scripture: "“And rising very early in the morning, while it was still dark, He departed and went out to a desolate place, and there He prayed.” — Mark 1:35",
     paragraphs: [
-      "Sonship awareness fades in busyness. The noise of leadership \u2014 demands, decisions, crises, opportunities \u2014 can drown out the voice that says \u201CYou are Mine.\u201D",
+      "Sonship awareness fades in busyness. The noise of leadership — demands, decisions, crises, opportunities — can drown out the voice that says “You are Mine.”",
       "Jesus withdrew early to pray. Not because He was weak. Because He was intentional. Solitude was the rhythm that protected His identity from being consumed by His assignment.",
       "Abiding requires rhythm. Silence protects identity. Solitude renews alignment. Without this rhythm, even the most grounded leader begins to drift from sonship into performance. The calendar fills. The soul empties. And leadership becomes mechanical."
     ],
-    prompt: "What is your current rhythm of solitude and communion? Be honest \u2014 is it consistent or has busyness consumed it?",
+    prompt: "What is your current rhythm of solitude and communion? Be honest — is it consistent or has busyness consumed it?",
     prompt2: "What one change to your daily or weekly rhythm would protect your awareness of who you belong to?"
   }
 ];
 
 // ─── EXEMPLAR: JESUS ─────────────────────────────────────────
 const EXEMPLAR = {
-  name: "Jesus", title: "Son Before Savior", refs: "Matthew 3:16\u201317; John 5:19; Hebrews 5:8",
+  name: "Jesus", title: "Son Before Savior", refs: "Matthew 3:16–17; John 5:19; Hebrews 5:8",
   intro: "Before miracles. Before disciples. Before influence. The Father declared:",
-  mainScripture: "\u201CThis is My beloved Son, with whom I am well pleased.\u201D \u2014 Matthew 3:17",
+  mainScripture: "“This is My beloved Son, with whom I am well pleased.” — Matthew 3:17",
   bodyParagraphs: [
-    "Identity preceded ministry. But Scripture also tells us: \u201CAlthough He was a Son, He learned obedience through what He suffered.\u201D \u2014 Hebrews 5:8",
+    "Identity preceded ministry. But Scripture also tells us: “Although He was a Son, He learned obedience through what He suffered.” — Hebrews 5:8",
     "Sonship did not eliminate formation. It required obedience. Correction did not threaten identity. Suffering did not negate sonship. Sonship matured through obedience.",
     "Jesus operated from a clear relational pattern:",
   ],
   arc: [
     { stage: "Belovedness",  text: "The Father speaks identity before assignment." },
-    { stage: "Alignment",    text: "Forty days in the wilderness \u2014 every temptation targeted His identity. He refused to prove sonship through performance." },
+    { stage: "Alignment",    text: "Forty days in the wilderness — every temptation targeted His identity. He refused to prove sonship through performance." },
     { stage: "Obedience",    text: "He did nothing of His own accord, but only what He saw the Father doing." },
     { stage: "Authority",    text: "Because His identity was settled, His authority was unshakeable. He washed feet without losing dignity." },
-    { stage: "Impact",       text: "He sent others out with His full authority \u2014 not a diminished version. Security multiplied into movement." },
+    { stage: "Impact",       text: "He sent others out with His full authority — not a diminished version. Security multiplied into movement." },
   ],
-  closingScripture: "\u201CThe Son can do nothing of His own accord, but only what He sees the Father doing.\u201D \u2014 John 5:19",
-  closingLine: "Authority flowed from intimacy. Power flowed from alignment. True authority flows from relational alignment \u2014 not positional control.",
+  closingScripture: "“The Son can do nothing of His own accord, but only what He sees the Father doing.” — John 5:19",
+  closingLine: "Authority flowed from intimacy. Power flowed from alignment. True authority flows from relational alignment — not positional control.",
   coachingQuestions: [
     "Do you lead from approval or for approval?",
-    "Do you interpret discipline as rejection \u2014 or formation?",
+    "Do you interpret discipline as rejection — or formation?",
     "Is your authority rooted in intimacy or activity?",
     "When suffering or correction comes, does your identity remain stable?",
   ]
@@ -147,20 +147,20 @@ const EXEMPLAR = {
 
 // ─── THREE STAGES ────────────────────────────────────────────
 const STAGES = [
-  { name: "Revelation of Belonging", description: "The first encounter with belonging. The moment you hear the Father\u2019s voice over your life \u2014 not as theology, but as experience. Something shifts from knowing about sonship to knowing it in your bones.", ref: "Romans 8:15", marker: "You stop striving to earn a place and start resting in the one already given." },
-  { name: "Formation Through Discipline", description: "Receiving correction, discipline, and alignment. Learning that love includes refinement. This is where most leaders either deepen or disconnect \u2014 because discipline feels like rejection until your theology catches up.", ref: "Hebrews 12:11", marker: "You no longer interpret correction as rejection. You recognize it as formation." },
-  { name: "Mature Sonship", description: "Operating from secure identity shaped through discipline. Leading from rest, not striving. Celebrating others without threat. Releasing influence without fear. This is not perfection \u2014 it is settledness.", ref: "John 15:4", marker: "You lead from overflow, not deficit. Your presence stabilizes rooms." }
+  { name: "Revelation of Belonging", description: "The first encounter with belonging. The moment you hear the Father’s voice over your life — not as theology, but as experience. Something shifts from knowing about sonship to knowing it in your bones.", ref: "Romans 8:15", marker: "You stop striving to earn a place and start resting in the one already given." },
+  { name: "Formation Through Discipline", description: "Receiving correction, discipline, and alignment. Learning that love includes refinement. This is where most leaders either deepen or disconnect — because discipline feels like rejection until your theology catches up.", ref: "Hebrews 12:11", marker: "You no longer interpret correction as rejection. You recognize it as formation." },
+  { name: "Mature Sonship", description: "Operating from secure identity shaped through discipline. Leading from rest, not striving. Celebrating others without threat. Releasing influence without fear. This is not perfection — it is settledness.", ref: "John 15:4", marker: "You lead from overflow, not deficit. Your presence stabilizes rooms." }
 ];
 
 // ─── KEY SCRIPTURES ──────────────────────────────────────────
 const KEY_SCRIPTURES = [
   { ref: "Matthew 3:17",       note: "The Father declares identity before ministry begins." },
-  { ref: "Romans 8:15\u201317",     note: "You have received the Spirit of adoption as sons." },
-  { ref: "Galatians 4:6\u20137",    note: "No longer a slave, but a son \u2014 and an heir through God." },
-  { ref: "John 15:4\u20135",        note: "Abide in Me. Apart from Me you can do nothing." },
+  { ref: "Romans 8:15–17",     note: "You have received the Spirit of adoption as sons." },
+  { ref: "Galatians 4:6–7",    note: "No longer a slave, but a son — and an heir through God." },
+  { ref: "John 15:4–5",        note: "Abide in Me. Apart from Me you can do nothing." },
   { ref: "John 5:19",          note: "The Son does nothing of His own accord." },
-  { ref: "Hebrews 12:5\u201311",    note: "The Lord disciplines the one He loves." },
-  { ref: "Proverbs 3:11\u201312",   note: "Do not despise the Lord\u2019s discipline." },
+  { ref: "Hebrews 12:5–11",    note: "The Lord disciplines the one He loves." },
+  { ref: "Proverbs 3:11–12",   note: "Do not despise the Lord’s discipline." },
   { ref: "1 John 3:1",         note: "See what kind of love the Father has given to us." },
   { ref: "1 John 4:16",        note: "Whoever abides in love abides in God." },
   { ref: "Mark 1:35",          note: "Rising early, He went to a desolate place and prayed." },
@@ -168,7 +168,7 @@ const KEY_SCRIPTURES = [
 
 // ─── COMMITMENT / REVISIT / APPLICATION ──────────────────────
 const COMMITMENT_PROMPTS = [
-  { id: "identity",       label: "1. My Identity Statement",              placeholder: "Write one sentence that captures who you are in God \u2014 apart from title, role, or accomplishment." },
+  { id: "identity",       label: "1. My Identity Statement",              placeholder: "Write one sentence that captures who you are in God — apart from title, role, or accomplishment." },
   { id: "assignment",     label: "2. My Current Relational Assignment",   placeholder: "Name the specific people, team, or community you are called to be rooted with in this season." },
   { id: "orphan",         label: "3. My Orphan Pattern",                  placeholder: "Name the orphan behavior you default to under pressure. Be specific. Where do you strive, compare, control, or perform?" },
   { id: "rhythm",         label: "4. My Sonship Rhythm",                  placeholder: "What specific practice will you commit to this week that protects your connection with God?" },
@@ -193,32 +193,32 @@ const APPLICATION_QUESTIONS = [
 const WORK_THE_NET = {
   title: "Work the Net to Build the Network",
   scriptures: [
-    { text: "\u201CTwo are better than one, because they have a good reward for their toil. For if they fall, one will lift up his fellow.\u201D", ref: "Ecclesiastes 4:9\u201310" },
-    { text: "\u201CIron sharpens iron, and one man sharpens another.\u201D", ref: "Proverbs 27:17" },
-    { text: "\u201CHe who walks with wise men becomes wise, but the companion of fools will suffer harm.\u201D", ref: "Proverbs 13:20" },
+    { text: "“Two are better than one, because they have a good reward for their toil. For if they fall, one will lift up his fellow.”", ref: "Ecclesiastes 4:9–10" },
+    { text: "“Iron sharpens iron, and one man sharpens another.”", ref: "Proverbs 27:17" },
+    { text: "“He who walks with wise men becomes wise, but the companion of fools will suffer harm.”", ref: "Proverbs 13:20" },
   ],
   paragraphs: [
-    "Connection is not passive. You do not build a network by waiting for relationships to find you. You build it by working the net \u2014 intentionally pursuing, cultivating, and stewarding the relationships God assigns to your life.",
-    "A net is made of individual threads woven together with purpose. Each thread is a relationship. Each knot is a point of trust. The strength of the net is not determined by how many threads exist \u2014 but by how well they are connected. A net with holes catches nothing.",
-    "Working the net means showing up before you need something. It means giving before you ask. It means following up, following through, and being the kind of connection others can count on. Leaders who only reach out when they need something do not have a network \u2014 they have a contact list.",
+    "Connection is not passive. You do not build a network by waiting for relationships to find you. You build it by working the net — intentionally pursuing, cultivating, and stewarding the relationships God assigns to your life.",
+    "A net is made of individual threads woven together with purpose. Each thread is a relationship. Each knot is a point of trust. The strength of the net is not determined by how many threads exist — but by how well they are connected. A net with holes catches nothing.",
+    "Working the net means showing up before you need something. It means giving before you ask. It means following up, following through, and being the kind of connection others can count on. Leaders who only reach out when they need something do not have a network — they have a contact list.",
     "The quality of your network will determine your level of influence. You will not rise beyond the strength of the relationships around you. Weak networks produce isolated leaders. Strong networks produce sustained impact.",
   ],
-  prompt: "Are you intentionally building your network \u2014 or waiting for relationships to happen? What would it look like to \u201Cwork the net\u201D over the next 90 days?",
+  prompt: "Are you intentionally building your network — or waiting for relationships to happen? What would it look like to “work the net” over the next 90 days?",
 };
 const RELATIONAL_ORBITS = {
   title: "Relationships Orbit at Different Frequencies",
   scriptures: [
-    { text: "\u201CAnd He appointed twelve that they might be with Him and that He might send them out.\u201D", ref: "Mark 3:14" },
-    { text: "\u201CFor the body does not consist of one member but of many.\u201D", ref: "1 Corinthians 12:14" },
+    { text: "“And He appointed twelve that they might be with Him and that He might send them out.”", ref: "Mark 3:14" },
+    { text: "“For the body does not consist of one member but of many.”", ref: "1 Corinthians 12:14" },
   ],
   paragraphs: [
-    "Jesus had crowds. He had the seventy-two. He had the twelve. He had the three. He had the one. Not every relationship operated at the same frequency \u2014 and neither will yours.",
-    "The people in your network orbit your life at different rhythms, and each orbit serves a distinct purpose: Some relationships exist to give into you \u2014 prophetic words, encouragement, correction, wisdom. Some exist for you to pour into \u2014 mentoring, equipping, activating. Some are mutual exchange. The mature leader discerns which orbit each relationship belongs in and stewards accordingly.",
-    "The mistake most leaders make is treating every relationship with the same frequency. They exhaust themselves trying to maintain inner-circle depth with everyone \u2014 or they neglect key relationships because they have no system for staying connected. Both produce relational poverty.",
+    "Jesus had crowds. He had the seventy-two. He had the twelve. He had the three. He had the one. Not every relationship operated at the same frequency — and neither will yours.",
+    "The people in your network orbit your life at different rhythms, and each orbit serves a distinct purpose: Some relationships exist to give into you — prophetic words, encouragement, correction, wisdom. Some exist for you to pour into — mentoring, equipping, activating. Some are mutual exchange. The mature leader discerns which orbit each relationship belongs in and stewards accordingly.",
+    "The mistake most leaders make is treating every relationship with the same frequency. They exhaust themselves trying to maintain inner-circle depth with everyone — or they neglect key relationships because they have no system for staying connected. Both produce relational poverty.",
     "Not every person in your network needs weekly access. But every person in your network needs intentional stewardship. Know who belongs in each orbit. Know what each relationship carries. And protect the rhythm that keeps your net strong.",
   ],
   prompt: "Map your current network using the orbit framework. Who is in your inner circle? Your core alliance? Your seasonal connectors? Where are the gaps?",
-  prompt2: "Who in your network needs a different frequency than what you are currently giving them? Who have you neglected \u2014 and who needs to be repositioned?",
+  prompt2: "Who in your network needs a different frequency than what you are currently giving them? Who have you neglected — and who needs to be repositioned?",
 };
 
 
@@ -236,17 +236,17 @@ function downloadWordDoc(title, responses, commitments, preScores, postScores, d
 <head><meta charset="utf-8"><title>${title}</title>
 <style>body{font-family:Georgia,serif;color:#1a1a1a;max-width:700px;margin:0 auto;padding:40px 20px}h1{color:#021A35;font-size:22px;border-bottom:3px solid #C8A951;padding-bottom:8px}h2{color:#021A35;font-size:16px;margin-top:24px;border-bottom:1px solid #ddd;padding-bottom:4px}p{font-size:12px;line-height:1.6}table{border-collapse:collapse;width:100%;margin:12px 0}th{background:#021A35;color:#fff;padding:8px;font-size:11px;text-align:left}td{font-size:11px}.footer{margin-top:40px;border-top:2px solid #C8A951;padding-top:12px;font-size:10px;color:#888;text-align:center}</style></head>
 <body>
-<h1>5C Leadership Blueprint \u2014 ${title}</h1>
-<p style="color:#888;">Awakening Destiny Global \u2022 ${now}</p>
+<h1>5C Leadership Blueprint — ${title}</h1>
+<p style="color:#888;">Awakening Destiny Global • ${now}</p>
 <h2>Diagnostic Scores</h2>
 <table><tr><th>#</th><th>Statement</th><th>Pre</th><th>Post</th></tr>${scoreRows}</table>
 <p><b>Pre-Total:</b> ${Object.values(preScores).reduce((a,b)=>a+b,0)}/60 &nbsp;&nbsp; <b>Post-Total:</b> ${Object.values(postScores).reduce((a,b)=>a+b,0)}/60</p>
 ${respEntries ? `<h2>Reflections</h2>${respEntries}` : ""}
 ${commitEntries ? `<h2>Commitments</h2>${commitEntries}` : ""}
 ${aiSummary ? `<h2>My ${title} Blueprint</h2><p>${aiSummary.replace(/\n\n/g,"</p><p>")}</p>` : ""}
-<div class="footer"><p>\u00A9 Awakening Destiny Global \u2022 awakeningdestiny.global</p><p>5C Leadership Blueprint \u2014 Developing Leaders \u2022 Creating Champions</p></div>
+<div class="footer"><p>© Awakening Destiny Global • awakeningdestiny.global</p><p>5C Leadership Blueprint — Developing Leaders • Creating Champions</p></div>
 </body></html>`;
-  const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+  const blob = new Blob(["﻿", html], { type: "application/msword" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -397,7 +397,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
           <div className="space-y-6">
             <div className="p-5 rounded-xl" style={{ background: CREAM }}>
               <p className="text-xs uppercase tracking-widest font-semibold mb-3" style={{ color: GOLD_D }}>THE 5C LEADERSHIP LIFECYCLE</p>
-              <p className="text-sm leading-relaxed mb-3" style={{ color: "#333" }}>In Module 1, we established Calling \u2014 the foundation of your design and purpose. Now we move to the dimension that anchors everything calling sets in motion.</p>
+              <p className="text-sm leading-relaxed mb-3" style={{ color: "#333" }}>In Module 1, we established Calling — the foundation of your design and purpose. Now we move to the dimension that anchors everything calling sets in motion.</p>
               <div className="flex gap-1 overflow-x-auto py-2 -mx-1 px-1">
                 {["CALLING","CONNECTION","COMPETENCY","CAPACITY","CONVERGENCE"].map((c, i) => (
                   <div key={c} className="px-2 sm:px-3 py-2 rounded-lg text-center text-xs font-bold tracking-wide shrink-0" style={{ background: i === 1 ? NAVY : i === 0 ? ACCENT_LIGHT : "#f5f5f0", color: i === 1 ? "#fff" : i === 0 ? ACCENT : "#999", minWidth: "80px" }}>{c}</div>
@@ -407,12 +407,12 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
               <p className="text-sm leading-relaxed mt-2" style={{ color: "#333" }}>Calling gives <em>direction</em>. Connection gives <em>security</em>. Without connection, calling becomes exhausting. With it, assignment becomes sustainable.</p>
             </div>
             <div className="p-5 sm:p-6 rounded-2xl border-l-4" style={{ borderColor: ACCENT, background: `linear-gradient(135deg, ${ACCENT_LIGHT}, #fff)` }}>
-              <p className="text-base sm:text-lg italic leading-relaxed" style={{ color: NAVY }}>"You can know what you\u2019re built for and still collapse \u2014 if you don\u2019t know who you belong to."</p>
+              <p className="text-base sm:text-lg italic leading-relaxed" style={{ color: NAVY }}>"You can know what you’re built for and still collapse — if you don’t know who you belong to."</p>
             </div>
             <div className="mt-6">
               <p className="text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: GOLD_D }}>OPENING ACTIVATION</p>
-              <p className="text-sm italic mb-4" style={{ color: "#666" }}>Before we teach, we listen. Sit with these questions for three minutes. Write what surfaces \u2014 not what sounds right.</p>
-              <Reflect id="activation_1" prompt="When was the last time you felt truly secure in who you are \u2014 not because of what you accomplished, but simply because of who you belong to?" />
+              <p className="text-sm italic mb-4" style={{ color: "#666" }}>Before we teach, we listen. Sit with these questions for three minutes. Write what surfaces — not what sounds right.</p>
+              <Reflect id="activation_1" prompt="When was the last time you felt truly secure in who you are — not because of what you accomplished, but simply because of who you belong to?" />
               <Reflect id="activation_2" prompt="Where in your leadership right now are you performing for approval instead of leading from approval?" />
             </div>
           </div>
@@ -422,7 +422,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
         return (
           <div className="space-y-6">
             <div className="p-5 rounded-xl" style={{ background: CREAM }}>
-              <p className="font-semibold mb-1" style={{ color: NAVY }}>Connection Diagnostic \u2014 Pre-Assessment</p>
+              <p className="font-semibold mb-1" style={{ color: NAVY }}>Connection Diagnostic — Pre-Assessment</p>
               <p className="text-sm" style={{ color: "#666" }}>Rate each statement honestly from 1 (Strongly Disagree) to 5 (Strongly Agree). This is a mirror, not a test.</p>
             </div>
             {renderDiagnostic("pre", preScores)}
@@ -437,16 +437,16 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
             <div>
               <SectionHead>Definition</SectionHead>
               <p className="leading-relaxed mb-3" style={{ color: "#333" }}>Connection is relational alignment with God that establishes identity through sonship before function. It is <strong>belonging</strong> before burden. Union before utility.</p>
-              <Scripture>{"\u201CThis is My beloved Son, with whom I am well pleased.\u201D \u2014 Matthew 3:17"}</Scripture>
+              <Scripture>{"“This is My beloved Son, with whom I am well pleased.” — Matthew 3:17"}</Scripture>
               <p className="leading-relaxed mb-3" style={{ color: "#333" }}>Before miracles. Before public affirmation. Before visible fruit. The Father declared identity. Sonship preceded service. Approval preceded assignment. Many leaders perform for approval. Few lead from approval.</p>
-              <Scripture>{"\u201CAbide in Me, and I in you\u2026 apart from Me you can do nothing.\u201D \u2014 John 15:4\u20135"}</Scripture>
+              <Scripture>{"“Abide in Me, and I in you… apart from Me you can do nothing.” — John 15:4–5"}</Scripture>
               <p className="leading-relaxed mb-3" style={{ color: "#333" }}>But biblical sonship is not sentimental. It includes intimacy <em>and</em> instruction. Love <em>and</em> refinement. True sons are formed, not flattered.</p>
-              <Scripture>{"\u201CFor the Lord disciplines the one He loves, and chastises every son whom He receives.\u201D \u2014 Hebrews 12:6"}</Scripture>
+              <Scripture>{"“For the Lord disciplines the one He loves, and chastises every son whom He receives.” — Hebrews 12:6"}</Scripture>
             </div>
 
             {/* Orphan vs Son */}
             <div>
-              <SectionHead sub="This is not your Sunday morning self. This is your Tuesday afternoon self \u2014 under pressure, behind closed doors, when no one is watching.">Two Ways to Lead: Orphan vs. Son</SectionHead>
+              <SectionHead sub="This is not your Sunday morning self. This is your Tuesday afternoon self — under pressure, behind closed doors, when no one is watching.">Two Ways to Lead: Orphan vs. Son</SectionHead>
               {/* Mobile: stacked cards. Desktop: table */}
               <div className="block sm:hidden space-y-3">
                 {ORPHAN_SON.map((row, i) => (
@@ -475,7 +475,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
                   ))}</tbody>
                 </table>
               </div>
-              <Reflect id="orphan_son_reflect" prompt="Look at the Orphan column. Circle the three lines that describe your default under pressure. Not your aspiration \u2014 your default. What does this pattern reveal?" />
+              <Reflect id="orphan_son_reflect" prompt="Look at the Orphan column. Circle the three lines that describe your default under pressure. Not your aspiration — your default. What does this pattern reveal?" />
             </div>
 
             {/* Macro & Micro */}
@@ -483,11 +483,11 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
               <SectionHead sub="Just as Calling has macro (ecosystem) and micro (assignment), Connection operates on two levels. Confusing these is where leaders get deeply hurt.">Connection: Macro & Micro</SectionHead>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-4 sm:p-5 rounded-xl border-2" style={{ borderColor: ACCENT, background: ACCENT_LIGHT }}>
-                  <p className="font-bold text-xs uppercase tracking-widest mb-2" style={{ color: ACCENT }}>Macro \u2014 Identity in God</p>
-                  <p className="text-sm leading-relaxed" style={{ color: "#333" }}>Permanent. Unchanging. Not contingent on any person, role, or season. This is the Father\u2019s declaration over you. It does not shift when relationships end, leaders fail you, or communities fracture.</p>
+                  <p className="font-bold text-xs uppercase tracking-widest mb-2" style={{ color: ACCENT }}>Macro — Identity in God</p>
+                  <p className="text-sm leading-relaxed" style={{ color: "#333" }}>Permanent. Unchanging. Not contingent on any person, role, or season. This is the Father’s declaration over you. It does not shift when relationships end, leaders fail you, or communities fracture.</p>
                 </div>
                 <div className="p-4 sm:p-5 rounded-xl border-2" style={{ borderColor: GOLD_D, background: CREAM }}>
-                  <p className="font-bold text-xs uppercase tracking-widest mb-2" style={{ color: GOLD_D }}>Micro \u2014 Relational Assignment</p>
+                  <p className="font-bold text-xs uppercase tracking-widest mb-2" style={{ color: GOLD_D }}>Micro — Relational Assignment</p>
                   <p className="text-sm leading-relaxed" style={{ color: "#333" }}>Seasonal. Specific. God assigns people to your life for specific purposes and timeframes. When a relational assignment ends, your identity must not end with it. The assignment changes. The identity remains.</p>
                 </div>
               </div>
@@ -527,7 +527,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
           <div className="space-y-6">
             <div className="text-center mb-6">
               <p className="text-xs uppercase tracking-widest mb-1" style={{ color: ACCENT }}>Leadership Exemplar</p>
-              <h3 className="text-xl sm:text-2xl font-bold" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{EXEMPLAR.name} \u2014 {EXEMPLAR.title}</h3>
+              <h3 className="text-xl sm:text-2xl font-bold" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{EXEMPLAR.name} — {EXEMPLAR.title}</h3>
               <p className="text-xs mt-1" style={{ color: "#999" }}>{EXEMPLAR.refs}</p>
             </div>
             <p className="leading-relaxed" style={{ color: "#333" }}>{EXEMPLAR.intro}</p>
@@ -586,8 +586,8 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
         return (
           <div className="space-y-6">
             <div className="p-5 rounded-xl" style={{ background: CREAM }}>
-              <p className="font-semibold mb-1" style={{ color: NAVY }}>Connection Diagnostic \u2014 Post-Assessment</p>
-              <p className="text-sm" style={{ color: "#666" }}>Now that you\u2019ve walked through the teaching, rate yourself again. Be honest about what shifted \u2014 and what didn\u2019t.</p>
+              <p className="font-semibold mb-1" style={{ color: NAVY }}>Connection Diagnostic — Post-Assessment</p>
+              <p className="text-sm" style={{ color: "#666" }}>Now that you’ve walked through the teaching, rate yourself again. Be honest about what shifted — and what didn’t.</p>
             </div>
             {renderDiagnostic("post", postScores)}
             {totalScore(preScores) > 0 && totalScore(postScores) > 0 && (
@@ -600,7 +600,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
                 </div>
               </div>
             )}
-            <Reflect id="post_diag_reflect" prompt="What did this diagnostic reveal? Where did you score lowest \u2014 and what does that tell you?" />
+            <Reflect id="post_diag_reflect" prompt="What did this diagnostic reveal? Where did you score lowest — and what does that tell you?" />
             <div className="mt-8">
               <SectionHead sub="These are your anchor texts. Return to them when insecurity rises, when performance tempts you, when belonging feels distant.">Key Scriptures on Connection</SectionHead>
               <div className="space-y-2">
@@ -630,7 +630,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
             <div className="mt-8 p-5 rounded-xl" style={{ background: ACCENT_LIGHT }}>
               <h4 className="font-bold mb-3" style={{ color: NAVY }}>Connection Is a Living Rhythm</h4>
               <p className="text-sm mb-2 leading-relaxed" style={{ color: "#333" }}>What you wrote in this workbook is not a one-time exercise. It is the beginning of a rhythm that must be sustained for the rest of your leadership. Sonship awareness fades in busyness. The demands of leadership can slowly pull you out of rest and back into striving. It happens subtly. And it happens to everyone.</p>
-              <p className="text-sm mb-2 leading-relaxed" style={{ color: "#333" }}>This is why connection must be revisited. Not because your identity changes \u2014 but because your awareness of it drifts. The macro identity never changes. But your awareness of it needs constant renewal.</p>
+              <p className="text-sm mb-2 leading-relaxed" style={{ color: "#333" }}>This is why connection must be revisited. Not because your identity changes — but because your awareness of it drifts. The macro identity never changes. But your awareness of it needs constant renewal.</p>
               <p className="text-sm font-semibold mb-3 mt-4" style={{ color: NAVY }}>Revisit your connection:</p>
               <div className="space-y-2 ml-1">
                 {REVISIT_TRIGGERS.map((t, i) => (
@@ -653,18 +653,18 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
           <div className="space-y-10">
             <div className="p-4 rounded-xl" style={{ background: CREAM }}>
               <p className="text-xs uppercase tracking-widest font-semibold mb-1" style={{ color: GOLD_D }}>ADDENDUM</p>
-              <p className="text-sm" style={{ color: "#555" }}>Additional principles on connection \u2014 the relational architecture of leadership.</p>
+              <p className="text-sm" style={{ color: "#555" }}>Additional principles on connection — the relational architecture of leadership.</p>
             </div>
 
             {/* Work the Net */}
             <div>
               <SectionHead>{WORK_THE_NET.title}</SectionHead>
-              <Scripture>{WORK_THE_NET.scriptures[0].text} \u2014 {WORK_THE_NET.scriptures[0].ref}</Scripture>
+              <Scripture>{WORK_THE_NET.scriptures[0].text} — {WORK_THE_NET.scriptures[0].ref}</Scripture>
               {WORK_THE_NET.paragraphs.slice(0, 2).map((p, i) => (<p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#333" }}>{p}</p>))}
-              <Scripture>{WORK_THE_NET.scriptures[1].text} \u2014 {WORK_THE_NET.scriptures[1].ref}</Scripture>
+              <Scripture>{WORK_THE_NET.scriptures[1].text} — {WORK_THE_NET.scriptures[1].ref}</Scripture>
               {WORK_THE_NET.paragraphs.slice(2, 3).map((p, i) => (<p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#333" }}>{p}</p>))}
               <p className="text-sm leading-relaxed mb-3 font-semibold" style={{ color: NAVY }}>{WORK_THE_NET.paragraphs[3]}</p>
-              <Scripture>{WORK_THE_NET.scriptures[2].text} \u2014 {WORK_THE_NET.scriptures[2].ref}</Scripture>
+              <Scripture>{WORK_THE_NET.scriptures[2].text} — {WORK_THE_NET.scriptures[2].ref}</Scripture>
               <Reflect id="work_the_net" prompt={WORK_THE_NET.prompt} />
             </div>
 
@@ -673,16 +673,16 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
             {/* Relational Orbits */}
             <div>
               <SectionHead>{RELATIONAL_ORBITS.title}</SectionHead>
-              <Scripture>{RELATIONAL_ORBITS.scriptures[0].text} \u2014 {RELATIONAL_ORBITS.scriptures[0].ref}</Scripture>
+              <Scripture>{RELATIONAL_ORBITS.scriptures[0].text} — {RELATIONAL_ORBITS.scriptures[0].ref}</Scripture>
               {RELATIONAL_ORBITS.paragraphs.slice(0, 2).map((p, i) => (<p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#333" }}>{p}</p>))}
-              <Scripture>{RELATIONAL_ORBITS.scriptures[1].text} \u2014 {RELATIONAL_ORBITS.scriptures[1].ref}</Scripture>
+              <Scripture>{RELATIONAL_ORBITS.scriptures[1].text} — {RELATIONAL_ORBITS.scriptures[1].ref}</Scripture>
               {RELATIONAL_ORBITS.paragraphs.slice(2).map((p, i) => (<p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#333" }}>{p}</p>))}
               <Reflect id="orbits_1" prompt={RELATIONAL_ORBITS.prompt} />
               <Reflect id="orbits_2" prompt={RELATIONAL_ORBITS.prompt2} />
             </div>
 
             <div className="text-center py-6">
-              <p className="text-lg italic font-bold" style={{ color: NAVY }}>{"\u201CIdentity removes the need to impress.\u201D"}</p>
+              <p className="text-lg italic font-bold" style={{ color: NAVY }}>{"“Identity removes the need to impress.”"}</p>
             </div>
             <div className="p-5 rounded-xl text-center" style={{ background: NAVY }}>
               <p className="text-xs uppercase tracking-widest mb-1" style={{ color: GOLD }}>NEXT MODULE</p>
@@ -695,7 +695,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
       case "summary":
         return (
           <div className="space-y-6">
-            <SectionHead sub="Based on your diagnostics, reflections, and commitments \u2014 here is your personalized Connection analysis.">Your Connection Blueprint</SectionHead>
+            <SectionHead sub="Based on your diagnostics, reflections, and commitments — here is your personalized Connection analysis.">Your Connection Blueprint</SectionHead>
             {!aiSummary && !loading && (
               <button onClick={generateSummary} className="w-full py-4 rounded-xl font-bold text-lg transition-all hover:opacity-90 text-white" style={{ background: `linear-gradient(135deg, ${ACCENT}, ${NAVY})` }}>Generate My Connection Blueprint</button>
             )}
@@ -709,7 +709,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
               <>
                 <div className="p-5 sm:p-6 rounded-2xl border" style={{ borderColor: ACCENT }}>
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: ACCENT }}><span className="text-white text-sm">{"\u2726"}</span></div>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: ACCENT }}><span className="text-white text-sm">{"✦"}</span></div>
                     <p className="font-bold" style={{ color: NAVY }}>Your Connection Blueprint</p>
                   </div>
                   <div style={{ color: "#333" }}>{aiSummary.split("\n\n").map((para, i) => (<p key={i} className="mb-3 leading-relaxed text-sm">{para}</p>))}</div>
@@ -736,7 +736,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
         <div className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-gray-100">
           <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="/" className="text-sm font-medium flex items-center gap-1 hover:opacity-70 transition-opacity" style={{ color: NAVY }}>{"\u2190"} Dashboard</a>
+            <a href="/" className="text-sm font-medium flex items-center gap-1 hover:opacity-70 transition-opacity" style={{ color: NAVY }}>{"←"} Dashboard</a>
             <div className="text-center"><p className="text-xs uppercase tracking-widest" style={{ color: ACCENT }}>Module 2</p><p className="text-sm font-bold" style={{ color: NAVY }}>Connection</p></div>
             <div className="w-16" />
           </div>
@@ -745,7 +745,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
           <div className="flex items-center gap-1 overflow-x-auto pb-2 -mx-1 px-1">
             {STEPS.map((s, i) => (
               <button key={s.id} onClick={() => setStep(i)} className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all" style={{ background: i === step ? ACCENT : i < step ? ACCENT_LIGHT : "transparent", color: i === step ? "#fff" : i < step ? ACCENT : "#aaa", border: `1px solid ${i <= step ? ACCENT : "#e5e5e5"}` }}>
-                {i < step && <span>{"\u2713"}</span>}{s.label}
+                {i < step && <span>{"✓"}</span>}{s.label}
               </button>
             ))}
           </div>
@@ -760,9 +760,9 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
         </div>
         <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-100 py-3 z-40">
           <div className="max-w-3xl mx-auto px-4 flex justify-between items-center">
-            <button onClick={() => step > 0 && setStep(step - 1)} disabled={step === 0} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: `1px solid ${NAVY}` }}>{"\u2190"} Previous</button>
+            <button onClick={() => step > 0 && setStep(step - 1)} disabled={step === 0} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: `1px solid ${NAVY}` }}>{"←"} Previous</button>
             <span className="text-xs" style={{ color: "#aaa" }}>{step + 1} of {STEPS.length}</span>
-            <button onClick={() => step < STEPS.length - 1 && setStep(step + 1)} disabled={step === STEPS.length - 1} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-30" style={{ background: ACCENT, color: "#fff" }}>Next {"\u2192"}</button>
+            <button onClick={() => step < STEPS.length - 1 && setStep(step + 1)} disabled={step === STEPS.length - 1} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-30" style={{ background: ACCENT, color: "#fff" }}>Next {"→"}</button>
           </div>
         </div>
       </div>

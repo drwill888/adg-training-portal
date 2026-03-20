@@ -24,8 +24,8 @@ const ACCENT_MID   = GOLD;
 const MODULE_ACCENTS = {
   Calling:     { color: GOLD_D,  light: "#FFF9E6",  label: "Potential (Purpose)",      question: "Who was I designed to become?" },
   Connection:  { color: BLUE,    light: "#E8F4FD",   label: "Identity (Relationships)", question: "Do I know whose I am?" },
-  Competency:  { color: ORANGE,  light: "#FFF3E8",   label: "Excellence (Credibility)", question: "Can I carry what I\u2019m called to build?" },
-  Capacity:    { color: SKY,     light: "#E0F7FD",   label: "Character (Sustainability)",question: "Can I sustain what I\u2019ve been called to carry?" },
+  Competency:  { color: ORANGE,  light: "#FFF3E8",   label: "Excellence (Credibility)", question: "Can I carry what I’m called to build?" },
+  Capacity:    { color: SKY,     light: "#E0F7FD",   label: "Character (Sustainability)",question: "Can I sustain what I’ve been called to carry?" },
   Convergence: { color: RED,     light: "#FEF2F2",   label: "Alignment (Legacy)",       question: "Am I becoming everything I was designed to be?" },
 };
 
@@ -41,7 +41,7 @@ const commissioningDiagnostic = [
   { num: 8,  cat: "Deployment Posture", text: "I have identified the first concrete step I am taking out of this training." },
   { num: 9,  cat: "Deployment Posture", text: "I am sending others forward, not just moving forward myself." },
   { num: 10, cat: "Covenant Integrity", text: "The commitments I made in this blueprint reflect what I actually intend to do, not what I hoped sounded good.", ref: "Numbers 30:2" },
-  { num: 11, cat: "Covenant Integrity", text: "I understand the weight of what I\u2019ve declared in this training and I am not treating it as an exercise." },
+  { num: 11, cat: "Covenant Integrity", text: "I understand the weight of what I’ve declared in this training and I am not treating it as an exercise." },
   { num: 12, cat: "Covenant Integrity", text: "I am willing to be held accountable to every commitment I made, including the hardest ones." },
 ];
 
@@ -61,27 +61,27 @@ const STEPS = [
 const COMMISSION_SCRIPTURES = [
   {
     ref: "Joshua 1:9",
-    text: "\u201CHave I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.\u201D",
+    text: "“Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.”",
     note: "The commission does not guarantee ease. It guarantees presence."
   },
   {
-    ref: "Matthew 28:19\u201320",
-    text: "\u201CGo therefore and make disciples of all nations\u2026 And behold, I am with you always, to the end of the age.\u201D",
+    ref: "Matthew 28:19–20",
+    text: "“Go therefore and make disciples of all nations… And behold, I am with you always, to the end of the age.”",
     note: "The Great Commission is not an invitation. It is an imperative with a promise."
   },
   {
     ref: "Isaiah 6:8",
-    text: "\u201CThen I heard the voice of the Lord saying, \u2018Whom shall I send? And who will go for us?\u2019 And I said, \u2018Here am I. Send me!\u2019\u201D",
+    text: "“Then I heard the voice of the Lord saying, ‘Whom shall I send? And who will go for us?’ And I said, ‘Here am I. Send me!’”",
     note: "Commissioning begins with surrender before it produces deployment."
   },
   {
-    ref: "Jeremiah 1:7\u20138",
-    text: "\u201CBut the Lord said to me, \u2018Do not say, \u201cI am too young.\u201D You must go to everyone I send you to and say whatever I command you. Do not be afraid of them, for I am with you.\u2019\u201D",
+    ref: "Jeremiah 1:7–8",
+    text: "“But the Lord said to me, ‘Do not say, “I am too young.” You must go to everyone I send you to and say whatever I command you. Do not be afraid of them, for I am with you.’”",
     note: "Your inadequacy is not a disqualification. It is the condition under which God is most clearly seen."
   },
   {
     ref: "2 Timothy 4:5",
-    text: "\u201CBut you, keep your head in all situations, endure hardship, do the work of an evangelist, discharge all the duties of your ministry.\u201D",
+    text: "“But you, keep your head in all situations, endure hardship, do the work of an evangelist, discharge all the duties of your ministry.”",
     note: "The commissioned leader is not called to a comfortable assignment. They are called to a complete one."
   },
 ];
@@ -91,31 +91,31 @@ const MARKS = [
   {
     num: 1, title: "Commissioned Leaders Lead from Authorization, Not Ambition",
     ref: "John 20:21",
-    scripture: "\u201CAs the Father has sent Me, I am sending you.\u201D \u2014 John 20:21",
+    scripture: "“As the Father has sent Me, I am sending you.” — John 20:21",
     paragraphs: [
-      "There is a decisive difference between leaders who send themselves and leaders who are sent. Leaders who send themselves lead from ambition \u2014 from desire, from comparison, from the need to prove something. Leaders who are sent lead from authorization \u2014 from assignment, from accountability, from the quiet certainty that they are exactly where they are supposed to be.",
-      "This is the difference between pressure and peace. The leader who sent themselves must constantly justify their position. The leader who was sent can rest in the assignment. Their confidence is not in their credentials \u2014 it is in the One who commissioned them.",
-      "To be commissioned is to operate under authority. That is not a limitation. It is a covering. The soldier who advances under orders has the backing of the entire army. The leader who advances under God\u2019s commissioning has the backing of heaven."
+      "There is a decisive difference between leaders who send themselves and leaders who are sent. Leaders who send themselves lead from ambition — from desire, from comparison, from the need to prove something. Leaders who are sent lead from authorization — from assignment, from accountability, from the quiet certainty that they are exactly where they are supposed to be.",
+      "This is the difference between pressure and peace. The leader who sent themselves must constantly justify their position. The leader who was sent can rest in the assignment. Their confidence is not in their credentials — it is in the One who commissioned them.",
+      "To be commissioned is to operate under authority. That is not a limitation. It is a covering. The soldier who advances under orders has the backing of the entire army. The leader who advances under God’s commissioning has the backing of heaven."
     ],
     prompt: "Are you operating from authorization or ambition? What is the evidence either way?"
   },
   {
     num: 2, title: "Commissioned Leaders Carry What Was Given, Not What Was Borrowed",
     ref: "Acts 3:6",
-    scripture: "\u201CSilver or gold I do not have, but what I do have I give you.\u201D \u2014 Acts 3:6",
+    scripture: "“Silver or gold I do not have, but what I do have I give you.” — Acts 3:6",
     paragraphs: [
-      "Peter did not offer the lame man what he had seen others offer. He offered what he carried. The commissioning is not a license to imitate another leader\u2019s assignment. It is a mandate to deploy your own.",
-      "One of the great diversions of leadership development is the temptation to carry borrowed weight \u2014 to lead with someone else\u2019s methods, someone else\u2019s voice, someone else\u2019s burden. It looks like humility. It is often avoidance. You have something to give that no one else can give, because no one else has your exact calling, your exact formation, your exact assignment.",
-      "What you carry coming out of this training is yours. The questions you answered, the burdens you named, the commitments you made \u2014 those belong to your specific assignment. Go and give what you have."
+      "Peter did not offer the lame man what he had seen others offer. He offered what he carried. The commissioning is not a license to imitate another leader’s assignment. It is a mandate to deploy your own.",
+      "One of the great diversions of leadership development is the temptation to carry borrowed weight — to lead with someone else’s methods, someone else’s voice, someone else’s burden. It looks like humility. It is often avoidance. You have something to give that no one else can give, because no one else has your exact calling, your exact formation, your exact assignment.",
+      "What you carry coming out of this training is yours. The questions you answered, the burdens you named, the commitments you made — those belong to your specific assignment. Go and give what you have."
     ],
-    prompt: "What have you been carrying out of this training that is uniquely yours to give? What are you still tempted to borrow from someone else instead of deploying what you\u2019ve been given?"
+    prompt: "What have you been carrying out of this training that is uniquely yours to give? What are you still tempted to borrow from someone else instead of deploying what you’ve been given?"
   },
   {
     num: 3, title: "Commissioned Leaders Build for What They Will Not Personally See",
     ref: "Hebrews 11:13",
-    scripture: "\u201CAll these people were still living by faith when they died. They did not receive the things promised; they only saw them and welcomed them from a distance.\u201D \u2014 Hebrews 11:13",
+    scripture: "“All these people were still living by faith when they died. They did not receive the things promised; they only saw them and welcomed them from a distance.” — Hebrews 11:13",
     paragraphs: [
-      "The Hall of Faith is populated by leaders who built things they never saw completed. They obeyed a commission that stretched beyond their lifetime. Their assignment was not to finish \u2014 it was to be faithful with what their generation was given to carry.",
+      "The Hall of Faith is populated by leaders who built things they never saw completed. They obeyed a commission that stretched beyond their lifetime. Their assignment was not to finish — it was to be faithful with what their generation was given to carry.",
       "This is the most liberating reframe in leadership: you are not responsible for the harvest you will not see. You are responsible for the seed you are holding. Plant faithfully. Build with integrity. Transfer well. Trust the generation that follows to carry what you could not complete.",
       "The measure of a commissioned leader is not what they finished. It is what they made possible. The most generative leaders in history were not the most visible. They were the most faithful with the part of the story they were given to write."
     ],
@@ -131,7 +131,7 @@ const DECLARATION = [
   "I will protect my capacity, because sustainable leadership is faithful leadership.",
   "I am aligning my life and leadership with my assignment, not with expectation.",
   "I will transfer what I carry to the leaders who come after me.",
-  "I will finish the course assigned to me \u2014 faithfully, not perfectly, but fully.",
+  "I will finish the course assigned to me — faithfully, not perfectly, but fully.",
   "I am not building a platform. I am building a legacy.",
   "I go, not because I am ready, but because I am sent.",
   "The Lord my God is with me wherever I go.",
@@ -141,13 +141,13 @@ const DECLARATION = [
 const ACCOUNTABILITY_TYPES = [
   {
     type: "Spiritual Authority",
-    description: "A covering relationship \u2014 someone who speaks into the direction and alignment of your assignment with apostolic or pastoral authority.",
-    question: "Who is this person for you, and are they actually engaged with your calling \u2014 not just your calendar?"
+    description: "A covering relationship — someone who speaks into the direction and alignment of your assignment with apostolic or pastoral authority.",
+    question: "Who is this person for you, and are they actually engaged with your calling — not just your calendar?"
   },
   {
     type: "Peer Accountability",
     description: "A peer who is running a comparable race and has permission to ask the hard questions about your character, not just your productivity.",
-    question: "Who knows the full picture \u2014 the private not just the public \u2014 and will not protect your comfort over your integrity?"
+    question: "Who knows the full picture — the private not just the public — and will not protect your comfort over your integrity?"
   },
   {
     type: "Developmental Investment",
@@ -163,7 +163,7 @@ const COMMITMENT_PROMPTS = [
   { id: "authority",    label: "3. My Spiritual Authority",         placeholder: "Name the person who holds spiritual covering over your assignment. When will you meet with them next?" },
   { id: "peer",         label: "4. My Peer Accountability",         placeholder: "Name the peer who has full-access permission to your character. What specific commitments are you sharing with them from this blueprint?" },
   { id: "investment",   label: "5. Who I Am Developing",            placeholder: "Name the leader you are actively developing. What are you transferring to them in the next 90 days?" },
-  { id: "declaration",  label: "6. My Sent Declaration",            placeholder: "In your own words \u2014 who are you, what are you called to build, and why does it matter to the generation after you?" },
+  { id: "declaration",  label: "6. My Sent Declaration",            placeholder: "In your own words — who are you, what are you called to build, and why does it matter to the generation after you?" },
 ];
 
 // ─── REVISIT TRIGGERS ────────────────────────────────────────
@@ -185,9 +185,9 @@ function downloadWordDoc(title, responses, commitments, preScores, diagnostic, a
   const scoreRows = diagnostic.map(q => `<tr><td style="padding:6px;border:1px solid #ccc;font-size:11px;">${q.num}</td><td style="padding:6px;border:1px solid #ccc;font-size:11px;">${q.text}</td><td style="padding:6px;border:1px solid #ccc;text-align:center;font-size:11px;">${preScores[q.num]||"-"}</td></tr>`).join("");
   const respEntries = Object.entries(responses).filter(([,v])=>v).map(([k,v])=>`<p style="margin:4px 0;"><b>${k}:</b> ${v}</p>`).join("");
   const commitEntries = Object.entries(commitments).filter(([,v])=>v).map(([k,v])=>`<p style="margin:4px 0;"><b>${k}:</b> ${v}</p>`).join("");
-  const declHtml = DECLARATION.map(d=>`<p style="margin:6px 0;font-size:12px;font-style:italic;color:#021A35;">\u201C${d}\u201D</p>`).join("");
-  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${title}</title><style>body{font-family:Georgia,serif;color:#1a1a1a;max-width:700px;margin:0 auto;padding:40px 20px}h1{color:#021A35;font-size:22px;border-bottom:3px solid #C8A951;padding-bottom:8px}h2{color:#021A35;font-size:16px;margin-top:24px;border-bottom:1px solid #ddd;padding-bottom:4px}p{font-size:12px;line-height:1.6}table{border-collapse:collapse;width:100%;margin:12px 0}th{background:#021A35;color:#fff;padding:8px;font-size:11px;text-align:left}td{font-size:11px}.footer{margin-top:40px;border-top:2px solid #C8A951;padding-top:12px;font-size:10px;color:#888;text-align:center}</style></head><body><h1>5C Leadership Blueprint \u2014 Commissioning</h1><p style="color:#888;">Awakening Destiny Global \u2022 ${now}</p><h2>Readiness Check</h2><table><tr><th>#</th><th>Statement</th><th>Score</th></tr>${scoreRows}</table><p><b>Total:</b> ${Object.values(preScores).reduce((a,b)=>a+b,0)}/60</p><h2>Declaration</h2>${declHtml}${respEntries?`<h2>Reflections</h2>${respEntries}`:""}${commitEntries?`<h2>Sent Commitments</h2>${commitEntries}`:""}${aiSummary?`<h2>My Commissioning Word</h2><p>${aiSummary.replace(/\n\n/g,"</p><p>")}</p>`:""}<div class="footer"><p>\u00A9 Awakening Destiny Global \u2022 awakeningdestiny.global</p><p>5C Leadership Blueprint \u2014 Developing Leaders \u2022 Creating Champions</p></div></body></html>`;
-  const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+  const declHtml = DECLARATION.map(d=>`<p style="margin:6px 0;font-size:12px;font-style:italic;color:#021A35;">“${d}”</p>`).join("");
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${title}</title><style>body{font-family:Georgia,serif;color:#1a1a1a;max-width:700px;margin:0 auto;padding:40px 20px}h1{color:#021A35;font-size:22px;border-bottom:3px solid #C8A951;padding-bottom:8px}h2{color:#021A35;font-size:16px;margin-top:24px;border-bottom:1px solid #ddd;padding-bottom:4px}p{font-size:12px;line-height:1.6}table{border-collapse:collapse;width:100%;margin:12px 0}th{background:#021A35;color:#fff;padding:8px;font-size:11px;text-align:left}td{font-size:11px}.footer{margin-top:40px;border-top:2px solid #C8A951;padding-top:12px;font-size:10px;color:#888;text-align:center}</style></head><body><h1>5C Leadership Blueprint — Commissioning</h1><p style="color:#888;">Awakening Destiny Global • ${now}</p><h2>Readiness Check</h2><table><tr><th>#</th><th>Statement</th><th>Score</th></tr>${scoreRows}</table><p><b>Total:</b> ${Object.values(preScores).reduce((a,b)=>a+b,0)}/60</p><h2>Declaration</h2>${declHtml}${respEntries?`<h2>Reflections</h2>${respEntries}`:""}${commitEntries?`<h2>Sent Commitments</h2>${commitEntries}`:""}${aiSummary?`<h2>My Commissioning Word</h2><p>${aiSummary.replace(/\n\n/g,"</p><p>")}</p>`:""}<div class="footer"><p>© Awakening Destiny Global • awakeningdestiny.global</p><p>5C Leadership Blueprint — Developing Leaders • Creating Champions</p></div></body></html>`;
+  const blob = new Blob(["﻿", html], { type: "application/msword" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a"); a.href = url; a.download = "My_Commissioning_Word.doc"; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => URL.revokeObjectURL(url), 250);
 }
@@ -288,14 +288,14 @@ Write in second person. Tone: apostolic, prophetic, direct, weighty. This is not
             <p className="text-sm leading-relaxed font-medium" style={{ color: NAVY }}>Commissioning is the moment where formation becomes deployment. Where training becomes sending. Where the blueprint becomes a life.</p>
           </div>
           <div className="p-5 sm:p-6 rounded-2xl border-l-4" style={{ borderColor: ACCENT, background: `linear-gradient(135deg, ${ACCENT_LIGHT}, #fff)` }}>
-            <p className="text-base sm:text-lg italic leading-relaxed" style={{ color: NAVY }}>"As the Father has sent Me, I am sending you." \u2014 John 20:21</p>
+            <p className="text-base sm:text-lg italic leading-relaxed" style={{ color: NAVY }}>"As the Father has sent Me, I am sending you." — John 20:21</p>
           </div>
-          <Scripture>{"\u201CHave I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.\u201D \u2014 Joshua 1:9"}</Scripture>
+          <Scripture>{"“Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.” — Joshua 1:9"}</Scripture>
           <div className="mt-4">
             <p className="text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: GOLD_D }}>BEFORE WE BEGIN</p>
-            <p className="text-sm italic mb-4" style={{ color: "#666" }}>Two questions. Don\u2019t rush past them.</p>
-            <Reflect id="opening_1" prompt="What is the single most significant thing God has revealed about you through this training? Not the most impressive thing \u2014 the most true thing." />
-            <Reflect id="opening_2" prompt="What would it mean to actually live by what you\u2019ve written in this blueprint? What would have to change?" />
+            <p className="text-sm italic mb-4" style={{ color: "#666" }}>Two questions. Don’t rush past them.</p>
+            <Reflect id="opening_1" prompt="What is the single most significant thing God has revealed about you through this training? Not the most impressive thing — the most true thing." />
+            <Reflect id="opening_2" prompt="What would it mean to actually live by what you’ve written in this blueprint? What would have to change?" />
           </div>
         </div>);
 
@@ -308,18 +308,18 @@ Write in second person. Tone: apostolic, prophetic, direct, weighty. This is not
                 <div className="px-4 py-3 flex items-center gap-3" style={{ background: m.light }}>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0" style={{ background: m.color, color: "#fff" }}>C</div>
                   <div>
-                    <p className="font-bold text-sm" style={{ color: NAVY }}>{name} \u2014 {m.label}</p>
+                    <p className="font-bold text-sm" style={{ color: NAVY }}>{name} — {m.label}</p>
                     <p className="text-xs italic" style={{ color: "#888" }}>{m.question}</p>
                   </div>
                 </div>
                 <div className="px-4 py-3">
-                  <textarea className="w-full border rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none focus:ring-2 transition-all" style={{ borderColor: "#e0e0e0", minHeight: "80px" }} placeholder={`In 2\u20133 sentences: what did ${name} reveal about you, and what is your clearest takeaway?`} value={responses[`review_${name}`] || ""} onChange={e => setResponses(r => ({ ...r, [`review_${name}`]: e.target.value }))} />
+                  <textarea className="w-full border rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none focus:ring-2 transition-all" style={{ borderColor: "#e0e0e0", minHeight: "80px" }} placeholder={`In 2–3 sentences: what did ${name} reveal about you, and what is your clearest takeaway?`} value={responses[`review_${name}`] || ""} onChange={e => setResponses(r => ({ ...r, [`review_${name}`]: e.target.value }))} />
                 </div>
               </div>
             ))}
           </div>
           <div className="p-5 rounded-xl" style={{ background: CREAM }}>
-            <p className="text-sm font-semibold mb-1" style={{ color: NAVY }}>Looking at all five together\u2026</p>
+            <p className="text-sm font-semibold mb-1" style={{ color: NAVY }}>Looking at all five together…</p>
             <p className="text-sm italic mb-3" style={{ color: "#666" }}>Where is the most significant misalignment across the five? Where do they converge most powerfully?</p>
             <textarea className="w-full border rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none focus:ring-2" style={{ borderColor: "#ddd", minHeight: "100px" }} placeholder="Write your integrated reflection here..." value={responses["review_integrated"] || ""} onChange={e => setResponses(r => ({ ...r, review_integrated: e.target.value }))} />
           </div>
@@ -340,8 +340,8 @@ Write in second person. Tone: apostolic, prophetic, direct, weighty. This is not
           <div>
             <SectionHead>What It Means to Be Commissioned</SectionHead>
             <p className="leading-relaxed mb-3" style={{ color: "#333" }}>Commissioning is not graduation. Graduation marks the end of a program. Commissioning marks the beginning of an assignment. You are not leaving this training because you are finished being formed. You are leaving because it is time to go.</p>
-            <Scripture>{"\u201CHe said to them, \u2018As the Father has sent Me, I am sending you.\u2019\u201D \u2014 John 20:21"}</Scripture>
-            <p className="leading-relaxed mb-3" style={{ color: "#333" }}>The word Jesus uses for \u201Csent\u201D (aposte\u0301llo) is the root of apostle \u2014 a sent one. Every commissioned leader carries apostolic function in some measure: they are deployed into a specific territory, under specific authority, for a specific purpose. They do not go on their own terms. They go on the terms of the One who sent them.</p>
+            <Scripture>{"“He said to them, ‘As the Father has sent Me, I am sending you.’” — John 20:21"}</Scripture>
+            <p className="leading-relaxed mb-3" style={{ color: "#333" }}>The word Jesus uses for “sent” (apostéllo) is the root of apostle — a sent one. Every commissioned leader carries apostolic function in some measure: they are deployed into a specific territory, under specific authority, for a specific purpose. They do not go on their own terms. They go on the terms of the One who sent them.</p>
           </div>
 
           {/* Commission Scriptures */}
@@ -413,8 +413,8 @@ Write in second person. Tone: apostolic, prophetic, direct, weighty. This is not
       case "accountability":
         return (<div className="space-y-6">
           <SectionHead sub="A commissioned leader does not go alone. Accountability is not an optional add-on to deployment — it is the structure that protects the assignment.">Accountability Structure</SectionHead>
-          <Scripture>{"\u201CIron sharpens iron, and one person sharpens another.\u201D \u2014 Proverbs 27:17"}</Scripture>
-          <p className="text-sm leading-relaxed" style={{ color: "#333" }}>Three accountability relationships are required for sustainable deployment. Each one serves a different protective function. A leader who has only one \u2014 or none \u2014 is operating without covering. This is not a suggestion. It is a structural requirement for what you are being sent to do.</p>
+          <Scripture>{"“Iron sharpens iron, and one person sharpens another.” — Proverbs 27:17"}</Scripture>
+          <p className="text-sm leading-relaxed" style={{ color: "#333" }}>Three accountability relationships are required for sustainable deployment. Each one serves a different protective function. A leader who has only one — or none — is operating without covering. This is not a suggestion. It is a structural requirement for what you are being sent to do.</p>
           <div className="space-y-4">
             {ACCOUNTABILITY_TYPES.map((a, i) => (
               <div key={i} className="rounded-xl border overflow-hidden" style={{ borderColor: "#e0e0e0" }}>
@@ -446,7 +446,7 @@ Write in second person. Tone: apostolic, prophetic, direct, weighty. This is not
           <div className="space-y-5">{COMMITMENT_PROMPTS.map(c => (<div key={c.id}><label className="block text-sm font-semibold mb-2" style={{ color: NAVY }}>{c.label}</label><textarea className="w-full border rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none focus:ring-2 transition-all" style={{ borderColor: "#ddd", minHeight: "90px" }} placeholder={c.placeholder} value={commitments[c.id] || ""} onChange={e => setCommitments(p => ({ ...p, [c.id]: e.target.value }))} /></div>))}</div>
           <div className="mt-6 p-5 rounded-xl" style={{ background: ACCENT_LIGHT }}>
             <h4 className="font-bold mb-3" style={{ color: NAVY }}>Return to This Page</h4>
-            <p className="text-sm mb-3 leading-relaxed" style={{ color: "#333" }}>The commissioning is not a one-time event. It is a posture you return to. When the assignment gets heavy, when the alignment drifts, when you are not sure you are still sent \u2014 come back to what you wrote here. Read your declaration again. Review your commitments. Let the word that commissioned you reorient you.</p>
+            <p className="text-sm mb-3 leading-relaxed" style={{ color: "#333" }}>The commissioning is not a one-time event. It is a posture you return to. When the assignment gets heavy, when the alignment drifts, when you are not sure you are still sent — come back to what you wrote here. Read your declaration again. Review your commitments. Let the word that commissioned you reorient you.</p>
             <p className="text-sm font-semibold mb-3" style={{ color: NAVY }}>Revisit your commissioning:</p>
             <div className="space-y-2 ml-1">{REVISIT_TRIGGERS.map((t, i) => (<div key={i} className="flex items-start gap-3"><span className="mt-1.5 w-2 h-2 rounded-full shrink-0" style={{ background: ACCENT }} /><p className="text-sm leading-relaxed" style={{ color: "#333" }}>{t}</p></div>))}</div>
           </div>
@@ -464,7 +464,7 @@ Write in second person. Tone: apostolic, prophetic, direct, weighty. This is not
           {aiSummary && (<>
             <div className="p-5 sm:p-6 rounded-2xl border-2" style={{ borderColor: ACCENT, background: `linear-gradient(160deg, ${ACCENT_LIGHT}, #fff)` }}>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: ACCENT }}><span className="text-sm" style={{ color: NAVY }}>{"\u2726"}</span></div>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: ACCENT }}><span className="text-sm" style={{ color: NAVY }}>{"✦"}</span></div>
                 <p className="font-bold" style={{ color: NAVY }}>Your Commissioning Word</p>
               </div>
               <div style={{ color: "#333" }}>{aiSummary.split("\n\n").map((para, i) => (<p key={i} className="mb-4 leading-relaxed text-sm" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "16px", lineHeight: "1.8" }}>{para}</p>))}</div>
@@ -472,7 +472,7 @@ Write in second person. Tone: apostolic, prophetic, direct, weighty. This is not
             <div className="p-5 rounded-xl text-center" style={{ background: NAVY }}>
               <p className="text-xs uppercase tracking-widest mb-1" style={{ color: GOLD_D }}>Awakening Destiny Global</p>
               <p className="text-sm font-semibold" style={{ color: "#fff" }}>5C Leadership Blueprint Complete</p>
-              <p className="text-xs mt-1" style={{ color: GOLD_D }}>Calling \u00B7 Connection \u00B7 Competency \u00B7 Capacity \u00B7 Convergence</p>
+              <p className="text-xs mt-1" style={{ color: GOLD_D }}>Calling · Connection · Competency · Capacity · Convergence</p>
             </div>
             <button onClick={() => downloadWordDoc("Commissioning", responses, commitments, scores, commissioningDiagnostic, aiSummary)} className="w-full py-3 rounded-xl font-semibold text-sm transition-all hover:opacity-90 border-2" style={{ borderColor: ACCENT, color: NAVY, background: ACCENT_LIGHT }}>Download My Commissioning Word (.doc)</button>
           </>)}
@@ -491,14 +491,14 @@ Write in second person. Tone: apostolic, prophetic, direct, weighty. This is not
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       <div className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <a href="/" className="text-sm font-medium flex items-center gap-1 hover:opacity-70 transition-opacity" style={{ color: NAVY }}>{"\u2190"} Dashboard</a>
+          <a href="/" className="text-sm font-medium flex items-center gap-1 hover:opacity-70 transition-opacity" style={{ color: NAVY }}>{"←"} Dashboard</a>
           <div className="text-center"><p className="text-xs uppercase tracking-widest" style={{ color: ACCENT }}>Final Module</p><p className="text-sm font-bold" style={{ color: NAVY }}>Commissioning</p></div>
           <div className="w-16" />
         </div>
       </div>
       <div className="max-w-3xl mx-auto px-4 py-4">
         <div className="flex items-center gap-1 overflow-x-auto pb-2 -mx-1 px-1">
-          {STEPS.map((s, i) => (<button key={s.id} onClick={() => setStep(i)} className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all" style={{ background: i === step ? ACCENT : i < step ? ACCENT_LIGHT : "transparent", color: i === step ? NAVY : i < step ? ACCENT : "#aaa", border: `1px solid ${i <= step ? ACCENT : "#e5e5e5"}` }}>{i < step && <span>{"\u2713"}</span>}{s.label}</button>))}
+          {STEPS.map((s, i) => (<button key={s.id} onClick={() => setStep(i)} className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all" style={{ background: i === step ? ACCENT : i < step ? ACCENT_LIGHT : "transparent", color: i === step ? NAVY : i < step ? ACCENT : "#aaa", border: `1px solid ${i <= step ? ACCENT : "#e5e5e5"}` }}>{i < step && <span>{"✓"}</span>}{s.label}</button>))}
         </div>
       </div>
       <div className="max-w-3xl mx-auto px-4 pb-32" ref={topRef}>
@@ -511,10 +511,10 @@ Write in second person. Tone: apostolic, prophetic, direct, weighty. This is not
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-100 py-3 z-40">
         <div className="max-w-3xl mx-auto px-4 flex justify-between items-center">
-          <button onClick={() => step > 0 && setStep(step - 1)} disabled={step === 0} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: `1px solid ${NAVY}` }}>{"\u2190"} Previous</button>
+          <button onClick={() => step > 0 && setStep(step - 1)} disabled={step === 0} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: `1px solid ${NAVY}` }}>{"←"} Previous</button>
           <span className="text-xs" style={{ color: "#aaa" }}>{step + 1} of {STEPS.length}</span>
           <button onClick={() => step < STEPS.length - 1 && setStep(step + 1)} disabled={step === STEPS.length - 1} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-30" style={{ background: step === STEPS.length - 1 ? "#e0e0e0" : ACCENT, color: step === STEPS.length - 1 ? "#aaa" : NAVY }}>
-            {step === STEPS.length - 1 ? "Complete" : `Next \u2192`}
+            {step === STEPS.length - 1 ? "Complete" : `Next →`}
           </button>
         </div>
       </div>

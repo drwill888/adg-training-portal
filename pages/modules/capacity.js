@@ -22,16 +22,16 @@ const ACCENT_MID   = "#67D0EC";
 
 // ─── DIAGNOSTIC DATA ─────────────────────────────────────────
 const capacityDiagnostic = [
-  { num: 1,  cat: "Character Foundation",      text: "My private character matches the weight of my public assignment.", ref: "2 Peter 1:5\u20138" },
+  { num: 1,  cat: "Character Foundation",      text: "My private character matches the weight of my public assignment.", ref: "2 Peter 1:5–8" },
   { num: 2,  cat: "Character Foundation",      text: "I lead from integrity even when no one is watching." },
   { num: 3,  cat: "Character Foundation",      text: "I can identify the areas of my character still under construction." },
-  { num: 4,  cat: "Emotional Reserves",        text: "I am aware of my personal depletion warning signs before I crash.", ref: "1 Kings 19:4\u20138" },
+  { num: 4,  cat: "Emotional Reserves",        text: "I am aware of my personal depletion warning signs before I crash.", ref: "1 Kings 19:4–8" },
   { num: 5,  cat: "Emotional Reserves",        text: "I have the internal reserves to handle unexpected pressure without becoming reactive." },
   { num: 6,  cat: "Emotional Reserves",        text: "I process disappointment and failure in healthy, constructive ways." },
-  { num: 7,  cat: "Rhythm & Renewal",          text: "I practice consistent rhythms of rest that protect my long-term capacity.", ref: "Genesis 2:2\u20133" },
+  { num: 7,  cat: "Rhythm & Renewal",          text: "I practice consistent rhythms of rest that protect my long-term capacity.", ref: "Genesis 2:2–3" },
   { num: 8,  cat: "Rhythm & Renewal",          text: "I have disciplines of spiritual renewal that restore, not just maintain, my strength." },
   { num: 9,  cat: "Rhythm & Renewal",          text: "I know when to say no, and I say it without guilt or overcorrection." },
-  { num: 10, cat: "Sustained Endurance",       text: "I have grown through adversity without becoming bitter, cynical, or closed.", ref: "James 1:2\u20134" },
+  { num: 10, cat: "Sustained Endurance",       text: "I have grown through adversity without becoming bitter, cynical, or closed.", ref: "James 1:2–4" },
   { num: 11, cat: "Sustained Endurance",       text: "I have evidence that my capacity has expanded through tested seasons." },
   { num: 12, cat: "Sustained Endurance",       text: "I am building for the next decade, not just surviving the next quarter." },
 ];
@@ -53,7 +53,7 @@ const CONTRAST_TABLE = [
   { dimension: "Foundation",          left: "Gifting and momentum",               right: "Character and discipline" },
   { dimension: "Pace",                left: "Sprint until collapse",               right: "Sustainable rhythm" },
   { dimension: "Response to Pressure",left: "Reactive and destabilized",           right: "Anchored and composed" },
-  { dimension: "Rest",                left: "A reward you haven\u2019t earned yet", right: "A discipline that expands capacity" },
+  { dimension: "Rest",                left: "A reward you haven’t earned yet", right: "A discipline that expands capacity" },
   { dimension: "Failure",             left: "Identity threat",                     right: "Formation opportunity" },
   { dimension: "Strength Source",     left: "External validation",                 right: "Internal conviction" },
   { dimension: "Longevity",           left: "Dependent on circumstances",          right: "Built through endurance" },
@@ -64,42 +64,42 @@ const CONTRAST_TABLE = [
 // ─── 4 GOVERNING PRINCIPLES ─────────────────────────────────
 const PRINCIPLES = [
   {
-    num: 1, title: "Character Determines Carrying Capacity", ref: "2 Peter 1:5\u20138",
-    scripture: "\u201CMake every effort to add to your faith goodness; and to goodness, knowledge; and to knowledge, self-control; and to self-control, perseverance.\u201D \u2014 2 Peter 1:5\u20136",
+    num: 1, title: "Character Determines Carrying Capacity", ref: "2 Peter 1:5–8",
+    scripture: "“Make every effort to add to your faith goodness; and to goodness, knowledge; and to knowledge, self-control; and to self-control, perseverance.” — 2 Peter 1:5–6",
     paragraphs: [
-      "You cannot carry beyond what your character can hold. Gifting may open doors, but character determines how long you stay in the room. Leaders who build faster than they form will eventually fracture under the weight of what they\u2019ve built.",
-      "Peter\u2019s list is not a ladder to climb once. It is a chain \u2014 each quality reinforcing and enabling the next. Faith without goodness collapses under moral pressure. Goodness without self-control becomes erratic under load. Self-control without perseverance breaks in sustained hardship. Capacity is not built in a moment. It is forged link by link.",
-      "The question is not whether your vision is large enough. The question is whether your character is deep enough to sustain it. Vision without character is a building without foundation \u2014 spectacular until the first real storm."
+      "You cannot carry beyond what your character can hold. Gifting may open doors, but character determines how long you stay in the room. Leaders who build faster than they form will eventually fracture under the weight of what they’ve built.",
+      "Peter’s list is not a ladder to climb once. It is a chain — each quality reinforcing and enabling the next. Faith without goodness collapses under moral pressure. Goodness without self-control becomes erratic under load. Self-control without perseverance breaks in sustained hardship. Capacity is not built in a moment. It is forged link by link.",
+      "The question is not whether your vision is large enough. The question is whether your character is deep enough to sustain it. Vision without character is a building without foundation — spectacular until the first real storm."
     ],
     prompt: "Where is your character still catching up to your calling? What does your private life reveal about your actual carrying capacity?"
   },
   {
-    num: 2, title: "Rhythm Protects What Vision Depletes", ref: "Genesis 2:2\u20133; Mark 6:31",
-    scripture: "\u201CBy the seventh day God had finished the work he had been doing; so on the seventh day he rested from all his work.\u201D \u2014 Genesis 2:2",
+    num: 2, title: "Rhythm Protects What Vision Depletes", ref: "Genesis 2:2–3; Mark 6:31",
+    scripture: "“By the seventh day God had finished the work he had been doing; so on the seventh day he rested from all his work.” — Genesis 2:2",
     paragraphs: [
-      "God did not rest because He was tired. He rested because rhythm is a creation principle. What He built into the cosmos, He built into leadership: seasons of intense output must be followed by seasons of intentional renewal. Leaders who ignore this don\u2019t just get tired \u2014 they get brittle.",
-      "Jesus pulled his disciples away from the crowds \u2014 \u201CCome away by yourselves to a desolate place and rest a while.\u201D (Mark 6:31) This was not indulgence. It was strategy. A depleted leader makes depleted decisions, leads depleted teams, and builds depleted culture.",
+      "God did not rest because He was tired. He rested because rhythm is a creation principle. What He built into the cosmos, He built into leadership: seasons of intense output must be followed by seasons of intentional renewal. Leaders who ignore this don’t just get tired — they get brittle.",
+      "Jesus pulled his disciples away from the crowds — “Come away by yourselves to a desolate place and rest a while.” (Mark 6:31) This was not indulgence. It was strategy. A depleted leader makes depleted decisions, leads depleted teams, and builds depleted culture.",
       "Rest is not the absence of work. It is the practice of trusting God with what you cannot control while your body and soul recover. Leaders who cannot rest are leaders who do not yet fully trust. Rhythm is an act of faith as much as it is a discipline of sustainability."
     ],
     prompt: "What rhythms of rest and renewal are currently missing from your life? What is your depletion costing your leadership and the people around you?"
   },
   {
-    num: 3, title: "Trials Develop What Comfort Cannot", ref: "James 1:2\u20134",
-    scripture: "\u201CConsider it pure joy, my brothers and sisters, whenever you face trials of many kinds, because you know that the testing of your faith produces perseverance.\u201D \u2014 James 1:2\u20133",
+    num: 3, title: "Trials Develop What Comfort Cannot", ref: "James 1:2–4",
+    scripture: "“Consider it pure joy, my brothers and sisters, whenever you face trials of many kinds, because you know that the testing of your faith produces perseverance.” — James 1:2–3",
     paragraphs: [
-      "Capacity is not handed to you \u2014 it is developed through tested seasons. The Greek word for \u201Ctesting\u201D (dokimi\u014D) carries the image of assaying metal under heat. What survives is refined, not diminished. The trial does not remove capacity \u2014 it reveals and expands it.",
-      "Comfort preserves what you have. Adversity produces what you need. Leaders who spend their energy avoiding difficulty are actually spending their energy avoiding formation. The hardest seasons of your leadership are not interruptions to your development \u2014 they are the curriculum.",
-      "The promise of James 1 is not that trials are pleasant. It is that trials are productive. Perseverance, when it has done its full work, produces completeness \u2014 a leader who lacks nothing. That is a different kind of strength than talent or gifting can produce."
+      "Capacity is not handed to you — it is developed through tested seasons. The Greek word for “testing” (dokimiō) carries the image of assaying metal under heat. What survives is refined, not diminished. The trial does not remove capacity — it reveals and expands it.",
+      "Comfort preserves what you have. Adversity produces what you need. Leaders who spend their energy avoiding difficulty are actually spending their energy avoiding formation. The hardest seasons of your leadership are not interruptions to your development — they are the curriculum.",
+      "The promise of James 1 is not that trials are pleasant. It is that trials are productive. Perseverance, when it has done its full work, produces completeness — a leader who lacks nothing. That is a different kind of strength than talent or gifting can produce."
     ],
     prompt: "What trial are you currently in? What is God developing in you through it that could not be produced any other way?"
   },
   {
-    num: 4, title: "Weakness Surrendered Becomes Sustainable Strength", ref: "2 Corinthians 12:9\u201310",
-    scripture: "\u201CMy grace is sufficient for you, for my power is made perfect in weakness.\u201D \u2014 2 Corinthians 12:9",
+    num: 4, title: "Weakness Surrendered Becomes Sustainable Strength", ref: "2 Corinthians 12:9–10",
+    scripture: "“My grace is sufficient for you, for my power is made perfect in weakness.” — 2 Corinthians 12:9",
     paragraphs: [
       "Paul asked three times for his thorn to be removed. God said no. Not because God was indifferent, but because the weakness was producing something the absence of weakness could not: a capacity rooted in grace rather than giftedness, in dependence rather than self-reliance.",
-      "The leader who has never hit a wall has never discovered what is on the other side of the wall. There is a kind of strength \u2014 sustainable, unshakeable, humble strength \u2014 that is only accessed through acknowledged limitation. \u201CWhen I am weak, then I am strong.\u201D This is not paradox. It is the physics of the Kingdom.",
-      "Capacity built on your own resources will always have a ceiling. Capacity built through surrendered weakness taps into an inexhaustible source. The most durable leaders are not the most naturally gifted \u2014 they are the most dependent on God through the most tested seasons."
+      "The leader who has never hit a wall has never discovered what is on the other side of the wall. There is a kind of strength — sustainable, unshakeable, humble strength — that is only accessed through acknowledged limitation. “When I am weak, then I am strong.” This is not paradox. It is the physics of the Kingdom.",
+      "Capacity built on your own resources will always have a ceiling. Capacity built through surrendered weakness taps into an inexhaustible source. The most durable leaders are not the most naturally gifted — they are the most dependent on God through the most tested seasons."
     ],
     prompt: "Where have you been trying to compensate for weakness rather than surrendering it to God? What would it look like to lead from acknowledged limitation rather than hidden depletion?"
   }
@@ -107,53 +107,53 @@ const PRINCIPLES = [
 
 // ─── EXEMPLAR: ELIJAH ────────────────────────────────────────
 const EXEMPLAR = {
-  name: "Elijah", title: "The Collapsed Prophet", refs: "1 Kings 18\u201319; James 5:17",
-  intro: "Elijah called fire from heaven on Mount Carmel. Then, within twenty-four hours, he was under a juniper tree asking God to let him die. This is the most honest portrait of capacity failure in Scripture \u2014 and God\u2019s response is the most instructive.",
-  mainScripture: "\u201CHe himself went a day\u2019s journey into the wilderness and came and sat down under a juniper tree. And he asked that he might die, saying, \u2018It is enough; now, O Lord, take away my life.\u2019\u201D \u2014 1 Kings 19:4",
+  name: "Elijah", title: "The Collapsed Prophet", refs: "1 Kings 18–19; James 5:17",
+  intro: "Elijah called fire from heaven on Mount Carmel. Then, within twenty-four hours, he was under a juniper tree asking God to let him die. This is the most honest portrait of capacity failure in Scripture — and God’s response is the most instructive.",
+  mainScripture: "“He himself went a day’s journey into the wilderness and came and sat down under a juniper tree. And he asked that he might die, saying, ‘It is enough; now, O Lord, take away my life.’” — 1 Kings 19:4",
   bodyParagraphs: [
-    "Elijah did not collapse because he lacked faith. He collapsed because he lacked reserves. He had poured everything into a singular confrontation of national magnitude \u2014 and there was nothing left. The victory depleted him as much as the battle would have.",
-    "God\u2019s response is striking in what it does not include: no rebuke, no urgency, no assignment. Just food, water, and rest. Twice. The angel said, \u201CArise and eat, for the journey is too great for you.\u201D God\u2019s first answer to depletion was not a word. It was a meal and a nap.",
-    "Then, at Horeb, came the still small voice. Not the wind. Not the earthquake. Not the fire. The voice came after the noise settled. Elijah\u2019s renewed capacity was not produced by his effort. It was produced by God\u2019s provision in the place of his honest collapse.",
+    "Elijah did not collapse because he lacked faith. He collapsed because he lacked reserves. He had poured everything into a singular confrontation of national magnitude — and there was nothing left. The victory depleted him as much as the battle would have.",
+    "God’s response is striking in what it does not include: no rebuke, no urgency, no assignment. Just food, water, and rest. Twice. The angel said, “Arise and eat, for the journey is too great for you.” God’s first answer to depletion was not a word. It was a meal and a nap.",
+    "Then, at Horeb, came the still small voice. Not the wind. Not the earthquake. Not the fire. The voice came after the noise settled. Elijah’s renewed capacity was not produced by his effort. It was produced by God’s provision in the place of his honest collapse.",
   ],
   arc: [
-    { stage: "Peak Output", text: "Carmel was a high-water mark \u2014 supernatural faith, public confrontation, national breakthrough. But even peak moments consume reserves." },
-    { stage: "Depletion", text: "Jezebel\u2019s threat broke what Baal\u2019s prophets couldn\u2019t. One threatening voice after a season of maximum output sent him running." },
-    { stage: "Collapse & Honesty", text: "He didn\u2019t perform his way through the crash. He told the truth. \u201CIt is enough.\u201D Honest collapse is the beginning of real renewal." },
-    { stage: "God\u2019s Response", text: "Rest, food, and presence. Then a new direction. God met his capacity crisis with practical care, not theological correction." },
-    { stage: "Renewed Assignment", text: "Out of Horeb came a new mandate. Elisha. A successor. Multiplication. Elijah\u2019s capacity was not just restored \u2014 it was redirected toward legacy." },
+    { stage: "Peak Output", text: "Carmel was a high-water mark — supernatural faith, public confrontation, national breakthrough. But even peak moments consume reserves." },
+    { stage: "Depletion", text: "Jezebel’s threat broke what Baal’s prophets couldn’t. One threatening voice after a season of maximum output sent him running." },
+    { stage: "Collapse & Honesty", text: "He didn’t perform his way through the crash. He told the truth. “It is enough.” Honest collapse is the beginning of real renewal." },
+    { stage: "God’s Response", text: "Rest, food, and presence. Then a new direction. God met his capacity crisis with practical care, not theological correction." },
+    { stage: "Renewed Assignment", text: "Out of Horeb came a new mandate. Elisha. A successor. Multiplication. Elijah’s capacity was not just restored — it was redirected toward legacy." },
   ],
   coachingQuestions: [
     "Where are you currently running on empty while still performing at full volume?",
-    "Have you allowed yourself to be honest about your depletion \u2014 with God, with yourself, with anyone?",
+    "Have you allowed yourself to be honest about your depletion — with God, with yourself, with anyone?",
     "What would it mean for you to sit under the juniper tree and let God meet you there instead of pushing through?",
   ]
 };
 
 // ─── THREE STAGES ────────────────────────────────────────────
 const STAGES = [
-  { name: "Overloaded", description: "Carrying more than your character can sustain. Driven by ambition, obligation, or the fear of disappointing others. Output is high; reserves are low. Warning signs are present but being overridden. Burnout is not a question of if \u2014 only when.", ref: "1 Kings 19:4", marker: "You stop performing through exhaustion and start telling the truth about your depletion." },
+  { name: "Overloaded", description: "Carrying more than your character can sustain. Driven by ambition, obligation, or the fear of disappointing others. Output is high; reserves are low. Warning signs are present but being overridden. Burnout is not a question of if — only when.", ref: "1 Kings 19:4", marker: "You stop performing through exhaustion and start telling the truth about your depletion." },
   { name: "Calibrated", description: "Learning to match your load to your actual capacity. Establishing rhythms of rest. Identifying depletion triggers. Building structures that protect your reserves. Saying no to things that are good so you can say yes to things that are yours.", ref: "Mark 6:31", marker: "You stop treating rest as weakness and start treating it as stewardship." },
-  { name: "Expanded", description: "Capacity has grown through tested character and intentional renewal. You carry more without breaking because you\u2019ve been broken and rebuilt. Sustainability is not just a goal \u2014 it is a practice. You are building for decades, not just seasons.", ref: "James 1:4", marker: "You lead others through capacity crises because you have navigated your own with wisdom." }
+  { name: "Expanded", description: "Capacity has grown through tested character and intentional renewal. You carry more without breaking because you’ve been broken and rebuilt. Sustainability is not just a goal — it is a practice. You are building for decades, not just seasons.", ref: "James 1:4", marker: "You lead others through capacity crises because you have navigated your own with wisdom." }
 ];
 
 // ─── KEY SCRIPTURES ──────────────────────────────────────────
 const KEY_SCRIPTURES = [
-  { ref: "2 Peter 1:5\u20138",        note: "Character layers that build sustainable capacity." },
-  { ref: "1 Kings 19:4\u20138",       note: "God\u2019s response to depletion: rest, food, presence." },
-  { ref: "James 1:2\u20134",          note: "Tested faith produces perseverance and completeness." },
-  { ref: "2 Corinthians 12:9\u201310", note: "Weakness surrendered becomes sustainable strength." },
+  { ref: "2 Peter 1:5–8",        note: "Character layers that build sustainable capacity." },
+  { ref: "1 Kings 19:4–8",       note: "God’s response to depletion: rest, food, presence." },
+  { ref: "James 1:2–4",          note: "Tested faith produces perseverance and completeness." },
+  { ref: "2 Corinthians 12:9–10", note: "Weakness surrendered becomes sustainable strength." },
   { ref: "Isaiah 40:31",             note: "Waiting on the Lord renews strength." },
-  { ref: "Genesis 2:2\u20133",        note: "Rest is a creation principle, not a reward." },
-  { ref: "Mark 6:31",                note: "Come away and rest \u2014 Jesus\u2019 strategy, not an afterthought." },
+  { ref: "Genesis 2:2–3",        note: "Rest is a creation principle, not a reward." },
+  { ref: "Mark 6:31",                note: "Come away and rest — Jesus’ strategy, not an afterthought." },
   { ref: "Galatians 6:9",            note: "Do not grow weary in doing good." },
-  { ref: "Hebrews 12:1\u20132",       note: "Run with endurance, eyes on the Author and Finisher." },
-  { ref: "2 Corinthians 4:8\u20139",  note: "Hard-pressed but not crushed \u2014 the anatomy of endurance." },
+  { ref: "Hebrews 12:1–2",       note: "Run with endurance, eyes on the Author and Finisher." },
+  { ref: "2 Corinthians 4:8–9",  note: "Hard-pressed but not crushed — the anatomy of endurance." },
 ];
 
 // ─── MACRO / MICRO ────────────────────────────────────────────
 const MACRO_MICRO = {
-  macro: { title: "Macro \u2014 Character (Lifetime)", description: "Your character reservoir \u2014 the accumulated depth of integrity, emotional maturity, and spiritual formation built through decades of tested obedience. This is what determines your ultimate carrying capacity. It doesn\u2019t change overnight; it grows through sustained, faithful development." },
-  micro: { title: "Micro \u2014 Current Load (Season)", description: "The specific weight you are carrying right now. Every season brings new demands on your reserves. The critical question: Does your current capacity match your current assignment? Or are you carrying more than your character can sustainably hold?" }
+  macro: { title: "Macro — Character (Lifetime)", description: "Your character reservoir — the accumulated depth of integrity, emotional maturity, and spiritual formation built through decades of tested obedience. This is what determines your ultimate carrying capacity. It doesn’t change overnight; it grows through sustained, faithful development." },
+  micro: { title: "Micro — Current Load (Season)", description: "The specific weight you are carrying right now. Every season brings new demands on your reserves. The critical question: Does your current capacity match your current assignment? Or are you carrying more than your character can sustainably hold?" }
 };
 
 // ─── COMMITMENT / REVISIT / APPLICATION ──────────────────────
@@ -163,7 +163,7 @@ const COMMITMENT_PROMPTS = [
   { id: "rhythm",        label: "3. My Rhythm Commitment",         placeholder: "What specific rhythm of rest and renewal will you establish? Name the day, the practice, the non-negotiable." },
   { id: "warning",       label: "4. My Depletion Warning Signs",   placeholder: "What are your first indicators that your reserves are running low? What do people close to you notice before you do?" },
   { id: "expansion",     label: "5. My Capacity Expansion Plan",   placeholder: "What trial or discipline are you embracing this season to expand your capacity? What is God building in you through it?" },
-  { id: "accountability",label: "6. My Accountability",            placeholder: "Who in your life has full permission to speak to your capacity \u2014 honestly, without you managing the narrative?" },
+  { id: "accountability",label: "6. My Accountability",            placeholder: "Who in your life has full permission to speak to your capacity — honestly, without you managing the narrative?" },
 ];
 const REVISIT_TRIGGERS = [
   "When you feel yourself operating in survival mode instead of sustainable rhythm",
@@ -175,7 +175,7 @@ const REVISIT_TRIGGERS = [
 ];
 const APPLICATION_QUESTIONS = [
   "What am I currently carrying that was never mine to carry?",
-  "Where is my pace outrunning my character \u2014 and what is the cost to the people around me?",
+  "Where is my pace outrunning my character — and what is the cost to the people around me?",
   "What one rhythm change this week would most protect my long-term capacity?",
 ];
 
@@ -188,8 +188,8 @@ function downloadWordDoc(title, responses, commitments, preScores, postScores, d
   const scoreRows = diagnostic.map(q => `<tr><td style="padding:6px;border:1px solid #ccc;font-size:11px;">${q.num}</td><td style="padding:6px;border:1px solid #ccc;font-size:11px;">${q.text}</td><td style="padding:6px;border:1px solid #ccc;text-align:center;font-size:11px;">${preScores[q.num]||"-"}</td><td style="padding:6px;border:1px solid #ccc;text-align:center;font-size:11px;">${postScores[q.num]||"-"}</td></tr>`).join("");
   const respEntries = Object.entries(responses).filter(([,v])=>v).map(([k,v])=>`<p style="margin:4px 0;"><b>${k}:</b> ${v}</p>`).join("");
   const commitEntries = Object.entries(commitments).filter(([,v])=>v).map(([k,v])=>`<p style="margin:4px 0;"><b>${k}:</b> ${v}</p>`).join("");
-  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${title}</title><style>body{font-family:Georgia,serif;color:#1a1a1a;max-width:700px;margin:0 auto;padding:40px 20px}h1{color:#021A35;font-size:22px;border-bottom:3px solid #C8A951;padding-bottom:8px}h2{color:#021A35;font-size:16px;margin-top:24px;border-bottom:1px solid #ddd;padding-bottom:4px}p{font-size:12px;line-height:1.6}table{border-collapse:collapse;width:100%;margin:12px 0}th{background:#021A35;color:#fff;padding:8px;font-size:11px;text-align:left}td{font-size:11px}.footer{margin-top:40px;border-top:2px solid #C8A951;padding-top:12px;font-size:10px;color:#888;text-align:center}</style></head><body><h1>5C Leadership Blueprint \u2014 ${title}</h1><p style="color:#888;">Awakening Destiny Global \u2022 ${now}</p><h2>Diagnostic Scores</h2><table><tr><th>#</th><th>Statement</th><th>Pre</th><th>Post</th></tr>${scoreRows}</table><p><b>Pre-Total:</b> ${Object.values(preScores).reduce((a,b)=>a+b,0)}/60 &nbsp;&nbsp; <b>Post-Total:</b> ${Object.values(postScores).reduce((a,b)=>a+b,0)}/60</p>${respEntries?`<h2>Reflections</h2>${respEntries}`:""}${commitEntries?`<h2>Commitments</h2>${commitEntries}`:""}${aiSummary?`<h2>My ${title} Blueprint</h2><p>${aiSummary.replace(/\n\n/g,"</p><p>")}</p>`:""}<div class="footer"><p>\u00A9 Awakening Destiny Global \u2022 awakeningdestiny.global</p><p>5C Leadership Blueprint \u2014 Developing Leaders \u2022 Creating Champions</p></div></body></html>`;
-  const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${title}</title><style>body{font-family:Georgia,serif;color:#1a1a1a;max-width:700px;margin:0 auto;padding:40px 20px}h1{color:#021A35;font-size:22px;border-bottom:3px solid #C8A951;padding-bottom:8px}h2{color:#021A35;font-size:16px;margin-top:24px;border-bottom:1px solid #ddd;padding-bottom:4px}p{font-size:12px;line-height:1.6}table{border-collapse:collapse;width:100%;margin:12px 0}th{background:#021A35;color:#fff;padding:8px;font-size:11px;text-align:left}td{font-size:11px}.footer{margin-top:40px;border-top:2px solid #C8A951;padding-top:12px;font-size:10px;color:#888;text-align:center}</style></head><body><h1>5C Leadership Blueprint — ${title}</h1><p style="color:#888;">Awakening Destiny Global • ${now}</p><h2>Diagnostic Scores</h2><table><tr><th>#</th><th>Statement</th><th>Pre</th><th>Post</th></tr>${scoreRows}</table><p><b>Pre-Total:</b> ${Object.values(preScores).reduce((a,b)=>a+b,0)}/60 &nbsp;&nbsp; <b>Post-Total:</b> ${Object.values(postScores).reduce((a,b)=>a+b,0)}/60</p>${respEntries?`<h2>Reflections</h2>${respEntries}`:""}${commitEntries?`<h2>Commitments</h2>${commitEntries}`:""}${aiSummary?`<h2>My ${title} Blueprint</h2><p>${aiSummary.replace(/\n\n/g,"</p><p>")}</p>`:""}<div class="footer"><p>© Awakening Destiny Global • awakeningdestiny.global</p><p>5C Leadership Blueprint — Developing Leaders • Creating Champions</p></div></body></html>`;
+  const blob = new Blob(["﻿", html], { type: "application/msword" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a"); a.href = url; a.download = `My_${title.replace(/\s+/g,"_")}_Blueprint.doc`; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => URL.revokeObjectURL(url), 250);
 }
@@ -277,29 +277,29 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
         return (<div className="space-y-6">
           <div className="p-5 rounded-xl" style={{ background: CREAM }}>
             <p className="text-xs uppercase tracking-widest font-semibold mb-3" style={{ color: GOLD_D }}>THE 5C LEADERSHIP LIFECYCLE</p>
-            <p className="text-sm leading-relaxed mb-3" style={{ color: "#333" }}>In Modules 1 through 3, we established Calling, Connection, and Competency \u2014 design, identity, and skill. Now we move to the dimension that determines whether everything you\u2019ve built will last.</p>
+            <p className="text-sm leading-relaxed mb-3" style={{ color: "#333" }}>In Modules 1 through 3, we established Calling, Connection, and Competency — design, identity, and skill. Now we move to the dimension that determines whether everything you’ve built will last.</p>
             <div className="flex gap-1 overflow-x-auto py-2 -mx-1 px-1">
               {["CALLING","CONNECTION","COMPETENCY","CAPACITY","CONVERGENCE"].map((c, i) => (
                 <div key={c} className="px-2 sm:px-3 py-2 rounded-lg text-center text-xs font-bold tracking-wide shrink-0" style={{ background: i === 3 ? NAVY : i < 3 ? ACCENT_LIGHT : "#f5f5f0", color: i === 3 ? ACCENT : i < 3 ? ACCENT : "#999", minWidth: "80px" }}>{c}</div>
               ))}
             </div>
-            <p className="text-sm leading-relaxed mt-3" style={{ color: "#333" }}>Capacity answers the fourth essential question: <strong style={{ color: NAVY }}>Can I sustain what I\u2019ve been called to carry?</strong></p>
+            <p className="text-sm leading-relaxed mt-3" style={{ color: "#333" }}>Capacity answers the fourth essential question: <strong style={{ color: NAVY }}>Can I sustain what I’ve been called to carry?</strong></p>
             <p className="text-sm leading-relaxed mt-2" style={{ color: "#333" }}>You can have calling without capacity. You can be gifted without being sustainable. This module examines the character depth required to carry your assignment for decades, not just seasons.</p>
           </div>
           <div className="p-5 sm:p-6 rounded-2xl border-l-4" style={{ borderColor: ACCENT, background: `linear-gradient(135deg, ${ACCENT_LIGHT}, #fff)` }}>
-            <p className="text-base sm:text-lg italic leading-relaxed" style={{ color: NAVY }}>"The leader who cannot sustain what they\u2019ve built will eventually become the biggest threat to what they\u2019ve been called to lead."</p>
+            <p className="text-base sm:text-lg italic leading-relaxed" style={{ color: NAVY }}>"The leader who cannot sustain what they’ve built will eventually become the biggest threat to what they’ve been called to lead."</p>
           </div>
           <div className="mt-6">
             <p className="text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: GOLD_D }}>OPENING ACTIVATION</p>
-            <p className="text-sm italic mb-4" style={{ color: "#666" }}>Before we teach, we listen. Write what is true \u2014 not what sounds sustainable.</p>
-            <Reflect id="activation_1" prompt="Where in your current leadership are you running on reserves you don\u2019t actually have? What is it costing you?" />
-            <Reflect id="activation_2" prompt="What does your pace and rhythm reveal about what you actually believe about God\u2019s sufficiency for your assignment?" />
+            <p className="text-sm italic mb-4" style={{ color: "#666" }}>Before we teach, we listen. Write what is true — not what sounds sustainable.</p>
+            <Reflect id="activation_1" prompt="Where in your current leadership are you running on reserves you don’t actually have? What is it costing you?" />
+            <Reflect id="activation_2" prompt="What does your pace and rhythm reveal about what you actually believe about God’s sufficiency for your assignment?" />
           </div>
         </div>);
 
       case "pre-diagnostic":
         return (<div className="space-y-6">
-          <div className="p-5 rounded-xl" style={{ background: CREAM }}><p className="font-semibold mb-1" style={{ color: NAVY }}>Capacity Diagnostic \u2014 Pre-Assessment</p><p className="text-sm" style={{ color: "#666" }}>Rate each statement honestly from 1 (Strongly Disagree) to 5 (Strongly Agree). This is a mirror, not a test.</p></div>
+          <div className="p-5 rounded-xl" style={{ background: CREAM }}><p className="font-semibold mb-1" style={{ color: NAVY }}>Capacity Diagnostic — Pre-Assessment</p><p className="text-sm" style={{ color: "#666" }}>Rate each statement honestly from 1 (Strongly Disagree) to 5 (Strongly Agree). This is a mirror, not a test.</p></div>
           {renderDiagnostic("pre", preScores)}
           <Reflect id="pre_diag_reflect" prompt="Look at your lowest category. What does it tell you about where your capacity is most vulnerable right now?" />
         </div>);
@@ -310,9 +310,9 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
           <div>
             <SectionHead>Definition</SectionHead>
             <p className="leading-relaxed mb-3" style={{ color: "#333" }}>Capacity is the depth of character, the strength of reserves, and the sustainability of rhythm that enables a leader to carry their calling for the long haul without fracturing under the weight of it.</p>
-            <Scripture>{"\u201CMy grace is sufficient for you, for my power is made perfect in weakness.\u201D \u2014 2 Corinthians 12:9"}</Scripture>
+            <Scripture>{"“My grace is sufficient for you, for my power is made perfect in weakness.” — 2 Corinthians 12:9"}</Scripture>
             <p className="leading-relaxed mb-3" style={{ color: "#333" }}>Capacity is not the absence of limits. It is the wisdom to know your limits, steward your reserves, and trust God with what your limits cannot hold. The leader who understands capacity leads for decades. The leader who ignores it burns out before their assignment is complete.</p>
-            <Scripture>{"\u201CThose who wait on the Lord shall renew their strength; they shall mount up with wings like eagles.\u201D \u2014 Isaiah 40:31"}</Scripture>
+            <Scripture>{"“Those who wait on the Lord shall renew their strength; they shall mount up with wings like eagles.” — Isaiah 40:31"}</Scripture>
           </div>
 
           {/* Contrast Table */}
@@ -342,7 +342,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
                 </tr>
               ))}</tbody></table>
             </div>
-            <Reflect id="contrast_reflect" prompt="Look at the \u2018High Output\u2019 column. Where do you see yourself honestly? Not aspirationally \u2014 currently." />
+            <Reflect id="contrast_reflect" prompt="Look at the ‘High Output’ column. Where do you see yourself honestly? Not aspirationally — currently." />
           </div>
 
           {/* Macro & Micro */}
@@ -391,7 +391,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
         return (<div className="space-y-6">
           <div className="text-center mb-6">
             <p className="text-xs uppercase tracking-widest mb-1" style={{ color: ACCENT }}>Leadership Exemplar</p>
-            <h3 className="text-xl sm:text-2xl font-bold" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{EXEMPLAR.name} \u2014 {EXEMPLAR.title}</h3>
+            <h3 className="text-xl sm:text-2xl font-bold" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{EXEMPLAR.name} — {EXEMPLAR.title}</h3>
             <p className="text-xs mt-1" style={{ color: "#999" }}>{EXEMPLAR.refs}</p>
           </div>
           <p className="leading-relaxed" style={{ color: "#333" }}>{EXEMPLAR.intro}</p>
@@ -427,12 +427,12 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
             <table className="w-full text-sm"><thead><tr>{STAGES.map((s, i) => (<th key={i} className="text-left px-4 py-3 font-bold text-xs uppercase tracking-wider" style={{ background: NAVY, color: "#fff", width: "33.3%" }}>Stage {i+1}: {s.name}</th>))}</tr></thead>
             <tbody><tr>{STAGES.map((s, i) => (<td key={i} className="px-4 py-4 align-top text-sm leading-relaxed" style={{ color: "#333" }}>{s.description}<p className="text-xs italic mt-2" style={{ color: "#888" }}>{s.ref}</p><div className="mt-3 p-3 rounded-lg" style={{ background: ACCENT_LIGHT }}><p className="text-xs uppercase font-semibold mb-1" style={{ color: ACCENT }}>Transition Marker</p><p className="text-sm italic" style={{ color: NAVY }}>{s.marker}</p></div></td>))}</tr></tbody></table>
           </div>
-          <Reflect id="stages_reflect" prompt="Which stage are you in right now? What evidence supports your answer \u2014 not what you wish were true, but what is actually true?" />
+          <Reflect id="stages_reflect" prompt="Which stage are you in right now? What evidence supports your answer — not what you wish were true, but what is actually true?" />
         </div>);
 
       case "post-diagnostic":
         return (<div className="space-y-6">
-          <div className="p-5 rounded-xl" style={{ background: CREAM }}><p className="font-semibold mb-1" style={{ color: NAVY }}>Capacity Diagnostic \u2014 Post-Assessment</p><p className="text-sm" style={{ color: "#666" }}>Rate yourself again. Be honest about what shifted \u2014 and what didn\u2019t.</p></div>
+          <div className="p-5 rounded-xl" style={{ background: CREAM }}><p className="font-semibold mb-1" style={{ color: NAVY }}>Capacity Diagnostic — Post-Assessment</p><p className="text-sm" style={{ color: "#666" }}>Rate yourself again. Be honest about what shifted — and what didn’t.</p></div>
           {renderDiagnostic("post", postScores)}
           {totalScore(preScores) > 0 && totalScore(postScores) > 0 && (
             <div className="mt-6 p-5 rounded-xl border-2" style={{ borderColor: ACCENT }}>
@@ -474,12 +474,12 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
 
       case "summary":
         return (<div className="space-y-6">
-          <SectionHead sub="Based on your diagnostics, reflections, and commitments \u2014 here is your personalized Capacity analysis.">Your Capacity Blueprint</SectionHead>
+          <SectionHead sub="Based on your diagnostics, reflections, and commitments — here is your personalized Capacity analysis.">Your Capacity Blueprint</SectionHead>
           {!aiSummary && !loading && (<button onClick={generateSummary} className="w-full py-4 rounded-xl font-bold text-lg transition-all hover:opacity-90 text-white" style={{ background: `linear-gradient(135deg, ${ACCENT}, ${NAVY})` }}>Generate My Capacity Blueprint</button>)}
           {loading && (<div className="text-center py-12"><div className="w-10 h-10 border-4 rounded-full animate-spin mx-auto mb-4" style={{ borderColor: ACCENT_LIGHT, borderTopColor: ACCENT }} /><p className="text-sm" style={{ color: "#888" }}>Generating your personalized blueprint...</p></div>)}
           {aiSummary && (<>
             <div className="p-5 sm:p-6 rounded-2xl border" style={{ borderColor: ACCENT }}>
-              <div className="flex items-center gap-2 mb-4"><div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: ACCENT }}><span className="text-white text-sm">{"\u2726"}</span></div><p className="font-bold" style={{ color: NAVY }}>Your Capacity Blueprint</p></div>
+              <div className="flex items-center gap-2 mb-4"><div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: ACCENT }}><span className="text-white text-sm">{"✦"}</span></div><p className="font-bold" style={{ color: NAVY }}>Your Capacity Blueprint</p></div>
               <div style={{ color: "#333" }}>{aiSummary.split("\n\n").map((para, i) => (<p key={i} className="mb-3 leading-relaxed text-sm">{para}</p>))}</div>
             </div>
             <button onClick={() => downloadWordDoc("Capacity", responses, commitments, preScores, postScores, capacityDiagnostic, aiSummary)} className="w-full py-3 rounded-xl font-semibold text-sm transition-all hover:opacity-90 border-2" style={{ borderColor: ACCENT, color: NAVY, background: ACCENT_LIGHT }}>Download My Capacity Blueprint (.doc)</button>
@@ -499,29 +499,29 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       <div className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <a href="/" className="text-sm font-medium flex items-center gap-1 hover:opacity-70 transition-opacity" style={{ color: NAVY }}>{"\u2190"} Dashboard</a>
+          <a href="/" className="text-sm font-medium flex items-center gap-1 hover:opacity-70 transition-opacity" style={{ color: NAVY }}>{"←"} Dashboard</a>
           <div className="text-center"><p className="text-xs uppercase tracking-widest" style={{ color: ACCENT }}>Module 4</p><p className="text-sm font-bold" style={{ color: NAVY }}>Capacity</p></div>
           <div className="w-16" />
         </div>
       </div>
       <div className="max-w-3xl mx-auto px-4 py-4">
         <div className="flex items-center gap-1 overflow-x-auto pb-2 -mx-1 px-1">
-          {STEPS.map((s, i) => (<button key={s.id} onClick={() => setStep(i)} className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all" style={{ background: i === step ? ACCENT : i < step ? ACCENT_LIGHT : "transparent", color: i === step ? "#fff" : i < step ? ACCENT : "#aaa", border: `1px solid ${i <= step ? ACCENT : "#e5e5e5"}` }}>{i < step && <span>{"\u2713"}</span>}{s.label}</button>))}
+          {STEPS.map((s, i) => (<button key={s.id} onClick={() => setStep(i)} className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all" style={{ background: i === step ? ACCENT : i < step ? ACCENT_LIGHT : "transparent", color: i === step ? "#fff" : i < step ? ACCENT : "#aaa", border: `1px solid ${i <= step ? ACCENT : "#e5e5e5"}` }}>{i < step && <span>{"✓"}</span>}{s.label}</button>))}
         </div>
       </div>
       <div className="max-w-3xl mx-auto px-4 pb-32" ref={topRef}>
         <div className="mb-8">
           <p className="text-xs uppercase tracking-widest mb-1" style={{ color: ACCENT }}>{currentStep.label}</p>
           <h2 className="text-2xl sm:text-3xl font-bold" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>Capacity: Character (Sustainability)</h2>
-          <p className="text-sm mt-1 italic" style={{ color: "#888" }}>Central Question: Can I sustain what I\u2019ve been called to carry?</p>
+          <p className="text-sm mt-1 italic" style={{ color: "#888" }}>Central Question: Can I sustain what I’ve been called to carry?</p>
         </div>
         {renderStep()}
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-100 py-3 z-40">
         <div className="max-w-3xl mx-auto px-4 flex justify-between items-center">
-          <button onClick={() => step > 0 && setStep(step - 1)} disabled={step === 0} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: `1px solid ${NAVY}` }}>{"\u2190"} Previous</button>
+          <button onClick={() => step > 0 && setStep(step - 1)} disabled={step === 0} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: `1px solid ${NAVY}` }}>{"←"} Previous</button>
           <span className="text-xs" style={{ color: "#aaa" }}>{step + 1} of {STEPS.length}</span>
-          <button onClick={() => step < STEPS.length - 1 && setStep(step + 1)} disabled={step === STEPS.length - 1} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-30" style={{ background: ACCENT, color: "#fff" }}>Next {"\u2192"}</button>
+          <button onClick={() => step < STEPS.length - 1 && setStep(step + 1)} disabled={step === STEPS.length - 1} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-30" style={{ background: ACCENT, color: "#fff" }}>Next {"→"}</button>
         </div>
       </div>
     </div>

@@ -24,11 +24,11 @@ const ACCENT_MID   = "#FDBA74";
 const competencyDiagnostic = [
   { num: 1,  cat: "Skill & Discipline",          text: "I invest consistently in developing my core skills.", ref: "Proverbs 22:29" },
   { num: 2,  cat: "Skill & Discipline",          text: "I pursue excellence as a spiritual standard, not just a professional one.", ref: "Colossians 3:23" },
-  { num: 3,  cat: "Skill & Discipline",          text: "I can distinguish between what I\u2019m anointed for and what I\u2019m actually prepared for." },
+  { num: 3,  cat: "Skill & Discipline",          text: "I can distinguish between what I’m anointed for and what I’m actually prepared for." },
   { num: 4,  cat: "Execution & Reliability",     text: "I follow through on commitments consistently.", ref: "Luke 16:10" },
   { num: 5,  cat: "Execution & Reliability",     text: "Others trust me to deliver what I promise." },
   { num: 6,  cat: "Execution & Reliability",     text: "I can manage complexity without becoming reactive or overwhelmed." },
-  { num: 7,  cat: "Systems & Sustainability",    text: "I build systems that outlast emotional momentum.", ref: "Exodus 18:21\u201323" },
+  { num: 7,  cat: "Systems & Sustainability",    text: "I build systems that outlast emotional momentum.", ref: "Exodus 18:21–23" },
   { num: 8,  cat: "Systems & Sustainability",    text: "I delegate with clarity and defined expectations." },
   { num: 9,  cat: "Systems & Sustainability",    text: "I can organize people and process for sustainable outcomes." },
   { num: 10, cat: "Multiplication & Transfer",   text: "I can train others in what I do.", ref: "2 Timothy 2:2" },
@@ -58,58 +58,58 @@ const CONTRAST_TABLE = [
   { dimension: "Sustainability",     left: "Momentum-dependent",               right: "System-sustained" },
   { dimension: "Delegation",         left: "Abdication or micromanagement",    right: "Clarity with accountability" },
   { dimension: "Under Pressure",     left: "Talent compensates for gaps",      right: "Preparation absorbs pressure" },
-  { dimension: "Legacy",             left: "Dependent on the leader\u2019s presence", right: "Transferable beyond the leader" },
+  { dimension: "Legacy",             left: "Dependent on the leader’s presence", right: "Transferable beyond the leader" },
 ];
 
 // ─── 5 GOVERNING PRINCIPLES ─────────────────────────────────
 const PRINCIPLES = [
   {
-    num: 1, title: "Revelation Must Become Reality", ref: "Genesis 41:33\u201336",
-    scripture: "\u201CNow therefore, let Pharaoh select a discerning and wise man, and set him over the land of Egypt.\u201D \u2014 Genesis 41:33",
+    num: 1, title: "Revelation Must Become Reality", ref: "Genesis 41:33–36",
+    scripture: "“Now therefore, let Pharaoh select a discerning and wise man, and set him over the land of Egypt.” — Genesis 41:33",
     paragraphs: [
       "Joseph did not just interpret the dream. He built a system to execute it. Revelation without structure is a vision that dies on the whiteboard. Many leaders can see what God is doing. Few can build what God is showing.",
       "The gap between revelation and reality is competency. It is the ability to take what God reveals and translate it into strategy, structure, and sustainable execution. Without this bridge, prophetic leaders become frustrated dreamers.",
-      "God gives revelation. Leaders must build the structure to steward it. The dream was God\u2019s. The plan was Joseph\u2019s. And the execution required competency that had been forged through years of preparation in Potiphar\u2019s house, in prison, and in obscurity."
+      "God gives revelation. Leaders must build the structure to steward it. The dream was God’s. The plan was Joseph’s. And the execution required competency that had been forged through years of preparation in Potiphar’s house, in prison, and in obscurity."
     ],
     prompt: "Where in your leadership do you have revelation without structure? What vision has God given you that you have not yet built a system to execute?"
   },
   {
     num: 2, title: "Excellence Is a Spiritual Standard", ref: "Colossians 3:23",
-    scripture: "\u201CWhatever you do, work heartily, as for the Lord and not for men.\u201D \u2014 Colossians 3:23",
+    scripture: "“Whatever you do, work heartily, as for the Lord and not for men.” — Colossians 3:23",
     paragraphs: [
-      "Excellence is not perfectionism. It is the refusal to offer God or people less than your best. It is a spiritual posture before it is a professional standard. The leader who settles for mediocrity in their craft is not being humble \u2014 they are being unfaithful.",
+      "Excellence is not perfectionism. It is the refusal to offer God or people less than your best. It is a spiritual posture before it is a professional standard. The leader who settles for mediocrity in their craft is not being humble — they are being unfaithful.",
       "Anointing does not replace preparation. Passion does not replace process. Vision does not replace skill. Many leaders are gifted. Few are trained. And the gap between what they see and what they can build is the competency gap.",
-      "Excellence positions leaders. \u201CDo you see a man skillful in his work? He will stand before kings; he will not stand before obscure men.\u201D \u2014 Proverbs 22:29. Skill opens doors that anointing alone cannot."
+      "Excellence positions leaders. “Do you see a man skillful in his work? He will stand before kings; he will not stand before obscure men.” — Proverbs 22:29. Skill opens doors that anointing alone cannot."
     ],
-    prompt: "Where are you relying on anointing to compensate for preparation you haven\u2019t done? What skill gap is limiting your effectiveness?"
+    prompt: "Where are you relying on anointing to compensate for preparation you haven’t done? What skill gap is limiting your effectiveness?"
   },
   {
-    num: 3, title: "Systems Sustain Momentum", ref: "Exodus 18:21\u201323",
-    scripture: "\u201CMoreover, look for able men from all the people, men who fear God, who are trustworthy and hate a bribe, and place such men over the people.\u201D \u2014 Exodus 18:21",
+    num: 3, title: "Systems Sustain Momentum", ref: "Exodus 18:21–23",
+    scripture: "“Moreover, look for able men from all the people, men who fear God, who are trustworthy and hate a bribe, and place such men over the people.” — Exodus 18:21",
     paragraphs: [
-      "Moses was burning out. Jethro\u2019s intervention was not spiritual \u2014 it was structural. He told Moses to build a system of delegation that would sustain what one leader could not carry alone.",
+      "Moses was burning out. Jethro’s intervention was not spiritual — it was structural. He told Moses to build a system of delegation that would sustain what one leader could not carry alone.",
       "Leaders who resist systems eventually become the bottleneck of their own vision. They cannot scale what lives only in their head. They cannot sustain what depends entirely on their presence. Systems are not unspiritual. They are stewardship.",
-      "The question is not whether you need systems \u2014 it is whether you will build them before you break under the weight of what you\u2019re carrying."
+      "The question is not whether you need systems — it is whether you will build them before you break under the weight of what you’re carrying."
     ],
     prompt: "Where are you the bottleneck in your own organization? What system could you build this month that would free you to lead at a higher level?"
   },
   {
     num: 4, title: "Competency Must Be Transferable", ref: "2 Timothy 2:2",
-    scripture: "\u201CAnd what you have heard from me in the presence of many witnesses entrust to faithful people who will be able to teach others also.\u201D \u2014 2 Timothy 2:2",
+    scripture: "“And what you have heard from me in the presence of many witnesses entrust to faithful people who will be able to teach others also.” — 2 Timothy 2:2",
     paragraphs: [
-      "Competency that cannot be transferred is a ceiling, not a foundation. If your organization cannot function without you, you have not built leaders \u2014 you have built dependency.",
-      "Paul\u2019s instruction to Timothy reveals a four-generation multiplication chain: Paul \u2192 Timothy \u2192 faithful people \u2192 others also. That is the competency standard. It is not enough to be skilled. You must make others skilled.",
+      "Competency that cannot be transferred is a ceiling, not a foundation. If your organization cannot function without you, you have not built leaders — you have built dependency.",
+      "Paul’s instruction to Timothy reveals a four-generation multiplication chain: Paul → Timothy → faithful people → others also. That is the competency standard. It is not enough to be skilled. You must make others skilled.",
       "The test of competency is not what you can do. It is what you can reproduce. The leader who develops other leaders has multiplied their competency. The leader who hoards their skill has limited their legacy."
     ],
     prompt: "What competency do you have that you have not yet transferred to anyone else? Who should you be training right now?"
   },
   {
     num: 5, title: "Competency Governs What You Build", ref: "Proverbs 21:5",
-    scripture: "\u201CThe plans of the diligent lead surely to abundance, but everyone who is hasty comes only to poverty.\u201D \u2014 Proverbs 21:5",
+    scripture: "“The plans of the diligent lead surely to abundance, but everyone who is hasty comes only to poverty.” — Proverbs 21:5",
     paragraphs: [
-      "This principle is your decision-making filter for competency. The question: Am I building this because I\u2019m gifted here, or because my calling demands it? If your calling demands a competency you don\u2019t have, the answer is not to avoid it \u2014 it is to develop it.",
+      "This principle is your decision-making filter for competency. The question: Am I building this because I’m gifted here, or because my calling demands it? If your calling demands a competency you don’t have, the answer is not to avoid it — it is to develop it.",
       "Competency is not static. What worked last season may bottleneck this one. Skills decay without intentional maintenance. The leader who was competent five years ago may be the leader who is limiting their organization today.",
-      "Diligence is not just working hard. It is working strategically \u2014 building the right skills, in the right order, for the right season. Competency without alignment is just busyness."
+      "Diligence is not just working hard. It is working strategically — building the right skills, in the right order, for the right season. Competency without alignment is just busyness."
     ],
     prompt: "Am I competent for what this season demands? Where is the widest gap between what my calling requires and what my skills can deliver?"
   }
@@ -117,47 +117,47 @@ const PRINCIPLES = [
 
 // ─── EXEMPLAR: JOSEPH ────────────────────────────────────────
 const EXEMPLAR = {
-  name: "Joseph", title: "Structured Excellence", refs: "Genesis 39\u201341",
-  intro: "Joseph is the clearest biblical model of competency forged through preparation. His journey from slave to second-in-command was not a leap \u2014 it was a long obedience in obscurity.",
-  mainScripture: "\u201CThe Lord was with Joseph, and he became a successful man.\u201D \u2014 Genesis 39:2",
+  name: "Joseph", title: "Structured Excellence", refs: "Genesis 39–41",
+  intro: "Joseph is the clearest biblical model of competency forged through preparation. His journey from slave to second-in-command was not a leap — it was a long obedience in obscurity.",
+  mainScripture: "“The Lord was with Joseph, and he became a successful man.” — Genesis 39:2",
   bodyParagraphs: [
-    "In Potiphar\u2019s house, Joseph managed a household with excellence. In prison, he managed inmates and operations with the same standard. The context changed. The competency didn\u2019t.",
-    "When Pharaoh\u2019s dream required interpretation, Joseph delivered revelation. But he didn\u2019t stop there. He immediately followed with a strategic plan \u2014 a system of storage, distribution, and governance that would sustain an entire nation through seven years of famine.",
-    "Joseph\u2019s competency was not accidental. It was forged in every season of obscurity, injustice, and waiting. By the time the platform arrived, the preparation had already been done.",
+    "In Potiphar’s house, Joseph managed a household with excellence. In prison, he managed inmates and operations with the same standard. The context changed. The competency didn’t.",
+    "When Pharaoh’s dream required interpretation, Joseph delivered revelation. But he didn’t stop there. He immediately followed with a strategic plan — a system of storage, distribution, and governance that would sustain an entire nation through seven years of famine.",
+    "Joseph’s competency was not accidental. It was forged in every season of obscurity, injustice, and waiting. By the time the platform arrived, the preparation had already been done.",
   ],
   arc: [
-    { stage: "Potiphar\u2019s House", text: "Managed a household with excellence. Faithfulness in a small assignment revealed capacity for a larger one." },
-    { stage: "Prison", text: "Same standard, harder context. Joseph didn\u2019t lower his competency because his circumstances lowered." },
-    { stage: "Pharaoh\u2019s Court", text: "Revelation became strategy. He didn\u2019t just interpret the dream \u2014 he built the system to execute it." },
+    { stage: "Potiphar’s House", text: "Managed a household with excellence. Faithfulness in a small assignment revealed capacity for a larger one." },
+    { stage: "Prison", text: "Same standard, harder context. Joseph didn’t lower his competency because his circumstances lowered." },
+    { stage: "Pharaoh’s Court", text: "Revelation became strategy. He didn’t just interpret the dream — he built the system to execute it." },
     { stage: "National Governance", text: "Fourteen years of sustained leadership. Competency at scale. The system outlasted the crisis." },
-    { stage: "Legacy", text: "Joseph\u2019s competency preserved a nation and positioned his family for generational impact." },
+    { stage: "Legacy", text: "Joseph’s competency preserved a nation and positioned his family for generational impact." },
   ],
   coachingQuestions: [
-    "Where are you managing with excellence right now \u2014 even in a small or unglamorous assignment?",
+    "Where are you managing with excellence right now — even in a small or unglamorous assignment?",
     "What competency is God building in you during this season of obscurity or waiting?",
-    "Can you turn your revelation into a strategy \u2014 or does it stay in the dream stage?",
+    "Can you turn your revelation into a strategy — or does it stay in the dream stage?",
   ]
 };
 
 // ─── THREE STAGES ────────────────────────────────────────────
 const STAGES = [
-  { name: "Learning Foundations", description: "Acquiring the base knowledge, skills, and disciplines your calling demands. This is the classroom stage \u2014 formal or informal. Reading, studying, apprenticing, failing, and learning from failure.", ref: "Proverbs 1:5", marker: "You stop assuming gifting is enough and start investing in structured development." },
+  { name: "Learning Foundations", description: "Acquiring the base knowledge, skills, and disciplines your calling demands. This is the classroom stage — formal or informal. Reading, studying, apprenticing, failing, and learning from failure.", ref: "Proverbs 1:5", marker: "You stop assuming gifting is enough and start investing in structured development." },
   { name: "Skill Development", description: "Moving from knowledge to application. You can execute reliably. You deliver what you promise. Others begin to trust your output. You are building a track record of competence, not just potential.", ref: "2 Timothy 2:15", marker: "You stop talking about what you could do and start being known for what you consistently deliver." },
-  { name: "Structural Execution", description: "Building systems that sustain and multiply. You are not just skilled \u2014 you are building structures where others become skilled. Delegation is clear. Transfer is intentional. Your competency has moved from personal to organizational.", ref: "Exodus 18:21\u201323", marker: "Your organization runs without your constant presence. Your competency lives in others, not just in you." }
+  { name: "Structural Execution", description: "Building systems that sustain and multiply. You are not just skilled — you are building structures where others become skilled. Delegation is clear. Transfer is intentional. Your competency has moved from personal to organizational.", ref: "Exodus 18:21–23", marker: "Your organization runs without your constant presence. Your competency lives in others, not just in you." }
 ];
 
 // ─── KEY SCRIPTURES ──────────────────────────────────────────
 const KEY_SCRIPTURES = [
   { ref: "Proverbs 22:29",        note: "Skillful work positions leaders before kings." },
-  { ref: "2 Timothy 2:15",        note: "Present yourself approved \u2014 a worker unashamed." },
+  { ref: "2 Timothy 2:15",        note: "Present yourself approved — a worker unashamed." },
   { ref: "Colossians 3:23",       note: "Whatever you do, work heartily as for the Lord." },
   { ref: "Proverbs 21:5",         note: "The plans of the diligent lead to abundance." },
   { ref: "Luke 16:10",            note: "Faithful in little, faithful in much." },
-  { ref: "Exodus 18:21\u201323",       note: "Systems protect leaders and sustain momentum." },
+  { ref: "Exodus 18:21–23",       note: "Systems protect leaders and sustain momentum." },
   { ref: "1 Corinthians 9:22",    note: "Adaptability without compromise." },
   { ref: "2 Timothy 2:2",         note: "Entrust to faithful people who can teach others." },
   { ref: "Titus 1:5",             note: "Put what remains into order." },
-  { ref: "Genesis 41:38\u201349",      note: "Revelation became strategy, strategy became governance." },
+  { ref: "Genesis 41:38–49",      note: "Revelation became strategy, strategy became governance." },
 ];
 
 // ─── COMMITMENT / REVISIT / APPLICATION ──────────────────────
@@ -166,7 +166,7 @@ const COMMITMENT_PROMPTS = [
   { id: "season",        label: "2. My Current Season Demand",      placeholder: "What specific competency does this season require that you have not yet developed?" },
   { id: "plan",          label: "3. My Development Plan",           placeholder: "What will you do in the next 90 days to close your top competency gap? Be specific." },
   { id: "transfer",      label: "4. My Transferability Target",     placeholder: "Who are you training? What competency will you transfer to someone else this quarter?" },
-  { id: "system",        label: "5. My System to Build",            placeholder: "What system or structure will you build this month to sustain what you\u2019re carrying?" },
+  { id: "system",        label: "5. My System to Build",            placeholder: "What system or structure will you build this month to sustain what you’re carrying?" },
   { id: "accountability",label: "6. My Accountability",             placeholder: "Who will hold you accountable to this development plan?" },
 ];
 const REVISIT_TRIGGERS = [
@@ -185,8 +185,8 @@ const APPLICATION_QUESTIONS = [
 
 // ─── MACRO / MICRO ───────────────────────────────────────────
 const MACRO_MICRO = {
-  macro: { title: "Macro \u2014 Skill Base (Lifetime)", description: "Your accumulated skills, knowledge, and expertise built over years. This is your competency reservoir \u2014 everything you\u2019ve learned, practiced, and mastered across every season of your leadership." },
-  micro: { title: "Micro \u2014 Season Demands (Current)", description: "The specific competencies this season requires. Your skill base may be deep, but every new season brings new demands. The question: Am I competent for what this season demands \u2014 not just what last season required?" }
+  macro: { title: "Macro — Skill Base (Lifetime)", description: "Your accumulated skills, knowledge, and expertise built over years. This is your competency reservoir — everything you’ve learned, practiced, and mastered across every season of your leadership." },
+  micro: { title: "Micro — Season Demands (Current)", description: "The specific competencies this season requires. Your skill base may be deep, but every new season brings new demands. The question: Am I competent for what this season demands — not just what last season required?" }
 };
 
 
@@ -198,8 +198,8 @@ function downloadWordDoc(title, responses, commitments, preScores, postScores, d
   const scoreRows = diagnostic.map(q => `<tr><td style="padding:6px;border:1px solid #ccc;font-size:11px;">${q.num}</td><td style="padding:6px;border:1px solid #ccc;font-size:11px;">${q.text}</td><td style="padding:6px;border:1px solid #ccc;text-align:center;font-size:11px;">${preScores[q.num]||"-"}</td><td style="padding:6px;border:1px solid #ccc;text-align:center;font-size:11px;">${postScores[q.num]||"-"}</td></tr>`).join("");
   const respEntries = Object.entries(responses).filter(([,v])=>v).map(([k,v])=>`<p style="margin:4px 0;"><b>${k}:</b> ${v}</p>`).join("");
   const commitEntries = Object.entries(commitments).filter(([,v])=>v).map(([k,v])=>`<p style="margin:4px 0;"><b>${k}:</b> ${v}</p>`).join("");
-  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${title}</title><style>body{font-family:Georgia,serif;color:#1a1a1a;max-width:700px;margin:0 auto;padding:40px 20px}h1{color:#021A35;font-size:22px;border-bottom:3px solid #C8A951;padding-bottom:8px}h2{color:#021A35;font-size:16px;margin-top:24px;border-bottom:1px solid #ddd;padding-bottom:4px}p{font-size:12px;line-height:1.6}table{border-collapse:collapse;width:100%;margin:12px 0}th{background:#021A35;color:#fff;padding:8px;font-size:11px;text-align:left}td{font-size:11px}.footer{margin-top:40px;border-top:2px solid #C8A951;padding-top:12px;font-size:10px;color:#888;text-align:center}</style></head><body><h1>5C Leadership Blueprint \u2014 ${title}</h1><p style="color:#888;">Awakening Destiny Global \u2022 ${now}</p><h2>Diagnostic Scores</h2><table><tr><th>#</th><th>Statement</th><th>Pre</th><th>Post</th></tr>${scoreRows}</table><p><b>Pre-Total:</b> ${Object.values(preScores).reduce((a,b)=>a+b,0)}/60 &nbsp;&nbsp; <b>Post-Total:</b> ${Object.values(postScores).reduce((a,b)=>a+b,0)}/60</p>${respEntries?`<h2>Reflections</h2>${respEntries}`:""}${commitEntries?`<h2>Commitments</h2>${commitEntries}`:""}${aiSummary?`<h2>My ${title} Blueprint</h2><p>${aiSummary.replace(/\n\n/g,"</p><p>")}</p>`:""}<div class="footer"><p>\u00A9 Awakening Destiny Global \u2022 awakeningdestiny.global</p><p>5C Leadership Blueprint \u2014 Developing Leaders \u2022 Creating Champions</p></div></body></html>`;
-  const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${title}</title><style>body{font-family:Georgia,serif;color:#1a1a1a;max-width:700px;margin:0 auto;padding:40px 20px}h1{color:#021A35;font-size:22px;border-bottom:3px solid #C8A951;padding-bottom:8px}h2{color:#021A35;font-size:16px;margin-top:24px;border-bottom:1px solid #ddd;padding-bottom:4px}p{font-size:12px;line-height:1.6}table{border-collapse:collapse;width:100%;margin:12px 0}th{background:#021A35;color:#fff;padding:8px;font-size:11px;text-align:left}td{font-size:11px}.footer{margin-top:40px;border-top:2px solid #C8A951;padding-top:12px;font-size:10px;color:#888;text-align:center}</style></head><body><h1>5C Leadership Blueprint — ${title}</h1><p style="color:#888;">Awakening Destiny Global • ${now}</p><h2>Diagnostic Scores</h2><table><tr><th>#</th><th>Statement</th><th>Pre</th><th>Post</th></tr>${scoreRows}</table><p><b>Pre-Total:</b> ${Object.values(preScores).reduce((a,b)=>a+b,0)}/60 &nbsp;&nbsp; <b>Post-Total:</b> ${Object.values(postScores).reduce((a,b)=>a+b,0)}/60</p>${respEntries?`<h2>Reflections</h2>${respEntries}`:""}${commitEntries?`<h2>Commitments</h2>${commitEntries}`:""}${aiSummary?`<h2>My ${title} Blueprint</h2><p>${aiSummary.replace(/\n\n/g,"</p><p>")}</p>`:""}<div class="footer"><p>© Awakening Destiny Global • awakeningdestiny.global</p><p>5C Leadership Blueprint — Developing Leaders • Creating Champions</p></div></body></html>`;
+  const blob = new Blob(["﻿", html], { type: "application/msword" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a"); a.href = url; a.download = `My_${title.replace(/\s+/g,"_")}_Blueprint.doc`; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => URL.revokeObjectURL(url), 250);
 }
@@ -287,13 +287,13 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
         return (<div className="space-y-6">
           <div className="p-5 rounded-xl" style={{ background: CREAM }}>
             <p className="text-xs uppercase tracking-widest font-semibold mb-3" style={{ color: GOLD_D }}>THE 5C LEADERSHIP LIFECYCLE</p>
-            <p className="text-sm leading-relaxed mb-3" style={{ color: "#333" }}>In Modules 1 and 2, we established Calling and Connection \u2014 design and identity. Now we move to the dimension that makes calling executable.</p>
+            <p className="text-sm leading-relaxed mb-3" style={{ color: "#333" }}>In Modules 1 and 2, we established Calling and Connection — design and identity. Now we move to the dimension that makes calling executable.</p>
             <div className="flex gap-1 overflow-x-auto py-2 -mx-1 px-1">
               {["CALLING","CONNECTION","COMPETENCY","CAPACITY","CONVERGENCE"].map((c, i) => (
                 <div key={c} className="px-2 sm:px-3 py-2 rounded-lg text-center text-xs font-bold tracking-wide shrink-0" style={{ background: i === 2 ? NAVY : i < 2 ? ACCENT_LIGHT : "#f5f5f0", color: i === 2 ? ACCENT : i < 2 ? ACCENT : "#999", minWidth: "80px" }}>{c}</div>
               ))}
             </div>
-            <p className="text-sm leading-relaxed mt-3" style={{ color: "#333" }}>Competency answers the third essential question: <strong style={{ color: NAVY }}>Can I carry what I\u2019m called to build?</strong></p>
+            <p className="text-sm leading-relaxed mt-3" style={{ color: "#333" }}>Competency answers the third essential question: <strong style={{ color: NAVY }}>Can I carry what I’m called to build?</strong></p>
             <p className="text-sm leading-relaxed mt-2" style={{ color: "#333" }}>Anointing does not replace preparation. Passion does not replace process. Vision does not replace skill. This is where calling becomes executable.</p>
           </div>
           <div className="p-5 sm:p-6 rounded-2xl border-l-4" style={{ borderColor: ACCENT, background: `linear-gradient(135deg, ${ACCENT_LIGHT}, #fff)` }}>
@@ -302,14 +302,14 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
           <div className="mt-6">
             <p className="text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: GOLD_D }}>OPENING ACTIVATION</p>
             <p className="text-sm italic mb-4" style={{ color: "#666" }}>Before we teach, we listen. Write what surfaces honestly.</p>
-            <Reflect id="activation_1" prompt="Where is the biggest gap between what you\u2019ve been called to build and what you are currently equipped to execute?" />
-            <Reflect id="activation_2" prompt="Where have you relied on gifting or anointing to compensate for skills you haven\u2019t developed?" />
+            <Reflect id="activation_1" prompt="Where is the biggest gap between what you’ve been called to build and what you are currently equipped to execute?" />
+            <Reflect id="activation_2" prompt="Where have you relied on gifting or anointing to compensate for skills you haven’t developed?" />
           </div>
         </div>);
 
       case "pre-diagnostic":
         return (<div className="space-y-6">
-          <div className="p-5 rounded-xl" style={{ background: CREAM }}><p className="font-semibold mb-1" style={{ color: NAVY }}>Competency Diagnostic \u2014 Pre-Assessment</p><p className="text-sm" style={{ color: "#666" }}>Rate each statement honestly from 1 (Strongly Disagree) to 5 (Strongly Agree). This is a mirror, not a test.</p></div>
+          <div className="p-5 rounded-xl" style={{ background: CREAM }}><p className="font-semibold mb-1" style={{ color: NAVY }}>Competency Diagnostic — Pre-Assessment</p><p className="text-sm" style={{ color: "#666" }}>Rate each statement honestly from 1 (Strongly Disagree) to 5 (Strongly Agree). This is a mirror, not a test.</p></div>
           {renderDiagnostic("pre", preScores)}
           <Reflect id="pre_diag_reflect" prompt="Look at your lowest category. What does it tell you about where your competency is still under construction?" />
         </div>);
@@ -320,9 +320,9 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
           <div>
             <SectionHead>Definition</SectionHead>
             <p className="leading-relaxed mb-3" style={{ color: "#333" }}>Competency is the disciplined development of skill, knowledge, and structure that enables calling to function effectively and sustainably.</p>
-            <Scripture>{"\u201CDo you see a man skillful in his work? He will stand before kings; he will not stand before obscure men.\u201D \u2014 Proverbs 22:29"}</Scripture>
+            <Scripture>{"“Do you see a man skillful in his work? He will stand before kings; he will not stand before obscure men.” — Proverbs 22:29"}</Scripture>
             <p className="leading-relaxed mb-3" style={{ color: "#333" }}>Competency is not optional. It is the bridge between revelation and reality, between what God shows you and what you can actually build. Without it, vision remains a dream. With it, vision becomes structure.</p>
-            <Scripture>{"\u201CWhatever you do, work heartily, as for the Lord and not for men.\u201D \u2014 Colossians 3:23"}</Scripture>
+            <Scripture>{"“Whatever you do, work heartily, as for the Lord and not for men.” — Colossians 3:23"}</Scripture>
           </div>
 
           {/* Contrast Table */}
@@ -352,7 +352,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
                 </tr>
               ))}</tbody></table>
             </div>
-            <Reflect id="contrast_reflect" prompt="Look at the \u2018Anointed Only\u2019 column. Where do you see yourself? Be honest \u2014 not aspirational." />
+            <Reflect id="contrast_reflect" prompt="Look at the ‘Anointed Only’ column. Where do you see yourself? Be honest — not aspirational." />
           </div>
 
           {/* Macro & Micro */}
@@ -401,7 +401,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
         return (<div className="space-y-6">
           <div className="text-center mb-6">
             <p className="text-xs uppercase tracking-widest mb-1" style={{ color: ACCENT }}>Leadership Exemplar</p>
-            <h3 className="text-xl sm:text-2xl font-bold" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{EXEMPLAR.name} \u2014 {EXEMPLAR.title}</h3>
+            <h3 className="text-xl sm:text-2xl font-bold" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{EXEMPLAR.name} — {EXEMPLAR.title}</h3>
             <p className="text-xs mt-1" style={{ color: "#999" }}>{EXEMPLAR.refs}</p>
           </div>
           <p className="leading-relaxed" style={{ color: "#333" }}>{EXEMPLAR.intro}</p>
@@ -442,7 +442,7 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
 
       case "post-diagnostic":
         return (<div className="space-y-6">
-          <div className="p-5 rounded-xl" style={{ background: CREAM }}><p className="font-semibold mb-1" style={{ color: NAVY }}>Competency Diagnostic \u2014 Post-Assessment</p><p className="text-sm" style={{ color: "#666" }}>Rate yourself again. Be honest about what shifted \u2014 and what didn\u2019t.</p></div>
+          <div className="p-5 rounded-xl" style={{ background: CREAM }}><p className="font-semibold mb-1" style={{ color: NAVY }}>Competency Diagnostic — Post-Assessment</p><p className="text-sm" style={{ color: "#666" }}>Rate yourself again. Be honest about what shifted — and what didn’t.</p></div>
           {renderDiagnostic("post", postScores)}
           {totalScore(preScores) > 0 && totalScore(postScores) > 0 && (
             <div className="mt-6 p-5 rounded-xl border-2" style={{ borderColor: ACCENT }}>
@@ -484,12 +484,12 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
 
       case "summary":
         return (<div className="space-y-6">
-          <SectionHead sub="Based on your diagnostics, reflections, and commitments \u2014 here is your personalized Competency analysis.">Your Competency Blueprint</SectionHead>
+          <SectionHead sub="Based on your diagnostics, reflections, and commitments — here is your personalized Competency analysis.">Your Competency Blueprint</SectionHead>
           {!aiSummary && !loading && (<button onClick={generateSummary} className="w-full py-4 rounded-xl font-bold text-lg transition-all hover:opacity-90 text-white" style={{ background: `linear-gradient(135deg, ${ACCENT}, ${NAVY})` }}>Generate My Competency Blueprint</button>)}
           {loading && (<div className="text-center py-12"><div className="w-10 h-10 border-4 rounded-full animate-spin mx-auto mb-4" style={{ borderColor: ACCENT_LIGHT, borderTopColor: ACCENT }} /><p className="text-sm" style={{ color: "#888" }}>Generating your personalized blueprint...</p></div>)}
           {aiSummary && (<>
             <div className="p-5 sm:p-6 rounded-2xl border" style={{ borderColor: ACCENT }}>
-              <div className="flex items-center gap-2 mb-4"><div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: ACCENT }}><span className="text-white text-sm">{"\u2726"}</span></div><p className="font-bold" style={{ color: NAVY }}>Your Competency Blueprint</p></div>
+              <div className="flex items-center gap-2 mb-4"><div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: ACCENT }}><span className="text-white text-sm">{"✦"}</span></div><p className="font-bold" style={{ color: NAVY }}>Your Competency Blueprint</p></div>
               <div style={{ color: "#333" }}>{aiSummary.split("\n\n").map((para, i) => (<p key={i} className="mb-3 leading-relaxed text-sm">{para}</p>))}</div>
             </div>
             <button onClick={() => downloadWordDoc("Competency", responses, commitments, preScores, postScores, competencyDiagnostic, aiSummary)} className="w-full py-3 rounded-xl font-semibold text-sm transition-all hover:opacity-90 border-2" style={{ borderColor: ACCENT, color: NAVY, background: ACCENT_LIGHT }}>Download My Competency Blueprint (.doc)</button>
@@ -509,29 +509,29 @@ Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. 
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       <div className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <a href="/" className="text-sm font-medium flex items-center gap-1 hover:opacity-70 transition-opacity" style={{ color: NAVY }}>{"\u2190"} Dashboard</a>
+          <a href="/" className="text-sm font-medium flex items-center gap-1 hover:opacity-70 transition-opacity" style={{ color: NAVY }}>{"←"} Dashboard</a>
           <div className="text-center"><p className="text-xs uppercase tracking-widest" style={{ color: ACCENT }}>Module 3</p><p className="text-sm font-bold" style={{ color: NAVY }}>Competency</p></div>
           <div className="w-16" />
         </div>
       </div>
       <div className="max-w-3xl mx-auto px-4 py-4">
         <div className="flex items-center gap-1 overflow-x-auto pb-2 -mx-1 px-1">
-          {STEPS.map((s, i) => (<button key={s.id} onClick={() => setStep(i)} className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all" style={{ background: i === step ? ACCENT : i < step ? ACCENT_LIGHT : "transparent", color: i === step ? "#fff" : i < step ? ACCENT : "#aaa", border: `1px solid ${i <= step ? ACCENT : "#e5e5e5"}` }}>{i < step && <span>{"\u2713"}</span>}{s.label}</button>))}
+          {STEPS.map((s, i) => (<button key={s.id} onClick={() => setStep(i)} className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all" style={{ background: i === step ? ACCENT : i < step ? ACCENT_LIGHT : "transparent", color: i === step ? "#fff" : i < step ? ACCENT : "#aaa", border: `1px solid ${i <= step ? ACCENT : "#e5e5e5"}` }}>{i < step && <span>{"✓"}</span>}{s.label}</button>))}
         </div>
       </div>
       <div className="max-w-3xl mx-auto px-4 pb-32" ref={topRef}>
         <div className="mb-8">
           <p className="text-xs uppercase tracking-widest mb-1" style={{ color: ACCENT }}>{currentStep.label}</p>
           <h2 className="text-2xl sm:text-3xl font-bold" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>Competency: Excellence (Credibility)</h2>
-          <p className="text-sm mt-1 italic" style={{ color: "#888" }}>Central Question: Can I carry what I\u2019m called to build?</p>
+          <p className="text-sm mt-1 italic" style={{ color: "#888" }}>Central Question: Can I carry what I’m called to build?</p>
         </div>
         {renderStep()}
       </div>
       <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-100 py-3 z-40">
         <div className="max-w-3xl mx-auto px-4 flex justify-between items-center">
-          <button onClick={() => step > 0 && setStep(step - 1)} disabled={step === 0} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: `1px solid ${NAVY}` }}>{"\u2190"} Previous</button>
+          <button onClick={() => step > 0 && setStep(step - 1)} disabled={step === 0} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: `1px solid ${NAVY}` }}>{"←"} Previous</button>
           <span className="text-xs" style={{ color: "#aaa" }}>{step + 1} of {STEPS.length}</span>
-          <button onClick={() => step < STEPS.length - 1 && setStep(step + 1)} disabled={step === STEPS.length - 1} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-30" style={{ background: ACCENT, color: "#fff" }}>Next {"\u2192"}</button>
+          <button onClick={() => step < STEPS.length - 1 && setStep(step + 1)} disabled={step === STEPS.length - 1} className="px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-30" style={{ background: ACCENT, color: "#fff" }}>Next {"→"}</button>
         </div>
       </div>
     </div>
