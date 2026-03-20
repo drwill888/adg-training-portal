@@ -1,3 +1,4 @@
+import { supabase } from '../lib/supabase'
 import { useState, useEffect, useCallback } from "react";
 
 // ─── MOBILE HOOK ──────────────────────────────────────────────
@@ -134,7 +135,7 @@ function Nav({ back, next }) {
   </div>;
 }
 
-function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose }) {
+function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose, userName = "Leader", userInitials = "L", onSignOut }) {
   const isMobile = useIsMobile();
 
   // Map nav keys to actual URLs
@@ -207,8 +208,12 @@ function Sidebar({ currentPage, setCurrentPage, currentModule, open, onClose }) 
       </div>
       <div style={{ padding: "16px 20px", borderTop: `1px solid ${colors.navyMid}` }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: "50%", background: colors.royalBlue, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: colors.white }}>WM</div>
-          <div><div style={{ fontSize: 12, color: colors.white, fontWeight: 500 }}>Will Meier</div><div style={{ fontSize: 10, color: colors.gray500 }}>Participant</div></div>
+          <div style={{ width: 32, height: 32, borderRadius: "50%", background: colors.royalBlue, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: colors.white }}>{userInitials}</div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 12, color: colors.white, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{userName}</div>
+            <div style={{ fontSize: 10, color: colors.gray500 }}>Participant</div>
+          </div>
+          <button onClick={onSignOut} title="Sign out" style={{ background: "none", border: "none", cursor: "pointer", color: colors.gray500, fontSize: 16, padding: 2 }}>↪</button>
         </div>
       </div>
       </div>
@@ -281,10 +286,49 @@ function DashboardPage({ nav }) {
 export default function App() {
   const [page, setPage] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    // Check current session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setAuthLoading(false);
+    });
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!authLoading && !user) {
+      window.location.href = '/login';
+    }
+  }, [authLoading, user]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    window.location.href = '/login';
+  };
+
+  if (authLoading || !user) {
+    return <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: colors.offWhite }}>
+      <div style={{ width: 48, height: 48, border: `4px solid ${colors.gray200}`, borderTop: `4px solid ${colors.gold}`, borderRadius: "50%", animation: "spin 1s linear infinite" }} />
+      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+    </div>;
+  }
+
+  // Get user display name
+  const userName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Leader';
+  const userInitials = userName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+
   return <div style={{ display: "flex", minHeight: "100vh", fontFamily: "'Raleway','Segoe UI',sans-serif", background: colors.offWhite, color: colors.gray700 }}>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <Sidebar currentPage={page} setCurrentPage={setPage} currentModule={mockProgress.currentModule} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    <Sidebar currentPage={page} setCurrentPage={setPage} currentModule={mockProgress.currentModule} open={sidebarOpen} onClose={() => setSidebarOpen(false)} userName={userName} userInitials={userInitials} onSignOut={handleSignOut} />
     <div style={{ flex: 1, minHeight: "100vh", overflowY: "auto", marginLeft: isMobile ? 0 : 0 }}>
       <div style={{ padding: isMobile ? "10px 16px" : "12px 40px", borderBottom: `1px solid ${colors.gray200}`, background: colors.white, display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, zIndex: 30 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -299,7 +343,7 @@ export default function App() {
             {page === "dashboard" ? "Dashboard" : ""}
           </div>
         </div>
-        {!isMobile && <button style={{ padding: "6px 14px", fontSize: 12, background: "none", border: `1px solid ${colors.gray300}`, borderRadius: 6, color: colors.gray700, cursor: "pointer" }}>Export Progress</button>}
+        {!isMobile && <button onClick={handleSignOut} style={{ padding: "6px 14px", fontSize: 12, background: "none", border: `1px solid ${colors.gray300}`, borderRadius: 6, color: colors.gray700, cursor: "pointer" }}>Sign Out</button>}
       </div>
       {page === "dashboard" && <DashboardPage nav={setPage} />}
     </div>
