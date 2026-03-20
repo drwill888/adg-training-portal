@@ -5,6 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 import { useState, useEffect } from "react";
 import Head from "next/head";
+import { supabase } from '../../lib/supabase';
+import { saveModuleProgress, saveAiSummary } from '../../lib/db';
 
 const colors = {
   navy: "#021A35", navyLight: "#0a2a4d", navyMid: "#132f50",
@@ -74,6 +76,13 @@ export default function IntroductionPage() {
   const [committed, setCommitted] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiSummary, setAiSummary] = useState(null);
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) setUserId(session.user.id);
+    });
+  }, []);
 
   const secs = ["overview","why","objectives","structure","map","reflection","commitment","summary"];
 
@@ -284,15 +293,25 @@ Respond ONLY with a JSON object (no markdown, no backticks) with keys: leadershi
                   const data = await res.json();
                   const text = data.response || data.content?.[0]?.text || "";
                   const clean = text.replace(/```json|```/g, "").trim();
-                  setAiSummary(JSON.parse(clean));
+                  const parsed = JSON.parse(clean);
+                  setAiSummary(parsed);
+                  if (userId) {
+                    await saveModuleProgress(userId, 0, "Introduction", {
+                      status: "completed",
+                      reflections: r,
+                      completed_at: new Date().toISOString(),
+                    });
+                    await saveAiSummary(userId, 0, "Introduction", JSON.stringify(parsed));
+                  }
                 } catch (err) {
-                  setAiSummary({
+                  const fallback = {
                     leadership_posture: "You are entering this journey from a place of honest self-awareness. Your reflections reveal a leader who recognizes the gap between where you are and where you are designed to operate.",
                     primary_tension: "The greatest tension you identified points toward a misalignment between your internal capacity and your external responsibility.",
                     formation_focus: "Your formation journey will likely produce the deepest transformation in Calling clarity and Capacity expansion.",
                     cost_of_inaction: "You named what it will cost you if nothing changes. That honesty is rare. Hold onto that awareness.",
                     trajectory: "If you engage this course with the honesty you've already demonstrated, alignment across all five dimensions is not aspirational — it is inevitable.",
-                  });
+                  };
+                  setAiSummary(fallback);
                 }
                 setAiLoading(false);
               }} style={{ padding: "14px 40px", background: committed ? `linear-gradient(135deg, ${colors.navy}, ${colors.royalBlue})` : colors.gray300, color: colors.white, border: "none", borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: committed ? "pointer" : "default", transition: "all 0.3s" }}>
