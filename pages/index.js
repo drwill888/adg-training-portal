@@ -80,18 +80,11 @@ const modules = [
   { id: 6, title: "Commissioning", subtitle: "Conclusion & Certificate", icon: "◉", type: "conclusion" },
 ];
 
-const mockProgress = {
-  completionPct: 48, currentModule: 3,
-  moduleScores: [
-    { module: 1, pre: 32, post: 44, delta: 12, interpretation: "developing" },
-    { module: 2, pre: 28, post: 41, delta: 13, interpretation: "developing" },
-    { module: 3, pre: null, post: null, delta: null, interpretation: null },
-  ],
-  modulesCompleted: [0, 1, 2], modulesInProgress: [3],
-  aiSummaries: [
-    { module: 1, preview: "Your calling clarity has strengthened significantly. You've moved from fragmented to developing alignment..." },
-    { module: 2, preview: "Your connection security is growing. You're moving from approval-seeking to identity-rooted leadership..." },
-  ],
+const DEFAULT_PROGRESS = {
+  completionPct: 0, currentModule: 1,
+  moduleScores: [],
+  modulesCompleted: [], modulesInProgress: [],
+  aiSummaries: [],
 };
 
 const preCoursePrompts = [
