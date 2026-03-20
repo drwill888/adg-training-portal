@@ -39,17 +39,17 @@ p{font-size:12px;line-height:1.6}table{border-collapse:collapse;width:100%;margi
 th{background:#021A35;color:#fff;padding:8px;font-size:11px;text-align:left}td{font-size:11px}
 .footer{margin-top:40px;border-top:2px solid #C8A951;padding-top:12px;font-size:10px;color:#888;text-align:center}
 </style></head><body>
-<h1>5C Leadership Blueprint \u2014 ${title}</h1>
-<p style="color:#888;">Awakening Destiny Global \u2022 ${now}</p>
+<h1>5C Leadership Blueprint — ${title}</h1>
+<p style="color:#888;">Awakening Destiny Global • ${now}</p>
 ${diagnostic ? `<h2>Diagnostic Scores</h2>
 <table><tr><th>#</th><th>Statement</th><th>Pre</th><th>Post</th></tr>${scoreRows}</table>
 <p><b>Pre-Total:</b> ${preTotal}/60 &nbsp;&nbsp; <b>Post-Total:</b> ${postTotal}/60</p>` : ""}
 ${refEntries ? `<h2>Reflections &amp; Responses</h2>${refEntries}` : ""}
 ${aiSection ? `<h2>AI Leadership Summary</h2>${aiSection}` : ""}
-<div class="footer"><p>\u00A9 Awakening Destiny Global \u2022 awakeningdestiny.global</p>
-<p>5C Leadership Blueprint \u2014 Developing Leaders \u2022 Creating Champions</p></div>
+<div class="footer"><p>© Awakening Destiny Global • awakeningdestiny.global</p>
+<p>5C Leadership Blueprint — Developing Leaders • Creating Champions</p></div>
 </body></html>`;
-  const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+  const blob = new Blob(["﻿", html], { type: "application/msword" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url; a.download = `My_${title.replace(/\s+/g,"_")}_Blueprint.doc`;
