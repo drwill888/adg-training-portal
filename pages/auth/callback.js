@@ -1,25 +1,69 @@
 // pages/auth/callback.js
 // Handles the magic link redirect from Supabase
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { supabase } from '../../lib/supabase'
 
 export default function AuthCallback() {
   const router = useRouter()
+  const [status, setStatus] = useState('Signing you in...')
 
   useEffect(() => {
-    // Supabase automatically handles the token from the URL
-    // Just check the session and redirect
     const handleAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (session) {
-        router.replace('/')
-      } else {
-        router.replace('/login')
+      try {
+        const { code, error: urlError } = router.query
+
+        if (urlError) {
+          setStatus('Link expired or invalid. Redirecting...')
+          setTimeout(() => router.replace('/login'), 2000)
+          return
+        }
+
+        if (code) {
+          // Supabase v2 PKCE flow — exchange code for session
+          const { error } = await supabase.auth.exchangeCodeForSession(code)
+          if (error) {
+            setStatus('Sign in failed. Redirecting...')
+            setTimeout(() => router.replace('/login'), 2000)
+            return
+          }
+          router.replace('/')
+          return
+        }
+
+        // Fallback: listen for auth state change (handles hash-based tokens)
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+          if (event === 'SIGNED_IN' && session) {
+            subscription.unsubscribe()
+            router.replace('/')
+          }
+        })
+
+        // Also check existing session
+        const { data: { session } } = await supabase.auth.getSession()
+        if (session) {
+          subscription.unsubscribe()
+          router.replace('/')
+          return
+        }
+
+        // Timeout fallback
+        setTimeout(() => {
+          subscription.unsubscribe()
+          setStatus('Link may have expired. Please try again.')
+          setTimeout(() => router.replace('/login'), 2500)
+        }, 8000)
+
+      } catch (err) {
+        setStatus('Something went wrong. Redirecting...')
+        setTimeout(() => router.replace('/login'), 2000)
       }
     }
-    handleAuth()
-  }, [router])
+
+    if (router.isReady) {
+      handleAuth()
+    }
+  }, [router.isReady, router.query])
 
   return (
     <div style={{
@@ -35,7 +79,7 @@ export default function AuthCallback() {
           margin: '0 auto 20px', animation: 'spin 1s linear infinite'
         }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
-        <p style={{ color: '#021A35', fontWeight: 600, fontSize: 16 }}>Signing you in...</p>
+        <p style={{ color: '#021A35', fontWeight: 600, fontSize: 16 }}>{status}</p>
       </div>
     </div>
   )
