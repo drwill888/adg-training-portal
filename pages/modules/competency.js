@@ -5,6 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
+import { supabase } from '../../lib/supabase';
+import { saveModuleProgress, saveAiSummary } from '../../lib/db';
 
 // ─── BRAND PALETTE ───────────────────────────────────────────
 const NAVY    = "#021A35";
@@ -220,6 +222,36 @@ export default function CompetencyPage() {
   const topRef = useRef(null);
 
   useEffect(() => { topRef.current?.scrollIntoView({ behavior: "smooth" }); }, [step]);
+
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) setUserId(session.user.id);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (step > 1 && userId && Object.keys(preScores).length > 0) {
+      const total = Object.values(preScores).reduce((a, b) => a + b, 0);
+      saveModuleProgress(userId, 3, "Competency", {
+        status: "in_progress",
+        pre_score: total,
+        reflections: responses,
+        started_at: new Date().toISOString(),
+      });
+    }
+  }, [step]);
+
+  useEffect(() => {
+    if (step > 5 && userId && Object.keys(postScores).length > 0) {
+      const total = Object.values(postScores).reduce((a, b) => a + b, 0);
+      saveModuleProgress(userId, 3, "Competency", {
+        post_score: total,
+        commitments: commitments,
+      });
+    }
+  }, [step]);
   const currentStep = STEPS[step];
   const setScore = (target, num, val) => { if (target === "pre") setPreScores(p => ({ ...p, [num]: val })); if (target === "post") setPostScores(p => ({ ...p, [num]: val })); };
   const totalScore = (obj) => Object.values(obj).reduce((a, b) => a + b, 0);
@@ -263,7 +295,15 @@ Write a personalized Competency Blueprint (400-500 words) that:
 Write in second person. Tone: direct, warm, apostolic. Use Scripture naturally. No bullet points — flowing paragraphs.`;
       const res = await fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt }) });
       const data = await res.json();
-      setAiSummary(data.response || data.content?.[0]?.text || "Summary generation failed.");
+      const summaryText = data.response || data.content?.[0]?.text || "Summary generation failed.";
+      setAiSummary(summaryText);
+      if (userId && summaryText !== "Summary generation failed.") {
+        await saveAiSummary(userId, 3, "Competency", summaryText);
+        await saveModuleProgress(userId, 3, "Competency", {
+          status: "completed",
+          completed_at: new Date().toISOString(),
+        });
+      }
     } catch (err) { setAiSummary("Unable to generate summary. Please check your connection."); }
     setLoading(false);
   };
