@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { usePaymentStatus } from "../lib/usePaymentStatus";
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
@@ -20,7 +21,7 @@ const colors = {
 };
 
 const modules = [
-  { id: 0, title: "Introduction", subtitle: "Course Foundation", icon: "◈", href: "/modules/introduction" },
+  { id: 0, title: "Introduction", subtitle: "Course Foundation", icon: "◈", href: "/modules/introduction", free: true },
   { id: 1, title: "Calling", subtitle: "Potential (Purpose)", question: "Who was I designed to become?", icon: "①", href: "/modules/calling" },
   { id: 2, title: "Connection", subtitle: "Identity (Relationships)", question: "Whose am I?", icon: "②", href: "/modules/connection" },
   { id: 3, title: "Competency", subtitle: "Excellence (Credibility)", question: "Can I carry what I'm called to build?", icon: "③", href: "/modules/competency" },
@@ -31,11 +32,11 @@ const modules = [
 
 const accents = [colors.gold, colors.skyBlue, colors.royalBlue, colors.orange, colors.skyBlue, "#EE3124", colors.gold];
 
-function Sidebar({ currentPage, setCurrentPage, open, onClose }) {
+function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
   const isMobile = useIsMobile();
   const navItems = [
     { key: "dashboard", label: "Dashboard", icon: "⬡" },
-    ...modules.map(m => ({ key: "mod-" + m.id, label: m.id === 0 ? "Introduction" : m.id === 6 ? "Commissioning" : m.id + ". " + m.title, icon: m.icon, href: m.href })),
+    ...modules.map(m => ({ key: "mod-" + m.id, label: m.id === 0 ? "Introduction" : m.id === 6 ? "Commissioning" : m.id + ". " + m.title, icon: m.icon, href: m.href, locked: !m.free && !paid })),
   ];
 
   return (
@@ -51,11 +52,14 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose }) {
             var act = currentPage === item.key;
             return (
               <div key={item.key}
-                onClick={function() { if (item.href) { window.location.href = item.href; } else { setCurrentPage(item.key); if (isMobile) onClose(); } }}
-                style={{ padding: "10px 20px", cursor: "pointer", display: "flex", alignItems: "center", gap: 10, background: act ? colors.navyLight : "transparent", borderLeft: act ? "3px solid " + colors.gold : "3px solid transparent", transition: "all 0.2s" }}
-                onMouseEnter={function(e) { if (!act) e.currentTarget.style.background = colors.navyLight; }}
-                onMouseLeave={function(e) { if (!act) e.currentTarget.style.background = "transparent"; }}>
-                <span style={{ fontSize: 14, width: 22, textAlign: "center", color: act ? colors.skyBlue : colors.gray300 }}>{item.icon}</span>
+                onClick={function() {
+                  if (item.locked) return;
+                  if (item.href) { window.location.href = item.href; } else { setCurrentPage(item.key); if (isMobile) onClose(); }
+                }}
+                style={{ padding: "10px 20px", cursor: item.locked ? "default" : "pointer", display: "flex", alignItems: "center", gap: 10, background: act ? colors.navyLight : "transparent", borderLeft: act ? "3px solid " + colors.gold : "3px solid transparent", opacity: item.locked ? 0.4 : 1, transition: "all 0.2s" }}
+                onMouseEnter={function(e) { if (!act && !item.locked) e.currentTarget.style.background = colors.navyLight; }}
+                onMouseLeave={function(e) { if (!act && !item.locked) e.currentTarget.style.background = "transparent"; }}>
+                <span style={{ fontSize: 14, width: 22, textAlign: "center", color: act ? colors.skyBlue : colors.gray300 }}>{item.locked ? "🔒" : item.icon}</span>
                 <span style={{ fontSize: 13, fontWeight: act ? 600 : 400, color: act ? colors.white : colors.gray300 }}>{item.label}</span>
               </div>
             );
@@ -69,6 +73,19 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose }) {
   );
 }
 
+async function handleCheckout() {
+  try {
+    const res = await fetch('/api/checkout', { method: 'POST' });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    }
+  } catch (err) {
+    console.error('Checkout error:', err);
+    alert('Something went wrong. Please try again.');
+  }
+}
+
 export default function App() {
   var isMobile = useIsMobile();
   var pageState = useState("dashboard");
@@ -77,11 +94,12 @@ export default function App() {
   var sidebarState = useState(false);
   var sidebarOpen = sidebarState[0];
   var setSidebarOpen = sidebarState[1];
+  var { paid, loading } = usePaymentStatus();
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", fontFamily: "'Raleway','Segoe UI',sans-serif", background: colors.offWhite }}>
       <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-      <Sidebar currentPage={page} setCurrentPage={setPage} open={sidebarOpen} onClose={function() { setSidebarOpen(false); }} />
+      <Sidebar currentPage={page} setCurrentPage={setPage} open={sidebarOpen} onClose={function() { setSidebarOpen(false); }} paid={paid} />
       <div style={{ flex: 1, minHeight: "100vh", overflowY: "auto" }}>
         <div style={{ padding: isMobile ? "10px 16px" : "12px 40px", borderBottom: "1px solid " + colors.gray200, background: colors.white, display: "flex", alignItems: "center", gap: 12, position: "sticky", top: 0, zIndex: 30 }}>
           {isMobile && (
@@ -98,22 +116,40 @@ export default function App() {
           <h1 style={{ fontSize: 26, fontWeight: 700, color: colors.navy, margin: "0 0 6px" }}>5C Leadership Blueprint</h1>
           <p style={{ fontSize: 14, color: colors.gray500, margin: "0 0 32px", fontStyle: "italic" }}>Select a module below to begin your leadership formation journey.</p>
 
+          {!paid && !loading && (
+            <div style={{ padding: 24, background: "linear-gradient(135deg, #021A35, #0a2a4d)", borderRadius: 12, marginBottom: 24, display: "flex", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", flexDirection: isMobile ? "column" : "row", gap: 16 }}>
+              <div>
+                <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>FULL ACCESS</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Unlock the Complete 5C Blueprint</div>
+                <div style={{ fontSize: 13, color: colors.gray300 }}>Get full access to all five leadership modules plus Commissioning.</div>
+              </div>
+              <button onClick={handleCheckout}
+                style={{ padding: "12px 32px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 }}>
+                Unlock — $3.99
+              </button>
+            </div>
+          )}
+
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 16, marginBottom: 24 }}>
             {modules.map(function(m, i) {
+              var locked = !m.free && !paid;
               return (
                 <div key={m.id}
-                  onClick={function() { window.location.href = m.href; }}
-                  style={{ background: colors.white, borderRadius: 12, padding: 24, border: "1px solid " + colors.gray200, borderTop: "3px solid " + accents[i], cursor: "pointer" }}
-                  onMouseEnter={function(e) { e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)"; }}
-                  onMouseLeave={function(e) { e.currentTarget.style.boxShadow = "none"; }}>
+                  onClick={function() { if (!locked) window.location.href = m.href; }}
+                  style={{ background: colors.white, borderRadius: 12, padding: 24, border: "1px solid " + colors.gray200, borderTop: "3px solid " + (locked ? colors.gray300 : accents[i]), cursor: locked ? "default" : "pointer", opacity: locked ? 0.6 : 1, position: "relative" }}
+                  onMouseEnter={function(e) { if (!locked) e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)"; }}
+                  onMouseLeave={function(e) { if (!locked) e.currentTarget.style.boxShadow = "none"; }}>
+                  {locked && (
+                    <div style={{ position: "absolute", top: 12, right: 12, fontSize: 14 }}>🔒</div>
+                  )}
                   <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: m.question ? 10 : 0 }}>
-                    <div style={{ width: 40, height: 40, borderRadius: 10, background: accents[i] + "22", border: "2px solid " + accents[i], display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, color: accents[i], flexShrink: 0 }}>{m.icon}</div>
+                    <div style={{ width: 40, height: 40, borderRadius: 10, background: (locked ? colors.gray300 : accents[i]) + "22", border: "2px solid " + (locked ? colors.gray300 : accents[i]), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, color: locked ? colors.gray300 : accents[i], flexShrink: 0 }}>{m.icon}</div>
                     <div>
                       <div style={{ fontSize: 15, fontWeight: 700, color: colors.navy }}>{m.title}</div>
                       <div style={{ fontSize: 12, color: colors.gray500, fontStyle: "italic" }}>{m.subtitle}</div>
                     </div>
                   </div>
-                  {m.question && <div style={{ fontSize: 13, color: "#0172BC", fontStyle: "italic", borderTop: "1px solid " + colors.gray200, paddingTop: 10 }}>{m.question}</div>}
+                  {m.question && <div style={{ fontSize: 13, color: locked ? colors.gray500 : "#0172BC", fontStyle: "italic", borderTop: "1px solid " + colors.gray200, paddingTop: 10 }}>{m.question}</div>}
                 </div>
               );
             })}
