@@ -81,7 +81,7 @@ const PRINCIPLES = [
     num: 1,
     title: "Design Precedes Deployment",
     ref: "Jeremiah 1:5",
-    scripture: ""Before I formed you in the womb I knew you, before you were born I set you apart." — Jeremiah 1:5",
+    scripture: "\"Before I formed you in the womb I knew you, before you were born I set you apart.\" — Jeremiah 1:5",
     paragraphs: [
       "God forms before He sends. Calling originates in God's intention, not human ambition. Leadership must be formed internally before it is expressed externally.",
       "If deployment precedes design clarity, instability follows. You cannot build what you have not been shaped to carry. Many leaders launch before they are formed — and they fracture under the weight of an assignment their character was never prepared to hold.",
@@ -93,7 +93,7 @@ const PRINCIPLES = [
     num: 2,
     title: "Calling Carries Burden",
     ref: "Nehemiah 1:3–4",
-    scripture: ""When I heard these things, I sat down and wept. For some days I mourned and fasted and prayed before the God of heaven." — Nehemiah 1:3–4",
+    scripture: "\"When I heard these things, I sat down and wept. For some days I mourned and fasted and prayed before the God of heaven.\" — Nehemiah 1:3–4",
     paragraphs: [
       "Calling is not a career preference. It is a burden you cannot set down. Nehemiah heard about the broken walls and could not stop weeping. That is the mark of calling — a weight that won't leave you alone.",
       "The burden of calling is not depression. It is not anxiety. It is a holy dissatisfaction with the way things are combined with a God-given conviction that you are part of the solution. It interrupts your comfort. It refuses to let you settle.",
@@ -105,7 +105,7 @@ const PRINCIPLES = [
     num: 3,
     title: "Calling Must Be Confirmed in Community",
     ref: "1 Samuel 3:8–9",
-    scripture: ""Then Eli realized that the Lord was calling the boy. So Eli told Samuel, 'Go and lie down, and if He calls you, say, Speak, Lord, for your servant is listening.'" — 1 Samuel 3:8–9",
+    scripture: "\"Then Eli realized that the Lord was calling the boy. So Eli told Samuel, 'Go and lie down, and if He calls you, say, Speak, Lord, for your servant is listening.'\" — 1 Samuel 3:8–9",
     paragraphs: [
       "Samuel heard God's voice but needed Eli to help him interpret it. Calling does not mature in isolation. It requires mentors, community, and external confirmation. A calling that no one else can see or confirm may be ambition dressed in spiritual language.",
       "Community provides three essential functions for calling: interpretation (helping you understand what God is saying), confirmation (verifying what you're sensing), and accountability (holding you to what you've declared).",
@@ -117,7 +117,7 @@ const PRINCIPLES = [
     num: 4,
     title: "Calling Governs Decisions",
     ref: "Ephesians 4:1",
-    scripture: ""Walk worthy of the calling with which you were called." — Ephesians 4:1",
+    scripture: "\"Walk worthy of the calling with which you were called.\" — Ephesians 4:1",
     paragraphs: [
       "Once calling is clarified, it becomes the filter for every decision. Not every opportunity is for you. Not every success is yours to celebrate. Calling eliminates false options — and that is its mercy.",
       "Leaders without calling clarity are blown around by market demands, board pressure, and the loudest voice in the room. But leaders rooted in calling can say no to the good in order to protect the great. They can walk away from money, influence, and applause if those things distract from their true assignment.",
