@@ -3,18 +3,18 @@ import Head from "next/head";
 import ModuleTemplate from "../../components/ModuleTemplate";
 
 const diagnostic = [
-  { num: 1,  cat: "Alignment & Focus",     text: "I can articulate the specific zone where my calling, skill, and burden all intersect.", ref: "Proverbs 16:3" },
-  { num: 2,  cat: "Alignment & Focus",     text: "I have narrowed my focus enough that I am deep somewhere, not just wide everywhere." },
-  { num: 3,  cat: "Alignment & Focus",     text: "My daily work produces a sense of rightness, not just busyness.", ref: "Ecclesiastes 3:1" },
-  { num: 4,  cat: "Releasing & Delegating",text: "I have released responsibilities that are no longer mine to carry." },
-  { num: 5,  cat: "Releasing & Delegating",text: "I say no more than I say yes — and my no protects my best assignment." },
-  { num: 6,  cat: "Releasing & Delegating",text: "The people around me are aligned with where I am going, not just where I've been." },
-  { num: 7,  cat: "Legacy & Multiplication",text: "I am building something that will outlast my personality and platform.", ref: "John 12:24" },
-  { num: 8,  cat: "Legacy & Multiplication",text: "My leadership produces multiplication, not just results." },
-  { num: 9,  cat: "Legacy & Multiplication",text: "I am not chasing momentum — I am stewarding legacy." },
-  { num: 10, cat: "Sustained Fruitfulness", text: "The fruit I'm producing is sustainable — it doesn't require me to overextend.", ref: "Luke 2:52" },
-  { num: 11, cat: "Sustained Fruitfulness", text: "I operate with more peace than striving — because I am in my lane." },
-  { num: 12, cat: "Sustained Fruitfulness", text: "I have clarity about the next chapter — what to build, who to build with, and what to release." },
+  { num: 1,  cat: "Alignment & Focus",      text: "I am clear about my primary assignment in this season.", ref: "Philippians 3:13–14" },
+  { num: 2,  cat: "Alignment & Focus",      text: "I have eliminated responsibilities outside my grace." },
+  { num: 3,  cat: "Alignment & Focus",      text: "My schedule reflects my priorities, not other people's demands." },
+  { num: 4,  cat: "Integration & Stability",text: "My internal world matches my external responsibility.", ref: "Psalm 1:3" },
+  { num: 5,  cat: "Integration & Stability",text: "I am not overextended beyond my capacity." },
+  { num: 6,  cat: "Integration & Stability",text: "Growth feels aligned, not chaotic." },
+  { num: 7,  cat: "Favor & Peace",          text: "I experience ruling peace in leadership decisions.", ref: "Colossians 3:15" },
+  { num: 8,  cat: "Favor & Peace",          text: "Others trust my consistency and leadership steadiness." },
+  { num: 9,  cat: "Favor & Peace",          text: "I see increasing favor relationally and spiritually.", ref: "Luke 2:52" },
+  { num: 10, cat: "Legacy & Succession",    text: "I am intentionally preparing successors.", ref: "1 Chronicles 28:9–10" },
+  { num: 11, cat: "Legacy & Succession",    text: "I am building something that will outlast me.", ref: "Psalm 145:4" },
+  { num: 12, cat: "Legacy & Succession",    text: "I am stewarding influence, not chasing visibility.", ref: "Luke 12:48" },
 ];
 
 const principles = [
@@ -26,109 +26,191 @@ const principles = [
     paragraphs: [
       "Convergence does not begin with acceleration. It begins with integration. If the internal world is divided — calling unclear, connection unstable, competency inconsistent, capacity fragile — then expansion becomes dangerous.",
       "This is why some opportunities feel 'too big' when they arrive early: not because the opportunity is wrong, but because the leader is not yet integrated. Integrated leaders expand without fragmentation. Unintegrated leaders expand and break.",
-      "The season of convergence is not about acquiring more. It is about synthesizing what has been built — calling, identity, skill, and character — into a unified operating system. Before the next chapter begins, the current one must be integrated.",
+      "Convergence is the season when God brings alignment across the whole life. It is rooted expansion — growth that does not fracture. The planted leader does not panic under pressure and does not expand faster than their foundations.",
     ],
-    prompt: "Which of the five dimensions feels most unintegrated right now? What would it mean to tend to that dimension before moving toward the next level of expansion?",
+    prompts: [
+      "Across the 5Cs, where are you most integrated? Where is the weakest link? What would integration look like in that area before you expand further?",
+    ],
   },
   {
     num: 2,
-    title: "Narrowing Increases Impact",
+    title: "Focus Protects Impact",
     ref: "Philippians 3:13–14",
-    scripture: "\"One thing I do: forgetting what lies behind and straining forward to what lies ahead.\" — Philippians 3:13–14",
+    scripture: "\"One thing I do: forgetting what lies behind and straining forward to what lies ahead, I press on toward the goal.\" — Philippians 3:13–14",
     paragraphs: [
-      "Paul did not say 'many things I do.' He said one thing. The most impactful leaders are not the most diversified ones — they are the most focused ones. Breadth attracts attention. Depth creates transformation.",
-      "Convergence requires the courage to say no to the many good things in order to say a full yes to the right thing. This is not limitation. It is precision. The laser and the light bulb use the same energy — but one cuts through steel and the other merely illuminates a room.",
-      "Every no at this stage is an act of stewardship. You are protecting the assignment that only you can carry. The leader who refuses to narrow becomes the leader who produces a lot of activity and very little legacy.",
+      "Paul did not say 'these seventeen things I attempt.' He said 'one thing I do.' At the convergence stage, the greatest threat is not lack of opportunity. It is too much opportunity.",
+      "Convergence is not doing more. It is doing the right things with precision — because the season demands stewardship, not experimentation. Scattered leaders leak energy. Focused leaders concentrate force.",
+      "Focus protects your energy from diffusion, your team from confusion, your legacy from dilution, and your peace from erosion.",
     ],
-    prompt: "What are you currently carrying that is not yours to carry? What would you need to believe to release it without guilt?",
+    prompts: [
+      "What are you doing right now that someone else should be carrying? What would you do with the energy you freed up?",
+      "What one thing must you protect as non-negotiable in this season?",
+    ],
   },
   {
     num: 3,
-    title: "Legacy Requires Releasing",
+    title: "Strategic Release Expands Influence",
     ref: "John 12:24",
     scripture: "\"Unless a grain of wheat falls into the earth and dies, it remains alone; but if it dies, it bears much fruit.\" — John 12:24",
     paragraphs: [
-      "Multiplication requires release. The seed must be planted to produce harvest. The leader who holds everything tightly produces a single impressive plant. The leader who plants intentionally produces a field.",
-      "Releasing is one of the hardest leadership disciplines — because it feels like loss. Releasing a team member to greater responsibility feels like personal diminishment. Releasing a role you've built feels like identity loss. Releasing a ministry feels like abandonment.",
-      "But the grain that stays in the hand remains alone. The leader whose greatest contribution is what they personally produced has not yet entered convergence. The leader whose greatest contribution is who they formed and released — that leader has begun to build legacy.",
+      "Convergence requires pruning. To enter the sweet spot, leaders must release what once served them but now competes with their assignment. Old roles. Old patterns. Old attachments. Old expectations. Lower-level responsibilities that prevent higher-level stewardship.",
+      "Many leaders fail to converge because they refuse to die to what is familiar. But in Scripture, death precedes multiplication. Strategic release is not loss. It is alignment.",
+      "Release also requires adaptability. The converged leader does not cling to methods that worked last season. They adapt their expression without abandoning their assignment. The assignment stays. The approach evolves.",
     ],
-    prompt: "What do you need to release in this season in order to multiply rather than protect? Name it specifically — person, role, responsibility, or title.",
+    prompts: [
+      "What role, responsibility, relationship, or pattern do you need to release to step more fully into your sweet spot?",
+      "Where do you need to adapt your approach without abandoning your assignment?",
+    ],
   },
   {
     num: 4,
-    title: "Stewardship Over Striving",
-    ref: "Proverbs 16:3",
-    scripture: "\"Commit your work to the LORD, and your plans will be established.\" — Proverbs 16:3",
+    title: "Succession Must Be Intentional",
+    ref: "1 Chronicles 28:9–10",
+    scripture: "\"Know the God of your father and serve Him with a whole heart and with a willing mind. Be strong and do it.\" — 1 Chronicles 28:9–10",
     paragraphs: [
-      "The Hebrew word for 'established' in this verse is kun — to be made firm, stable, to stand securely. Convergence stabilizes leadership influence. It produces rooted expansion — growth that does not fracture the leader, the culture, or the mission.",
-      "Striving produces output but not sustainability. Stewardship produces fruit that remains. The converged leader is not working harder than everyone else — they are working in deeper alignment. The work feels different because it flows from design, not from demand.",
-      "When you are in your sweet spot, what once exhausted you now energizes you. Not because the work is easier — the weight may be greater than ever — but because you are carrying what you were made to carry. That is the mark of convergence.",
+      "David did not merely build a kingdom. He prepared a successor. He transferred wisdom. He funded the vision. He created infrastructure for the next generation to build on.",
+      "Convergence shifts leadership from personal growth to generational stewardship. From personal success to organizational sustainability. From personal authority to distributed strength. Succession is not an afterthought — it is a convergence responsibility.",
+      "The converged leader asks: 'What will this look like when I am no longer in the room?' Greater influence carries greater generational accountability. The measure is not what you built — it is what you passed on.",
     ],
-    prompt: "What does your current assignment feel like — striving or stewarding? What would it mean to release the effort required by misalignment and enter the work you were built for?",
+    prompts: [
+      "Who are you intentionally preparing to carry what you've built? If no one — why not?",
+      "What would your leadership legacy look like if you left tomorrow? Does that satisfy you?",
+    ],
+  },
+  {
+    num: 5,
+    title: "Convergence Governs Your Legacy",
+    ref: "Colossians 3:15",
+    scripture: "\"Let the peace of Christ rule in your hearts.\" — Colossians 3:15",
+    paragraphs: [
+      "Just as calling governs decisions, connection governs posture, competency governs what you build, and capacity governs what you carry — convergence governs your legacy. The question is no longer 'What can I do?' but 'What must I protect, build, and multiply?'",
+      "At the convergence level, peace becomes the governing compass. Not passivity. Not laziness. Ruling peace — the internal witness that confirms you are operating in your lane of grace.",
+      "Convergence as a filter asks: Am I protecting my sweet spot or allowing drift? Is this expanding my impact or diluting it? Am I building for legacy or chasing for visibility? Do I feel peace or restlessness about this direction?",
+    ],
+    prompts: [
+      "Where do you feel ruling peace in your leadership right now? Where do you feel restlessness? What does the contrast reveal?",
+    ],
+  },
+  {
+    num: 6,
+    title: "Convergence Can Be Lost",
+    ref: "Galatians 5:7",
+    addendum: true,
+    scripture: "\"You were running well. Who hindered you from obeying the truth?\" — Galatians 5:7",
+    paragraphs: [
+      "Convergence is not a permanent arrival. It can be entered — and it can be exited. Leaders who assume alignment is automatic become vulnerable to the very drift they thought they had outgrown.",
+      "Success scatters what alignment built. A new opportunity flatters you back into overextension. A compliment pulls you outside your lane. And slowly — without a single dramatic failure — you drift from your sweet spot into scattered busyness again.",
+      "Drift is not dramatic. It is incremental. It does not announce itself. It accumulates. The leader who does not actively defend convergence will lose it — not to crisis, but to distraction dressed as opportunity.",
+    ],
+    prompts: [
+      "Have you ever been in alignment and drifted out of it? What pulled you away — and what would it take to recognize the early signs of drift before it becomes a pattern?",
+    ],
+  },
+  {
+    num: 7,
+    title: "Legacy Requires Documentation",
+    ref: "Habakkuk 2:2",
+    addendum: true,
+    scripture: "\"Write the vision; make it plain on tablets, so he may run who reads it.\" — Habakkuk 2:2",
+    paragraphs: [
+      "David did not whisper the temple vision to Solomon over dinner. He gave him the plans — the measurements, the materials, the organizational structure, the division of labor, the funding. He documented everything so that what God revealed to one generation could be built by the next.",
+      "Your values, your processes, your reasoning, your decisions — if they live only in your head, they die with your presence. Inspiration without documentation fades within a generation. A blueprint lasts.",
+      "Documentation is not bureaucracy. It is stewardship. It is the discipline of translating what you carry internally into something others can build from externally. The leader who documents creates a bridge. The leader who does not creates a gap the next generation must rebuild from scratch.",
+    ],
+    prompts: [
+      "What do you carry — systems, processes, values, lessons, frameworks — that currently lives only in your head? What would you need to document so the next generation can build from where you finished, not from where you started?",
+    ],
+  },
+  {
+    num: 8,
+    title: "Guard Against Isolation at the Top",
+    ref: "Hebrews 10:24–25",
+    addendum: true,
+    scripture: "\"Let us consider how to stir one another up to love and good works, not neglecting to meet together.\" — Hebrews 10:24–25",
+    paragraphs: [
+      "As leaders converge and narrow, a quiet danger emerges: isolation. The higher you go, the fewer people understand your weight. Convergence without community becomes a prison of competence. The leader operates with clarity and precision — but without anyone close enough to challenge, encourage, or correct them.",
+      "Decisions go unchecked. Burdens go unshared. Blind spots go unnamed. And the very focus that produced alignment begins to produce loneliness.",
+      "This is not a call to widen your circle. It is a call to deepen it. At the convergence level, you do not need more people. You need the right people — two or three who carry enough weight themselves to understand yours, who have earned the right to speak honestly, and who will not be intimidated by your authority.",
+    ],
+    prompts: [
+      "Do you have two or three people who understand the weight of what you carry — and have permission to challenge you? If not, who could fill that role, and what is preventing you from inviting them in?",
+    ],
+  },
+  {
+    num: 9,
+    title: "Stewardship of Resources Is a Convergence Responsibility",
+    ref: "1 Chronicles 29:2",
+    addendum: true,
+    scripture: "\"With great pains I have provided for the house of the LORD 100,000 talents of gold, a million talents of silver, and bronze and iron beyond weighing.\" — 1 Chronicles 29:2",
+    paragraphs: [
+      "David did not just prepare Solomon with vision, wisdom, and organizational structure. He funded the assignment. He stewarded resources across his entire reign so the next generation could build without begging.",
+      "At the convergence level, resource stewardship becomes legacy infrastructure. This includes financial resources, relational capital, intellectual property, organizational assets, and institutional knowledge. How you steward what has been entrusted to you determines whether the next generation builds or starts over.",
+      "Resource stewardship at this level asks different questions: Not 'Can I afford this?' but 'Am I positioning resources so this outlasts me?' Not 'Is this profitable?' but 'Is this generationally sustainable?' The converged leader who consumes everything they produce leaves the next generation an empty table. The leader who stewards with intention leaves an inheritance.",
+    ],
+    prompts: [
+      "Are you stewarding your resources — financial, relational, organizational — in a way that equips the next generation to build? What would need to change so that what you leave behind is an inheritance, not an empty table?",
+    ],
   },
 ];
 
 const exemplar = {
-  title: "Exemplar: Paul — From Damascus to Legacy",
-  subtitle: "Paul's convergence came after years of preparation, and produced a legacy that outlasted every empire.",
-  intro: "Paul before Damascus was Saul — brilliant, zealous, highly trained, deeply connected to the best networks of his era. But his gifts were pointing in the wrong direction. Convergence for Paul began with a collision, not a gradual transition. Everything he was — his Pharisaic training, his Roman citizenship, his Jewish lineage, his apostolic call — all of it converged into a singular, focused assignment: to carry the gospel to the Gentile world.",
-  intro2: "What makes Paul's convergence remarkable is not the breadth of what he built — it is the depth of what he focused on. He did not attempt to stay in Jerusalem and build what was comfortable. He did not spread himself across every opportunity. He identified his lane with unusual clarity and ran with everything he had — 'one thing I do.' His letters, his churches, his disciples outlasted him by millennia. That is not accident. That is convergence.",
+  title: "Exemplar: David — Warrior to King",
+  subtitle: "David's life arc is the full 5C journey, culminating in convergence through integration, consolidation, and legacy transfer.",
+  intro: "David's convergence was not merely sitting on a throne. When he was finally made king over all Israel, the tribes said 'We are your bone and flesh.' He unified a divided nation. He consolidated governance. He established covenant culture. He stabilized what had been fractured for years. That is convergence: not personal success, but the alignment of one person's formation with the needs of a generation.",
+  intro2: "And when convergence was complete, David turned to legacy: 'Know the God of your father and serve Him with a whole heart.' He prepared Solomon. He funded the temple. He transferred vision. He built himself out of the center and invested everything into what would outlast him. David did not just build a kingdom — he prepared a builder.",
+  pattern: "Calling → Wilderness → Integration → Consolidation → Legacy Transfer",
   lessons: [
-    "Convergence often begins with disruption — not smooth transition. Sometimes God must interrupt before He can align.",
-    "Your background, training, and experience are not abandoned in convergence — they are integrated into your lane.",
-    "The depth of Paul's focus is what produced the breadth of his legacy. Narrow to the lane. Go deep.",
-    "Converged leaders produce successors, not just followers. Timothy, Titus, Priscilla, Aquila — Paul multiplied himself intentionally.",
-    "Legacy is not what you do when you have more time. It is what you build into others while you are in full capacity.",
+    "Convergence is not arrival — it is the season where everything comes together and the leader decides to build for the next generation.",
+    "Unified influence is the fruit of integrated formation. David could not have unified Israel if he had not been unified internally.",
+    "Legacy is not what you leave behind as monument — it is who you send forward as multiplier.",
+    "The converged leader builds themselves out of the center. The goal is to become unnecessary — not because you quit, but because you reproduced.",
+    "Governing from peace is the evidence of convergence. David, at his best, shepherded with upright heart and skillful hand.",
   ],
   questions: [
-    "What is your 'one thing' — the single focus around which all your other activity should organize?",
-    "Who is your Timothy? Who are you intentionally forming to carry what you carry, and beyond?",
+    "Does your leadership currently unify or divide? What does that reveal about your convergence?",
+    "Are you building yourself out of the center — or are you building yourself into the center?",
+    "Are you governing from peace or reacting from pressure? What is the evidence in your last 30 days?",
   ],
 };
 
 const stages = [
   {
-    title: "Stage 1: Awareness (The Sweet Spot Emerges)",
-    description: "You are beginning to see the intersection — the place where your calling, your grace, your burden, and your competency all point in the same direction. You may not be there yet, but you can see it. This stage is characterized by growing clarity and increasing frustration with misalignment.",
+    title: "Stage 1: Clarification",
+    description: "Focus sharpens. Distractions are identified and removed. The leader defines the assignment with precision. Pruning begins. You stop asking 'What else could I do?' and start asking 'What must I protect?'",
     markers: ["Awareness of what you are best at and most called to", "Restlessness in roles that don't align", "Beginning to name the sweet spot, even if you can't fully inhabit it yet"],
   },
   {
-    title: "Stage 2: Alignment (The Pruning Season)",
-    description: "You are actively releasing what is not yours to carry so you can fully inhabit what is. This stage requires courage — you are saying no to good things and yes to the right thing. It feels like loss. It is actually precision.",
-    markers: ["Making difficult decisions to release responsibilities or roles", "Beginning to organize your time around your highest contribution", "Others may misunderstand your narrowing — and you hold to it anyway"],
+    title: "Stage 2: Consolidation",
+    description: "Systems strengthen. Culture stabilizes. Team matures. Capacity and competency reinforce so expansion does not fracture. Succession begins.",
+    markers: ["Making difficult decisions to release responsibilities or roles", "Organizing your time around your highest contribution", "Beginning to prepare the next generation intentionally"],
   },
   {
-    title: "Stage 3: Acceleration (The Fruitful Season)",
-    description: "You are operating in your sweet spot. The work is still hard — but it is right. You have the right people around you, the right focus in front of you, and the right foundation under you. Fruit is coming and it is sustainable.",
-    markers: ["High productivity without proportional increase in exhaustion", "The right doors opening without you forcing them", "Growing sense of rightness about the work you are doing"],
-  },
-  {
-    title: "Stage 4: Legacy (The Multiplication Season)",
-    description: "Your convergence has become transferable. You are not just building — you are building builders. The next generation is being formed by what you carry. This is the fullest expression of convergence: impact that outlasts your direct involvement.",
-    markers: ["Leaders in your orbit are building with your DNA in their foundation", "What you've built continues without your daily presence", "You are known not just for what you've done but for who you've developed"],
+    title: "Stage 3: Activation",
+    description: "The leader steps fully into the weight of assignment. Leading with clarity, peace, and increasing favor with God and man. Fruitful and at peace — because you are doing what you were built to do.",
+    markers: ["High productivity without proportional increase in exhaustion", "The right doors opening without forcing them", "Growing sense of rightness about the work you are doing"],
   },
 ];
 
 const commitmentPrompts = [
-  { id: "sweet_spot_definition",   label: "My Sweet Spot (Where calling + grace + burden + skill all intersect)",       placeholder: "Describe the specific zone where all five dimensions align in you. Be precise..." },
-  { id: "what_to_release",         label: "What I Am Releasing This Season",                                              placeholder: "Name the specific responsibilities, roles, or relationships that are no longer yours to hold..." },
-  { id: "focus_declaration",       label: "My One Thing (The singular focus that governs everything else)",               placeholder: "Write the one thing — the primary assignment — around which you are organizing your leadership..." },
-  { id: "legacy_investment",       label: "Who I Am Intentionally Building Into Legacy",                                  placeholder: "Name the specific people you are investing in for succession, multiplication, and generational impact..." },
-  { id: "convergence_evidence",    label: "Evidence That I Am in My Sweet Spot",                                          placeholder: "Describe what it looks and feels like when you are operating in alignment. How do you know?" },
+  { id: "sweet_spot",         label: "My Sweet Spot Statement (Where all 5Cs align in me)",                          placeholder: "One sentence capturing your convergence zone — where calling, grace, skill, character, and timing all intersect..." },
+  { id: "convergence_now",    label: "My Current Convergence Expression (Where alignment is producing fruit now)",   placeholder: "Name the specific assignment, focus, or initiative that is your highest contribution right now..." },
+  { id: "release_list",       label: "My Release List (Three things I will delegate, prune, or release)",            placeholder: "Release 1:\n\nRelease 2:\n\nRelease 3:" },
+  { id: "succession_target",  label: "My Succession Target (Who am I preparing to carry what I've built?)",          placeholder: "Name them. Describe your plan for transfer and what you are entrusting to them..." },
+  { id: "legacy_declaration", label: "My Legacy Declaration (What will still be standing when I am gone?)",          placeholder: "Write what you are building that will outlast you — people, systems, culture, mission..." },
 ];
 
 const revisitTriggers = [
-  "When you notice yourself scattered across too many initiatives",
-  "When the work has stopped producing the fruit it once did",
-  "When you are busy but not fulfilled — productive but not at peace",
-  "When a new opportunity arises that would pull you out of your lane",
-  "When you are considering a significant season shift or leadership transition",
-  "When the legacy questions become urgent — 'What am I building that outlasts me?'",
+  "When new opportunities tempt you to scatter",
+  "When busyness replaces fruitfulness",
+  "When peace erodes and restlessness returns",
+  "When succession stalls or gets postponed",
+  "When your schedule no longer reflects your priorities",
+  "Quarterly, as a discipline of alignment",
 ];
 
 const applicationQuestions = [
   "Name one thing you will release this week in order to protect your sweet spot. Who will you tell?",
-  "Who is the Timothy in your sphere — the person you are most intentionally investing in for multiplication?",
+  "Who is the person you will most intentionally invest in for multiplication this season?",
 ];
 
 const config = {
@@ -151,9 +233,9 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  aiPromptContext: "This leader has completed Module 5: Convergence — the capstone module of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) how clearly they can articulate their sweet spot and whether it integrates all five dimensions, (2) the courage and specificity of what they are releasing, (3) the clarity of their 'one thing,' and (4) the intentionality of their legacy investment. This is the synthesis module — your analysis should draw together all five dimensions into a unified word for this leader.",
+  aiPromptContext: "This leader has completed Module 5: Convergence — the capstone module of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) how clearly they can articulate their sweet spot and whether it integrates all five dimensions, (2) the courage and specificity of what they are releasing, (3) the clarity of their primary assignment, and (4) the intentionality of their legacy investment. Draw together all five dimensions into a unified word for this leader.",
   contrastTable: {
-    title: "Two Modes of Leadership at This Stage",
+    title: "Two Modes at This Stage",
     leftTitle: "Scattered Leader",
     rightTitle: "Converged Leader",
     rows: [
