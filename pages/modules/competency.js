@@ -3,130 +3,209 @@ import Head from "next/head";
 import ModuleTemplate from "../../components/ModuleTemplate";
 
 const diagnostic = [
-  { num: 1,  cat: "Skill Stewardship",    text: "I can identify specific skill gaps in my current assignment.", ref: "2 Timothy 2:15" },
-  { num: 2,  cat: "Skill Stewardship",    text: "I have a deliberate plan to develop my competency for this season." },
-  { num: 3,  cat: "Skill Stewardship",    text: "My preparation level matches the weight of my current assignment.", ref: "Proverbs 22:29" },
-  { num: 4,  cat: "Excellence Posture",   text: "I treat every responsibility — large or small — with the same standard of excellence.", ref: "Colossians 3:23" },
-  { num: 5,  cat: "Excellence Posture",   text: "I am not relying on anointing alone — I am doing the work of preparation." },
-  { num: 6,  cat: "Excellence Posture",   text: "I regularly seek feedback to identify blind spots in my competency." },
-  { num: 7,  cat: "Execution Discipline", text: "I consistently follow through on what I start — I don't just inspire, I complete.", ref: "Luke 16:10" },
-  { num: 8,  cat: "Execution Discipline", text: "I can build systems and structures that outlast my personal presence.", ref: "Genesis 41:33" },
-  { num: 9,  cat: "Execution Discipline", text: "My team trusts my follow-through because I consistently deliver." },
-  { num: 10, cat: "Learning Posture",     text: "I am growing in the specific skills this season demands." },
-  { num: 11, cat: "Learning Posture",     text: "I know the difference between what I do well and what my assignment specifically needs." },
-  { num: 12, cat: "Learning Posture",     text: "I complete tasks with quality, not just speed — and I finish what I begin." },
+  { num: 1,  cat: "Skill & Discipline",        text: "I consistently develop my skills through intentional learning and practice." },
+  { num: 2,  cat: "Skill & Discipline",        text: "I prepare thoroughly before major responsibilities.", ref: "2 Timothy 2:15" },
+  { num: 3,  cat: "Skill & Discipline",        text: "I pursue excellence consistently, not just occasionally.", ref: "Colossians 3:23" },
+  { num: 4,  cat: "Execution & Reliability",   text: "Others trust my competence under pressure.", ref: "Genesis 41:39–40" },
+  { num: 5,  cat: "Execution & Reliability",   text: "I consistently follow through and deliver measurable outcomes." },
+  { num: 6,  cat: "Execution & Reliability",   text: "I can manage complexity without becoming reactive or overwhelmed." },
+  { num: 7,  cat: "Systems & Sustainability",  text: "I build systems that outlast emotional momentum.", ref: "Exodus 18:21–23" },
+  { num: 8,  cat: "Systems & Sustainability",  text: "I delegate with clarity and defined expectations." },
+  { num: 9,  cat: "Systems & Sustainability",  text: "I can organize people and process for sustainable outcomes." },
+  { num: 10, cat: "Multiplication",            text: "I can train others in what I do.", ref: "2 Timothy 2:2" },
+  { num: 11, cat: "Multiplication",            text: "I develop leaders with reproducible process, not just inspiration." },
+  { num: 12, cat: "Multiplication",            text: "I create pathways where others grow in competency over time." },
 ];
 
 const principles = [
   {
     num: 1,
     title: "Revelation Must Become Reality",
-    ref: "Genesis 41:33–36",
+    ref: "Genesis 41:33",
     scripture: "\"Now therefore let Pharaoh select a discerning and wise man, and set him over the land of Egypt.\" — Genesis 41:33",
     paragraphs: [
       "Joseph did not only interpret Pharaoh's dream — he designed the solution. He moved from insight to strategy to administration to a sustainable system. Most leaders stop at the seeing. Champions build what they see.",
       "Revelation without execution creates excitement but not impact. Seeing the problem is not the same as solving it. Naming the vision is not the same as building it. The gap between what a leader sees and what a leader can build is the competency gap.",
-      "The plans of the diligent lead to abundance. The key word is plans — not wishes, not impressions, not inspiration. Plans. Competency converts insight into strategy, and strategy into reality.",
+      "Competency converts insight into strategy, and strategy into reality. The plans of the diligent lead to abundance — not the visions of the inspired.",
     ],
-    prompt: "What have you seen clearly — a vision, a solution, a direction — that you have not yet been able to build? What is the specific competency gap between the seeing and the building?",
+    prompts: [
+      "What have you seen clearly — a vision, a solution, a direction — that you have not yet been able to build? What is the specific competency gap between the seeing and the building?",
+    ],
   },
   {
     num: 2,
-    title: "Excellence is a Spiritual Standard",
+    title: "Excellence Is a Spiritual Standard",
     ref: "Colossians 3:23",
     scripture: "\"Whatever you do, work heartily, as for the Lord and not for men.\" — Colossians 3:23",
     paragraphs: [
-      "Excellence is not perfectionism. It is wholehearted stewardship. It is treating preparation as worship and responsibility as sacred. To work heartily as for the Lord means that the standard of your output is set by the character of your King, not the expectations of your audience.",
-      "Faithfulness includes competence. Being trustworthy is not only character — it is capability. God does not entrust greater weight to leaders who handle small things carelessly. Excellence in the small is the qualification for weight in the large.",
+      "Excellence is not perfectionism. It is wholehearted stewardship. It is treating preparation as worship and responsibility as sacred. To work heartily as for the Lord means the standard of your output is set by the character of your King, not the expectations of your audience.",
+      "Faithfulness includes competence. Being trustworthy is not only character — it is capability. God does not entrust greater weight to leaders who handle small things carelessly.",
       "Excellence is built through daily discipline, not occasional intensity. The question is not 'Do I have anointing?' but 'Have I prepared to steward what the anointing opens?'",
     ],
-    prompt: "Where in your current assignment are you settling for adequate when excellent is possible? What would it require to close that gap?",
+    prompts: [
+      "Where in your leadership are you relying on inspiration instead of preparation? What would change if you treated that area as worship?",
+    ],
   },
   {
     num: 3,
-    title: "Skill Opens Doors — Character Keeps Them",
-    ref: "Proverbs 22:29",
-    scripture: "\"Do you see a man skillful in his work? He will stand before kings.\" — Proverbs 22:29",
+    title: "Systems Sustain Momentum",
+    ref: "Exodus 18:21",
+    scripture: "\"Look for able men from all the people, men who fear God, who are trustworthy, and place such men over the people.\" — Exodus 18:21",
     paragraphs: [
-      "Competency creates access. The skilled leader gets the room. But character is what keeps the seat. The history of gifted leaders who opened significant doors and then lost them through character failure is long and sobering.",
-      "Anointing opens the door. Competency keeps it open. Character determines how long you stay. The leader who develops skill without simultaneous character development is building an opportunity they cannot sustain.",
-      "Competency and character must grow together. Every development investment must be matched by a formation investment. A leader who becomes more skilled without becoming more refined is becoming more dangerous, not more effective.",
+      "Moses had a calling. He had connection with God. He had competency. But without systems, he was wearing down. The work was consuming the worker. Jethro's counsel introduced the principle that saves leaders from self-destruction: build what carries the weight so you don't carry it alone.",
+      "Systems are not corporate. They are spiritual stewardship. They protect people, preserve momentum, and prevent burnout. Competent leaders build systems that clarify roles, strengthen delegation, increase capacity without increasing chaos, and enable growth without collapse.",
+      "If everything depends on you, nothing will outlast you.",
     ],
-    prompt: "Where in your current assignment is your competency ahead of your character? Where is your character ahead of your competency?",
+    prompts: [
+      "What area of your leadership currently depends entirely on you? What could you build that would carry that weight even in your absence?",
+    ],
   },
   {
     num: 4,
-    title: "Competency Builds What Outlasts You",
-    ref: "Luke 16:10",
-    scripture: "\"One who is faithful in a very little is also faithful in much.\" — Luke 16:10",
+    title: "Competency Must Be Transferable",
+    ref: "2 Timothy 2:2",
+    scripture: "\"What you have heard from me in the presence of many witnesses entrust to faithful men, who will be able to teach others also.\" — 2 Timothy 2:2",
     paragraphs: [
-      "The purpose of competency is not personal advancement. It is generational stewardship. The most competent leaders are not those who make themselves indispensable — they are those who build what doesn't require them to be present for it to function.",
-      "Competency includes the ability to transfer what you know. If you can do it but cannot teach it, you have skill but not yet leadership competency. The systems, processes, and structures you build determine what outlasts your presence.",
-      "Faithful in the little is the qualification for much — not because God is testing minimum thresholds, but because how you handle small weight reveals whether your character is strong enough to carry greater weight.",
+      "Competency is not only personal mastery. It is the ability to train others into capability. If you cannot teach what you do, it dies with you. Your leadership becomes a bottleneck instead of a bridge.",
+      "Paul didn't just build churches — he built leaders who could build churches. He established governance, trained successors, and created reproducible pathways. The measure of your competency is not what you can do alone — it is what you can build in others.",
     ],
-    prompt: "What do you do exceptionally well that you have not yet transferred to the next generation of leaders around you? What is holding you back from teaching what you know?",
+    prompts: [
+      "What do you do well that no one else around you can do? Is that excellence — or a sign you haven't trained anyone?",
+    ],
+  },
+  {
+    num: 5,
+    title: "Competency Governs What You Build",
+    ref: "Philippians 3:13–14",
+    scripture: "\"One thing I do: forgetting what lies behind and straining forward to what lies ahead, I press on toward the goal.\" — Philippians 3:13–14",
+    paragraphs: [
+      "Just as calling governs your decisions and connection governs your posture, competency governs what you build. The question is not 'Can I do this?' but 'Should I build this?'",
+      "Leaders are often tempted to build what they're good at rather than what their calling demands. Skill can become a trap when it pulls you away from your assignment and toward your comfort zone.",
+      "Competency as a filter asks: Am I building this because I'm gifted here, or because my calling demands it? Is this the highest use of my preparation in this season? Disciplined competency is not about doing everything well — it is about doing the right things with excellence.",
+    ],
+    prompts: [
+      "What are you building right now because you're good at it — but it may not be what your calling demands this season?",
+    ],
+  },
+  {
+    num: 6,
+    title: "Assessment Tools Accelerate Competency",
+    ref: "Proverbs 20:5",
+    addendum: true,
+    scripture: "\"The purposes of a person's heart are deep waters, but one who has insight draws them out.\" — Proverbs 20:5",
+    paragraphs: [
+      "You cannot sharpen what you do not understand. Personality and strengths assessments are not corporate exercises — they are competency intelligence. They reveal how you are wired to operate, communicate, and lead so you build from awareness instead of assumption.",
+      "StrengthsFinder (CliftonStrengths) identifies your top natural talents — the areas where investment produces the greatest return. Leaders who build from strength outperform leaders who spend their energy compensating for weakness. DISC reveals how you communicate, how you respond under pressure, and how you naturally lead others. Together, these tools give you a competency map.",
+      "A leader who understands both builds with precision instead of guesswork. StrengthsFinder shows where to invest. DISC shows how to deliver.",
+    ],
+    prompts: [
+      "Have you taken StrengthsFinder or DISC? If yes, what did they reveal — and are you building from those insights? If not, commit to completing at least one within 30 days.",
+    ],
+  },
+  {
+    num: 7,
+    title: "Mentorship Is a Competency Strategy",
+    ref: "2 Kings 2:9",
+    addendum: true,
+    scripture: "\"Elisha said, 'Please let there be a double portion of your spirit on me.'\" — 2 Kings 2:9",
+    paragraphs: [
+      "Courses give information. Proximity gives formation. The fastest way to close a competency gap is not another book — it is apprenticeship. Getting near someone who already carries what you need and learning by proximity, not just curriculum.",
+      "Elisha did not attend Elijah's conference. He followed him. He served him. He watched how the man operated under pressure, how he made decisions, how he carried authority. Competency transferred through relationship, not instruction.",
+      "Identify who carries the competency you lack. Get close. Serve. Observe. Ask questions. Proximity is the most underrated competency strategy in leadership.",
+    ],
+    prompts: [
+      "Who carries the competency you currently lack? What would it take to get into proximity with them — not as a fan, but as a learner?",
+    ],
+  },
+  {
+    num: 8,
+    title: "Feedback Loops Protect Against Blind Spots",
+    ref: "Proverbs 27:6",
+    addendum: true,
+    scripture: "\"Faithful are the wounds of a friend; profuse are the kisses of an enemy.\" — Proverbs 27:6",
+    paragraphs: [
+      "Competent leaders do not assume they see everything. They build systems for receiving honest input — trusted advisors, post-project debriefs, and regular conversations that ask one question: What am I missing?",
+      "Without feedback, blind spots compound quietly. What starts as a small gap in awareness becomes a pattern that erodes trust, frustrates teams, and limits influence. The leader who is too insulated to hear correction is too fragile to sustain authority.",
+      "Build a feedback rhythm: identify two or three people who have permission to tell you the truth without penalty. Ask them regularly. Receive it without defensiveness.",
+    ],
+    prompts: [
+      "Who in your life has permission to give you honest feedback — and when was the last time you asked for it?",
+    ],
+  },
+  {
+    num: 9,
+    title: "Stewardship of Time Is a Competency",
+    ref: "Ephesians 5:15–16",
+    addendum: true,
+    scripture: "\"Look carefully then how you walk, not as unwise but as wise, making the best use of the time.\" — Ephesians 5:15–16",
+    paragraphs: [
+      "You can be highly skilled and still ineffective if your time, energy, and priorities are misaligned. Time management is not administrative — it is a leadership competency that determines whether your best skills ever reach their highest use.",
+      "Leaders who do not govern their time are governed by other people's urgency. Their best competencies are buried under reactive busyness. The gap between what they could build and what they actually build is a time stewardship gap.",
+      "Your calendar reveals your actual priorities — not your stated ones. Competent leaders audit regularly: Does my schedule reflect my assignment, or has it been hijacked?",
+    ],
+    prompts: [
+      "Look at last week's calendar. What percentage of your time was spent in your zone of highest competency? What consumed time that should have been delegated or eliminated?",
+    ],
   },
 ];
 
 const exemplar = {
-  title: "Exemplar: Daniel — Excellence in Exile",
-  subtitle: "Daniel demonstrated that Kingdom competency is not diminished by hostile circumstances — it is amplified by them.",
-  intro: "Daniel was taken from his homeland, educated in a foreign system, and placed in an environment hostile to his values. He had every reason to perform minimally. Instead, he resolved to excel. He studied, disciplined himself, and prepared with the same rigor he would have given to service in Jerusalem. His competency in Babylon was an act of worship.",
-  intro2: "Daniel's preparation gave him access that his anointing alone would never have opened. Yes, God gave him supernatural insight — but Daniel also studied and prepared. The supernatural and the natural worked together. He was 'ten times better' than his peers — not just because of divine favor, but because of disciplined preparation and wholehearted stewardship.",
+  title: "Exemplar: Joseph — Structured Excellence",
+  subtitle: "Joseph moved from revelation to strategy to administration to sustained national impact.",
+  intro: "Joseph interpreted Pharaoh's dream — but he did not stop at revelation. He immediately moved from insight to strategy: 'Now therefore let Pharaoh select a discerning and wise man, and set him over the land of Egypt.' He designed a 20% storage model, established regional oversight, created administrative leadership, and built a long-term system that sustained a nation through seven years of famine.",
+  intro2: "Revelation earned attention. Competency earned trust. Pharaoh said: 'Since God has shown you all this, there is none so discerning and wise as you are.' Joseph was not just anointed — he was prepared. He built what he saw, and what he built outlasted the crisis that demanded it.",
+  pattern: "Revelation → Strategy → Systems → Sustained Impact",
   lessons: [
-    "Excellence in hostile environments is not compromise — it is testimony. Your competency is a form of witness.",
-    "Anointing and preparation are not in competition. The leader who has both is the most dangerous force for the Kingdom.",
-    "Resolving to excel before the circumstances demand it is the mark of a Kingdom-minded builder.",
-    "Competency that is tested and proven under pressure carries more authority than competency that has only functioned under ideal conditions.",
+    "Most leaders stop at the seeing. Joseph built what he saw. That is the competency difference.",
+    "Anointing opened the door. Competency kept it open and sustained the assignment.",
+    "The system Joseph built did not require his daily presence to function. That is the mark of transferable competency.",
+    "Excellence in crisis is the evidence of preparation in obscurity. Joseph was ready because he had been faithful with less.",
+    "Competency and character grew together in Joseph — character in the prison, competency in administration. Both are required.",
   ],
   questions: [
-    "Where in your current assignment are you in a 'Babylon' context — a challenging environment that is demanding more of your competency than you anticipated?",
-    "What does 'ten times better' look like in your specific assignment right now?",
+    "Have you developed the skill to carry your calling — or are you relying on the dream alone?",
+    "Are you building what outlasts emotion and momentum — systems and structures that function without your constant presence?",
+    "Are you solving problems or only naming them? Where is your revelation waiting for execution?",
   ],
 };
 
 const stages = [
   {
-    title: "Stage 1: Discovery",
-    description: "You are identifying your natural gifts and beginning to understand what you do well. This stage is about inventory — not yet deployment. You are learning what you carry and what you don't.",
+    title: "Stage 1: Learning",
+    description: "Building understanding, values, and core knowledge. Study, observe, practice, submit to correction. Competency grows through friction at this stage.",
     markers: ["High enthusiasm, inconsistent execution", "Learning through trial and error", "Beginning to identify core strengths and recurring gaps"],
   },
   {
-    title: "Stage 2: Development",
-    description: "You are deliberately developing specific skills aligned with your calling and current assignment. You have moved from natural gifting to disciplined growth. You are building the gap-closing plan.",
-    markers: ["Actively pursuing skill development", "Increasing ability to finish what you start", "Beginning to receive and act on feedback"],
+    title: "Stage 2: Refining",
+    description: "Repetition, feedback, and improvement. Competency grows through friction. Failure becomes teacher. You are learning what works, what doesn't, and why.",
+    markers: ["Increasing ability to finish what you start", "Beginning to receive and act on feedback", "Growing reliability and follow-through"],
   },
   {
-    title: "Stage 3: Deployment",
-    description: "Your competency is producing consistent results. You can be trusted with significant responsibility because your delivery is predictable. You have developed both the skill and the systems to sustain it.",
-    markers: ["Consistent execution and follow-through", "Building systems that don't require your constant presence", "Mentoring others in the competencies you have developed"],
-  },
-  {
-    title: "Stage 4: Mastery",
-    description: "Your competency is deep enough that you can transfer it. You are building leaders who are as skilled as you are — or more skilled in specific areas. Mastery is not about personal performance anymore; it is about multiplication.",
-    markers: ["Known for a specific area of excellence beyond your organization", "What you build continues to function without your daily oversight", "You are developing the next generation of competent builders"],
+    title: "Stage 3: Building",
+    description: "Creating systems, teams, and repeatable processes. Moving from personal skill to scalable excellence. You stop asking 'Can I do this?' and start asking 'Can I build this to last — and teach others to carry it?'",
+    markers: ["Building systems that don't require constant personal oversight", "Mentoring others in specific competencies", "Known for reliable execution and delivery"],
   },
 ];
 
 const commitmentPrompts = [
-  { id: "primary_gap",         label: "My Primary Competency Gap (What specific skill must I develop this season?)", placeholder: "Name the specific skill or knowledge gap that is limiting your current assignment..." },
-  { id: "development_plan",    label: "My 90-Day Development Plan",                                                  placeholder: "What specific steps will you take in the next 90 days to close your primary gap?" },
-  { id: "excellence_standard", label: "My Standard of Excellence (What does 'excellent' look like in my role?)",    placeholder: "Define what excellence looks like in your specific current assignment..." },
-  { id: "systems_to_build",    label: "What I Will Build That Outlasts My Presence",                                 placeholder: "Name one system, process, or structure you will build that doesn't require you to run it..." },
-  { id: "transfer_commitment", label: "What I Will Transfer to the Next Generation",                                 placeholder: "Name a specific competency you will intentionally teach and transfer to someone in your sphere..." },
+  { id: "primary_gap",          label: "My Primary Competency Gap (The single biggest skill gap right now)",             placeholder: "Name the specific skill or knowledge gap that is limiting your current assignment..." },
+  { id: "development_plan",     label: "My 30-Day Development Plan",                                                     placeholder: "What will you do in the next 30 days to close the gap? Learning, mentorship, practice, system?" },
+  { id: "excellence_standard",  label: "My Standard of Excellence (What does 'excellent' look like in my role?)",       placeholder: "Define what excellence looks like in your specific current assignment..." },
+  { id: "transferability",      label: "What I Will Begin Teaching to Someone Else",                                     placeholder: "Name a specific competency you will intentionally teach and transfer. Who will you train?" },
+  { id: "system_to_build",      label: "The System I Will Build That Outlasts Me",                                       placeholder: "Name one system, process, or rhythm that will reduce chaos and carry weight without you..." },
 ];
 
 const revisitTriggers = [
-  "When you receive a new assignment with unfamiliar skill requirements",
-  "When you notice yourself relying on personality or anointing to cover a competency gap",
-  "When a team member or project is failing because of your underdevelopment in a specific area",
+  "When an assignment outgrows your current skill",
+  "When you are relying on personality or anointing to cover a competency gap",
+  "When a team member or project is failing because of your underdevelopment",
   "When you receive critical feedback about execution or follow-through",
   "When you feel called to a new level of responsibility",
-  "When what worked last season stops producing results",
+  "Quarterly, as a discipline of stewardship",
 ];
 
 const applicationQuestions = [
-  "Name one skill gap you will begin closing this week. What is the first specific action?",
+  "What skill gap will you begin closing this week — and what is the first specific action?",
   "Who in your circle is more competent than you in an area you need? Will you invite them to teach you?",
 ];
 
@@ -150,7 +229,7 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  aiPromptContext: "This leader has completed Module 3: Competency of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the honesty and specificity of their identified competency gap, (2) the realism of their development plan, (3) their posture toward excellence — are they building for the long term or managing for the short term, and (4) their readiness to transfer competency to others. Be direct, challenging where needed, and specific to what they wrote.",
+  aiPromptContext: "This leader has completed Module 3: Competency of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the honesty and specificity of their identified competency gap, (2) the realism of their development plan, (3) their posture toward excellence — are they building for the long term or managing for the short term, and (4) their readiness to transfer competency to others.",
   contrastTable: {
     title: "Two Modes of Building",
     leftTitle: "Anointed Only",
@@ -160,10 +239,10 @@ const config = {
       ["Visionary but chaotic", "Visionary and executable"],
       ["Gifted but undisciplined", "Gifted and reliable"],
       ["Starts strong, finishes weak", "Starts strong, sustains momentum"],
-      ["Leads by emotion", "Leads by wisdom and preparation"],
       ["Opens doors through favor", "Keeps doors open through credibility"],
       ["Creates excitement", "Creates lasting results"],
       ["Dependent on personal presence", "Builds what outlasts personality"],
+      ["Leads by emotion", "Leads by wisdom and preparation"],
     ],
   },
 };
