@@ -3,18 +3,18 @@ import Head from "next/head";
 import ModuleTemplate from "../../components/ModuleTemplate";
 
 const diagnostic = [
-  { num: 1,  cat: "Clarity & Conviction",   text: "I can articulate my calling in one clear sentence.", ref: "Jeremiah 1:5" },
-  { num: 2,  cat: "Clarity & Conviction",   text: "I know the difference between my calling and my current assignment." },
-  { num: 3,  cat: "Clarity & Conviction",   text: "My sense of purpose does not shift with circumstances or seasons." },
-  { num: 4,  cat: "Burden & Stewardship",   text: "There is a recurring burden I carry that I cannot walk away from.", ref: "Nehemiah 1:3–4" },
-  { num: 5,  cat: "Burden & Stewardship",   text: "I steward the grace on my life with intentionality, not passivity." },
-  { num: 6,  cat: "Burden & Stewardship",   text: "I am building for the next twenty-five years, not just the next five months." },
-  { num: 7,  cat: "Character Under Weight", text: "My private life can sustain the weight of my public assignment." },
-  { num: 8,  cat: "Character Under Weight", text: "I am the same person in private that I am on platform." },
-  { num: 9,  cat: "Character Under Weight", text: "I have been tested under pressure — and I did not compromise my integrity." },
-  { num: 10, cat: "Decision Clarity",       text: "I regularly say no to opportunities that don't align with my calling.", ref: "Ephesians 4:1" },
-  { num: 11, cat: "Decision Clarity",       text: "I can identify the difference between healthy pressure and destructive overload." },
-  { num: 12, cat: "Decision Clarity",       text: "I see difficulty as development, not punishment.", ref: "James 1:2–4" },
+  { num: 1,  cat: "Clarity & Articulation",  text: "I can clearly articulate my calling in one sentence.", ref: "Jeremiah 1:5" },
+  { num: 2,  cat: "Clarity & Articulation",  text: "My daily decisions align with my calling." },
+  { num: 3,  cat: "Clarity & Articulation",  text: "I know what I am not called to do." },
+  { num: 4,  cat: "Alignment & Grace",       text: "My current responsibilities reflect my design.", ref: "Romans 12:6" },
+  { num: 5,  cat: "Alignment & Grace",       text: "I experience grace, not constant striving, in my assignment." },
+  { num: 6,  cat: "Alignment & Grace",       text: "I feel burdened but not crushed by responsibility." },
+  { num: 7,  cat: "Confirmation & Community",text: "Mature leaders have affirmed my calling.", ref: "1 Timothy 4:14" },
+  { num: 8,  cat: "Confirmation & Community",text: "I seek counsel in major decisions." },
+  { num: 9,  cat: "Confirmation & Community",text: "I receive correction without defensiveness." },
+  { num: 10, cat: "Conviction & Endurance",  text: "Opposition does not easily shake my calling.", ref: "Ephesians 4:1" },
+  { num: 11, cat: "Conviction & Endurance",  text: "I would remain faithful even without recognition." },
+  { num: 12, cat: "Conviction & Endurance",  text: "I feel accountable before God for my calling.", ref: "Luke 12:48" },
 ];
 
 const principles = [
@@ -28,106 +28,159 @@ const principles = [
       "If deployment precedes design clarity, instability follows. You cannot build what you have not been shaped to carry. Many leaders launch before they are formed — and they fracture under the weight of an assignment their character was never prepared to hold.",
       "This is why hiddenness is not punishment. It is preparation. The years of obscurity are not wasted years — they are forming years. God does not waste formation. He invests it.",
     ],
-    prompt: "Where in your life have you been deployed before you were formed? What was the result?",
+    prompts: [
+      "Where in your life have you been deployed before you were formed? What was the result?",
+    ],
   },
   {
     num: 2,
     title: "Calling Governs Decisions",
     ref: "Philippians 3:13–14",
-    scripture: "\"I press on toward the goal for the prize of the upward call of God.\" — Philippians 3:13–14",
+    scripture: "\"One thing I do: forgetting what lies behind and straining forward to what lies ahead, I press on toward the goal for the prize of the upward call of God.\" — Philippians 3:13–14",
     paragraphs: [
       "Calling is not just inspiration. It is your decision-making filter — your true north. Every yes and every no a leader gives should be traceable back to their calling.",
       "Good opportunities are everywhere. Aligned assignments are rare. The leader who cannot distinguish between the two will be busy but never fruitful. Calling creates the boundaries that protect your assignment.",
-      "When calling is clear, it protects you from drift, distraction, and overcommitment. Calling filters: what to pursue and what to refuse, who to partner with and who to release, where to invest energy and where to withdraw it.",
+      "When calling is clear, it protects you from drift, distraction, and overcommitment. Without this filter, leaders say yes to everything and wonder why nothing bears fruit.",
     ],
-    prompt: "Name one opportunity or commitment you are currently carrying that does not align with your calling. What would it cost to release it?",
+    prompts: [
+      "Name one opportunity or commitment you are currently carrying that does not align with your calling. What would it cost to release it?",
+      "What decision are you facing right now that becomes clearer when filtered through your calling?",
+    ],
   },
   {
     num: 3,
-    title: "Calling Carries Burden",
-    ref: "Nehemiah 1:3–4",
-    scripture: "\"When I heard these things, I sat down and wept. For some days I mourned and fasted and prayed.\" — Nehemiah 1:3–4",
-    paragraphs: [
-      "Calling is not a career preference. It is a burden you cannot set down. Nehemiah heard about the broken walls and could not stop weeping. That is the mark of calling — a weight that won't leave you alone.",
-      "The burden of calling is not depression. It is a holy dissatisfaction with the way things are, combined with a God-given conviction that you are part of the solution. It interrupts your comfort. It refuses to let you settle.",
-      "If you can walk away from it, it's probably not your calling. If it keeps you up at night, if it won't let you rest until you act — pay attention. That's the burden of the Lord.",
-    ],
-    prompt: "What burden do you carry that you cannot walk away from? What breaks your heart consistently?",
-  },
-  {
-    num: 4,
     title: "Obscurity Prepares Authority",
     ref: "Luke 16:10",
     scripture: "\"One who is faithful in a very little is also faithful in much.\" — Luke 16:10",
     paragraphs: [
-      "Hidden faithfulness builds structural integrity. Public authority without private formation eventually collapses. What the world calls delay, God calls development. What you grow in the unseen sustains what becomes visible.",
+      "Hidden faithfulness builds structural integrity. Public authority without private formation eventually collapses. What the world calls delay, God calls development.",
       "The leader who refuses hidden seasons refuses formation. And the leader who is not formed cannot carry the weight of the assignment they are asking for. Obscurity is not the absence of calling — it is the incubator of it.",
-      "Many leaders despise the hidden season because it is invisible to others. But the work God does in private is always preparation for what He releases in public. Don't rush what God is building in the dark.",
+      "What grows in the unseen sustains what becomes visible. The roots grow deepest when the tree is not yet visible. And it is the depth of the root system that determines what the tree can carry when the storm comes.",
     ],
-    prompt: "What hidden season are you in right now — or have you recently come through? What did it build in you?",
+    prompts: [
+      "What hidden season are you in right now — or have you recently come through? What did it build in you?",
+    ],
+  },
+  {
+    num: 4,
+    title: "Calling Unfolds Progressively",
+    ref: "Proverbs 4:18",
+    scripture: "\"The path of the righteous is like the light of dawn, which shines brighter and brighter until full day.\" — Proverbs 4:18",
+    paragraphs: [
+      "God often reveals the next step — not the entire path. Abraham was told 'Go to the land I will show you' before he was told where. Obedience preceded clarity.",
+      "Impatience distorts calling. Faithfulness matures it. The leader who demands the full blueprint before taking the first step will never move.",
+      "Calling is not a revelation you receive once and then execute on. It is a progressive disclosure — unfolding across seasons, sharpening through obedience, deepening through formation.",
+    ],
+    prompts: [
+      "What is the next step of obedience you already know you need to take — even without the full picture?",
+    ],
+  },
+  {
+    num: 5,
+    title: "Calling Must Be Confirmed in Community",
+    ref: "1 Timothy 4:14",
+    scripture: "\"Do not neglect the gift you have, which was given you by prophecy when the council of elders laid their hands on you.\" — 1 Timothy 4:14",
+    paragraphs: [
+      "In Scripture, calling is never purely private. It is recognized and affirmed by mature leaders. Samuel needed Eli. Timothy needed Paul. Community confirmation strengthens courage and protects from self-appointment.",
+      "Uninterpreted revelation can lead to distortion. Calling matures through mentorship, accountability, and the witness of those who see your grace before you fully trust it yourself.",
+      "A calling that no one else can see or confirm may be ambition dressed in spiritual language. The leader who refuses external input on their calling is not confident — they are isolated.",
+    ],
+    prompts: [
+      "Who has confirmed your calling? If no one has, who do you trust enough to speak into it?",
+    ],
+  },
+  {
+    num: 6,
+    title: "Calling Is Confirmed Through Prophetic Presbytery",
+    ref: "Acts 13:3",
+    addendum: true,
+    scripture: "\"Then after fasting and praying they laid their hands on them and sent them off.\" — Acts 13:3",
+    paragraphs: [
+      "Calling is not self-appointed. It is recognized, confirmed, and activated through the laying on of hands by mature, healthy prophetic leadership. Samuel anointed David. The elders at Antioch set apart Paul and Barnabas. The presbytery confirmed Timothy. This was not ceremony — it was spiritual governance.",
+      "The laying on of hands confirms what God has already spoken internally, activates what may be dormant, provides spiritual covering under recognized authority, and creates a public record the leader can return to when doubt or opposition rises.",
+      "Not every voice qualifies. The presbytery must be mature — not just gifted. Healthy — not just anointed. Prophetic accuracy without character integrity produces manipulation, not confirmation.",
+    ],
+    prompts: [
+      "Has your calling been confirmed through the laying on of hands by mature, healthy prophetic leadership? If yes, what was spoken — and have you returned to it? If not, what is preventing you from seeking confirmation?",
+    ],
+  },
+  {
+    num: 7,
+    title: "Prophecy Is a Weapon — War With It",
+    ref: "1 Timothy 1:18",
+    addendum: true,
+    scripture: "\"This charge I entrust to you, Timothy, my child, in accordance with the prophecies previously made about you, that by them you may wage the good warfare.\" — 1 Timothy 1:18",
+    paragraphs: [
+      "Prophetic words are not souvenirs. They are weapons. Paul did not tell Timothy to frame his prophecies. He told him to fight with them.",
+      "Every leader will face seasons where the calling feels distant and the assignment feels impossible. In those moments, you do not fight from your own confidence. You fight from what was confirmed over you. You return to what was spoken and declare it in the face of opposition.",
+      "Waging war with your prophecies means: writing them down and reviewing them regularly, declaring them in seasons of opposition, making decisions that align with what was spoken, and refusing to let discouragement nullify what was confirmed. A confirmed word that is not fought for becomes a forgotten word — and a forgotten word produces a forfeited assignment.",
+    ],
+    prompts: [
+      "What prophetic words have been spoken over your life and calling? Are you waging war with them — or have they been filed away and forgotten?",
+      "What specific prophecy do you need to pick back up and fight with this season?",
+    ],
   },
 ];
 
 const exemplar = {
-  title: "Exemplar: Joseph's Journey",
-  subtitle: "Joseph's calling was to stewardship and restoration — and he carried it through every impossible season.",
-  intro: "Joseph had a calling to steward and restore — and he carried it through slavery, false accusation, imprisonment, and finally elevation. His calling remained constant while his assignments changed. He served faithfully in Potiphar's house, then in Pharaoh's prison, then as Egypt's chief administrator. Same calling. Different assignments. Same character under different weights.",
+  title: "Exemplar: Jeremiah — The Reluctant Prophet",
+  subtitle: "Jeremiah's calling preceded his confidence. His story teaches us that calling does not eliminate pain — it produces endurance.",
+  intro: "Jeremiah was called before birth, consecrated before formation, appointed before maturity. And his first response was insecurity: 'Ah, Lord GOD! Behold, I do not know how to speak, for I am only a youth.' God did not comfort the insecurity. He confronted it: 'Do not say I am only a youth — for to all to whom I send you, you shall go.'",
+  intro2: "Jeremiah faced resistance, rejection, isolation, and misunderstanding. He was mocked. He was imprisoned. He wanted to quit. Later he confessed he felt deceived, that the assignment had cost him everything. Yet he could not silence the call: 'If I say I will not mention Him, there is in my heart as it were a burning fire shut up in my bones.' Calling did not eliminate pain. It produced endurance.",
+  pattern: "Design → Resistance → Refinement → Endurance",
   lessons: [
-    "Calling operates across multiple life domains — family, work, spiritual influence, character formation.",
-    "Assignments test calling. They reveal whether your conviction is genuine or circumstantial.",
-    "Faithfulness in hiddenness precedes elevation to visibility.",
-    "Calling is not validated by applause — it is validated by faithfulness under pressure.",
-    "The weight of the assignment increases when calling is clear. Joseph needed thirteen years of formation to carry what the dream showed him.",
+    "Calling does not eliminate insecurity — it confronts it and transforms it.",
+    "Opposition is not disqualification. It is part of the pattern.",
+    "The burning fire that you cannot silence is the mark of genuine calling.",
+    "Calling that costs nothing is worth nothing. Jeremiah's calling cost him everything — and he still could not walk away.",
+    "Hiddenness, rejection, and delay do not cancel calling. They authenticate it.",
   ],
   questions: [
-    "Where are you currently serving in a hidden or misunderstood season? How is your calling being tested?",
-    "What would it mean to be as faithful in your current assignment as you would be at the level of visibility you are asking for?",
+    "What insecurity are you using as an excuse for delayed obedience?",
+    "Have you mistaken opposition for disqualification? Where does the fire in you keep burning regardless of the cost?",
+    "Is there a burden you feel compelled to carry that you cannot silence — even when everything around you says quit?",
   ],
 };
 
 const stages = [
   {
-    title: "Stage 1: Whisper (Stirring)",
-    description: "You sense something — a burden, a direction — but it is not yet formed into words. It is intuitive, exploratory. You may not even speak it aloud. This is the beginning of calling awareness.",
+    title: "Stage 1: Encounter (Revelation Without Clarity)",
+    description: "You sense something — a burden, a direction — but it is not yet formed into words. It is intuitive, exploratory. You may not even speak it aloud. The first encounter with calling awareness.",
     markers: ["Recurring internal convictions you cannot explain", "Emotional pull toward specific problems or people groups", "Restlessness in roles that don't align with your design"],
   },
   {
-    title: "Stage 2: Word (Formation)",
-    description: "You can now articulate it. You can name it. You can explain it to others. It becomes a conviction with language attached. You begin to build your vocabulary for who you are and what you carry.",
-    markers: ["Ability to articulate calling in one or two sentences", "Increasingly clear about what does and doesn't fit", "Beginning to make decisions based on calling alignment"],
+    title: "Stage 2: Interpretation (Mentorship & Confirmation)",
+    description: "You can now articulate it. Mentorship and confirmation help you interpret what God is saying. Others help you see your grace before you fully trust it yourself. It becomes a conviction with language attached.",
+    markers: ["Ability to articulate calling in one or two sentences", "Increasingly clear about what does and doesn't fit", "Mentors confirming what you are sensing"],
   },
   {
-    title: "Stage 3: Confirmation (Community)",
-    description: "Others begin to see it in you. Mentors affirm it. Community confirms it. Your calling becomes a shared reality, not just a personal conviction. This external confirmation provides stability and accountability.",
-    markers: ["Mentors and leaders consistently speak to the same grace on your life", "Community validates what you sense about yourself", "Your calling is no longer private — it is spoken over and into"],
-  },
-  {
-    title: "Stage 4: Release (Deployment)",
-    description: "You are sent. You step into your assignment. Your calling moves from preparation to active expression. You are no longer just forming — you are building. And what you build is traceable back to who you were designed to become.",
-    markers: ["Assignments clearly flow from your identified calling", "Decisions become easier — the filter is operative", "You are building fruit that outlasts your presence"],
+    title: "Stage 3: Stewardship (Faithful Obedience Over Time)",
+    description: "You are actively stewarding the calling through seasons. Same calling, different assignments. You stop asking 'What excites me?' and start asking 'What must I steward?' Faithfulness is maturing the calling.",
+    markers: ["Decisions consistently filtered through calling", "Assignments clearly traceable back to your design", "You are building fruit that outlasts your presence"],
   },
 ];
 
 const commitmentPrompts = [
-  { id: "macro_calling",        label: "My Macro Calling (What am I called to for a lifetime?)",          placeholder: "Define the landscape of who you were designed to become — not a role, but an identity and grace..." },
-  { id: "current_assignment",   label: "My Current Assignment (What is God asking of me right now?)",      placeholder: "Define your specific role, responsibility, or season. How does it connect to your macro calling?..." },
-  { id: "confirmation_voices",  label: "My Confirmation Community (Who confirms this calling with me?)",   placeholder: "Name the mentors, leaders, or voices who have consistently affirmed your calling..." },
-  { id: "burden_statement",     label: "What I Cannot Walk Away From",                                     placeholder: "Name the burden, the weight, the recurring dissatisfaction that won't let you rest..." },
-  { id: "calling_filter",       label: "How My Calling Filters My Decisions",                              placeholder: "Describe how your calling shapes your yes and your no. What does it protect you from?" },
+  { id: "calling_thesis",        label: "My Calling Thesis (One sentence — not a paragraph)",                           placeholder: "Write your calling in one sentence that captures what you are designed and graced to do..." },
+  { id: "current_assignment",    label: "My Current Assignment (The micro — right now)",                                 placeholder: "Name the specific expression of your calling in this season. What are you responsible for now?" },
+  { id: "formative_moments",     label: "Three Formative Moments That Shaped My Calling",                               placeholder: "Moment 1:\n\nMoment 2:\n\nMoment 3:" },
+  { id: "recurring_burden",      label: "My Recurring Burden (What I cannot walk away from)",                           placeholder: "What breaks your heart consistently? What injustice, gap, or dysfunction do you feel compelled to address?" },
+  { id: "next_obedience",        label: "My Next Step of Obedience (Not the five-year plan — the next step)",           placeholder: "What one action will you take within 7 days to walk worthy of this calling?" },
+  { id: "accountability_person", label: "My Accountability (Who will hold you to this?)",                               placeholder: "Name the mentor, peer, or trusted leader who can hold you accountable to what you wrote today..." },
 ];
 
 const revisitTriggers = [
-  "When you receive a new opportunity or assignment",
-  "When you feel pressure to compromise your values or direction",
-  "When your circumstances shift — season change, role change, relocation",
-  "When you lose clarity or begin to drift",
-  "When you complete a major project or assignment",
-  "When you receive feedback that doesn't align with your sense of calling",
+  "When a major season ends or begins",
+  "When an assignment completes and a new one emerges",
+  "When confusion or drift returns",
+  "When promotion or expansion demands deeper clarity",
+  "When you receive a prophetic word that confirms or redirects",
+  "Quarterly, as a discipline of stewardship",
 ];
 
 const applicationQuestions = [
-  "What is one decision you are facing right now that your calling must settle?",
-  "Who do you need to invite into your calling confirmation process?",
+  "Where is my calling currently expressed — and where am I under-functioning or playing small?",
+  "What responsibility have I been delaying that aligns directly with my calling?",
 ];
 
 const config = {
