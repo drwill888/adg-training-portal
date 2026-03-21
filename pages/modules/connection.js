@@ -3,18 +3,18 @@ import Head from "next/head";
 import ModuleTemplate from "../../components/ModuleTemplate";
 
 const diagnostic = [
-  { num: 1,  cat: "Sonship Security",      text: "I lead from a place of identity security, not the need for external validation.", ref: "Matthew 3:17" },
-  { num: 2,  cat: "Sonship Security",      text: "I know the difference between performing for approval and leading from approval." },
-  { num: 3,  cat: "Sonship Security",      text: "My sense of worth is not determined by my results, role, or recognition." },
-  { num: 4,  cat: "Approval Posture",      text: "I receive correction and discipline without interpreting it as rejection.", ref: "Hebrews 12:6" },
-  { num: 5,  cat: "Approval Posture",      text: "I can celebrate others' success without comparing or competing with them." },
-  { num: 6,  cat: "Approval Posture",      text: "My motivation for service comes from rest, not striving.", ref: "John 15:4" },
-  { num: 7,  cat: "Relational Health",     text: "I have a clear network of relationships that confirm and strengthen my identity." },
-  { num: 8,  cat: "Relational Health",     text: "I can distinguish between those assigned to this season and those in my permanent circle." },
-  { num: 9,  cat: "Relational Health",     text: "I have at least one relationship where I am fully known — not just seen in my role." },
-  { num: 10, cat: "Community Foundation",  text: "I am not relationally isolated in my leadership." },
-  { num: 11, cat: "Community Foundation",  text: "I am planted in a community that provides accountability, not just affirmation.", ref: "1 Samuel 3:8–9" },
-  { num: 12, cat: "Community Foundation",  text: "I have mentors or spiritual fathers/mothers who have spoken into my identity and calling." },
+  { num: 1,  cat: "Sonship & Identity",      text: "I lead from a settled sense of who I am, not from what I produce.", ref: "Matthew 3:17" },
+  { num: 2,  cat: "Sonship & Identity",      text: "I do not need applause to feel confident in my assignment." },
+  { num: 3,  cat: "Sonship & Identity",      text: "My identity remains stable when I am criticized or overlooked." },
+  { num: 4,  cat: "Discipline & Formation",  text: "I receive correction without defensiveness.", ref: "Hebrews 12:6" },
+  { num: 5,  cat: "Discipline & Formation",  text: "I see discipline as evidence of love, not rejection." },
+  { num: 6,  cat: "Discipline & Formation",  text: "I seek out truth-tellers, not just encouragers." },
+  { num: 7,  cat: "Security & Empowerment",  text: "I celebrate when others around me accelerate.", ref: "Philippians 2:3" },
+  { num: 8,  cat: "Security & Empowerment",  text: "I freely release responsibility to develop others." },
+  { num: 9,  cat: "Security & Empowerment",  text: "I do not compete with those I lead or serve beside." },
+  { num: 10, cat: "Rhythm & Abiding",        text: "I have a consistent rhythm of solitude and communion.", ref: "Mark 1:35" },
+  { num: 11, cat: "Rhythm & Abiding",        text: "Busyness does not consistently crowd out my time with God." },
+  { num: 12, cat: "Rhythm & Abiding",        text: "I am aware of when I am drifting from rest into striving.", ref: "John 15:4" },
 ];
 
 const principles = [
@@ -25,10 +25,12 @@ const principles = [
     scripture: "\"This is My beloved Son, with whom I am well pleased.\" — Matthew 3:17",
     paragraphs: [
       "Before Jesus healed the sick, cast out demons, or preached a sermon, the Father declared identity. Jesus did not earn sonship through obedience. He obeyed because He was a Son. Service flows from sonship — not toward it.",
-      "When leaders reverse this order, striving replaces stability. They work to earn what has already been given. The performing leader is not a strong leader — they are an exhausted one. The performing leader eventually collapses because no achievement can permanently satisfy a hunger for belonging.",
+      "When leaders reverse this order, striving replaces stability. They work to earn what has already been given. The performing leader is not a strong leader — they are an exhausted one who eventually collapses.",
       "Abiding is the practice of sonship. The branch does not strain to produce fruit. It remains connected. Sonship produces fruit without panic — because the fruit is a byproduct of the relationship, not the basis of it.",
     ],
-    prompt: "Where are you serving to earn approval instead of serving from a place of rest and identity? Be specific.",
+    prompts: [
+      "Where are you serving to earn approval instead of serving from a place of rest and identity? Be specific.",
+    ],
   },
   {
     num: 2,
@@ -38,95 +40,146 @@ const principles = [
     paragraphs: [
       "Discipline is not rejection. Correction is not abandonment. Training is not punishment. It is love shaping maturity. Leaders who resist correction remain emotionally fragile. Leaders who embrace discipline grow in humility and depth.",
       "Without discipline, sonship becomes entitlement. With discipline, sonship produces authority. The son who cannot receive correction will eventually lead without accountability — and that is the most dangerous kind of leadership.",
-      "The fruit of discipline is not immediate comfort. It is the peaceful fruit of righteousness — a settled, rooted, undeniable stability that only comes to leaders who have been formed through trial.",
+      "Connection matures through formative obedience. The leader who cannot receive correction cannot carry greater weight.",
     ],
-    prompt: "Where have you interpreted discipline as rejection? What would it mean to receive it as formation instead?",
+    prompts: [
+      "When was the last time you received correction well? When was the last time you resisted it? What was the difference?",
+    ],
   },
   {
     num: 3,
-    title: "Identity Governs Posture",
-    ref: "John 15:4–5",
-    scripture: "\"Abide in Me, and I in you. Apart from Me you can do nothing.\" — John 15:4–5",
+    title: "Identity Precedes Influence",
+    ref: "Galatians 4:7",
+    scripture: "\"So you are no longer a slave, but a son, and if a son, then an heir through God.\" — Galatians 4:7",
     paragraphs: [
-      "How a leader leads is always an expression of who a leader believes they are. The orphan leads from scarcity. The son leads from abundance. The orphan hoards, controls, and competes. The son empowers, releases, and celebrates. The difference is not strategy — it is identity.",
-      "Abiding is the discipline that maintains identity under pressure. When the assignment gets heavy, when relationships disappoint, when recognition is absent — abiding keeps the leader anchored in what is true rather than reactive to what is felt.",
-      "This is not passive mysticism. Abiding is active, intentional, daily. It means returning to the source before drawing from the well. Leaders who abide stay full. Leaders who neglect abiding run dry — and a dry leader is dangerous to everyone around them.",
+      "Secure sons do not seek identity through platform. They know who they are before anyone else affirms it. Influence flows from rooted identity — not the other way around.",
+      "Leaders unsure of identity attempt to secure it through performance, titles, and visibility. They lead with anxiety. Secure sons lead without it.",
+      "This is also where connection becomes a decision-making filter. The question is not just 'Is this a good opportunity?' but: 'Am I making this decision from security or from insecurity? From sonship or from striving?'",
     ],
-    prompt: "Which column of the Orphan vs. Son contrast table describes your default under pressure? What specific behavior reveals that posture?",
+    prompts: [
+      "Name a recent decision. Did you make it from security or insecurity? From sonship or striving? How can you tell?",
+    ],
   },
   {
     num: 4,
-    title: "Relational Investment is Kingdom Strategy",
-    ref: "1 Samuel 3:8–9",
-    scripture: "\"Then Eli realized that the Lord was calling the boy.\" — 1 Samuel 3:8–9",
+    title: "Security Enables Empowerment",
+    ref: "Philippians 2:3",
+    scripture: "\"Do nothing from selfish ambition or conceit, but in humility count others more significant than yourselves.\" — Philippians 2:3",
     paragraphs: [
-      "Samuel heard God's voice but needed Eli to help him interpret it. Calling does not mature in isolation. It requires mentors, community, and external confirmation. A calling that no one else can see or confirm may be ambition dressed in spiritual language.",
-      "Community provides three essential functions: interpretation (helping you understand what God is saying), confirmation (verifying what you're sensing), and accountability (holding you to what you've declared). You need all three — not just the ones that feel comfortable.",
-      "Relational investment is not a personal luxury. In the Kingdom, it is a structural requirement. The leader who refuses depth in relationships is not strong — they are unformed. And unformed leaders form unhealthy teams.",
+      "Only secure sons elevate others freely. Insecure leaders compete. Secure leaders release. Insecure leaders hoard influence. Secure leaders multiply it.",
+      "Security eliminates comparison. When you know who you belong to, you are not threatened by someone else's acceleration. You celebrate it. You fund it. You create space for it.",
+      "Empowerment is the evidence of sonship maturity. The leader who cannot release others has not yet settled the identity question.",
     ],
-    prompt: "Who in your life is providing interpretation, confirmation, and accountability for your calling? If no one, what does that tell you?",
+    prompts: [
+      "Who around you is rising? Are you celebrating their growth or feeling threatened by it? What does your honest answer reveal?",
+      "What responsibility could you release to someone else right now that would develop them — but you've been holding onto?",
+    ],
+  },
+  {
+    num: 5,
+    title: "Solitude Sustains Awareness",
+    ref: "Mark 1:35",
+    scripture: "\"Rising very early in the morning, while it was still dark, He departed and went out to a desolate place, and there He prayed.\" — Mark 1:35",
+    paragraphs: [
+      "Sonship awareness fades in busyness. The noise of leadership — demands, decisions, crises, opportunities — can drown out the voice that says 'You are Mine.' Jesus withdrew early to pray. Not because He was weak. Because He was intentional.",
+      "Solitude was the rhythm that protected His identity from being consumed by His assignment. Abiding requires rhythm. Silence protects identity. Solitude renews alignment.",
+      "Without this rhythm, even the most grounded leader begins to drift from sonship into performance. The calendar fills. The soul empties. And leadership becomes mechanical.",
+    ],
+    prompts: [
+      "What is your current rhythm of solitude and communion? Be honest — is it consistent or has busyness consumed it?",
+      "What one change to your daily or weekly rhythm would protect your awareness of who you belong to?",
+    ],
+  },
+  {
+    num: 6,
+    title: "Work the Net to Build the Network",
+    ref: "Ecclesiastes 4:9–10",
+    addendum: true,
+    scripture: "\"Two are better than one, because they have a good reward for their toil. For if they fall, one will lift up his fellow.\" — Ecclesiastes 4:9–10",
+    paragraphs: [
+      "Connection is not passive. You do not build a network by waiting for relationships to find you. You build it by working the net — intentionally pursuing, cultivating, and stewarding the relationships God assigns to your life.",
+      "A net is made of individual threads woven together with purpose. Each thread is a relationship. Each knot is a point of trust. The strength of the net is not determined by how many threads exist — but by how well they are connected. A net with holes catches nothing.",
+      "Working the net means showing up before you need something. It means giving before you ask. It means following up, following through, and being the kind of connection others can count on. Leaders who only reach out when they need something do not have a network — they have a contact list.",
+    ],
+    prompts: [
+      "Are you intentionally building your network — or waiting for relationships to happen? What would it look like to 'work the net' over the next 90 days?",
+    ],
+  },
+  {
+    num: 7,
+    title: "Relationships Orbit at Different Frequencies",
+    ref: "Mark 3:14",
+    addendum: true,
+    scripture: "\"And He appointed twelve that they might be with Him and that He might send them out.\" — Mark 3:14",
+    paragraphs: [
+      "Jesus had crowds. He had the seventy-two. He had the twelve. He had the three. He had the one. Not every relationship operated at the same frequency — and neither will yours.",
+      "The mature leader discerns which orbit each relationship belongs in and stewards accordingly. Inner Circle (weekly): accountability, prayer, honest correction. Core Alliance (monthly): strategic partnership, prophetic exchange. Seasonal Connectors (quarterly): encouragement, broader perspective. Annual Touchpoints: legacy relationships, long-range alignment.",
+      "The mistake most leaders make is treating every relationship with the same frequency — exhausting themselves trying to maintain inner-circle depth with everyone, or neglecting key relationships because they have no system for staying connected. Both produce relational poverty.",
+    ],
+    prompts: [
+      "Map your current network using the orbit framework. Who is in your inner circle? Your core alliance? Your seasonal connectors? Where are the gaps — and where are you over-investing or under-investing?",
+      "Who in your network needs a different frequency than what you are currently giving them? Who have you neglected — and who needs to be repositioned?",
+    ],
   },
 ];
 
 const exemplar = {
-  title: "Exemplar: David — Son Before King",
-  subtitle: "David's identity as beloved held him together through rejection, wilderness, and war.",
-  intro: "David was anointed king while still tending sheep. He was not installed — he was formed. The years between the anointing and the throne were not waiting years. They were sonship years. In the wilderness, running from Saul's spear, David wrote Psalms — the outpouring of a man who knew who he belonged to even when no one recognized it.",
-  intro2: "David did not lead from the throne's validation. He led from his connection to God that was established long before he was known publicly. When Saul rejected him, when his family misunderstood him, when his military victories weren't enough — David ran back to the source. 'You are my Father, my God, and the Rock of my salvation.' That identity sustained everything else.",
+  title: "Exemplar: Jesus — Son Before Savior",
+  subtitle: "Before miracles. Before disciples. Before influence. The Father declared identity.",
+  intro: "Jesus' entire ministry flowed from one declaration at the Jordan: 'This is My beloved Son, with whom I am well pleased.' Before He cast out a single demon, healed a single person, or preached a single sermon — identity was established. Sonship preceded service. Belovedness preceded assignment.",
+  intro2: "Scripture also tells us: 'Although He was a Son, He learned obedience through what He suffered.' Sonship did not eliminate formation. It required obedience. Correction did not threaten identity. Suffering did not negate sonship. Sonship matured through obedience. Jesus modeled the full pattern: Belovedness → Alignment → Obedience → Authority → Impact.",
+  pattern: "Belovedness → Alignment → Obedience → Authority → Impact",
   lessons: [
-    "Identity established in hiddenness sustains you through public pressure — both the pressure of opposition and the pressure of success.",
-    "The orphan posture surfaces under stress. The son posture is built in secret, through consistent abiding.",
-    "Relational wounds do not disqualify — they deepen. David's betrayals became the raw material of his most profound worship.",
-    "You cannot lead others into identity security you have not found yourself.",
+    "Identity declared before ministry begins is the only identity that sustains ministry.",
+    "Sonship is not a feeling — it is a position. Jesus maintained alignment even when the crowds turned against Him.",
+    "Authority flows from intimacy. Power flows from alignment. True authority flows from relational alignment — not positional control.",
+    "Solitude was not weakness in Jesus — it was the practice that kept identity intact under maximum demand.",
+    "The goal is not to produce more — it is to abide more. Fruit is a byproduct of the relationship.",
   ],
   questions: [
-    "Where in your leadership journey has your identity been most tested? What did you discover about your posture?",
-    "Who has been your 'Eli' — someone who helped you hear and interpret what God was saying about your identity and calling?",
+    "Do you lead from approval or for approval? What is the evidence?",
+    "When suffering or correction comes, does your identity remain stable — or does it fracture?",
+    "Is your authority rooted in intimacy with God or in activity for God?",
   ],
 };
 
 const stages = [
   {
-    title: "Stage 1: Orphan (Striving)",
-    description: "The default mode for most leaders before intentional formation. You lead from the need for approval, significance, or security. You may be effective externally but internally exhausted and relationally shallow.",
-    markers: ["Performing for validation", "Comparing and competing with peers", "Difficulty receiving correction without feeling rejected"],
+    title: "Stage 1: Revelation (Understanding Belonging)",
+    description: "Understanding your identity as adopted and loved. The first encounter with belonging. You begin to grasp that you are not a servant earning favor — you are a son or daughter already loved.",
+    markers: ["First encounters with sonship language and identity security", "Beginning to question performance-based leadership", "Initial awareness of the orphan posture"],
   },
   {
-    title: "Stage 2: Awakening (Recognition)",
-    description: "You begin to see the orphan posture for what it is. This is often triggered by failure, relational rupture, or spiritual encounter. Something breaks the performance cycle and exposes the need beneath it.",
-    markers: ["Awareness of what drives your leadership", "Beginning to question the cost of striving", "Initial encounters with true identity security"],
+    title: "Stage 2: Formation (Receiving Discipline)",
+    description: "Receiving correction, discipline, and alignment. Learning that love includes refinement. The orphan patterns are being exposed. You are learning to interpret correction as formation rather than rejection.",
+    markers: ["Increasing ability to receive honest input without collapse", "Naming specific orphan patterns and working on them", "Solitude and abiding becoming more intentional"],
   },
   {
-    title: "Stage 3: Sonship (Rest)",
-    description: "You are actively transitioning from performance to rest. Identity is becoming your anchor. You are building spiritual disciplines that maintain sonship — not as a formula, but as a lifestyle of abiding.",
-    markers: ["Increasingly leading from security rather than striving", "Receiving correction without collapse", "Celebrating others genuinely without comparison"],
-  },
-  {
-    title: "Stage 4: Multiplication (Fathering)",
-    description: "You are so settled in your own identity that you can now give identity to others. You become a spiritual father or mother — someone whose presence establishes others in who they are. This is the fruit of decades of formation.",
-    markers: ["Leaders around you grow into identity security because of your investment", "You release and celebrate rather than hold and control", "Your relational legacy outlasts your organizational output"],
+    title: "Stage 3: Mature Sonship (Leading from Rest)",
+    description: "Operating from secure identity shaped through discipline. Leading from rest, not striving. You have settled the identity question deeply enough that it no longer needs to be re-answered under pressure.",
+    markers: ["Consistent rest and security even under pressure or criticism", "Freely empowering others without feeling threatened", "Solitude as a non-negotiable rhythm, not an occasional luxury"],
   },
 ];
 
 const commitmentPrompts = [
-  { id: "identity_declaration",  label: "My Identity Declaration (Who do I belong to? What does that mean?)",         placeholder: "Write a statement of who you are as a son/daughter — not your role or title, your identity..." },
-  { id: "orphan_pattern",        label: "The Orphan Pattern I Am Renouncing",                                         placeholder: "Name the specific striving or approval-seeking behavior you are committed to breaking..." },
-  { id: "abiding_practice",      label: "My Abiding Practice (How I maintain identity under pressure)",               placeholder: "Describe the specific spiritual disciplines that keep you anchored in sonship..." },
-  { id: "community_investment",  label: "My Relational Investment (Who am I walking with this season?)",              placeholder: "Name the specific people — mentors, peers, community — who are part of your formation..." },
-  { id: "fathering_commitment",  label: "Who I Am Called to Establish in Identity",                                   placeholder: "Name one or more people into whom you will pour your own sonship journey..." },
+  { id: "identity_statement",   label: "My Identity Statement (Who am I in God — apart from title, role, or accomplishment?)", placeholder: "Write one sentence that captures who you are in God alone..." },
+  { id: "orphan_pattern",       label: "The Orphan Pattern I Am Renouncing",                                                   placeholder: "Name the specific striving or approval-seeking behavior you are committed to breaking..." },
+  { id: "sonship_rhythm",       label: "My Sonship Rhythm (What specific practice protects your connection with God?)",        placeholder: "Solitude, prayer, worship, silence, journaling? Describe what and when..." },
+  { id: "relational_investment",label: "My Relational Investment (Who am I walking with this season?)",                       placeholder: "Name the specific people — mentors, peers, community — who are part of your formation..." },
+  { id: "empowerment_target",   label: "Who I Am Called to Establish in Identity",                                            placeholder: "Name one or more people into whom you will pour your sonship journey..." },
 ];
 
 const revisitTriggers = [
-  "When you notice yourself performing instead of resting",
-  "When criticism or correction triggers a disproportionate reaction",
-  "When you find yourself comparing or competing instead of celebrating",
-  "When relationships in your team feel more transactional than covenant",
-  "When you feel isolated, unseen, or misunderstood in your leadership",
-  "When success begins to inflate rather than deepen your dependency on God",
+  "When you notice striving replacing rest",
+  "When criticism destabilizes your confidence",
+  "When you start performing for approval again",
+  "When your solitude rhythm breaks down",
+  "When comparison or competition surfaces",
+  "Quarterly, as a discipline of awareness",
 ];
 
 const applicationQuestions = [
-  "What is one relationship you need to invest in this week that reflects covenant, not just utility?",
+  "Where do I lead from insecurity or comparison? What would change this month if I led from anchored identity?",
   "What specific orphan pattern will you bring into accountability with a trusted person this week?",
 ];
 
