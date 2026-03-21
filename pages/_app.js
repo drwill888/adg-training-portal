@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase'
 import '../styles/globals.css'
 
 // Pages that don't require authentication
-const publicPages = ['/login', '/auth/callback']
+const publicPages = ['/login', '/auth/callback', '/auth/reset-password']
 
 export default function App({ Component, pageProps }) {
   const router = useRouter()

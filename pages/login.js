@@ -9,6 +9,7 @@ export default function LoginPage({ session }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
+  const [isForgot, setIsForgot] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
@@ -21,20 +22,31 @@ export default function LoginPage({ session }) {
   }, [session])
 
   const handleSubmit = async () => {
-    if (!email || !password) { setError('Email and password required'); return }
+    if (!email || (!isForgot && !password)) {
+      setError(isForgot ? 'Email required' : 'Email and password required')
+      return
+    }
     setLoading(true)
     setError('')
     setMessage('')
+
+    if (isForgot) {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/auth/reset-password',
+      })
+      if (error) { setError(error.message); setLoading(false); return }
+      setMessage('Check your email for a password reset link.')
+      setLoading(false)
+      return
+    }
 
     if (isSignUp) {
       const { data, error } = await supabase.auth.signUp({ email, password })
       if (error) { setError(error.message); setLoading(false); return }
 
       if (data?.session) {
-        // Session established immediately — redirect
         window.location.href = '/'
       } else if (data?.user && !data?.session) {
-        // Email confirmation required
         setMessage('Check your email for a confirmation link, then sign in.')
         setLoading(false)
       } else {
@@ -45,7 +57,6 @@ export default function LoginPage({ session }) {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) { setError(error.message); setLoading(false); return }
 
-      // Confirm session is established before redirecting
       const { data: { session: confirmedSession } } = await supabase.auth.getSession()
       if (confirmedSession) {
         window.location.href = '/'
@@ -60,7 +71,7 @@ export default function LoginPage({ session }) {
 
   return (
     <>
-      <Head><title>Sign In | 5C Leadership Blueprint</title></Head>
+      <Head><title>{isForgot ? 'Reset Password' : 'Sign In'} | 5C Leadership Blueprint</title></Head>
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F8F9FC', fontFamily: "'Raleway', sans-serif" }}>
         <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet" />
         <div style={{ width: '100%', maxWidth: 420, padding: '0 20px' }}>
@@ -70,32 +81,56 @@ export default function LoginPage({ session }) {
           </div>
           <div style={{ background: '#fff', borderRadius: 12, padding: 32, boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
             <h2 style={{ color: navy, fontSize: 18, fontWeight: 700, margin: '0 0 24px' }}>
-              {isSignUp ? 'Create Account' : 'Sign In'}
+              {isForgot ? 'Reset Password' : isSignUp ? 'Create Account' : 'Sign In'}
             </h2>
+            {isForgot && (
+              <p style={{ fontSize: 13, color: gray, marginBottom: 20, lineHeight: 1.5 }}>
+                Enter your email and we'll send you a link to reset your password.
+              </p>
+            )}
             <div style={{ marginBottom: 16 }}>
               <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: navy, marginBottom: 6 }}>Email</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                 style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e6ed', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none' }}
                 placeholder="your@email.com" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
             </div>
-            <div style={{ marginBottom: 24 }}>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: navy, marginBottom: 6 }}>Password</label>
-              <input type="password" value={password} onChange={e => setPassword(e.target.value)}
-                style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e6ed', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none' }}
-                placeholder="••••••••" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
-            </div>
+            {!isForgot && (
+              <div style={{ marginBottom: 24 }}>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: navy, marginBottom: 6 }}>Password</label>
+                <input type="password" value={password} onChange={e => setPassword(e.target.value)}
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e6ed', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none' }}
+                  placeholder="••••••••" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
+              </div>
+            )}
             {error && <p style={{ color: '#EE3124', fontSize: 13, marginBottom: 16 }}>{error}</p>}
             {message && <p style={{ color: '#0172BC', fontSize: 13, marginBottom: 16 }}>{message}</p>}
             <button onClick={handleSubmit} disabled={loading}
               style={{ width: '100%', padding: '12px', background: navy, color: '#FDD20D', border: 'none', borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: loading ? 'default' : 'pointer', opacity: loading ? 0.7 : 1 }}>
-              {loading ? 'Please wait...' : isSignUp ? 'Create Account' : 'Sign In'}
+              {loading ? 'Please wait...' : isForgot ? 'Send Reset Link' : isSignUp ? 'Create Account' : 'Sign In'}
             </button>
-            <p style={{ textAlign: 'center', marginTop: 16, fontSize: 13, color: gray }}>
-              {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
-              <span onClick={() => { setIsSignUp(!isSignUp); setError(''); setMessage('') }}
-                style={{ color: '#0172BC', cursor: 'pointer', fontWeight: 600 }}>
-                {isSignUp ? 'Sign In' : 'Sign Up'}
-              </span>
+            {!isForgot && !isSignUp && (
+              <p style={{ textAlign: 'center', marginTop: 12, fontSize: 13 }}>
+                <span onClick={() => { setIsForgot(true); setError(''); setMessage('') }}
+                  style={{ color: '#0172BC', cursor: 'pointer', fontWeight: 600 }}>
+                  Forgot password?
+                </span>
+              </p>
+            )}
+            <p style={{ textAlign: 'center', marginTop: 12, fontSize: 13, color: gray }}>
+              {isForgot ? (
+                <span onClick={() => { setIsForgot(false); setError(''); setMessage('') }}
+                  style={{ color: '#0172BC', cursor: 'pointer', fontWeight: 600 }}>
+                  Back to Sign In
+                </span>
+              ) : (
+                <>
+                  {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
+                  <span onClick={() => { setIsSignUp(!isSignUp); setError(''); setMessage('') }}
+                    style={{ color: '#0172BC', cursor: 'pointer', fontWeight: 600 }}>
+                    {isSignUp ? 'Sign In' : 'Sign Up'}
+                  </span>
+                </>
+              )}
             </p>
           </div>
         </div>
