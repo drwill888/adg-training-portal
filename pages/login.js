@@ -1,36 +1,58 @@
 // pages/login.js
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 
-export default function LoginPage() {
+export default function LoginPage({ session }) {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
+
+  // If session is passed from _app.js, redirect to dashboard
+  useEffect(() => {
+    if (session) {
+      router.replace('/')
+    }
+  }, [session])
 
   const handleSubmit = async () => {
     if (!email || !password) { setError('Email and password required'); return }
     setLoading(true)
     setError('')
+    setMessage('')
 
     if (isSignUp) {
       const { data, error } = await supabase.auth.signUp({ email, password })
       if (error) { setError(error.message); setLoading(false); return }
-      // Wait for session to be established
+
       if (data?.session) {
+        // Session established immediately — redirect
         window.location.href = '/'
+      } else if (data?.user && !data?.session) {
+        // Email confirmation required
+        setMessage('Check your email for a confirmation link, then sign in.')
+        setLoading(false)
       } else {
-        // Try signing in immediately after signup
-        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
-        if (signInError) { setError(signInError.message); setLoading(false); return }
-        window.location.href = '/'
+        setError('Something went wrong. Please try again.')
+        setLoading(false)
       }
     } else {
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) { setError(error.message); setLoading(false); return }
-      window.location.href = '/'
+
+      // Confirm session is established before redirecting
+      const { data: { session: confirmedSession } } = await supabase.auth.getSession()
+      if (confirmedSession) {
+        window.location.href = '/'
+      } else {
+        setError('Sign in succeeded but session was not established. Please try again.')
+        setLoading(false)
+      }
     }
   }
 
@@ -63,13 +85,14 @@ export default function LoginPage() {
                 placeholder="••••••••" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
             </div>
             {error && <p style={{ color: '#EE3124', fontSize: 13, marginBottom: 16 }}>{error}</p>}
+            {message && <p style={{ color: '#0172BC', fontSize: 13, marginBottom: 16 }}>{message}</p>}
             <button onClick={handleSubmit} disabled={loading}
               style={{ width: '100%', padding: '12px', background: navy, color: '#FDD20D', border: 'none', borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: loading ? 'default' : 'pointer', opacity: loading ? 0.7 : 1 }}>
               {loading ? 'Please wait...' : isSignUp ? 'Create Account' : 'Sign In'}
             </button>
             <p style={{ textAlign: 'center', marginTop: 16, fontSize: 13, color: gray }}>
               {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
-              <span onClick={() => { setIsSignUp(!isSignUp); setError('') }}
+              <span onClick={() => { setIsSignUp(!isSignUp); setError(''); setMessage('') }}
                 style={{ color: '#0172BC', cursor: 'pointer', fontWeight: 600 }}>
                 {isSignUp ? 'Sign In' : 'Sign Up'}
               </span>

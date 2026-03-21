@@ -1,54 +1,54 @@
 // pages/auth/callback.js
 import { useEffect, useState } from 'react'
+import { supabase } from '../../lib/supabase'
 
 export default function AuthCallback() {
   const [status, setStatus] = useState('Signing you in...')
 
   useEffect(() => {
-    try {
-      const hash = window.location.hash
-      const params = new URLSearchParams(hash.replace('#', ''))
-      const accessToken = params.get('access_token')
-      const refreshToken = params.get('refresh_token')
+    async function handleCallback() {
+      try {
+        const hash = window.location.hash
+        const params = new URLSearchParams(hash.replace('#', ''))
+        const accessToken = params.get('access_token')
+        const refreshToken = params.get('refresh_token')
 
-      if (accessToken) {
-        // Store tokens so supabase client picks them up on next page
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-        const projectRef = supabaseUrl.replace('https://', '').split('.')[0]
-        if (projectRef) {
-          const storageKey = `sb-${projectRef}-auth-token`
-          localStorage.setItem(storageKey, JSON.stringify({
+        if (accessToken && refreshToken) {
+          // Let the Supabase client handle session properly
+          const { error } = await supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: refreshToken,
-            token_type: 'bearer',
-            expires_at: Math.floor(Date.now() / 1000) + 3600,
-          }))
-        }
-        setStatus('Success! Loading your dashboard...')
-        setTimeout(() => { window.location.href = '/' }, 500)
-      } else {
-        // No hash token — Supabase may have already set the session
-        setTimeout(() => {
-          const keys = Object.keys(localStorage)
-          const authKey = keys.find(k => k.startsWith('sb-') && k.includes('auth-token'))
-          if (authKey) {
-            try {
-              const stored = JSON.parse(localStorage.getItem(authKey))
-              if (stored?.access_token) {
-                window.location.href = '/'
-                return
-              }
-            } catch {}
+          })
+
+          if (error) {
+            console.error('Set session error:', error)
+            setStatus('Sign in failed. Taking you back...')
+            setTimeout(() => { window.location.href = '/login' }, 2000)
+            return
           }
-          setStatus('Link expired or already used.')
-          setTimeout(() => { window.location.href = '/login' }, 2000)
-        }, 1500)
+
+          setStatus('Success! Loading your dashboard...')
+          setTimeout(() => { window.location.href = '/' }, 500)
+        } else {
+          // No tokens in hash — check if Supabase already picked up the session
+          const { data: { session } } = await supabase.auth.getSession()
+
+          if (session) {
+            setStatus('Success! Loading your dashboard...')
+            setTimeout(() => { window.location.href = '/' }, 500)
+          } else {
+            setStatus('Link expired or already used.')
+            setTimeout(() => { window.location.href = '/login' }, 2000)
+          }
+        }
+      } catch (err) {
+        console.error('Callback error:', err)
+        setStatus('Something went wrong. Taking you back...')
+        setTimeout(() => { window.location.href = '/login' }, 2000)
       }
-    } catch (err) {
-      console.error('Callback error:', err)
-      setStatus('Something went wrong. Taking you back...')
-      setTimeout(() => { window.location.href = '/login' }, 2000)
     }
+
+    handleCallback()
   }, [])
 
   return (
