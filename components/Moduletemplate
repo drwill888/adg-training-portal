@@ -1,4 +1,3 @@
-
 // components/ModuleTemplate.js
 // Shared rendering engine for all 5C Leadership Blueprint modules
 // Each module page passes a config object with all module-specific data
