@@ -19,6 +19,7 @@ const MODULES = [
   { value: "capacity", label: "Capacity" },
   { value: "convergence", label: "Convergence" },
   { value: "commissioning", label: "Commissioning" },
+  { value: "general", label: "General" },
 ];
 
 export default function TrainingBotPage() {
