@@ -1,3 +1,4 @@
+// pages/api/checkout.js
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -8,8 +9,11 @@ export default async function handler(req, res) {
   }
 
   try {
+    const { email } = req.body;
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
+      customer_email: email || undefined,
       line_items: [
         {
           price: process.env.STRIPE_PRICE_ID,
@@ -26,4 +30,4 @@ export default async function handler(req, res) {
     console.error('Stripe checkout error:', error);
     res.status(500).json({ error: 'Failed to create checkout session' });
   }
-} 
+}
