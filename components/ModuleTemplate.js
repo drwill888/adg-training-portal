@@ -1,4 +1,4 @@
-a// components/ModuleTemplate.js
+// components/ModuleTemplate.js
 // Shared rendering engine for all 5C Leadership Blueprint modules
 
 import { useState, useRef } from "react";
