@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
-import { supabase } from "../lib/supabase";
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
