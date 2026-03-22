@@ -1,9 +1,10 @@
-// components/ModuleTemplate.js
+a// components/ModuleTemplate.js
 // Shared rendering engine for all 5C Leadership Blueprint modules
 
 import { useState, useRef } from "react";
 import FlameMark from "./FlameMark";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
+import { supabase } from "../lib/supabase";
 
 const NAVY = "#021A35";
 const GOLD = "#FDD20D";
@@ -169,7 +170,13 @@ export default function ModuleTemplate({ config }) {
           <p style={{ color: "#666", fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>Unlock all five modules of the 5C Leadership Blueprint to continue your formation journey.</p>
           <button onClick={async () => {
             try {
-              const res = await fetch('/api/checkout', { method: 'POST' });
+              const { data: { session } } = await supabase.auth.getSession();
+              const email = session?.user?.email;
+              const res = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+              });
               const data = await res.json();
               if (data.url) window.location.href = data.url;
             } catch (err) { alert('Something went wrong. Please try again.'); }

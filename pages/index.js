@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
+import { supabase } from "../lib/supabase";
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
@@ -75,7 +76,13 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
 
 async function handleCheckout() {
   try {
-    const res = await fetch('/api/checkout', { method: 'POST' });
+    const { data: { session } } = await supabase.auth.getSession();
+    const email = session?.user?.email;
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
     const data = await res.json();
     if (data.url) {
       window.location.href = data.url;
