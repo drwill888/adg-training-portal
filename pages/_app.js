@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { supabase } from '../lib/supabase'
 import '../styles/globals.css'
+import TrainingChat from '../components/TrainingChat'
 
 // Pages that don't require authentication
 const publicPages = ['/login', '/auth/callback', '/auth/reset-password']
@@ -72,5 +73,10 @@ export default function App({ Component, pageProps }) {
     return null
   }
 
-  return <Component {...pageProps} session={session} />
+return (
+    <>
+      <Component {...pageProps} session={session} />
+      <TrainingChat />
+    </>
+  )
 }
