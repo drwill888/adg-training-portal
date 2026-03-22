@@ -6,18 +6,14 @@ export default async function handler(req, res) {
     const { prompt, messages } = req.body;
     const msgs = messages || [{ role: "user", content: prompt }];
 
-    const keyExists = !!process.env.CLAUDE_API_KEY;
-    const keyStart = process.env.CLAUDE_API_KEY?.substring(0, 10) || "MISSING";
-
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.CLAUDE_API_KEY,
-        "anthropic-version": "2023-06-01",
+        "Authorization": "Bearer " + process.env.OPENAI_API_KEY,
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
+        model: "gpt-4o",
         max_tokens: 1024,
         messages: msgs,
       }),
@@ -27,13 +23,13 @@ export default async function handler(req, res) {
 
     if (response.status !== 200) {
       return res.status(200).json({
-        response: "DEBUG: Key exists: " + keyExists + " | Key starts: " + keyStart + " | API status: " + response.status + " | Error: " + JSON.stringify(data),
+        response: "API Error: " + JSON.stringify(data),
       });
     }
 
-    const text = data.content?.[0]?.text || "";
-    res.status(200).json({ response: text, content: data.content });
+    const text = data.choices?.[0]?.message?.content || "";
+    res.status(200).json({ response: text, content: data.choices });
   } catch (error) {
-    res.status(200).json({ response: "DEBUG ERROR: " + error.message });
+    res.status(200).json({ response: "Error: " + error.message });
   }
 }
