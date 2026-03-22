@@ -173,8 +173,6 @@ export default function ModuleTemplate({ config }) {
             try {
               const { data: { session } } = await supabase.auth.getSession();
               const email = session?.user?.email;
-              const { data: { session } } = await supabase.auth.getSession();
-              const email = session?.user?.email;
               const res = await fetch('/api/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
