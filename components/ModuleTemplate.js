@@ -5,7 +5,6 @@ import { useState, useRef } from "react";
 import FlameMark from "./FlameMark";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
-import { supabase } from "../lib/supabase";
 
 const NAVY = "#021A35";
 const GOLD = "#FDD20D";
