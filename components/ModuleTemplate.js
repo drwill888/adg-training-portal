@@ -3,6 +3,7 @@
 
 import { useState, useRef } from "react";
 import FlameMark from "./FlameMark";
+import { usePaymentStatus } from "../lib/usePaymentStatus";
 
 const NAVY = "#021A35";
 const GOLD = "#FDD20D";
@@ -133,6 +134,10 @@ export default function ModuleTemplate({ config }) {
     aiPromptContext, contrastTable,
   } = config;
 
+  // ALL hooks must be called before any early returns
+  const { paid, loading: payLoading } = usePaymentStatus();
+  const isFree = moduleNum === 0;
+
   const [step, setStep]               = useState(0);
   const [preScores, setPreScores]     = useState({});
   const [postScores, setPostScores]   = useState({});
@@ -143,6 +148,40 @@ export default function ModuleTemplate({ config }) {
   const cur = STEPS[step];
 
   const scrollTop = () => topRef.current && topRef.current.scrollIntoView({ behavior: "smooth" });
+
+  // Payment gate — loading state
+  if (!isFree && payLoading) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAF8" }}>
+        <p style={{ color: "#999", fontSize: 14 }}>Loading...</p>
+      </div>
+    );
+  }
+
+  // Payment gate — not paid
+  if (!isFree && !paid) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAF8", fontFamily: "'Outfit', sans-serif" }}>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        <div style={{ textAlign: "center", maxWidth: 440, padding: 40 }}>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "2rem", marginBottom: 12 }}>This Module Requires Full Access</h1>
+          <p style={{ color: "#666", fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>Unlock all five modules of the 5C Leadership Blueprint to continue your formation journey.</p>
+          <button onClick={async () => {
+            try {
+              const res = await fetch('/api/checkout', { method: 'POST' });
+              const data = await res.json();
+              if (data.url) window.location.href = data.url;
+            } catch (err) { alert('Something went wrong. Please try again.'); }
+          }} style={{ padding: "12px 32px", background: GOLD, color: NAVY, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", marginBottom: 12 }}>
+            Unlock — $3.99
+          </button>
+          <br />
+          <a href="/" style={{ color: "#888", fontSize: 13 }}>← Back to Dashboard</a>
+        </div>
+      </div>
+    );
+  }
 
   const generateSummary = async () => {
     setLoading(true);
