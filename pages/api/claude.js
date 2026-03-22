@@ -6,8 +6,8 @@ export default async function handler(req, res) {
     const { prompt, messages } = req.body;
     const msgs = messages || [{ role: "user", content: prompt }];
 
-    console.log("CLAUDE_API_KEY exists:", !!process.env.CLAUDE_API_KEY);
-    console.log("CLAUDE_API_KEY starts with:", process.env.CLAUDE_API_KEY?.substring(0, 10));
+    const keyExists = !!process.env.CLAUDE_API_KEY;
+    const keyStart = process.env.CLAUDE_API_KEY?.substring(0, 10) || "MISSING";
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -24,20 +24,16 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-    console.log("Anthropic response status:", response.status);
-    console.log("Anthropic response:", JSON.stringify(data).substring(0, 200));
+
+    if (response.status !== 200) {
+      return res.status(200).json({
+        response: "DEBUG: Key exists: " + keyExists + " | Key starts: " + keyStart + " | API status: " + response.status + " | Error: " + JSON.stringify(data),
+      });
+    }
 
     const text = data.content?.[0]?.text || "";
     res.status(200).json({ response: text, content: data.content });
   } catch (error) {
-    console.error("Claude API error:", error);
-    res.status(500).json({ error: "API request failed" });
+    res.status(200).json({ response: "DEBUG ERROR: " + error.message });
   }
 }
-```
-
-Save it, commit, and push:
-```
-git add .
-git commit -m "Add debug logging to claude API"
-git push origin main
