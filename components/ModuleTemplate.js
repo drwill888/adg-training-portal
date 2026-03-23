@@ -6,10 +6,10 @@ import FlameMark from "./FlameMark";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
 
-const NAVY = "#021A35";
-const GOLD = "#FDD20D";
+var NAVY = "#021A35";
+var GOLD = "#FDD20D";
 
-const STEPS = [
+var STEPS = [
   { id: "activation",      label: "Activation" },
   { id: "pre-diagnostic",  label: "Pre-Check" },
   { id: "teaching",        label: "Teaching" },
@@ -35,50 +35,24 @@ function Modal({ open, onClose, children }) {
   );
 }
 
-/* ── Scripture Modal Content ── */
-function ScriptureContent({ scriptures, resources }) {
+/* ── Scripture Modal Content (scriptures only) ── */
+function ScriptureContent({ scriptures }) {
+  if (!scriptures) return null;
   return (
     <div>
-      {scriptures && (
-        <div style={{ marginBottom: resources ? 32 : 0 }}>
-          <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, color: GOLD, marginBottom: 4 }}>Further Study</p>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "1.6rem", fontWeight: 700, marginBottom: 12 }}>Scriptures for Further Study</h2>
-          <p style={{ fontSize: 14, color: "#555", lineHeight: 1.7, marginBottom: 24, fontStyle: "italic" }}>{scriptures.intro}</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {scriptures.verses.map(function(v, i) {
-              return (
-                <div key={i} style={{ padding: "12px 16px", borderRadius: 10, background: i % 2 === 0 ? "#FFF9E6" : "#f9fafb", borderLeft: "3px solid " + GOLD }}>
-                  <span style={{ fontWeight: 700, color: NAVY, fontSize: 13 }}>{v.ref}</span>
-                  <span style={{ color: "#555", fontSize: 13 }}> — {v.text}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-      {resources && resources.blogs && (
-        <div>
-          <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, color: GOLD, marginBottom: 4 }}>Additional Resources</p>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "1.4rem", fontWeight: 700, marginBottom: 16 }}>Blog Articles & References</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {resources.blogs.map(function(b, i) {
-              return (
-                <a key={i} href={b.url} target="_blank" rel="noopener noreferrer" style={{ padding: "14px 16px", borderRadius: 10, background: "#f9fafb", border: "1px solid #e5e7eb", textDecoration: "none", display: "block" }}>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 2 }}>{b.title}</div>
-                  <div style={{ fontSize: 12, color: "#666", lineHeight: 1.5 }}>{b.description}</div>
-                </a>
-              );
-            })}
-          </div>
-          {resources.links && resources.links.map(function(l, i) {
-            return (
-              <a key={i} href={l.url} target="_blank" rel="noopener noreferrer" style={{ display: "block", marginTop: 12, fontSize: 13, color: "#0172BC" }}>
-                {l.title} →
-              </a>
-            );
-          })}
-        </div>
-      )}
+      <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, color: GOLD, marginBottom: 4 }}>Further Study</p>
+      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "1.6rem", fontWeight: 700, marginBottom: 12 }}>Scriptures for Further Study</h2>
+      <p style={{ fontSize: 14, color: "#555", lineHeight: 1.7, marginBottom: 24, fontStyle: "italic" }}>{scriptures.intro}</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {scriptures.verses.map(function(v, i) {
+          return (
+            <div key={i} style={{ padding: "12px 16px", borderRadius: 10, background: i % 2 === 0 ? "#FFF9E6" : "#f9fafb", borderLeft: "3px solid " + GOLD }}>
+              <span style={{ fontWeight: 700, color: NAVY, fontSize: 13 }}>{v.ref}</span>
+              <span style={{ color: "#555", fontSize: 13 }}> — {v.text}</span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -251,7 +225,6 @@ export default function ModuleTemplate({ config }) {
   var scriptures = config.scriptures;
   var bookChapter = config.bookChapter;
 
-  // ALL hooks before any early returns
   var payStatus = usePaymentStatus();
   var paid = payStatus.paid;
   var payLoading = payStatus.loading;
@@ -289,7 +262,6 @@ export default function ModuleTemplate({ config }) {
 
   var scrollTop = function() { if (topRef.current) topRef.current.scrollIntoView({ behavior: "smooth" }); };
 
-  // ── Save & Resume: Load saved progress ──
   useEffect(function() {
     async function loadProgress() {
       try {
@@ -309,13 +281,12 @@ export default function ModuleTemplate({ config }) {
           if (result.data.commitments) setCommitments(result.data.commitments);
           if (result.data.ai_summary) setAiSummary(result.data.ai_summary);
         }
-      } catch (e) { /* No saved progress — start fresh */ }
+      } catch (e) {}
       setResumeLoaded(true);
     }
     loadProgress();
   }, [moduleNum]);
 
-  // ── Save & Resume: Auto-save on changes ──
   useEffect(function() {
     if (!resumeLoaded) return;
     var timer = setTimeout(function() {
@@ -336,14 +307,13 @@ export default function ModuleTemplate({ config }) {
               ai_summary: aiSummary,
               updated_at: new Date().toISOString(),
             }, { onConflict: "user_email,module_num" });
-        } catch (e) { /* Silent fail */ }
+        } catch (e) {}
       }
       save();
     }, 1500);
     return function() { clearTimeout(timer); };
   }, [step, preScores, postScores, commitments, aiSummary, resumeLoaded, moduleNum]);
 
-  // ── Payment gate — loading state ──
   if (!isFree && payLoading) {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAF8" }}>
@@ -352,7 +322,6 @@ export default function ModuleTemplate({ config }) {
     );
   }
 
-  // ── Payment gate — not paid ──
   if (!isFree && !paid) {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAF8", fontFamily: "'Outfit', sans-serif" }}>
@@ -401,7 +370,6 @@ export default function ModuleTemplate({ config }) {
         return (
           <div className="space-y-6">
             <SectionHead sub="Set aside distractions. You are entering formational territory.">Welcome to {title}</SectionHead>
-
             {bookChapter && (
               <button onClick={function() { setShowBookChapter(true); }}
                 style={{ width: "100%", padding: "16px 20px", background: NAVY, borderRadius: 12, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
@@ -412,7 +380,6 @@ export default function ModuleTemplate({ config }) {
                 </div>
               </button>
             )}
-
             <div className="p-6 rounded-2xl" style={{ background: NAVY, color: "#fff" }}>
               {question && (
                 <>
@@ -630,11 +597,34 @@ export default function ModuleTemplate({ config }) {
               </>
             )}
 
-            {(scriptures || config.resources) && (
+            {config.resources && config.resources.blogs && (
+              <div style={{ marginTop: 16 }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 12 }}>Blog Articles & Resources</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {config.resources.blogs.map(function(b, i) {
+                    return (
+                      <a key={i} href={b.url} target="_blank" rel="noopener noreferrer" style={{ padding: "14px 16px", borderRadius: 10, background: "#fff", border: "1px solid #e5e7eb", textDecoration: "none", display: "block" }}>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 2 }}>{b.title}</div>
+                        <div style={{ fontSize: 12, color: "#666", lineHeight: 1.5 }}>{b.description}</div>
+                      </a>
+                    );
+                  })}
+                </div>
+                {config.resources.links && config.resources.links.map(function(l, i) {
+                  return (
+                    <a key={i} href={l.url} target="_blank" rel="noopener noreferrer" style={{ display: "block", marginTop: 10, fontSize: 13, color: "#0172BC" }}>
+                      {l.title} →
+                    </a>
+                  );
+                })}
+              </div>
+            )}
+
+            {scriptures && (
               <button onClick={function() { setShowScriptures(true); }}
-               className="w-full py-3 rounded-2xl font-semibold text-sm transition-all"
-               style={{ border: "2px solid " + GOLD, color: NAVY, background: "#FFF9E6" }}>
-               📖 Further Reference & Study
+                className="w-full py-3 rounded-2xl font-semibold text-sm transition-all"
+                style={{ border: "2px solid " + GOLD, color: NAVY, background: "#FFF9E6" }}>
+                📖 Scriptures for Further Study
               </button>
             )}
           </div>
@@ -648,12 +638,10 @@ export default function ModuleTemplate({ config }) {
     <div className="min-h-screen" style={{ background: "#FAFAF8", fontFamily: "'Outfit', sans-serif" }}>
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-      {/* Scripture Modal */}
       <Modal open={showScriptures} onClose={function() { setShowScriptures(false); }}>
-        <ScriptureContent scriptures={scriptures} resources={config.resources} />
+        <ScriptureContent scriptures={scriptures} />
       </Modal>
 
-      {/* Book Chapter Modal */}
       <Modal open={showBookChapter} onClose={function() { setShowBookChapter(false); }}>
         <BookChapterContent chapter={bookChapter} />
       </Modal>
