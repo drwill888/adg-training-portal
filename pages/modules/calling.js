@@ -233,6 +233,20 @@ const config = {
   revisitTriggers,
   applicationQuestions,
   resources,
+  learningObjectives: [
+    "Articulate your calling in one clear, specific sentence — not a paragraph, not a wish, but a conviction you can stand on under pressure.",
+    "Distinguish between your calling (the macro — lifetime) and your current assignment (the micro — this season) and know why confusing them creates drift.",
+    "Identify the three to five formative moments that have shaped your calling and recognize God's thread running through them.",
+    "Name the burden you carry that you cannot walk away from — the one that persists regardless of title, role, or season.",
+    "Evaluate the health of your confirmation community — who speaks into your calling, and whether that circle is strong enough to sustain you.",
+  ],
+  keyTakeaways: [
+    "Calling is not what you do. It is who you were designed to become. Confuse the two and you will spend your life building someone else's assignment.",
+    "Design precedes deployment. If you have not been formed for it, you cannot sustain it. Hiddenness is not punishment — it is preparation.",
+    "Calling is your decision-making filter. Every yes and every no should be traceable back to it. Without this filter, you will be busy but never fruitful.",
+    "A calling that no one else can see or confirm may be ambition dressed in spiritual language. Seek confirmation in community — not isolation.",
+    "Prophetic words are not souvenirs. They are weapons. If you have received a confirmed word over your life, pick it back up and fight with it.",
+  ],
   // Renamed from "aiPromptContext" — drives the personalized summary engine (not learner-facing)
   summaryPromptContext: "This leader has completed Module 1: Calling of the 5C Leadership Blueprint. Analyze their responses with focus on: (1) the clarity and precision of their calling articulation, (2) the nature of the burden they carry and whether it is genuinely theirs, (3) the health of their confirmation community, and (4) how well their calling is functioning as a decision filter. Be direct, apostolic in tone, and specific to what they wrote.",
   contrastTable: {

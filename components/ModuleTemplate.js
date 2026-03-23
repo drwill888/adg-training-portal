@@ -23,6 +23,7 @@ function getSteps(moduleNum) {
       { id: "commitment",    label: "Commitment" },
       { id: "summary",       label: "Blueprint" },
       { id: "diagnostic",    label: "Self-Assessment" },
+      { id: "takeaways",     label: "Takeaways" },
       { id: "resources",     label: "Resources" },
     ];
   }
@@ -36,6 +37,7 @@ function getSteps(moduleNum) {
     { id: "summary",         label: "Blueprint" },
     { id: "post-diagnostic", label: "Post-Check" },
     { id: "growth",          label: "Growth" },
+    { id: "takeaways",       label: "Takeaways" },
     { id: "completion",      label: "Complete" },
   ];
 }
@@ -330,7 +332,7 @@ export default function ModuleTemplate({ config }) {
     commitmentPrompts, revisitTriggers, applicationQuestions,
     contrastTable,
     // New config keys
-    trainingObjectives, resources,
+    trainingObjectives, resources, learningObjectives, keyTakeaways,
   } = config;
 
   // Support both old and new key names
@@ -429,6 +431,20 @@ export default function ModuleTemplate({ config }) {
             {/* Training Objectives — Introduction only (#3 supplement) */}
             {moduleNum === 0 && trainingObjectives && (
               <TrainingObjectivesSection objectives={trainingObjectives} accent={accent} accentLight={accentLight} />
+            )}
+            {/* Learning Objectives */}
+            {learningObjectives && learningObjectives.length > 0 && (
+              <div className="p-5 rounded-xl" style={{ background: "#fff", border: `1px solid ${accent}44` }}>
+                <p className="text-xs uppercase tracking-widest font-semibold mb-3" style={{ color: accent }}>By the end of this module, you will be able to:</p>
+                <ul className="space-y-3">
+                  {learningObjectives.map((obj, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm">
+                      <span className="w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5" style={{ background: NAVY, color: accentMid }}>{i + 1}</span>
+                      <span style={{ color: "#333", lineHeight: 1.6 }}>{obj}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
             <div>
               <SectionHead sub="Take three minutes in silence. Write the first honest answer that surfaces.">Activation Prompts</SectionHead>
@@ -643,6 +659,28 @@ export default function ModuleTemplate({ config }) {
           <div className="space-y-6">
             <SectionHead sub="Compare your pre-teaching and post-teaching assessments to see what shifted.">Your Growth in {title}</SectionHead>
             <DiagnosticComparison diagnostic={diagnostic} preScores={preScores} postScores={postScores} accent={accent} accentLight={accentLight} />
+          </div>
+        );
+
+      // ─── TAKEAWAYS (#new) ──────────────────────────────────
+      case "takeaways":
+        return (
+          <div className="space-y-6">
+            <SectionHead sub="Carry these truths with you. They are the non-negotiables of this dimension.">Key Takeaways: {title}</SectionHead>
+            <div className="space-y-3">
+              {keyTakeaways && keyTakeaways.map((t, i) => (
+                <div key={i} className="p-4 rounded-xl flex items-start gap-4" style={{ background: i % 2 === 0 ? accentLight : "#fff", border: `1px solid ${accent}33` }}>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5" style={{ background: NAVY, color: accentMid }}>{i + 1}</div>
+                  <p className="text-sm leading-relaxed" style={{ color: "#333" }}>{t}</p>
+                </div>
+              ))}
+              {(!keyTakeaways || keyTakeaways.length === 0) && (
+                <p className="text-sm" style={{ color: "#999" }}>Takeaways will be available once this module is fully configured.</p>
+              )}
+            </div>
+            <div className="p-4 rounded-xl" style={{ background: accentLight }}>
+              <PauseTextarea prompt="Which takeaway challenged you the most — and what will you do differently because of it?" />
+            </div>
           </div>
         );
 

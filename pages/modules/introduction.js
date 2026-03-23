@@ -194,6 +194,20 @@ const config = {
   applicationQuestions,
   trainingObjectives,
   resources,
+  learningObjectives: [
+    "Understand the 5C framework as a progression — not a menu — and know why the sequence matters.",
+    "Honestly assess your current leadership posture: where you are strong, where you are fragmented, and where you are avoiding the work.",
+    "Write a first draft of your calling — not a polished statement, but an honest starting point you will refine across the five modules.",
+    "Identify the single greatest gap in your leadership development and name it without deflection.",
+    "Commit to a specific accountability structure that will hold you to the formation process — not just the information.",
+  ],
+  keyTakeaways: [
+    "Formation reshapes the whole person. Information fills the mind. This training is designed for the first — and it requires your honest engagement to work.",
+    "Architecture before acceleration. Skip a dimension and the structure weakens. Many gifted leaders collapse not from lack of talent but from lack of foundation.",
+    "Calling precedes platform. Everything in this framework flows from knowing who you were designed to become. Without that clarity, every other dimension drifts.",
+    "The depth of your transformation depends entirely on the honesty you bring. Performance produces polished answers. Formation produces anchored leaders.",
+    "What you write in this course is not homework. It is a formation document. Return to it. Build from it. Let it deepen as your season unfolds.",
+  ],
   // Renamed from "aiPromptContext" — this drives the personalized summary engine (not learner-facing)
   summaryPromptContext: "This is the Introduction module of the 5C Leadership Blueprint. The leader has completed their baseline self-assessment and written their initial commitments about why they are taking this course, their primary leadership gap, and their first draft of their calling. Focus your analysis on: (1) their formation readiness and posture, (2) the significance of the gap they named, (3) the quality of their calling articulation, and (4) what they most need to receive from this process.",
   contrastTable: {
