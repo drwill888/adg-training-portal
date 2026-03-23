@@ -1,5 +1,6 @@
 // components/ModuleTemplate.js
 // Shared rendering engine for all 5C Leadership Blueprint modules
+// Updated: March 2026 — Training Improvements Tracker items #1–#14
 
 import { useState, useRef } from "react";
 import FlameMark from "./FlameMark";
@@ -9,16 +10,37 @@ import { supabase } from "../lib/supabase";
 const NAVY = "#021A35";
 const GOLD = "#FDD20D";
 
-const STEPS = [
-  { id: "activation",      label: "Activation" },
-  { id: "pre-diagnostic",  label: "Pre-Check" },
-  { id: "teaching",        label: "Teaching" },
-  { id: "exemplar",        label: "Exemplar" },
-  { id: "stages",          label: "Stages" },
-  { id: "post-diagnostic", label: "Post-Check" },
-  { id: "commitment",      label: "Commitment" },
-  { id: "summary",         label: "AI Blueprint" },
-];
+// ─── DYNAMIC STEPS ───────────────────────────────────────────
+// Introduction gets a single diagnostic after summary. Modules 1–6 get
+// pre-diagnostic early + post-diagnostic at end with comparison & feedback.
+function getSteps(moduleNum) {
+  if (moduleNum === 0) {
+    return [
+      { id: "activation",    label: "Welcome" },
+      { id: "teaching",      label: "Teaching" },
+      { id: "exemplar",      label: "Exemplar" },
+      { id: "stages",        label: "Stages" },
+      { id: "commitment",    label: "Commitment" },
+      { id: "summary",       label: "Blueprint" },
+      { id: "diagnostic",    label: "Self-Assessment" },
+      { id: "resources",     label: "Resources" },
+    ];
+  }
+  return [
+    { id: "activation",      label: "Activation" },
+    { id: "pre-diagnostic",  label: "Pre-Check" },
+    { id: "teaching",        label: "Teaching" },
+    { id: "exemplar",        label: "Exemplar" },
+    { id: "stages",          label: "Stages" },
+    { id: "commitment",      label: "Commitment" },
+    { id: "summary",         label: "Blueprint" },
+    { id: "post-diagnostic", label: "Post-Check" },
+    { id: "growth",          label: "Growth" },
+    { id: "completion",      label: "Complete" },
+  ];
+}
+
+// ─── SUBCOMPONENTS ───────────────────────────────────────────
 
 function PauseTextarea({ prompt }) {
   const [val, setVal] = useState("");
@@ -116,14 +138,188 @@ function SectionHead({ children, sub }) {
   );
 }
 
+// ─── DIAGNOSTIC COMPARISON (#8) ──────────────────────────────
+function DiagnosticComparison({ diagnostic, preScores, postScores, accent, accentLight }) {
+  const items = diagnostic.filter(d => {
+    const pre = preScores[d.num];
+    const post = postScores[d.num];
+    return typeof pre === "number" && typeof post === "number";
+  });
+  if (items.length === 0) return <p className="text-sm" style={{ color: "#999" }}>Complete both diagnostics to see your growth comparison.</p>;
+
+  const totalPre = items.reduce((s, d) => s + preScores[d.num], 0);
+  const totalPost = items.reduce((s, d) => s + postScores[d.num], 0);
+  const delta = totalPost - totalPre;
+
+  return (
+    <div className="space-y-4">
+      {/* Overall summary */}
+      <div className="p-5 rounded-xl text-center" style={{ background: NAVY }}>
+        <p className="text-xs uppercase tracking-widest mb-2 font-semibold" style={{ color: accent }}>Your Growth</p>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 24 }}>
+          <div>
+            <p className="text-2xl font-bold" style={{ color: "#fff" }}>{totalPre}</p>
+            <p className="text-xs" style={{ color: "#999" }}>Pre-Score</p>
+          </div>
+          <div style={{ fontSize: 24, color: accent }}>→</div>
+          <div>
+            <p className="text-2xl font-bold" style={{ color: accent }}>{totalPost}</p>
+            <p className="text-xs" style={{ color: "#999" }}>Post-Score</p>
+          </div>
+          <div style={{ padding: "6px 14px", borderRadius: 8, background: delta > 0 ? "#dcfce7" : delta < 0 ? "#fef2f2" : "#f3f4f6" }}>
+            <p className="text-sm font-bold" style={{ color: delta > 0 ? "#166534" : delta < 0 ? "#991b1b" : "#666" }}>
+              {delta > 0 ? "+" : ""}{delta}
+            </p>
+          </div>
+        </div>
+      </div>
+      {/* Per-item comparison */}
+      <div className="space-y-2">
+        {items.map(d => {
+          const pre = preScores[d.num];
+          const post = postScores[d.num];
+          const diff = post - pre;
+          return (
+            <div key={d.num} className="flex items-center justify-between gap-3 p-3 rounded-lg" style={{ background: "#fff", border: "1px solid #e5e7eb" }}>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs truncate" style={{ color: "#666" }}>{d.text}</p>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+                <span className="text-xs" style={{ color: "#999" }}>{pre}</span>
+                <span style={{ color: "#ccc" }}>→</span>
+                <span className="text-xs font-bold" style={{ color: NAVY }}>{post}</span>
+                {diff !== 0 && (
+                  <span className="text-xs font-bold" style={{ color: diff > 0 ? "#16a34a" : "#dc2626" }}>
+                    {diff > 0 ? "↑" : "↓"}{Math.abs(diff)}
+                  </span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── RESOURCES SECTION (#11–14) ──────────────────────────────
+function ResourcesSection({ resources, accent, accentLight }) {
+  if (!resources) return null;
+  return (
+    <div className="space-y-5">
+      <SectionHead sub="Continue your formation with these curated resources.">{resources.sectionTitle || "Additional Resources"}</SectionHead>
+
+      {/* Book card */}
+      {resources.book && (
+        <a href={resources.book.url} target="_blank" rel="noopener noreferrer" className="block p-5 rounded-xl transition-all hover:shadow-md" style={{ background: "#fff", border: "1px solid #e5e7eb", textDecoration: "none" }}>
+          <div className="flex gap-4">
+            {resources.book.coverImage && (
+              <div style={{ width: 80, height: 120, borderRadius: 6, overflow: "hidden", flexShrink: 0, background: "#f3f4f6" }}>
+                <img src={resources.book.coverImage} alt={resources.book.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={(e) => { e.target.style.display = "none"; }} />
+              </div>
+            )}
+            <div>
+              <p className="text-xs uppercase tracking-widest font-semibold mb-1" style={{ color: accent }}>Recommended Reading</p>
+              <p className="font-bold mb-1" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif", fontSize: 16 }}>{resources.book.title}</p>
+              {resources.book.author && <p className="text-xs mb-2" style={{ color: "#888" }}>by {resources.book.author}</p>}
+              {resources.book.description && <p className="text-sm leading-relaxed" style={{ color: "#555" }}>{resources.book.description}</p>}
+              <p className="text-xs mt-2 font-semibold" style={{ color: "#0172BC" }}>View on Amazon →</p>
+            </div>
+          </div>
+        </a>
+      )}
+
+      {/* Blog posts */}
+      {resources.blogs && resources.blogs.length > 0 && (
+        <div>
+          <p className="text-xs uppercase tracking-widest font-semibold mb-3" style={{ color: NAVY }}>Further Reading</p>
+          <div className="space-y-2">
+            {resources.blogs.map((blog, i) => (
+              <a key={i} href={blog.url} target="_blank" rel="noopener noreferrer"
+                className="block p-4 rounded-lg transition-all hover:shadow-sm"
+                style={{ background: accentLight, border: `1px solid ${accent}33`, textDecoration: "none" }}>
+                <p className="text-sm font-semibold mb-0.5" style={{ color: NAVY }}>{blog.title}</p>
+                {blog.description && <p className="text-xs leading-relaxed" style={{ color: "#666" }}>{blog.description}</p>}
+                <p className="text-xs mt-1" style={{ color: "#0172BC" }}>Read on Awakening Destiny Global →</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* General links */}
+      {resources.links && resources.links.length > 0 && (
+        <div className="space-y-2">
+          {resources.links.map((link, i) => (
+            <a key={i} href={link.url} target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-3 p-3 rounded-lg transition-all hover:shadow-sm"
+              style={{ background: "#fff", border: "1px solid #e5e7eb", textDecoration: "none" }}>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: NAVY, color: GOLD, fontSize: 12 }}>↗</div>
+              <div>
+                <p className="text-sm font-semibold" style={{ color: NAVY }}>{link.title}</p>
+                {link.description && <p className="text-xs" style={{ color: "#888" }}>{link.description}</p>}
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── TRAINING OBJECTIVES (Introduction only, #3 supplement) ──
+function TrainingObjectivesSection({ objectives, accent, accentLight }) {
+  if (!objectives) return null;
+  return (
+    <div className="space-y-5 mt-6">
+      <SectionHead sub={objectives.intro}>{objectives.headline}</SectionHead>
+
+      {/* Outcome cards */}
+      <div className="space-y-3">
+        {objectives.outcomes.map((o, i) => (
+          <div key={i} className="p-4 rounded-xl" style={{ background: "#fff", border: "1px solid #e5e7eb", borderLeft: `4px solid ${accent}` }}>
+            <p className="font-bold mb-1" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif", fontSize: 16 }}>{o.title}</p>
+            <p className="text-sm leading-relaxed" style={{ color: "#444" }}>{o.description}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Deliverables */}
+      {objectives.deliverables && (
+        <div className="p-5 rounded-xl" style={{ background: accentLight }}>
+          <p className="text-xs uppercase tracking-widest font-semibold mb-3" style={{ color: NAVY }}>What You Will Receive</p>
+          <ul className="space-y-2">
+            {objectives.deliverables.map((d, i) => (
+              <li key={i} className="flex items-start gap-3 text-sm">
+                <span className="mt-1 flex-shrink-0" style={{ color: accent }}>✦</span>
+                <span style={{ color: "#333" }}>{d}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Closing statement */}
+      {objectives.closingStatement && (
+        <div className="p-4 rounded-xl text-center" style={{ background: NAVY }}>
+          <p className="text-sm italic leading-relaxed" style={{ color: "#c8cdd6", fontFamily: "'Cormorant Garamond', serif", fontSize: 15 }}>{objectives.closingStatement}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── DOWNLOAD BLUEPRINT ──────────────────────────────────────
 function downloadBlueprint(title, commitments, summary) {
-  const html = `<html><head><meta charset='utf-8'/><style>body{font-family:Georgia,serif;color:#333;line-height:1.7;margin:40px;}h1{color:#021A35;font-size:26px;}h2{color:#C8A951;font-size:18px;border-bottom:2px solid #FDD20D;padding-bottom:4px;margin-top:28px;}.section{background:#FFF9E6;border-left:4px solid #C8A951;padding:16px;margin:20px 0;border-radius:4px;}p{margin:8px 0;}</style></head><body><h1>🎯 ${title} Blueprint</h1><p><strong>5C Leadership Blueprint · Awakening Destiny Global</strong></p><p style="color:#888;font-style:italic;">Generated ${new Date().toLocaleDateString()}</p>${summary ? `<div class="section"><h2>AI Analysis</h2><p>${summary.replace(/\n/g, "<br/>")}</p></div>` : ""}<h2>Your Commitments</h2>${Object.entries(commitments).map(([k,v]) => `<p><strong>${k.replace(/_/g," ")}:</strong> ${v||"(not completed)"}</p>`).join("")}<footer style="margin-top:48px;padding-top:16px;border-top:1px solid #ddd;font-size:11px;color:#aaa;"><p>© 2026 Awakening Destiny Global · awakeningdestiny.global</p><p>Review this blueprint regularly. Let it anchor your decisions and deepen your alignment.</p></footer></body></html>`;
+  const html = `<html><head><meta charset='utf-8'/><style>body{font-family:Georgia,serif;color:#333;line-height:1.7;margin:40px;}h1{color:#021A35;font-size:26px;}h2{color:#C8A951;font-size:18px;border-bottom:2px solid #FDD20D;padding-bottom:4px;margin-top:28px;}.section{background:#FFF9E6;border-left:4px solid #C8A951;padding:16px;margin:20px 0;border-radius:4px;}p{margin:8px 0;}</style></head><body><h1>🎯 ${title} Blueprint</h1><p><strong>5C Leadership Blueprint · Awakening Destiny Global</strong></p><p style="color:#888;font-style:italic;">Generated ${new Date().toLocaleDateString()}</p>${summary ? `<div class="section"><h2>Your Personalized Analysis</h2><p>${summary.replace(/\n/g, "<br/>")}</p></div>` : ""}<h2>Your Commitments</h2>${Object.entries(commitments).map(([k,v]) => `<p><strong>${k.replace(/_/g," ")}:</strong> ${v||"(not completed)"}</p>`).join("")}<footer style="margin-top:48px;padding-top:16px;border-top:1px solid #ddd;font-size:11px;color:#aaa;"><p>© 2026 Awakening Destiny Global · awakeningdestiny.global</p><p>Review this blueprint regularly. Let it anchor your decisions and deepen your alignment.</p></footer></body></html>`;
   const blob = new Blob([html], { type: "application/msword" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url; a.download = `${title}-Blueprint.doc`; a.click();
   URL.revokeObjectURL(url);
 }
+
+// ─── MAIN COMPONENT ──────────────────────────────────────────
 
 export default function ModuleTemplate({ config }) {
   const {
@@ -132,10 +328,17 @@ export default function ModuleTemplate({ config }) {
     activationText, activationPrompts,
     diagnostic, principles, exemplar, stages,
     commitmentPrompts, revisitTriggers, applicationQuestions,
-    aiPromptContext, contrastTable,
+    contrastTable,
+    // New config keys
+    trainingObjectives, resources,
   } = config;
 
-  // ALL hooks must be called before any early returns
+  // Support both old and new key names
+  const promptContext = config.summaryPromptContext || config.aiPromptContext || "";
+
+  const STEPS = getSteps(moduleNum);
+
+  // ALL hooks before any early returns
   const { paid, loading: payLoading } = usePaymentStatus();
   const isFree = moduleNum === 0;
 
@@ -145,6 +348,7 @@ export default function ModuleTemplate({ config }) {
   const [commitments, setCommitments] = useState({});
   const [aiSummary, setAiSummary]     = useState("");
   const [loading, setLoading]         = useState(false);
+  const [feedback, setFeedback]       = useState({ takeaway: "", suggestion: "" });
   const topRef = useRef(null);
   const cur = STEPS[step];
 
@@ -194,7 +398,7 @@ export default function ModuleTemplate({ config }) {
     setLoading(true);
     try {
       const commitStr = Object.entries(commitments).map(([k,v]) => `${k.replace(/_/g," ")}: ${v||"(not provided)"}`).join("\n");
-      const prompt = `You are an apostolic leadership development coach with the 5C Leadership Blueprint (Awakening Destiny Global). Analyze this leader's responses for the ${title} dimension and write a 200-300 word personalized blueprint. Be direct, apostolic in tone, prophetically insightful, and practically actionable. Do not use flowery language. Address their specific commitments and call out what you see.\n\n${aiPromptContext}\n\nTheir Commitments:\n${commitStr}\n\nKeep it focused, specific, and formative.`;
+      const prompt = `You are an apostolic leadership development coach with the 5C Leadership Blueprint (Awakening Destiny Global). Analyze this leader's responses for the ${title} dimension and write a 200-300 word personalized blueprint. Be direct, apostolic in tone, prophetically insightful, and practically actionable. Do not use flowery language. Address their specific commitments and call out what you see.\n\n${promptContext}\n\nTheir Commitments:\n${commitStr}\n\nKeep it focused, specific, and formative.`;
       const res = await fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt }) });
       const data = await res.json();
       setAiSummary(data.response || "");
@@ -205,6 +409,7 @@ export default function ModuleTemplate({ config }) {
     }
   };
 
+  // ─── STEP RENDERER ────────────────────────────────────────
   const renderStep = () => {
     switch (cur.id) {
 
@@ -221,6 +426,10 @@ export default function ModuleTemplate({ config }) {
               )}
               <p className="text-sm leading-relaxed" style={{ color: "#c8cdd6" }}>{activationText}</p>
             </div>
+            {/* Training Objectives — Introduction only (#3 supplement) */}
+            {moduleNum === 0 && trainingObjectives && (
+              <TrainingObjectivesSection objectives={trainingObjectives} accent={accent} accentLight={accentLight} />
+            )}
             <div>
               <SectionHead sub="Take three minutes in silence. Write the first honest answer that surfaces.">Activation Prompts</SectionHead>
               {activationPrompts.map((p, i) => <Reflect key={i} prompt={p} />)}
@@ -230,6 +439,10 @@ export default function ModuleTemplate({ config }) {
 
       case "pre-diagnostic":
         return <DiagnosticSection diagnostic={diagnostic} scores={preScores} setScores={setPreScores} accent={accent} label="Pre-Teaching Self-Assessment" />;
+
+      // Introduction single diagnostic (placed after summary per #1)
+      case "diagnostic":
+        return <DiagnosticSection diagnostic={diagnostic} scores={preScores} setScores={setPreScores} accent={accent} label="Baseline Self-Assessment — Answer with honest clarity." />;
 
       case "teaching":
         return (
@@ -421,10 +634,101 @@ export default function ModuleTemplate({ config }) {
           </div>
         );
 
+      // ─── GROWTH COMPARISON (#8) ───────────────────────────
+      case "growth":
+        return (
+          <div className="space-y-6">
+            <SectionHead sub="Compare your pre-teaching and post-teaching assessments to see what shifted.">Your Growth in {title}</SectionHead>
+            <DiagnosticComparison diagnostic={diagnostic} preScores={preScores} postScores={postScores} accent={accent} accentLight={accentLight} />
+          </div>
+        );
+
+      // ─── COMPLETION: THANK-YOU + FEEDBACK + RESOURCES (#9, #10, #11–14) ──
+      case "completion":
+        return (
+          <div className="space-y-8">
+            {/* Thank-you message (#9) */}
+            <div className="p-6 rounded-2xl text-center" style={{ background: NAVY }}>
+              <p className="text-xs uppercase tracking-widest mb-3 font-semibold" style={{ color: accent }}>Module Complete</p>
+              <h3 className="text-xl font-bold mb-3" style={{ color: "#fff", fontFamily: "'Cormorant Garamond', serif" }}>Well done.</h3>
+              <p className="text-sm leading-relaxed mb-2" style={{ color: "#c8cdd6" }}>
+                You have completed the {title} dimension of the 5C Leadership Blueprint. What you wrote here is not homework — it is a formation document. Return to your commitments. Revisit your blueprint. Let this work deepen as your season unfolds.
+              </p>
+              <p className="text-sm italic" style={{ color: accent, fontFamily: "'Cormorant Garamond', serif" }}>
+                "Faithful in little, ruler over much."
+              </p>
+            </div>
+
+            {/* Learner feedback (#10) */}
+            <div className="space-y-4">
+              <SectionHead sub="Your honest input helps us sharpen this training for every leader who follows you.">Your Feedback</SectionHead>
+              <div>
+                <label className="block text-sm font-semibold mb-2" style={{ color: NAVY }}>What was your biggest takeaway from this module?</label>
+                <textarea
+                  className="w-full rounded-xl p-3 text-sm leading-relaxed resize-none focus:outline-none"
+                  style={{ border: "1px solid #ddd", minHeight: 80 }}
+                  rows={3} placeholder="What shifted, challenged, or clarified something for you?"
+                  value={feedback.takeaway}
+                  onChange={e => setFeedback(p => ({ ...p, takeaway: e.target.value }))}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold mb-2" style={{ color: NAVY }}>Any suggestions for improvement?</label>
+                <textarea
+                  className="w-full rounded-xl p-3 text-sm leading-relaxed resize-none focus:outline-none"
+                  style={{ border: "1px solid #ddd", minHeight: 80 }}
+                  rows={3} placeholder="What could be clearer, deeper, or more practical?"
+                  value={feedback.suggestion}
+                  onChange={e => setFeedback(p => ({ ...p, suggestion: e.target.value }))}
+                />
+              </div>
+              <button
+                onClick={async () => {
+                  try {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    if (session?.user) {
+                      await supabase.from("feedback").insert({
+                        user_id: session.user.id,
+                        module: title.toLowerCase(),
+                        takeaway: feedback.takeaway,
+                        suggestion: feedback.suggestion,
+                      });
+                    }
+                    alert("Thank you for your feedback.");
+                  } catch (e) { /* silent */ }
+                }}
+                className="px-6 py-2.5 rounded-xl text-sm font-semibold transition-all"
+                style={{ background: NAVY, color: accentMid }}>
+                Submit Feedback
+              </button>
+            </div>
+
+            {/* Resources (#11–14) */}
+            {resources && <ResourcesSection resources={resources} accent={accent} accentLight={accentLight} />}
+
+            {/* Next module prompt */}
+            <div className="text-center pt-4">
+              <a href="/" className="text-sm font-medium hover:opacity-70 transition-opacity" style={{ color: NAVY }}>← Return to Dashboard</a>
+            </div>
+          </div>
+        );
+
+      // ─── INTRO RESOURCES (standalone step for Introduction module) ──
+      case "resources":
+        return (
+          <div className="space-y-6">
+            <ResourcesSection resources={resources} accent={accent} accentLight={accentLight} />
+            <div className="text-center pt-4">
+              <a href="/" className="text-sm font-medium hover:opacity-70 transition-opacity" style={{ color: NAVY }}>← Return to Dashboard</a>
+            </div>
+          </div>
+        );
+
       default: return null;
     }
   };
 
+  // ─── LAYOUT ────────────────────────────────────────────────
   return (
     <div className="min-h-screen" style={{ background: "#FAFAF8", fontFamily: "'Outfit', sans-serif" }}>
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />

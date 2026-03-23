@@ -183,6 +183,35 @@ const applicationQuestions = [
   "What responsibility have I been delaying that aligns directly with my calling?",
 ];
 
+// ─── BLOG RESOURCES (NEW) ──────────────────────────────────────
+const resources = {
+  sectionTitle: "Additional Resources",
+  blogs: [
+    {
+      title: "Embracing Your Apostolic Calling — Part 1",
+      url: "https://awakeningdestiny.global/embracing-your-apostolic-calling-part-1/",
+      description: "The true essence of apostolic calling — stepping beyond vocational limitations into divine stewardship.",
+    },
+    {
+      title: "6 Step Discovery of Your Destiny Scrolls",
+      url: "https://awakeningdestiny.global/6-step-discovery-of-your-destiny-scrolls/",
+      description: "Practical steps to align with the divine purpose God has written over your life.",
+    },
+    {
+      title: "Searching for Identity & Tribes — 12 Stones",
+      url: "https://awakeningdestiny.global/searching-for-identity-tribes-12-stones/",
+      description: "Unlocking spiritual identity and discovering your tribe through the twelve stones of the high priest's ephod.",
+    },
+  ],
+  links: [
+    {
+      title: "Awakening Destiny Global",
+      url: "https://awakeningdestiny.global",
+      description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources.",
+    },
+  ],
+};
+
 const config = {
   moduleNum: 1,
   title: "Calling",
@@ -203,7 +232,9 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  aiPromptContext: "This leader has completed Module 1: Calling of the 5C Leadership Blueprint. Analyze their responses with focus on: (1) the clarity and precision of their calling articulation, (2) the nature of the burden they carry and whether it is genuinely theirs, (3) the health of their confirmation community, and (4) how well their calling is functioning as a decision filter. Be direct, apostolic in tone, and specific to what they wrote.",
+  resources,
+  // Renamed from "aiPromptContext" — drives the personalized summary engine (not learner-facing)
+  summaryPromptContext: "This leader has completed Module 1: Calling of the 5C Leadership Blueprint. Analyze their responses with focus on: (1) the clarity and precision of their calling articulation, (2) the nature of the burden they carry and whether it is genuinely theirs, (3) the health of their confirmation community, and (4) how well their calling is functioning as a decision filter. Be direct, apostolic in tone, and specific to what they wrote.",
   contrastTable: {
     title: "Calling vs. Assignment",
     leftTitle: "Calling — The Macro",

@@ -1,3 +1,4 @@
+// pages/index.js
 import { useState, useEffect } from "react";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
@@ -19,6 +20,7 @@ const colors = {
   skyBlue: "#00AEEF", royalBlue: "#0172BC", orange: "#F47722",
   gold: "#C8A951", white: "#FFFFFF", offWhite: "#F8F9FC",
   gray200: "#e2e6ed", gray300: "#c8cdd6", gray500: "#6b7280",
+  cream: "#FDF8F0",
 };
 
 const modules = [
@@ -32,6 +34,9 @@ const modules = [
 ];
 
 const accents = [colors.gold, colors.skyBlue, colors.royalBlue, colors.orange, colors.skyBlue, "#EE3124", colors.gold];
+
+// Total steps per module for progress calculation
+const TOTAL_STEPS = { 0: 8, 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 8 };
 
 function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
   const isMobile = useIsMobile();
@@ -74,6 +79,15 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
   );
 }
 
+// ─── PROGRESS BAR COMPONENT ──────────────────────────────────
+function ProgressBar({ percent, accent, height }) {
+  return (
+    <div style={{ width: "100%", height: height || 6, background: colors.gray200, borderRadius: 4, overflow: "hidden" }}>
+      <div style={{ width: percent + "%", height: "100%", background: accent || colors.gold, borderRadius: 4, transition: "width 0.4s ease" }} />
+    </div>
+  );
+}
+
 async function handleCheckout() {
   try {
     const { data: { session } } = await supabase.auth.getSession();
@@ -103,9 +117,70 @@ export default function App() {
   var setSidebarOpen = sidebarState[1];
   var { paid, loading } = usePaymentStatus();
 
+  // ─── LEARNER FIRST NAME ──────────────────────────────────
+  const [firstName, setFirstName] = useState("");
+  useEffect(() => {
+    async function loadName() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          // Try user_metadata first, then profiles table
+          const meta = session.user.user_metadata;
+          if (meta?.first_name) {
+            setFirstName(meta.first_name);
+          } else if (meta?.full_name) {
+            setFirstName(meta.full_name.split(" ")[0]);
+          } else {
+            // Fallback: query profiles table
+            const { data } = await supabase
+              .from("profiles")
+              .select("first_name")
+              .eq("id", session.user.id)
+              .single();
+            if (data?.first_name) setFirstName(data.first_name);
+          }
+        }
+      } catch (e) { /* silent fallback */ }
+    }
+    loadName();
+  }, []);
+
+  // ─── MODULE PROGRESS ──────────────────────────────────────
+  const [progress, setProgress] = useState({});
+  useEffect(() => {
+    async function loadProgress() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user) return;
+        const { data } = await supabase
+          .from("user_progress")
+          .select("module_id, current_step")
+          .eq("user_id", session.user.id);
+        if (data) {
+          const map = {};
+          data.forEach(function(row) { map[row.module_id] = row.current_step; });
+          setProgress(map);
+        }
+      } catch (e) { /* silent fallback */ }
+    }
+    loadProgress();
+  }, []);
+
+  // Calculate overall completion
+  var totalSteps = 0;
+  var completedSteps = 0;
+  modules.forEach(function(m) {
+    var total = TOTAL_STEPS[m.id] || 10;
+    totalSteps += total;
+    completedSteps += Math.min(progress[m.id] || 0, total);
+  });
+  var overallPercent = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
+
+  var greeting = firstName ? ("Welcome back, " + firstName) : "Welcome";
+
   return (
     <div style={{ display: "flex", minHeight: "100vh", fontFamily: "'Raleway','Segoe UI',sans-serif", background: colors.offWhite }}>
-      <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet" />
       <Sidebar currentPage={page} setCurrentPage={setPage} open={sidebarOpen} onClose={function() { setSidebarOpen(false); }} paid={paid} />
       <div style={{ flex: 1, minHeight: "100vh", overflowY: "auto" }}>
         <div style={{ padding: isMobile ? "10px 16px" : "12px 40px", borderBottom: "1px solid " + colors.gray200, background: colors.white, display: "flex", alignItems: "center", gap: 12, position: "sticky", top: 0, zIndex: 30 }}>
@@ -120,48 +195,94 @@ export default function App() {
         </div>
 
         <div style={{ padding: isMobile ? "20px 16px" : "32px 40px", maxWidth: 960 }}>
-          <h1 style={{ fontSize: 26, fontWeight: 700, color: colors.navy, margin: "0 0 6px" }}>5C Leadership Blueprint</h1>
-          <p style={{ fontSize: 14, color: colors.gray500, margin: "0 0 32px", fontStyle: "italic" }}>Select a module below to begin your leadership formation journey.</p>
 
-          {!paid && !loading && (
-            <div style={{ padding: 24, background: "linear-gradient(135deg, #021A35, #0a2a4d)", borderRadius: 12, marginBottom: 24, display: "flex", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", flexDirection: isMobile ? "column" : "row", gap: 16 }}>
-              <div>
-                <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>FULL ACCESS</div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Unlock the Complete 5C Blueprint</div>
-                <div style={{ fontSize: 13, color: colors.gray300 }}>Get full access to all five leadership modules plus Commissioning.</div>
+          {/* ═══ GREETING + PROGRESS ═══ */}
+          <h1 style={{ fontSize: 26, fontWeight: 700, color: colors.navy, margin: "0 0 4px" }}>{greeting}</h1>
+          <p style={{ fontSize: 14, color: colors.gray500, margin: "0 0 20px", fontStyle: "italic" }}>Your leadership formation journey — from design to destiny.</p>
+
+          {/* Overall progress bar */}
+          {overallPercent > 0 && (
+            <div style={{ marginBottom: 28, padding: "16px 20px", background: colors.white, borderRadius: 10, border: "1px solid " + colors.gray200 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: colors.navy }}>Overall Progress</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: colors.gold }}>{overallPercent}%</span>
               </div>
-              <button onClick={handleCheckout}
-                style={{ padding: "12px 32px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 }}>
-                Unlock — $3.99
-              </button>
+              <ProgressBar percent={overallPercent} accent={colors.gold} height={8} />
             </div>
           )}
 
+          {/* ═══ MARKETING / UNLOCK CTA ═══ */}
+          {!paid && !loading && (
+            <div style={{ padding: isMobile ? 20 : 28, background: "linear-gradient(135deg, #021A35 0%, #0a2a4d 100%)", borderRadius: 14, marginBottom: 28, border: "1px solid rgba(200,169,81,0.2)" }}>
+              <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.12em", fontWeight: 700, marginBottom: 10 }}>THE 5C LEADERSHIP BLUEPRINT</div>
+              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 700, color: colors.white, lineHeight: 1.35, marginBottom: 12 }}>
+                Most leaders are overcommitted and underaligned. This training changes that.
+              </div>
+              <p style={{ fontSize: 13, color: colors.gray300, lineHeight: 1.7, margin: "0 0 10px" }}>
+                The 5C Blueprint is a formation experience — not a course. Five integrated dimensions that move you from scattered potential to focused, sustainable impact. Each module builds on the last. By the end, you will have a personalized leadership blueprint anchored in your calling, sharpened by honest self-assessment, and ready to deploy.
+              </p>
+              <p style={{ fontSize: 13, color: colors.gray300, lineHeight: 1.7, margin: "0 0 20px" }}>
+                Personalized summaries. Pre-and-post diagnostics that show your growth. A downloadable blueprint document you can revisit for years. Built for Kingdom entrepreneurs, pastors, prophetic voices, and emerging leaders who are done with surface-level development.
+              </p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 20 }}>
+                {["Calling — Who you are", "Connection — Whose you are", "Competency — What you carry", "Capacity — What you sustain", "Convergence — Where it all aligns"].map(function(item, i) {
+                  return (
+                    <div key={i} style={{ fontSize: 12, padding: "5px 12px", background: "rgba(200,169,81,0.12)", border: "1px solid rgba(200,169,81,0.25)", borderRadius: 6, color: colors.gold, fontWeight: 500 }}>
+                      {item}
+                    </div>
+                  );
+                })}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+                <button onClick={handleCheckout}
+                  style={{ padding: "12px 36px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
+                  Unlock Full Access — $3.99
+                </button>
+                <span style={{ fontSize: 12, color: colors.gray500 }}>Introduction module is free — start there.</span>
+              </div>
+            </div>
+          )}
+
+          {/* ═══ MODULE GRID ═══ */}
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 16, marginBottom: 24 }}>
             {modules.map(function(m, i) {
               var locked = !m.free && !paid;
+              var stepsDone = progress[m.id] || 0;
+              var stepsTotal = TOTAL_STEPS[m.id] || 10;
+              var modPercent = Math.min(Math.round((stepsDone / stepsTotal) * 100), 100);
               return (
                 <div key={m.id}
                   onClick={function() { if (!locked) window.location.href = m.href; }}
-                  style={{ background: colors.white, borderRadius: 12, padding: 24, border: "1px solid " + colors.gray200, borderTop: "3px solid " + (locked ? colors.gray300 : accents[i]), cursor: locked ? "default" : "pointer", opacity: locked ? 0.6 : 1, position: "relative" }}
+                  style={{ background: colors.white, borderRadius: 12, padding: 20, border: "1px solid " + colors.gray200, borderTop: "3px solid " + (locked ? colors.gray300 : accents[i]), cursor: locked ? "default" : "pointer", opacity: locked ? 0.6 : 1, position: "relative", transition: "box-shadow 0.2s" }}
                   onMouseEnter={function(e) { if (!locked) e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)"; }}
                   onMouseLeave={function(e) { if (!locked) e.currentTarget.style.boxShadow = "none"; }}>
                   {locked && (
                     <div style={{ position: "absolute", top: 12, right: 12, fontSize: 14 }}>🔒</div>
                   )}
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: m.question ? 10 : 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
                     <div style={{ width: 40, height: 40, borderRadius: 10, background: (locked ? colors.gray300 : accents[i]) + "22", border: "2px solid " + (locked ? colors.gray300 : accents[i]), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, color: locked ? colors.gray300 : accents[i], flexShrink: 0 }}>{m.icon}</div>
-                    <div>
+                    <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 15, fontWeight: 700, color: colors.navy }}>{m.title}</div>
                       <div style={{ fontSize: 12, color: colors.gray500, fontStyle: "italic" }}>{m.subtitle}</div>
                     </div>
                   </div>
+                  {/* Module progress indicator */}
+                  {!locked && modPercent > 0 && (
+                    <div style={{ marginBottom: 8 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                        <span style={{ fontSize: 11, color: colors.gray500 }}>{modPercent === 100 ? "Complete" : "In progress"}</span>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: accents[i] }}>{modPercent}%</span>
+                      </div>
+                      <ProgressBar percent={modPercent} accent={accents[i]} height={4} />
+                    </div>
+                  )}
                   {m.question && <div style={{ fontSize: 13, color: locked ? colors.gray500 : "#0172BC", fontStyle: "italic", borderTop: "1px solid " + colors.gray200, paddingTop: 10 }}>{m.question}</div>}
                 </div>
               );
             })}
           </div>
 
+          {/* ═══ START HERE CTA ═══ */}
           <div style={{ padding: 24, background: colors.navy, borderRadius: 12, textAlign: "center" }}>
             <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>START HERE</div>
             <div style={{ fontSize: 16, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Begin with the Introduction</div>

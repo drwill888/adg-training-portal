@@ -115,6 +115,63 @@ const applicationQuestions = [
   "Who needs to know you are going through this process so they can support and hold you accountable?",
 ];
 
+// ─── TRAINING OBJECTIVES (NEW) ──────────────────────────────
+// ModuleTemplate will render this section before the main content
+const trainingObjectives = {
+  headline: "What This Training Will Build In You",
+  intro: "The 5C Leadership Blueprint is a formation experience built for leaders who are ready to move beyond surface-level development. Whether you are a Kingdom entrepreneur, pastor, emerging leader, or executive — this training meets you where you are and moves you toward where you are called to be.",
+  outcomes: [
+    {
+      title: "Clarity of Calling",
+      description: "Articulate your calling in one sentence. Know what you are designed to build — and what you are not. Stop drifting between opportunities and start operating from conviction.",
+    },
+    {
+      title: "Deeper Relational Alignment",
+      description: "Identify the relationships that sharpen you and the ones that drain you. Build a confirmation community that holds you accountable and calls out your grace.",
+    },
+    {
+      title: "Sharpened Competency",
+      description: "Close the gap between your gifting and your readiness. Develop the specific skills your assignment demands — with excellence, not just effort.",
+    },
+    {
+      title: "Expanded Capacity",
+      description: "Increase what you can sustain without burning out. Build character, emotional resilience, and the internal infrastructure to hold the weight of what God is entrusting to you.",
+    },
+    {
+      title: "Convergence — Your Sweet Spot",
+      description: "Align calling, connection, competency, and capacity into focused, lasting impact. Stop scattered activity. Start operating in the zone where everything you carry comes together.",
+    },
+  ],
+  deliverables: [
+    "Pre-and-post diagnostic assessments that show your measurable growth",
+    "A personalized leadership summary for each module based on your responses",
+    "A downloadable blueprint document you can revisit and build from for years",
+    "Curated resources — articles, teaching, and tools — tied directly to each dimension",
+    "Written commitments with built-in accountability prompts",
+  ],
+  closingStatement: "This is not another leadership course you complete and forget. This is the framework you carry forward — into your next assignment, your next season, and the leaders you are called to form after you.",
+};
+
+// ─── RESOURCES (NEW) ──────────────────────────────────────────
+// ModuleTemplate will render this section at the end of the module
+const resources = {
+  sectionTitle: "Resources",
+  book: {
+    title: "Leaders for Life: Creating Champions Through the NOW Leadership Process",
+    author: "Will Meier",
+    url: "https://www.amazon.com/Leaders-Life-Creating-Champions-Leadership/dp/1939944473",
+    description: "A practical handbook that introduces the 12C NOW Leadership model — integrating biblical perspective with contemporary case studies to create champions who solve complex problems.",
+    coverImage: "/images/leaders-for-life-cover.jpg",
+  },
+  links: [
+    {
+      title: "Awakening Destiny Global",
+      url: "https://awakeningdestiny.global",
+      description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources.",
+    },
+  ],
+};
+
 const config = {
   moduleNum: 0,
   title: "Introduction",
@@ -135,7 +192,10 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  aiPromptContext: "This is the Introduction module of the 5C Leadership Blueprint. The leader has completed their baseline self-assessment and written their initial commitments about why they are taking this course, their primary leadership gap, and their first draft of their calling. Focus your analysis on: (1) their formation readiness and posture, (2) the significance of the gap they named, (3) the quality of their calling articulation, and (4) what they most need to receive from this process.",
+  trainingObjectives,
+  resources,
+  // Renamed from "aiPromptContext" — this drives the personalized summary engine (not learner-facing)
+  summaryPromptContext: "This is the Introduction module of the 5C Leadership Blueprint. The leader has completed their baseline self-assessment and written their initial commitments about why they are taking this course, their primary leadership gap, and their first draft of their calling. Focus your analysis on: (1) their formation readiness and posture, (2) the significance of the gap they named, (3) the quality of their calling articulation, and (4) what they most need to receive from this process.",
   contrastTable: {
     title: "Two Kinds of Development",
     leftTitle: "Information-Based Development",
