@@ -223,11 +223,25 @@ function TrainingObjectivesSection({ objectives, accent, accentLight }) {
 
 async function downloadBlueprintDocx(title, subtitle, commitmentPrompts, commitments, summary, preScores, postScores, diagnostic) {
   try {
-    const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, AlignmentType, BorderStyle, WidthType, ShadingType } = await import("docx");
+    const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, AlignmentType, BorderStyle, WidthType, ShadingType, ImageRun } = await import("docx");
     const nH = "021A35", gH = "C8A951", gL = "FFF9E6";
     const bdr = { style: BorderStyle.SINGLE, size: 1, color: "CCCCCC" };
     const bdrs = { top: bdr, bottom: bdr, left: bdr, right: bdr };
     const ch = [];
+
+    // Attempt to fetch ADG logo
+    let logoBuffer = null;
+    try {
+      const logoRes = await fetch("/images/adg-logo.png");
+      if (logoRes.ok) logoBuffer = await logoRes.arrayBuffer();
+    } catch (e) { /* logo not available — skip gracefully */ }
+
+    // Logo + org name header
+    if (logoBuffer) {
+      ch.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [
+        new ImageRun({ data: logoBuffer, transformation: { width: 60, height: 60 }, type: "png" }),
+      ]}));
+    }
     ch.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 40 }, children: [new TextRun({ text: "AWAKENING DESTINY GLOBAL", font: "Arial", size: 16, bold: true, color: gH, characterSpacing: 200 })] }));
     ch.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [new TextRun({ text: `${title} Blueprint`, font: "Georgia", size: 40, bold: true, color: nH })] }));
     if (subtitle) ch.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: subtitle, font: "Georgia", size: 24, italics: true, color: "888888" })] }));
@@ -264,7 +278,14 @@ async function downloadBlueprintDocx(title, subtitle, commitmentPrompts, commitm
       ch.push(new Table({ width: { size: 9360, type: WidthType.DXA }, columnWidths: [5400, 1300, 1300, 1360], rows }));
     }
     ch.push(new Paragraph({ spacing: { before: 400 }, border: { top: { style: BorderStyle.SINGLE, size: 2, color: gH, space: 12 } }, children: [] }));
+    // Footer with logo
+    if (logoBuffer) {
+      ch.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 40 }, children: [
+        new ImageRun({ data: logoBuffer, transformation: { width: 30, height: 30 }, type: "png" }),
+      ]}));
+    }
     ch.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 40 }, children: [new TextRun({ text: "© 2026 Awakening Destiny Global · awakeningdestiny.global", font: "Arial", size: 16, color: "AAAAAA" })] }));
+    ch.push(new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Review this blueprint regularly. Let it anchor your decisions and deepen your alignment.", font: "Georgia", size: 18, italics: true, color: "BBBBBB" })] }));
     const doc = new Document({ sections: [{ properties: { page: { size: { width: 12240, height: 15840 }, margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 } } }, children: ch }] });
     const blob = await Packer.toBlob(doc);
     const url = URL.createObjectURL(blob);

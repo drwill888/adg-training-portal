@@ -209,6 +209,35 @@ const applicationQuestions = [
   "Who in your circle is more competent than you in an area you need? Will you invite them to teach you?",
 ];
 
+const resources = {
+  sectionTitle: "Additional Resources",
+  blogs: [
+    {
+      title: "The Power of Competency in Leadership",
+      url: "https://awakeningdestiny.global/power-of-competency-in-leadership/",
+      description: "How the mastery of competency becomes your catalyst for extraordinary leadership.",
+    },
+    {
+      title: "What Is Leadership: 8 Key Elements",
+      url: "https://awakeningdestiny.global/what-is-leadership-8-key-elements/",
+      description: "Vision, purpose, identity, conviction, value system, passion, perseverance, and innovative solutions — the essential components.",
+    },
+    {
+      title: "5 Steps to Take Uncharted Territories",
+      url: "https://awakeningdestiny.global/5-steps-to-take-uncharted-territories/",
+      description: "How to step into new divine assignments with the pioneering spirit of Joshua and Caleb.",
+    },
+    {
+      title: "5 Impacts of Self-Awareness on Leadership",
+      url: "https://awakeningdestiny.global/5-impacts-of-self-awareness-on-leadership/",
+      description: "Why guarding your heart is the foundation of effective leadership — Proverbs 4:23 unpacked.",
+    },
+  ],
+  links: [
+    { title: "Awakening Destiny Global", url: "https://awakeningdestiny.global", description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources." },
+  ],
+};
+
 const config = {
   moduleNum: 3,
   title: "Competency",
@@ -229,7 +258,22 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  aiPromptContext: "This leader has completed Module 3: Competency of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the honesty and specificity of their identified competency gap, (2) the realism of their development plan, (3) their posture toward excellence — are they building for the long term or managing for the short term, and (4) their readiness to transfer competency to others.",
+  summaryPromptContext: "This leader has completed Module 3: Competency of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the honesty and specificity of their identified competency gap, (2) the realism of their development plan, (3) their posture toward excellence — are they building for the long term or managing for the short term, and (4) their readiness to transfer competency to others.",
+  resources,
+  learningObjectives: [
+    "Identify the three to five competencies your current assignment demands — and honestly assess where you are strong and where you are underdeveloped.",
+    "Distinguish between gifting and competency, and understand why gifting without skill development creates a ceiling on your impact.",
+    "Build a specific, actionable development plan for closing your most critical competency gap within the next 90 days.",
+    "Recognize where you have been operating in effort instead of excellence — and what it would take to bring a spirit of excellence into your work.",
+    "Understand self-awareness as a leadership competency, not just a personality trait — and assess how your blind spots are affecting your team.",
+  ],
+  keyTakeaways: [
+    "Competency is not about being the smartest person in the room. It is about being prepared enough to carry the weight of what you have been entrusted with.",
+    "Gifting opens doors. Competency keeps you in the room. A leader who relies on anointing alone without developing skill will eventually be outpaced by their own assignment.",
+    "Excellence is not perfectionism. It is distinction — being set apart in diligence, character, and alignment with God's purposes, the way Daniel was distinguished among his peers.",
+    "Self-awareness is the competency beneath all other competencies. A leader who does not know what is happening inside them will make decisions that sabotage what they are building outside them.",
+    "If you are not preparing, you are not ready. If you are not ready, you will miss what God is positioning you for — or the transition will cost more than it needs to.",
+  ],
   contrastTable: {
     title: "Two Modes of Building",
     leftTitle: "Anointed Only",

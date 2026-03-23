@@ -210,6 +210,45 @@ const applicationQuestions = [
   "What must I forgive, release, or surrender to expand my internal capacity this season?",
 ];
 
+const resources = {
+  sectionTitle: "Additional Resources",
+  blogs: [
+    {
+      title: "8 Benefits of the Fire",
+      url: "https://awakeningdestiny.global/8-benefits-of-the-fire/",
+      description: "Why the refining fire of God is not just about purging sin — it is about preparing you for what is next.",
+    },
+    {
+      title: "6 Steps for Rekindling the Fire",
+      url: "https://awakeningdestiny.global/6-steps-for-rekindling-the-fire/",
+      description: "Practical steps for embracing the refining fire and the fear of the Lord for sustainable holiness.",
+    },
+    {
+      title: "6 Steps: Fire on the Altar to a River of Fire",
+      url: "https://awakeningdestiny.global/6-steps-fire-on-the-altar-to-a-river-of-fire/",
+      description: "When fire on the altar of surrender becomes a continuous river from the throne — from visitation to habitation.",
+    },
+    {
+      title: "7 Crucibles of Spiritual Formation",
+      url: "https://awakeningdestiny.global/7-crucibles-of-spiritual-formation/",
+      description: "The seven formative spaces where God shapes leaders — garden, potter's wheel, waters, fire, threshing floor, pruning, sitting.",
+    },
+    {
+      title: "From Hollow to Hallowed: Restoring Leadership",
+      url: "https://awakeningdestiny.global/from-hollow-to-hallowed-restoring-leadership-2/",
+      description: "The journey from empty performance to sacred purpose in leadership.",
+    },
+    {
+      title: "Transition and the Victory of the Cornerstone",
+      url: "https://awakeningdestiny.global/transition-and-the-victory-of-the-cornerstone/",
+      description: "Navigating leadership transitions anchored in Christ as the cornerstone.",
+    },
+  ],
+  links: [
+    { title: "Awakening Destiny Global", url: "https://awakeningdestiny.global", description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources." },
+  ],
+};
+
 const config = {
   moduleNum: 4,
   title: "Capacity",
@@ -230,7 +269,22 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  aiPromptContext: "This leader has completed Module 4: Capacity of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the honesty of their self-assessment about how pressure reveals their character, (2) the specific wound they have named and the cost of carrying it unprocessed, (3) the health and sustainability of their stated rhythms, and (4) the evidence of genuine formation through adversity. Be direct, compassionate where needed, and prophetically precise.",
+  summaryPromptContext: "This leader has completed Module 4: Capacity of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the honesty of their self-assessment about how pressure reveals their character, (2) the specific wound they have named and the cost of carrying it unprocessed, (3) the health and sustainability of their stated rhythms, and (4) the evidence of genuine formation through adversity. Be direct, compassionate where needed, and prophetically precise.",
+  resources,
+  learningObjectives: [
+    "Assess your current capacity honestly — not what you wish you could carry, but what you are actually sustaining without breaking down.",
+    "Identify which crucible of spiritual formation you are currently in, and understand what God is building in you through it.",
+    "Recognize the difference between being busy and being fruitful — and where overextension is masquerading as faithfulness in your life.",
+    "Develop a sustainable rhythm of rest, renewal, and re-engagement that protects your long-term effectiveness rather than sacrificing it for short-term output.",
+    "Understand that character is the container for capacity — and that God will not entrust you with more than your character can hold.",
+  ],
+  keyTakeaways: [
+    "Capacity is not about doing more. It is about sustaining what you have been entrusted with without collapse. The question is not how much you can start — it is how much you can finish.",
+    "The fire of God is not punishment. It is preparation. Every crucible — the garden, the potter's wheel, the waters, the fire, the threshing floor, the pruning, the sitting — is forming something in you that platform cannot produce.",
+    "You will not know your true value until you allow the fires of formation to work in your life. Gold and silver are not valued until they have been through the refining process.",
+    "Burnout is not a badge of honor. It is a structural failure. Leaders who equate exhaustion with faithfulness are building on a foundation that will not hold.",
+    "Rest is not the absence of work. It is the presence of trust. The leader who cannot rest cannot hear — and the leader who cannot hear will eventually build the wrong thing.",
+  ],
   contrastTable: {
     title: "Two Responses to Pressure",
     leftTitle: "Reactive Leader",

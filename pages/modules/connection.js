@@ -183,6 +183,30 @@ const applicationQuestions = [
   "What specific orphan pattern will you bring into accountability with a trusted person this week?",
 ];
 
+const resources = {
+  sectionTitle: "Additional Resources",
+  blogs: [
+    {
+      title: "Building Community — Belonging Through Prayer — Part 1",
+      url: "https://awakeningdestiny.global/building-community-purposeful-prayer-pt-1/",
+      description: "Five steps to building Kingdom community through purposeful, persistent prayer.",
+    },
+    {
+      title: "God's Governance: Leadership Collaboration — 7 Steps",
+      url: "https://awakeningdestiny.global/gods-governance-leadership-collaboration/",
+      description: "What happens when leaders and tribes come together under divine governance — a Kingdom collaboration model.",
+    },
+    {
+      title: "2 Apostolic Measures: Faith and Love",
+      url: "https://awakeningdestiny.global/2-apostolic-measures-faith-and-love/",
+      description: "Paul's apostolic benchmarks for church and community health — and why they still measure what matters most.",
+    },
+  ],
+  links: [
+    { title: "Awakening Destiny Global", url: "https://awakeningdestiny.global", description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources." },
+  ],
+};
+
 const config = {
   moduleNum: 2,
   title: "Connection",
@@ -203,7 +227,22 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  aiPromptContext: "This leader has completed Module 2: Connection of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the depth of their identity security in God versus performance-based leadership, (2) the specific orphan patterns they are renouncing and how real that commitment appears, (3) the quality and depth of their relational investment, and (4) their capacity to give identity to others. Be direct and apostolic.",
+  summaryPromptContext: "This leader has completed Module 2: Connection of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the depth of their identity security in God versus performance-based leadership, (2) the specific orphan patterns they are renouncing and how real that commitment appears, (3) the quality and depth of their relational investment, and (4) their capacity to give identity to others. Be direct and apostolic.",
+  resources,
+  learningObjectives: [
+    "Identify the five to seven relationships that most shape your leadership — and assess whether each one is sharpening you or draining you.",
+    "Distinguish between transactional networking and covenantal connection, and know which one your leadership is currently built on.",
+    "Articulate who you are accountable to — not in theory, but in practice — and whether that structure is strong enough to hold you.",
+    "Recognize the relational patterns that produce isolation, and build intentional rhythms of community into your leadership rhythm.",
+    "Understand how connection anchors identity — and why leaders who disconnect from healthy community eventually lose clarity about who they are.",
+  ],
+  keyTakeaways: [
+    "You become like the people you give access to your life. If your inner circle is not sharpening you, it is shaping you by default — and default is not alignment.",
+    "Connection is not networking. It is covenantal alignment. Networking builds contacts. Connection builds covering.",
+    "Isolation is not strength. It is a leadership vulnerability. The enemy's first strategy against a leader is to disconnect them from the voices that tell them the truth.",
+    "Faith and love are the apostolic measures of a healthy community. If those two things are not growing in your relational world, something is structurally wrong.",
+    "Your confirmation community is not optional. It is the relational infrastructure that holds your calling in place when your own confidence cannot.",
+  ],
   contrastTable: {
     title: "Two Postures of Leadership",
     leftTitle: "Orphan Posture",

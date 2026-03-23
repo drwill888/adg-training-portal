@@ -213,6 +213,35 @@ const applicationQuestions = [
   "Who is the person you will most intentionally invest in for multiplication this season?",
 ];
 
+const resources = {
+  sectionTitle: "Additional Resources",
+  blogs: [
+    {
+      title: "Convergence: Discover Your Sweet Spot — The 5C's",
+      url: "https://awakeningdestiny.global/5-steps-to-your-sweet-spot-convergence/",
+      description: "Where all five dimensions align into your zone of maximum impact.",
+    },
+    {
+      title: "2 Keys to Unlocking Your Books of Destiny",
+      url: "https://awakeningdestiny.global/2-keys-to-unlocking-your-books-of-destiny/",
+      description: "Worship and intercession as the keys to accessing your divine purpose and heavenly scrolls.",
+    },
+    {
+      title: "Are You Laboring in the Right Space?",
+      url: "https://awakeningdestiny.global/are-you-laboring-in-the-right-space/",
+      description: "How to discern whether your current assignment matches your design — or is draining it.",
+    },
+    {
+      title: "7 Steps to Moving in the Glory Realms",
+      url: "https://awakeningdestiny.global/7-steps-to-moving-in-the-glory-realms/",
+      description: "A blueprint for the Ekklesia to operate in the supernatural realms of God's presence and authority.",
+    },
+  ],
+  links: [
+    { title: "Awakening Destiny Global", url: "https://awakeningdestiny.global", description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources." },
+  ],
+};
+
 const config = {
   moduleNum: 5,
   title: "Convergence",
@@ -233,7 +262,22 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  aiPromptContext: "This leader has completed Module 5: Convergence — the capstone module of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) how clearly they can articulate their sweet spot and whether it integrates all five dimensions, (2) the courage and specificity of what they are releasing, (3) the clarity of their primary assignment, and (4) the intentionality of their legacy investment. Draw together all five dimensions into a unified word for this leader.",
+  summaryPromptContext: "This leader has completed Module 5: Convergence — the capstone module of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) how clearly they can articulate their sweet spot and whether it integrates all five dimensions, (2) the courage and specificity of what they are releasing, (3) the clarity of their primary assignment, and (4) the intentionality of their legacy investment. Draw together all five dimensions into a unified word for this leader.",
+  resources,
+  learningObjectives: [
+    "Identify whether you are currently operating in your sweet spot — or scattered across too many lanes that dilute your impact.",
+    "Map the intersection of your calling, connection, competency, and capacity to define the specific zone where your greatest contribution lives.",
+    "Recognize the difference between convergence and comfort — and understand that operating in your sweet spot does not mean operating without resistance.",
+    "Develop a filter for evaluating new opportunities based on alignment, not just availability — so that every yes serves your convergence and every no protects it.",
+    "Build a succession and stewardship plan that ensures your convergence produces legacy — not just personal impact.",
+  ],
+  keyTakeaways: [
+    "Convergence is where calling, connection, competency, and capacity align into focused, sustainable impact. It is not a destination you arrive at — it is a zone you operate from.",
+    "Convergence is not permanent. It can be entered and it can be lost. Success scatters what alignment built. The leader who does not actively defend convergence will drift back into overextension.",
+    "The sweet spot is not where everything is easy. It is where everything you carry comes together with maximum fruitfulness and minimum waste. Resistance may still be present — but you are operating from design, not default.",
+    "Busy is not fruitful. Scattered is not faithful. Convergence demands the discipline to say no to good things in order to protect the right things.",
+    "Legacy is the fruit of convergence stewarded over time. What you build at the intersection of your design will outlast what you build from ambition alone.",
+  ],
   contrastTable: {
     title: "Two Modes at This Stage",
     leftTitle: "Scattered Leader",
