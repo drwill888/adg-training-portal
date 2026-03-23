@@ -468,6 +468,9 @@ export default function ModuleTemplate({ config }) {
                     </tbody>
                   </table>
                 </div>
+                <div className="mt-4">
+                  <PauseTextarea prompt="Based on the table above — which column describes your default? Where do you see the gap between where you are and where this training is taking you?" />
+                </div>
               </div>
             )}
             <SectionHead sub="These principles anchor everything about this dimension.">{principles.length} Governing Principles</SectionHead>

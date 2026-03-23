@@ -201,15 +201,13 @@ export default function App() {
           <p style={{ fontSize: 14, color: colors.gray500, margin: "0 0 20px", fontStyle: "italic" }}>Your leadership formation journey — from design to destiny.</p>
 
           {/* Overall progress bar */}
-          {overallPercent > 0 && (
-            <div style={{ marginBottom: 28, padding: "16px 20px", background: colors.white, borderRadius: 10, border: "1px solid " + colors.gray200 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                <span style={{ fontSize: 13, fontWeight: 600, color: colors.navy }}>Overall Progress</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: colors.gold }}>{overallPercent}%</span>
-              </div>
-              <ProgressBar percent={overallPercent} accent={colors.gold} height={8} />
+          <div style={{ marginBottom: 28, padding: "16px 20px", background: colors.white, borderRadius: 10, border: "1px solid " + colors.gray200 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: colors.navy }}>Overall Progress</span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: colors.gold }}>{overallPercent}%</span>
             </div>
-          )}
+            <ProgressBar percent={overallPercent} accent={colors.gold} height={8} />
+          </div>
 
           {/* ═══ MARKETING / UNLOCK CTA ═══ */}
           {!paid && !loading && (
@@ -267,10 +265,10 @@ export default function App() {
                     </div>
                   </div>
                   {/* Module progress indicator */}
-                  {!locked && modPercent > 0 && (
+                  {!locked && (
                     <div style={{ marginBottom: 8 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                        <span style={{ fontSize: 11, color: colors.gray500 }}>{modPercent === 100 ? "Complete" : "In progress"}</span>
+                        <span style={{ fontSize: 11, color: colors.gray500 }}>{modPercent === 100 ? "Complete" : modPercent > 0 ? "In progress" : "Not started"}</span>
                         <span style={{ fontSize: 11, fontWeight: 600, color: accents[i] }}>{modPercent}%</span>
                       </div>
                       <ProgressBar percent={modPercent} accent={accents[i]} height={4} />
