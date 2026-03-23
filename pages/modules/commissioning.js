@@ -185,7 +185,7 @@ const config = {
   revisitTriggers,
   applicationQuestions,
   aiPromptContext: "This leader has completed Module 6: Commissioning — the capstone of the 5C Leadership Blueprint. This is the synthesis and deployment module. Analyze their responses focusing on: (1) the depth and clarity of their deployment declaration, (2) the reality and health of their commissioning community, (3) how well their 5C synthesis integrates all five dimensions, (4) the specificity of their generational investment, and (5) the weight and authenticity of their legacy declaration. Write a commissioning word — apostolic, prophetic, and specific — that calls them forward into what they were formed to build.",
-  resources,
+  resources, scriptures: scriptures,
   learningObjectives: [
     "Articulate what you are being sent to build — not in general terms, but with the specificity that comes from having walked through five dimensions of formation.",
     "Identify the first three deployable actions that flow directly from your blueprint — things you can begin within 30 days of completing this training.",

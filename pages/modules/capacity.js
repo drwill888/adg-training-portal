@@ -292,7 +292,7 @@ const config = {
   revisitTriggers,
   applicationQuestions,
   aiPromptContext: "This leader has completed Module 4: Capacity of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the honesty of their self-assessment about how pressure reveals their character, (2) the specific wound they have named and the cost of carrying it unprocessed, (3) the health and sustainability of their stated rhythms, and (4) the evidence of genuine formation through adversity. Be direct, compassionate where needed, and prophetically precise.",
-  resources,
+  resources, scriptures: scriptures,
   learningObjectives: [
     "Assess your current capacity honestly — not what you wish you could carry, but what you are actually sustaining without breaking down.",
     "Identify which crucible of spiritual formation you are currently in, and understand what God is building in you through it.",

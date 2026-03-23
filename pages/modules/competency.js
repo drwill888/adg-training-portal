@@ -280,7 +280,7 @@ const config = {
   revisitTriggers,
   applicationQuestions,
   aiPromptContext: "This leader has completed Module 3: Competency of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the honesty and specificity of their identified competency gap, (2) the realism of their development plan, (3) their posture toward excellence — are they building for the long term or managing for the short term, and (4) their readiness to transfer competency to others.",
-  resources,
+  resources, scriptures; scriptures,
   learningObjectives: [
     "Identify the three to five competencies your current assignment demands — and honestly assess where you are strong and where you are underdeveloped.",
     "Distinguish between gifting and competency, and understand why gifting without skill development creates a ceiling on your impact.",

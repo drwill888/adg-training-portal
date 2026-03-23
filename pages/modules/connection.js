@@ -252,7 +252,7 @@ const config = {
   revisitTriggers,
   applicationQuestions,
   aiPromptContext: "This leader has completed Module 2: Connection of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the depth of their identity security in God versus performance-based leadership, (2) the specific orphan patterns they are renouncing and how real that commitment appears, (3) the quality and depth of their relational investment, and (4) their capacity to give identity to others. Be direct and apostolic.",
-  resources,
+  resources, scriptures: scriptures,
   learningObjectives: [
     "Identify the five to seven relationships that most shape your leadership — and assess whether each one is sharpening you or draining you.",
     "Distinguish between transactional networking and covenantal connection, and know which one your leadership is currently built on.",

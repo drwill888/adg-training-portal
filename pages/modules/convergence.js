@@ -283,7 +283,7 @@ const config = {
   revisitTriggers,
   applicationQuestions,
   aiPromptContext: "This leader has completed Module 5: Convergence — the capstone module of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) how clearly they can articulate their sweet spot and whether it integrates all five dimensions, (2) the courage and specificity of what they are releasing, (3) the clarity of their primary assignment, and (4) the intentionality of their legacy investment. Draw together all five dimensions into a unified word for this leader.",
-  resources,
+  resources, scriputures: scriptures,
   learningObjectives: [
     "Identify whether you are currently operating in your sweet spot — or scattered across too many lanes that dilute your impact.",
     "Map the intersection of your calling, connection, competency, and capacity to define the specific zone where your greatest contribution lives.",
