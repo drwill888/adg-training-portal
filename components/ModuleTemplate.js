@@ -17,7 +17,7 @@ const STEPS = [
   { id: "stages",          label: "Stages" },
   { id: "post-diagnostic", label: "Post-Check" },
   { id: "commitment",      label: "Commitment" },
-  { id: "summary",         label: "AI Blueprint" },
+  { id: "summary",         label: "Blueprint" },
 ];
 
 /* ── Modal Overlay ── */
@@ -29,31 +29,56 @@ function Modal({ open, onClose, children }) {
       <div style={{ position: "relative", width: "90%", maxWidth: 640, maxHeight: "85vh", overflowY: "auto", background: "#fff", borderRadius: 16, padding: "32px 28px", boxShadow: "0 24px 64px rgba(0,0,0,0.3)" }}>
         <button onClick={onClose} style={{ position: "absolute", top: 12, right: 16, background: "none", border: "none", fontSize: 24, cursor: "pointer", color: "#999" }}>×</button>
         {children}
+        <p style={{ fontSize: 11, color: "#bbb", textAlign: "center", marginBottom: 16 }}>Tap outside or press × to close</p>
       </div>
     </div>
   );
 }
 
 /* ── Scripture Modal Content ── */
-function ScriptureContent({ scriptures }) {
-  if (!scriptures) return null;
+function ScriptureContent({ scriptures, resources }) {
   return (
     <div>
-      <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, color: GOLD, marginBottom: 4 }}>Further Study</p>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "1.6rem", fontWeight: 700, marginBottom: 12 }}>
-        Scriptures for Further Study
-      </h2>
-      <p style={{ fontSize: 14, color: "#555", lineHeight: 1.7, marginBottom: 24, fontStyle: "italic" }}>{scriptures.intro}</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {scriptures.verses.map(function(v, i) {
-          return (
-            <div key={i} style={{ padding: "12px 16px", borderRadius: 10, background: i % 2 === 0 ? "#FFF9E6" : "#f9fafb", borderLeft: "3px solid " + GOLD }}>
-              <span style={{ fontWeight: 700, color: NAVY, fontSize: 13 }}>{v.ref}</span>
-              <span style={{ color: "#555", fontSize: 13 }}> — {v.text}</span>
-            </div>
-          );
-        })}
-      </div>
+      {scriptures && (
+        <div style={{ marginBottom: resources ? 32 : 0 }}>
+          <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, color: GOLD, marginBottom: 4 }}>Further Study</p>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "1.6rem", fontWeight: 700, marginBottom: 12 }}>Scriptures for Further Study</h2>
+          <p style={{ fontSize: 14, color: "#555", lineHeight: 1.7, marginBottom: 24, fontStyle: "italic" }}>{scriptures.intro}</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {scriptures.verses.map(function(v, i) {
+              return (
+                <div key={i} style={{ padding: "12px 16px", borderRadius: 10, background: i % 2 === 0 ? "#FFF9E6" : "#f9fafb", borderLeft: "3px solid " + GOLD }}>
+                  <span style={{ fontWeight: 700, color: NAVY, fontSize: 13 }}>{v.ref}</span>
+                  <span style={{ color: "#555", fontSize: 13 }}> — {v.text}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+      {resources && resources.blogs && (
+        <div>
+          <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, color: GOLD, marginBottom: 4 }}>Additional Resources</p>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "1.4rem", fontWeight: 700, marginBottom: 16 }}>Blog Articles & References</h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {resources.blogs.map(function(b, i) {
+              return (
+                <a key={i} href={b.url} target="_blank" rel="noopener noreferrer" style={{ padding: "14px 16px", borderRadius: 10, background: "#f9fafb", border: "1px solid #e5e7eb", textDecoration: "none", display: "block" }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 2 }}>{b.title}</div>
+                  <div style={{ fontSize: 12, color: "#666", lineHeight: 1.5 }}>{b.description}</div>
+                </a>
+              );
+            })}
+          </div>
+          {resources.links && resources.links.map(function(l, i) {
+            return (
+              <a key={i} href={l.url} target="_blank" rel="noopener noreferrer" style={{ display: "block", marginTop: 12, fontSize: 13, color: "#0172BC" }}>
+                {l.title} →
+              </a>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -188,7 +213,7 @@ function downloadBlueprint(title, commitments, summary) {
   html += '<p><strong>5C Leadership Blueprint - Awakening Destiny Global</strong></p>';
   html += '<p style="color:#888;font-style:italic;">Generated ' + new Date().toLocaleDateString() + '</p>';
   if (summary) {
-    html += '<div class="section"><h2>AI Analysis</h2><p>' + summary.replace(/\n/g, "<br/>") + '</p></div>';
+    html += '<div class="section"><h2>Leadership Analysis</h2><p>' + summary.replace(/\n/g, "<br/>") + '</p></div>';
   }
   html += '<h2>Your Commitments</h2>';
   Object.entries(commitments).forEach(function(entry) {
@@ -605,11 +630,11 @@ export default function ModuleTemplate({ config }) {
               </>
             )}
 
-            {scriptures && (
+            {(scriptures || config.resources) && (
               <button onClick={function() { setShowScriptures(true); }}
-                className="w-full py-3 rounded-2xl font-semibold text-sm transition-all"
-                style={{ border: "2px solid " + GOLD, color: NAVY, background: "#FFF9E6" }}>
-                📖 Scriptures for Further Study
+               className="w-full py-3 rounded-2xl font-semibold text-sm transition-all"
+               style={{ border: "2px solid " + GOLD, color: NAVY, background: "#FFF9E6" }}>
+               📖 Further Reference & Study
               </button>
             )}
           </div>
@@ -625,7 +650,7 @@ export default function ModuleTemplate({ config }) {
 
       {/* Scripture Modal */}
       <Modal open={showScriptures} onClose={function() { setShowScriptures(false); }}>
-        <ScriptureContent scriptures={scriptures} />
+        <ScriptureContent scriptures={scriptures} resources={config.resources} />
       </Modal>
 
       {/* Book Chapter Modal */}
