@@ -19,24 +19,18 @@ const diagnostic = [
 
 const principles = [
   {
-    num: 1,
-    title: "Design Precedes Deployment",
-    ref: "Jeremiah 1:5",
+    num: 1, title: "Design Precedes Deployment", ref: "Jeremiah 1:5",
     scripture: "\"Before I formed you in the womb I knew you, before you were born I set you apart.\" — Jeremiah 1:5",
     paragraphs: [
       "God forms before He sends. Calling originates in God's intention, not human ambition. Leadership must be formed internally before it is expressed externally.",
       "If deployment precedes design clarity, instability follows. You cannot build what you have not been shaped to carry. Many leaders launch before they are formed — and they fracture under the weight of an assignment their character was never prepared to hold.",
       "This is why hiddenness is not punishment. It is preparation. The years of obscurity are not wasted years — they are forming years. God does not waste formation. He invests it.",
     ],
-    prompts: [
-      "Where in your life have you been deployed before you were formed? What was the result?",
-    ],
+    prompts: ["Where in your life have you been deployed before you were formed? What was the result?"],
   },
   {
-    num: 2,
-    title: "Calling Governs Decisions",
-    ref: "Philippians 3:13–14",
-    scripture: "\"One thing I do: forgetting what lies behind and straining forward to what lies ahead, I press on toward the goal for the prize of the upward call of God.\" — Philippians 3:13–14",
+    num: 2, title: "Calling Governs Decisions", ref: "Philippians 3:13-14",
+    scripture: "\"One thing I do: forgetting what lies behind and straining forward to what lies ahead, I press on toward the goal for the prize of the upward call of God.\" — Philippians 3:13-14",
     paragraphs: [
       "Calling is not just inspiration. It is your decision-making filter — your true north. Every yes and every no a leader gives should be traceable back to their calling.",
       "Good opportunities are everywhere. Aligned assignments are rare. The leader who cannot distinguish between the two will be busy but never fruitful. Calling creates the boundaries that protect your assignment.",
@@ -48,67 +42,47 @@ const principles = [
     ],
   },
   {
-    num: 3,
-    title: "Obscurity Prepares Authority",
-    ref: "Luke 16:10",
+    num: 3, title: "Obscurity Prepares Authority", ref: "Luke 16:10",
     scripture: "\"One who is faithful in a very little is also faithful in much.\" — Luke 16:10",
     paragraphs: [
       "Hidden faithfulness builds structural integrity. Public authority without private formation eventually collapses. What the world calls delay, God calls development.",
       "The leader who refuses hidden seasons refuses formation. And the leader who is not formed cannot carry the weight of the assignment they are asking for. Obscurity is not the absence of calling — it is the incubator of it.",
       "What grows in the unseen sustains what becomes visible. The roots grow deepest when the tree is not yet visible. And it is the depth of the root system that determines what the tree can carry when the storm comes.",
     ],
-    prompts: [
-      "What hidden season are you in right now — or have you recently come through? What did it build in you?",
-    ],
+    prompts: ["What hidden season are you in right now — or have you recently come through? What did it build in you?"],
   },
   {
-    num: 4,
-    title: "Calling Unfolds Progressively",
-    ref: "Proverbs 4:18",
+    num: 4, title: "Calling Unfolds Progressively", ref: "Proverbs 4:18",
     scripture: "\"The path of the righteous is like the light of dawn, which shines brighter and brighter until full day.\" — Proverbs 4:18",
     paragraphs: [
       "God often reveals the next step — not the entire path. Abraham was told 'Go to the land I will show you' before he was told where. Obedience preceded clarity.",
       "Impatience distorts calling. Faithfulness matures it. The leader who demands the full blueprint before taking the first step will never move.",
       "Calling is not a revelation you receive once and then execute on. It is a progressive disclosure — unfolding across seasons, sharpening through obedience, deepening through formation.",
     ],
-    prompts: [
-      "What is the next step of obedience you already know you need to take — even without the full picture?",
-    ],
+    prompts: ["What is the next step of obedience you already know you need to take — even without the full picture?"],
   },
   {
-    num: 5,
-    title: "Calling Must Be Confirmed in Community",
-    ref: "1 Timothy 4:14",
+    num: 5, title: "Calling Must Be Confirmed in Community", ref: "1 Timothy 4:14",
     scripture: "\"Do not neglect the gift you have, which was given you by prophecy when the council of elders laid their hands on you.\" — 1 Timothy 4:14",
     paragraphs: [
       "In Scripture, calling is never purely private. It is recognized and affirmed by mature leaders. Samuel needed Eli. Timothy needed Paul. Community confirmation strengthens courage and protects from self-appointment.",
       "Uninterpreted revelation can lead to distortion. Calling matures through mentorship, accountability, and the witness of those who see your grace before you fully trust it yourself.",
       "A calling that no one else can see or confirm may be ambition dressed in spiritual language. The leader who refuses external input on their calling is not confident — they are isolated.",
     ],
-    prompts: [
-      "Who has confirmed your calling? If no one has, who do you trust enough to speak into it?",
-    ],
+    prompts: ["Who has confirmed your calling? If no one has, who do you trust enough to speak into it?"],
   },
   {
-    num: 6,
-    title: "Calling Is Confirmed Through Prophetic Presbytery",
-    ref: "Acts 13:3",
-    addendum: true,
+    num: 6, title: "Calling Is Confirmed Through Prophetic Presbytery", ref: "Acts 13:3", addendum: true,
     scripture: "\"Then after fasting and praying they laid their hands on them and sent them off.\" — Acts 13:3",
     paragraphs: [
       "Calling is not self-appointed. It is recognized, confirmed, and activated through the laying on of hands by mature, healthy prophetic leadership. Samuel anointed David. The elders at Antioch set apart Paul and Barnabas. The presbytery confirmed Timothy. This was not ceremony — it was spiritual governance.",
       "The laying on of hands confirms what God has already spoken internally, activates what may be dormant, provides spiritual covering under recognized authority, and creates a public record the leader can return to when doubt or opposition rises.",
       "Not every voice qualifies. The presbytery must be mature — not just gifted. Healthy — not just anointed. Prophetic accuracy without character integrity produces manipulation, not confirmation.",
     ],
-    prompts: [
-      "Has your calling been confirmed through the laying on of hands by mature, healthy prophetic leadership? If yes, what was spoken — and have you returned to it? If not, what is preventing you from seeking confirmation?",
-    ],
+    prompts: ["Has your calling been confirmed through the laying on of hands by mature, healthy prophetic leadership? If yes, what was spoken — and have you returned to it? If not, what is preventing you from seeking confirmation?"],
   },
   {
-    num: 7,
-    title: "Prophecy Is a Weapon — War With It",
-    ref: "1 Timothy 1:18",
-    addendum: true,
+    num: 7, title: "Prophecy Is a Weapon — War With It", ref: "1 Timothy 1:18", addendum: true,
     scripture: "\"This charge I entrust to you, Timothy, my child, in accordance with the prophecies previously made about you, that by them you may wage the good warfare.\" — 1 Timothy 1:18",
     paragraphs: [
       "Prophetic words are not souvenirs. They are weapons. Paul did not tell Timothy to frame his prophecies. He told him to fight with them.",
@@ -183,36 +157,34 @@ const applicationQuestions = [
   "What responsibility have I been delaying that aligns directly with my calling?",
 ];
 
-// ─── BLOG RESOURCES (NEW) ──────────────────────────────────────
-const resources = {
-  sectionTitle: "Additional Resources",
-  blogs: [
-    {
-      title: "Embracing Your Apostolic Calling — Part 1",
-      url: "https://awakeningdestiny.global/embracing-your-apostolic-calling-part-1/",
-      description: "The true essence of apostolic calling — stepping beyond vocational limitations into divine stewardship.",
-    },
-    {
-      title: "6 Step Discovery of Your Destiny Scrolls",
-      url: "https://awakeningdestiny.global/6-step-discovery-of-your-destiny-scrolls/",
-      description: "Practical steps to align with the divine purpose God has written over your life.",
-    },
-    {
-      title: "Searching for Identity & Tribes — 12 Stones",
-      url: "https://awakeningdestiny.global/searching-for-identity-tribes-12-stones/",
-      description: "Unlocking spiritual identity and discovering your tribe through the twelve stones of the high priest's ephod.",
-    },
-  ],
-  links: [
-    {
-      title: "Awakening Destiny Global",
-      url: "https://awakeningdestiny.global",
-      description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources.",
-    },
+var scriptures = {
+  intro: "These are your anchor texts on calling. Return to them when clarity fades, when opposition rises, when purpose feels costly, and when you need to remember that God designs, confirms, and matures what He calls.",
+  verses: [
+    { ref: "Jeremiah 1:5", text: "Called before birth. Designed with intention." },
+    { ref: "Jeremiah 1:4-10", text: "God appoints before full maturity and puts His word into yielded vessels." },
+    { ref: "Romans 8:28-30", text: "All things work together for those called according to His purpose." },
+    { ref: "Romans 11:29", text: "The gifts and calling of God are irrevocable." },
+    { ref: "2 Timothy 1:9", text: "Called with a holy calling, not according to works." },
+    { ref: "Ephesians 1:18", text: "The eyes of your heart enlightened to know the hope of His calling." },
+    { ref: "Ephesians 4:1", text: "Walk worthy of the calling." },
+    { ref: "Ephesians 4:13", text: "Calling is meant to mature us into fullness in Christ." },
+    { ref: "Philippians 3:13-14", text: "Press on toward the goal for the prize of the upward call." },
+    { ref: "Hebrews 3:1", text: "Consider Jesus, the apostle of our confession." },
+    { ref: "Hebrews 12:1", text: "Calling is not merely received; it must be run with endurance." },
+    { ref: "1 Corinthians 1:26-29", text: "God chose the foolish to shame the wise." },
+    { ref: "1 Peter 4:10", text: "As each has received a gift, use it to serve one another." },
+    { ref: "1 Peter 1:23", text: "Calling unfolds from incorruptible seed planted by the Word of God." },
+    { ref: "1 Samuel 3:4, 8-9, 19", text: "Calling is often recognized through listening, response, and faithful stewardship." },
+    { ref: "Jeremiah 20:7-9", text: "True calling carries an inner fire that cannot be silenced." },
+    { ref: "1 Timothy 4:14", text: "Calling is often affirmed through prophetic and communal confirmation." },
+    { ref: "Proverbs 11:14", text: "Calling is strengthened and protected through wise counsel." },
+    { ref: "Luke 16:10", text: "Hidden faithfulness prepares leaders for greater trust." },
+    { ref: "Matthew 25:21", text: "Stewardship in small things precedes enlarged responsibility." },
+    { ref: "Proverbs 4:18", text: "Calling often unfolds progressively, not all at once." },
   ],
 };
 
-const config = {
+var config = {
   moduleNum: 1,
   title: "Calling",
   subtitle: "Potential (Purpose)",
@@ -225,30 +197,14 @@ const config = {
     "If no one was watching and no one would applaud, what would you still feel compelled to build, protect, or restore?",
     "When have you felt most aligned — most fully yourself in your purpose — even briefly? Describe that moment.",
   ],
-  diagnostic,
-  principles,
-  exemplar,
-  stages,
-  commitmentPrompts,
-  revisitTriggers,
-  applicationQuestions,
-  resources,
-  learningObjectives: [
-    "Articulate your calling in one clear, specific sentence — not a paragraph, not a wish, but a conviction you can stand on under pressure.",
-    "Distinguish between your calling (the macro — lifetime) and your current assignment (the micro — this season) and know why confusing them creates drift.",
-    "Identify the three to five formative moments that have shaped your calling and recognize God's thread running through them.",
-    "Name the burden you carry that you cannot walk away from — the one that persists regardless of title, role, or season.",
-    "Evaluate the health of your confirmation community — who speaks into your calling, and whether that circle is strong enough to sustain you.",
-  ],
-  keyTakeaways: [
-    "Calling is not what you do. It is who you were designed to become. Confuse the two and you will spend your life building someone else's assignment.",
-    "Design precedes deployment. If you have not been formed for it, you cannot sustain it. Hiddenness is not punishment — it is preparation.",
-    "Calling is your decision-making filter. Every yes and every no should be traceable back to it. Without this filter, you will be busy but never fruitful.",
-    "A calling that no one else can see or confirm may be ambition dressed in spiritual language. Seek confirmation in community — not isolation.",
-    "Prophetic words are not souvenirs. They are weapons. If you have received a confirmed word over your life, pick it back up and fight with it.",
-  ],
-  // Renamed from "aiPromptContext" — drives the personalized summary engine (not learner-facing)
-  summaryPromptContext: "This leader has completed Module 1: Calling of the 5C Leadership Blueprint. Analyze their responses with focus on: (1) the clarity and precision of their calling articulation, (2) the nature of the burden they carry and whether it is genuinely theirs, (3) the health of their confirmation community, and (4) how well their calling is functioning as a decision filter. Be direct, apostolic in tone, and specific to what they wrote.",
+  diagnostic: diagnostic,
+  principles: principles,
+  exemplar: exemplar,
+  stages: stages,
+  commitmentPrompts: commitmentPrompts,
+  revisitTriggers: revisitTriggers,
+  applicationQuestions: applicationQuestions,
+  aiPromptContext: "This leader has completed Module 1: Calling of the 5C Leadership Blueprint. Analyze their responses with focus on: (1) the clarity and precision of their calling articulation, (2) the nature of the burden they carry and whether it is genuinely theirs, (3) the health of their confirmation community, and (4) how well their calling is functioning as a decision filter. Be direct, apostolic in tone, and specific to what they wrote.",
   contrastTable: {
     title: "Calling vs. Assignment",
     leftTitle: "Calling — The Macro",
@@ -263,6 +219,7 @@ const config = {
       ["Cannot be lost", "Has a start and end date"],
     ],
   },
+  scriptures: scriptures,
 };
 
 export default function CallingModule() {

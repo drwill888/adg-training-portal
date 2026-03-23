@@ -206,7 +206,31 @@ const resources = {
     { title: "Awakening Destiny Global", url: "https://awakeningdestiny.global", description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources." },
   ],
 };
-
+var scriptures = {
+  intro: "These are your anchor texts on connection. Return to them when belonging feels distant, when performance tempts you, and when you need to remember that leadership flows from abiding, sonship, love, and relational alignment.",
+  verses: [
+    { ref: "Matthew 3:17", text: "The Father declares identity before ministry begins." },
+    { ref: "Matthew 3:16-17", text: "Identity is affirmed before ministry is expressed." },
+    { ref: "Romans 8:15-17", text: "You have received the Spirit of adoption as sons." },
+    { ref: "Romans 8:15", text: "Connection begins with adoption, not performance." },
+    { ref: "Galatians 4:6-7", text: "No longer a slave, but a son — and an heir through God." },
+    { ref: "John 15:4-5", text: "Abide in Me. Apart from Me you can do nothing." },
+    { ref: "John 15:4", text: "Lasting fruit flows from abiding, not striving." },
+    { ref: "John 5:19", text: "The Son does nothing of His own accord." },
+    { ref: "Hebrews 12:5-11", text: "The Lord disciplines the one He loves." },
+    { ref: "Hebrews 5:8", text: "Sonship matures through obedience and formation." },
+    { ref: "Proverbs 3:11-12", text: "Do not despise the Lord's discipline." },
+    { ref: "1 John 3:1", text: "See what kind of love the Father has given to us." },
+    { ref: "1 John 4:16", text: "Whoever abides in love abides in God." },
+    { ref: "1 John 2:14", text: "Mature fathers carry deep relational knowing and strength rooted in God." },
+    { ref: "Mark 1:35", text: "Rising early, He went to a desolate place and prayed." },
+    { ref: "Ecclesiastes 4:9-10", text: "Connection creates strength, support, and shared reward." },
+    { ref: "Proverbs 27:17", text: "Growth in relationship includes sharpening through honest friction." },
+    { ref: "Proverbs 13:20", text: "The people you walk with shape your wisdom and trajectory." },
+    { ref: "Mark 3:14", text: "Jesus called leaders first to be with Him before sending them out." },
+    { ref: "1 Corinthians 12:14", text: "No leader flourishes in isolation; we are built as one body." },
+  ],
+};
 const config = {
   moduleNum: 2,
   title: "Connection",
@@ -227,7 +251,7 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  summaryPromptContext: "This leader has completed Module 2: Connection of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the depth of their identity security in God versus performance-based leadership, (2) the specific orphan patterns they are renouncing and how real that commitment appears, (3) the quality and depth of their relational investment, and (4) their capacity to give identity to others. Be direct and apostolic.",
+  aiPromptContext: "This leader has completed Module 2: Connection of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the depth of their identity security in God versus performance-based leadership, (2) the specific orphan patterns they are renouncing and how real that commitment appears, (3) the quality and depth of their relational investment, and (4) their capacity to give identity to others. Be direct and apostolic.",
   resources,
   learningObjectives: [
     "Identify the five to seven relationships that most shape your leadership — and assess whether each one is sharpening you or draining you.",

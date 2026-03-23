@@ -248,7 +248,29 @@ const resources = {
     { title: "Awakening Destiny Global", url: "https://awakeningdestiny.global", description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources." },
   ],
 };
-
+var scriptures = {
+  intro: "These are your anchor texts on capacity. Return to them when pressure mounts, when restraint is required, when waiting feels long, and when God is enlarging you through testing, humility, endurance, and inner formation.",
+  verses: [
+    { ref: "Psalm 105:19", text: "The word of the LORD tested him." },
+    { ref: "Psalm 78:70-72", text: "Shepherded with upright heart and skillful hand." },
+    { ref: "Psalm 78:70", text: "Hidden seasons prepare leaders for public responsibility." },
+    { ref: "Psalm 51:10", text: "Create in me a clean heart." },
+    { ref: "Psalm 4:1", text: "God enlarges us internally in seasons of distress." },
+    { ref: "1 Samuel 16:13", text: "Anointed early. Appointed later." },
+    { ref: "1 Samuel 24:4-7", text: "Restraint under provocation." },
+    { ref: "1 Samuel 24:6", text: "Restraint protects future authority and reveals maturity." },
+    { ref: "Genesis 50:20", text: "You meant evil, but God meant it for good." },
+    { ref: "Proverbs 16:18", text: "Pride goes before destruction." },
+    { ref: "Proverbs 15:33", text: "Humility prepares the leader for true honor." },
+    { ref: "Romans 5:3-5", text: "Suffering produces endurance, character, and hope." },
+    { ref: "Romans 5:1-5", text: "Pressure produces perseverance, proven character, and hope." },
+    { ref: "James 1:2-4", text: "Testing produces steadfastness." },
+    { ref: "James 1:2-8", text: "Trials develop endurance, wisdom, and maturity." },
+    { ref: "Philippians 4:11-13", text: "I have learned to be content in every circumstance." },
+    { ref: "1 Peter 5:6-11", text: "Humility, suffering, and steadfastness strengthen leaders over time." },
+  ],
+};
+ 
 const config = {
   moduleNum: 4,
   title: "Capacity",
@@ -269,7 +291,7 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  summaryPromptContext: "This leader has completed Module 4: Capacity of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the honesty of their self-assessment about how pressure reveals their character, (2) the specific wound they have named and the cost of carrying it unprocessed, (3) the health and sustainability of their stated rhythms, and (4) the evidence of genuine formation through adversity. Be direct, compassionate where needed, and prophetically precise.",
+  aiPromptContext: "This leader has completed Module 4: Capacity of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the honesty of their self-assessment about how pressure reveals their character, (2) the specific wound they have named and the cost of carrying it unprocessed, (3) the health and sustainability of their stated rhythms, and (4) the evidence of genuine formation through adversity. Be direct, compassionate where needed, and prophetically precise.",
   resources,
   learningObjectives: [
     "Assess your current capacity honestly — not what you wish you could carry, but what you are actually sustaining without breaking down.",

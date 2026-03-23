@@ -115,64 +115,45 @@ const applicationQuestions = [
   "Who needs to know you are going through this process so they can support and hold you accountable?",
 ];
 
-// ─── TRAINING OBJECTIVES (NEW) ──────────────────────────────
-// ModuleTemplate will render this section before the main content
-const trainingObjectives = {
-  headline: "What This Training Will Build In You",
-  intro: "The 5C Leadership Blueprint is a formation experience built for leaders who are ready to move beyond surface-level development. Whether you are a Kingdom entrepreneur, pastor, emerging leader, or executive — this training meets you where you are and moves you toward where you are called to be.",
-  outcomes: [
-    {
-      title: "Clarity of Calling",
-      description: "Articulate your calling in one sentence. Know what you are designed to build — and what you are not. Stop drifting between opportunities and start operating from conviction.",
-    },
-    {
-      title: "Deeper Relational Alignment",
-      description: "Identify the relationships that sharpen you and the ones that drain you. Build a confirmation community that holds you accountable and calls out your grace.",
-    },
-    {
-      title: "Sharpened Competency",
-      description: "Close the gap between your gifting and your readiness. Develop the specific skills your assignment demands — with excellence, not just effort.",
-    },
-    {
-      title: "Expanded Capacity",
-      description: "Increase what you can sustain without burning out. Build character, emotional resilience, and the internal infrastructure to hold the weight of what God is entrusting to you.",
-    },
-    {
-      title: "Convergence — Your Sweet Spot",
-      description: "Align calling, connection, competency, and capacity into focused, lasting impact. Stop scattered activity. Start operating in the zone where everything you carry comes together.",
-    },
-  ],
-  deliverables: [
-    "Pre-and-post diagnostic assessments that show your measurable growth",
-    "A personalized leadership summary for each module based on your responses",
-    "A downloadable blueprint document you can revisit and build from for years",
-    "Curated resources — articles, teaching, and tools — tied directly to each dimension",
-    "Written commitments with built-in accountability prompts",
-  ],
-  closingStatement: "This is not another leadership course you complete and forget. This is the framework you carry forward — into your next assignment, your next season, and the leaders you are called to form after you.",
-};
-
-// ─── RESOURCES (NEW) ──────────────────────────────────────────
-// ModuleTemplate will render this section at the end of the module
-const resources = {
-  sectionTitle: "Resources",
-  book: {
-    title: "Leaders for Life: Creating Champions Through the NOW Leadership Process",
-    author: "Will Meier",
-    url: "https://www.amazon.com/Leaders-Life-Creating-Champions-Leadership/dp/1939944473",
-    description: "A practical handbook that introduces the 12C NOW Leadership model — integrating biblical perspective with contemporary case studies to create champions who solve complex problems.",
-    coverImage: "/images/leaders-for-life-cover.jpg",
-  },
-  links: [
-    {
-      title: "Awakening Destiny Global",
-      url: "https://awakeningdestiny.global",
-      description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources.",
-    },
+const bookChapter = {
+  title: "Called to Run the Race",
+  source: "From Leaders for Life by Will Meier — Awakening Destiny Global",
+  paragraphs: [
+    { type: "text", text: "It was the Wednesday before a long vacation that my wife and I watched the movie Secretariat. It is an award-winning film about a horse of the same name that won the Triple Crown of horse racing against all odds. Although the story ends well, the beginning was dismal. The horse racing farm which owned Secretariat was on the verge of bankruptcy. The entire family except one person, Penny Chenery, wanted to see the enterprise close because it was bleeding money. As I watched this movie, something moved deeply within me and I wept." },
+    { type: "scripture", text: "Deep calls to deep at the noise of Your waterfalls; all Your waves and Your billows passed over me. — Psalm 42:7" },
+    { type: "text", text: "This story evoked a heart cry within me, that it is time to stand against the odds and go for it. It started with faith by one person, the heroine, in the potential of a horse breeding outcome. Her faith was in the power of their legacy's greatness that the genetics and bloodline would create a winning horse. Her faith was in the power of potential, which is in the seed!" },
+    { type: "text", text: "Peter talks about being born again of imperishable and incorruptible seed which is the living and enduring word of God (1 Pet. 1:23). That seed nurtured will become a kingdom enterprise of life, a tree where God's word, life, and presence flow (Matt. 13:30-32)." },
+    { type: "text", text: "There was a leader who had faith in Secretariat's future and destiny. Chenery hired a great trainer, and together they nurtured and trained this horse so he could exercise his God-given assignment to run like a champion. What was it about this movie that director Randall Wallace had captured and expressed in this story about a great horse, his trainer and owner? Something deep within me began to resonate louder and louder, and clearer and clearer." },
+    { type: "text", text: "In one scene, the father and owner of the horse estate shared a lucid moment together with his daughter, \"Let him run his race\". These words became the racetrack for Secretariat to fulfill his destiny. Just as Peter was called forth into greatness with his failures and successes, there is a cry and hunger in every human heart to fulfill their destiny." },
+    { type: "text", text: "The word destiny does not occur in the Bible, but there is an antonym we would like to unpack. It's the Greek term hamartia, which means to miss the true end and scope of our lives in God. This word is translated \"sin\". It is the antithesis of destiny. Destiny is reaching our destination and fullness in Christ (Eph. 4:13). The voice calling us forward resonates deep within us to bring forth the greatness and beauty within — the fullness. In Secretariat's case, it was the father's daughter who carried out the vision with impetus, sacrifice, commitment and dedication to forge a Champion." },
   ],
 };
 
-const config = {
+var scriptures = {
+  intro: "These are your core texts on formation and readiness. Return to them when the process feels slow, when comfort tempts you to settle, and when you need to remember that God builds the leader before He builds the assignment.",
+  verses: [
+    { ref: "Romans 12:2", text: "Be transformed by the renewing of your mind." },
+    { ref: "Psalm 127:1", text: "Unless the LORD builds the house, the builders labor in vain." },
+    { ref: "Proverbs 24:27", text: "Prepare your work outside; get everything ready." },
+    { ref: "Luke 14:28-30", text: "Count the cost before you build." },
+    { ref: "Isaiah 28:16", text: "I am the one who has laid a foundation — a tested stone, a precious cornerstone." },
+    { ref: "2 Timothy 2:21", text: "A vessel for honorable use, set apart, useful to the master, prepared for every good work." },
+    { ref: "Hebrews 12:11", text: "Discipline seems painful, but yields the peaceful fruit of righteousness." },
+    { ref: "Psalm 139:23-24", text: "Search me, O God, and know my heart." },
+    { ref: "James 1:22-25", text: "Be doers of the word, not hearers only." },
+    { ref: "Philippians 1:6", text: "He who began a good work in you will bring it to completion." },
+    { ref: "Proverbs 4:7", text: "The beginning of wisdom is this: get wisdom." },
+    { ref: "Psalm 51:6", text: "Behold, You delight in truth in the inward being." },
+    { ref: "Nehemiah 2:11-18", text: "Nehemiah surveyed the work before rallying others to build." },
+    { ref: "1 Corinthians 3:10-11", text: "Let each one take care how he builds upon the foundation." },
+    { ref: "Ezra 3:10-11", text: "The builders laid the foundation and the people praised God." },
+    { ref: "Matthew 7:24-27", text: "The wise man built his house on the rock." },
+    { ref: "2 Chronicles 7:14", text: "If my people humble themselves, pray, seek, and turn — I will heal." },
+    { ref: "Psalm 90:12", text: "Teach us to number our days that we may get a heart of wisdom." },
+  ],
+};
+
+var config = {
   moduleNum: 0,
   title: "Introduction",
   subtitle: "Course Foundation",
@@ -185,31 +166,14 @@ const config = {
     "What has been the greatest unaddressed gap in your leadership development up to this point?",
     "What would it mean for you to leave this course fundamentally different — not just more informed, but genuinely changed?",
   ],
-  diagnostic,
-  principles,
-  exemplar,
-  stages,
-  commitmentPrompts,
-  revisitTriggers,
-  applicationQuestions,
-  trainingObjectives,
-  resources,
-  learningObjectives: [
-    "Understand the 5C framework as a progression — not a menu — and know why the sequence matters.",
-    "Honestly assess your current leadership posture: where you are strong, where you are fragmented, and where you are avoiding the work.",
-    "Write a first draft of your calling — not a polished statement, but an honest starting point you will refine across the five modules.",
-    "Identify the single greatest gap in your leadership development and name it without deflection.",
-    "Commit to a specific accountability structure that will hold you to the formation process — not just the information.",
-  ],
-  keyTakeaways: [
-    "Formation reshapes the whole person. Information fills the mind. This training is designed for the first — and it requires your honest engagement to work.",
-    "Architecture before acceleration. Skip a dimension and the structure weakens. Many gifted leaders collapse not from lack of talent but from lack of foundation.",
-    "Calling precedes platform. Everything in this framework flows from knowing who you were designed to become. Without that clarity, every other dimension drifts.",
-    "The depth of your transformation depends entirely on the honesty you bring. Performance produces polished answers. Formation produces anchored leaders.",
-    "What you write in this course is not homework. It is a formation document. Return to it. Build from it. Let it deepen as your season unfolds.",
-  ],
-  // Renamed from "aiPromptContext" — this drives the personalized summary engine (not learner-facing)
-  summaryPromptContext: "This is the Introduction module of the 5C Leadership Blueprint. The leader has completed their baseline self-assessment and written their initial commitments about why they are taking this course, their primary leadership gap, and their first draft of their calling. Focus your analysis on: (1) their formation readiness and posture, (2) the significance of the gap they named, (3) the quality of their calling articulation, and (4) what they most need to receive from this process.",
+  diagnostic: diagnostic,
+  principles: principles,
+  exemplar: exemplar,
+  stages: stages,
+  commitmentPrompts: commitmentPrompts,
+  revisitTriggers: revisitTriggers,
+  applicationQuestions: applicationQuestions,
+  aiPromptContext: "This is the Introduction module of the 5C Leadership Blueprint. The leader has completed their baseline self-assessment and written their initial commitments about why they are taking this course, their primary leadership gap, and their first draft of their calling. Focus your analysis on: (1) their formation readiness and posture, (2) the significance of the gap they named, (3) the quality of their calling articulation, and (4) what they most need to receive from this process.",
   contrastTable: {
     title: "Two Kinds of Development",
     leftTitle: "Information-Based Development",
@@ -224,6 +188,8 @@ const config = {
       ["Ends when the course ends", "Deepens long after the course ends"],
     ],
   },
+  bookChapter: bookChapter,
+  scriptures: scriptures,
 };
 
 export default function IntroductionModule() {

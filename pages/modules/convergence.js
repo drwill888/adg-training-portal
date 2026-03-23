@@ -242,6 +242,26 @@ const resources = {
   ],
 };
 
+var scriptures = {
+  intro: "These are your anchor texts on convergence. Return to them when drift threatens, when opportunities multiply, and when you need wisdom to align timing, focus, peace, stewardship, succession, and lasting impact.",
+  verses: [
+    { ref: "Luke 2:52", text: "Integrated growth — wisdom, stature, favor with God and man." },
+    { ref: "Matthew 6:10", text: "Convergence is heaven's will expressed through aligned lives on earth." },
+    { ref: "Proverbs 16:3", text: "Commit your work to the LORD and your plans will be established." },
+    { ref: "Ecclesiastes 3:1", text: "For everything there is a season." },
+    { ref: "Philippians 3:13-14", text: "One thing I do — I press on toward the goal." },
+    { ref: "John 12:24", text: "Unless a grain of wheat falls and dies, it remains alone." },
+    { ref: "Psalm 1:3", text: "Like a tree planted by streams of water." },
+    { ref: "1 Chronicles 28:9-10", text: "Know the God of your father. Be strong and do it." },
+    { ref: "Colossians 3:15", text: "Let the peace of Christ rule in your hearts." },
+    { ref: "Luke 12:48", text: "To whom much is given, much is required." },
+    { ref: "1 Corinthians 9:22", text: "I have become all things to all people." },
+    { ref: "1 John 4:16", text: "Whoever abides in love abides in God." },
+    { ref: "2 Samuel 5:1-5", text: "Convergence is the coming together of identity, authority, and assignment." },
+    { ref: "Psalm 78:70-72", text: "Convergence joins upright heart with skillful hands." },
+  ],
+};
+ 
 const config = {
   moduleNum: 5,
   title: "Convergence",
@@ -262,7 +282,7 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  summaryPromptContext: "This leader has completed Module 5: Convergence — the capstone module of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) how clearly they can articulate their sweet spot and whether it integrates all five dimensions, (2) the courage and specificity of what they are releasing, (3) the clarity of their primary assignment, and (4) the intentionality of their legacy investment. Draw together all five dimensions into a unified word for this leader.",
+  aiPromptContext: "This leader has completed Module 5: Convergence — the capstone module of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) how clearly they can articulate their sweet spot and whether it integrates all five dimensions, (2) the courage and specificity of what they are releasing, (3) the clarity of their primary assignment, and (4) the intentionality of their legacy investment. Draw together all five dimensions into a unified word for this leader.",
   resources,
   learningObjectives: [
     "Identify whether you are currently operating in your sweet spot — or scattered across too many lanes that dilute your impact.",

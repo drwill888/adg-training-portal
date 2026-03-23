@@ -145,7 +145,25 @@ const resources = {
     },
   ],
 };
-
+var scriptures = {
+  intro: "These are your anchor texts on commissioning and deployment. Return to them when the weight of the assignment presses, when you need to remember who sent you, and when you are preparing to send the next generation forward.",
+  verses: [
+    { ref: "Matthew 28:18-20", text: "All authority has been given to Me. Go therefore." },
+    { ref: "Acts 13:1-3", text: "The Spirit confirmed, the community prayed, and they were sent." },
+    { ref: "John 20:21", text: "As the Father has sent Me, even so I am sending you." },
+    { ref: "2 Timothy 2:2", text: "Entrust to faithful people who will be able to teach others also." },
+    { ref: "Isaiah 6:8", text: "Here am I. Send me." },
+    { ref: "Romans 10:15", text: "How beautiful are the feet of those who bring good news." },
+    { ref: "Luke 10:1-3", text: "The Lord appointed seventy-two and sent them ahead of Him." },
+    { ref: "Jeremiah 1:7-8", text: "Do not say I am only a youth — to all whom I send you, you shall go." },
+    { ref: "Ephesians 4:11-12", text: "He gave apostles, prophets, evangelists, pastors, and teachers to equip the saints." },
+    { ref: "1 Timothy 4:14", text: "Do not neglect the gift given through prophecy with the laying on of hands." },
+    { ref: "Acts 1:8", text: "You will receive power when the Holy Spirit has come upon you." },
+    { ref: "Habakkuk 2:2-3", text: "Write the vision. Make it plain. It awaits its appointed time." },
+    { ref: "Psalm 145:4", text: "One generation shall commend Your works to another." },
+    { ref: "Joshua 1:9", text: "Be strong and courageous. The LORD your God is with you wherever you go." },
+  ],
+};
 const config = {
   moduleNum: 6,
   title: "Commissioning",
@@ -166,7 +184,7 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  summaryPromptContext: "This leader has completed Module 6: Commissioning — the capstone of the 5C Leadership Blueprint. This is the synthesis and deployment module. Analyze their responses focusing on: (1) the depth and clarity of their deployment declaration, (2) the reality and health of their commissioning community, (3) how well their 5C synthesis integrates all five dimensions, (4) the specificity of their generational investment, and (5) the weight and authenticity of their legacy declaration. Write a commissioning word — apostolic, prophetic, and specific — that calls them forward into what they were formed to build.",
+  aiPromptContext: "This leader has completed Module 6: Commissioning — the capstone of the 5C Leadership Blueprint. This is the synthesis and deployment module. Analyze their responses focusing on: (1) the depth and clarity of their deployment declaration, (2) the reality and health of their commissioning community, (3) how well their 5C synthesis integrates all five dimensions, (4) the specificity of their generational investment, and (5) the weight and authenticity of their legacy declaration. Write a commissioning word — apostolic, prophetic, and specific — that calls them forward into what they were formed to build.",
   resources,
   learningObjectives: [
     "Articulate what you are being sent to build — not in general terms, but with the specificity that comes from having walked through five dimensions of formation.",

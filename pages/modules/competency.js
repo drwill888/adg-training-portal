@@ -237,7 +237,28 @@ const resources = {
     { title: "Awakening Destiny Global", url: "https://awakeningdestiny.global", description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources." },
   ],
 };
-
+var scriptures = {
+  intro: "These are your anchor texts on competency. Return to them when preparation feels slow, when execution feels heavy, and when you need to remember that skill, stewardship, wisdom, structure, and multiplication matter in leadership.",
+  verses: [
+    { ref: "Proverbs 22:29", text: "Skillful work positions leaders before kings." },
+    { ref: "Proverbs 21:5", text: "The plans of the diligent lead to abundance." },
+    { ref: "Genesis 41:38-49", text: "Revelation became strategy, strategy became governance." },
+    { ref: "Genesis 41:33", text: "Competency turns revelation into strategy and governance." },
+    { ref: "2 Timothy 2:15", text: "Present yourself approved — a worker unashamed." },
+    { ref: "Colossians 3:23", text: "Whatever you do, work heartily as for the Lord." },
+    { ref: "Luke 16:10", text: "Faithful in little, faithful in much." },
+    { ref: "Exodus 18:21-23", text: "Systems protect leaders and sustain momentum." },
+    { ref: "1 Corinthians 9:22", text: "Adaptability without compromise." },
+    { ref: "2 Timothy 2:2", text: "Entrust to faithful people who can teach others." },
+    { ref: "Titus 1:5", text: "Put what remains into order." },
+    { ref: "Proverbs 27:6", text: "Honest feedback protects leaders from blind spots." },
+    { ref: "Proverbs 19:20", text: "Advice and instruction increase future wisdom." },
+    { ref: "Ephesians 5:15-16", text: "Stewarding time wisely is part of competent leadership." },
+    { ref: "James 1:5", text: "Wisdom is essential to competent leadership and must be sought from God." },
+    { ref: "Proverbs 27:17", text: "Skill is sharpened in community, feedback, and correction." },
+    { ref: "1 Corinthians 3:10", text: "Leaders must build wisely according to the grace they have been given." },
+  ],
+};
 const config = {
   moduleNum: 3,
   title: "Competency",
@@ -258,7 +279,7 @@ const config = {
   commitmentPrompts,
   revisitTriggers,
   applicationQuestions,
-  summaryPromptContext: "This leader has completed Module 3: Competency of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the honesty and specificity of their identified competency gap, (2) the realism of their development plan, (3) their posture toward excellence — are they building for the long term or managing for the short term, and (4) their readiness to transfer competency to others.",
+  aiPromptContext: "This leader has completed Module 3: Competency of the 5C Leadership Blueprint. Analyze their responses focusing on: (1) the honesty and specificity of their identified competency gap, (2) the realism of their development plan, (3) their posture toward excellence — are they building for the long term or managing for the short term, and (4) their readiness to transfer competency to others.",
   resources,
   learningObjectives: [
     "Identify the three to five competencies your current assignment demands — and honestly assess where you are strong and where you are underdeveloped.",
