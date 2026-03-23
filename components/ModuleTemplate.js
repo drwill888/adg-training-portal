@@ -418,6 +418,16 @@ export default function ModuleTemplate({ config }) {
       case "activation":
         return (
           <div className="space-y-6">
+            {/* How to Use */}
+            <div className="px-4 py-3 rounded-lg flex items-start gap-3" style={{ background: "#f3f4f6", border: "1px solid #e5e7eb" }}>
+              <span style={{ color: accent, fontSize: 16, flexShrink: 0, marginTop: 1 }}>◈</span>
+              <p className="text-xs leading-relaxed" style={{ color: "#666" }}>
+                {moduleNum === 0
+                  ? "Set aside 30–45 minutes. Move through each step in order. Write in full sentences — not fragments. This is not a quiz. It is a formation tool. The depth of what you receive depends on the honesty you bring."
+                  : "Set aside 45–60 minutes. Move through each step in order. Complete the Pre-Check before engaging the teaching. Write reflections in full sentences. Your responses feed your personalized blueprint — the more specific you are, the more targeted your analysis will be."
+                }
+              </p>
+            </div>
             <SectionHead sub="Set aside distractions. You are entering formational territory.">Welcome to {title}</SectionHead>
             <div className="p-6 rounded-2xl" style={{ background: NAVY, color: "#fff" }}>
               {question && (

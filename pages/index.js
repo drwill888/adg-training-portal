@@ -36,7 +36,7 @@ const modules = [
 const accents = [colors.gold, colors.skyBlue, colors.royalBlue, colors.orange, colors.skyBlue, "#EE3124", colors.gold];
 
 // Total steps per module for progress calculation
-const TOTAL_STEPS = { 0: 8, 1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 8 };
+const TOTAL_STEPS = { 0: 9, 1: 11, 2: 11, 3: 11, 4: 11, 5: 11, 6: 8 };
 
 function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
   const isMobile = useIsMobile();
