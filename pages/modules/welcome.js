@@ -1,7 +1,6 @@
 // pages/welcome.js
 // Landing page for the 5C Leadership Blueprint
 import Head from "next/head";
-import { useState } from "react";
 
 var NAVY = "#021A35";
 var GOLD = "#C8A951";
@@ -34,9 +33,13 @@ export default function Welcome() {
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
         {/* ── Hero ── */}
-        <div style={{ background: "linear-gradient(165deg, " + NAVY + " 0%, #0a2a4d 50%, #132f50 100%)", padding: "80px 24px 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ background: "linear-gradient(165deg, " + NAVY + " 0%, #0a2a4d 50%, #132f50 100%)", padding: "60px 24px 56px", textAlign: "center", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: "radial-gradient(circle at 30% 20%, rgba(200,169,81,0.08) 0%, transparent 50%)", pointerEvents: "none" }} />
           <div style={{ maxWidth: 720, margin: "0 auto", position: "relative" }}>
+
+            {/* Logo */}
+            <img src="/images/logo.jpg" alt="Awakening Destiny Global" style={{ width: 120, height: "auto", margin: "0 auto 20px", display: "block", borderRadius: 8 }} />
+
             <p style={{ fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 600, color: GOLD, marginBottom: 16 }}>Awakening Destiny Global</p>
             <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2.2rem, 5vw, 3.4rem)", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginBottom: 20 }}>
               The 5C Leadership<br />Blueprint
@@ -51,7 +54,7 @@ export default function Welcome() {
               </button>
               <button onClick={handleCheckout}
                 style={{ padding: "14px 36px", background: "transparent", color: GOLD, border: "2px solid " + GOLD, borderRadius: 10, fontSize: 15, fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}>
-                Unlock Full Program — $3.99
+                Unlock Full Program
               </button>
             </div>
           </div>
@@ -65,10 +68,10 @@ export default function Welcome() {
             Most leadership programs add information to an unchanged life. The 5C Blueprint renovates the interior world. Five interconnected dimensions — each building on the one before — moving you from fragmented growth to integrated impact. The depth of your transformation depends entirely on the honesty you bring.
           </p>
           <div style={{ background: NAVY, borderRadius: 12, padding: "20px 24px", display: "flex", alignItems: "center", gap: 16 }}>
-            <span style={{ fontSize: 28 }}>📖</span>
+            <span style={{ fontSize: 28 }}>✦</span>
             <div>
-              <p style={{ fontSize: 13, fontWeight: 600, color: GOLD_BRIGHT }}>Includes Personal Blueprint</p>
-              <p style={{ fontSize: 12, color: "#c8cdd6" }}>Each module generates a personalized leadership analysis based on your responses.</p>
+              <p style={{ fontSize: 13, fontWeight: 600, color: GOLD_BRIGHT }}>Includes Personalized Leadership Blueprint</p>
+              <p style={{ fontSize: 12, color: "#c8cdd6" }}>Each module generates a personalized leadership analysis based on your responses — direct, apostolic, and actionable.</p>
             </div>
           </div>
         </div>
@@ -104,7 +107,7 @@ export default function Welcome() {
               {[
                 { icon: "◈", title: "Free Introduction", desc: "Assess your readiness and establish your formation posture before entering the modules." },
                 { icon: "✦", title: "5 Leadership Modules", desc: "Calling, Connection, Competency, Capacity, and Convergence — each with teaching, diagnostics, and commitments." },
-                { icon: "🎯", title: "Blueprints", desc: "Personalized leadership analysis generated from your responses at the end of each module." },
+                { icon: "🎯", title: "Personalized Blueprints", desc: "Personalized leadership analysis generated from your responses at the end of each module." },
                 { icon: "📄", title: "Downloadable Reports", desc: "Export your blueprint as a document to revisit, share with mentors, and track growth." },
                 { icon: "📖", title: "Scripture Study Banks", desc: "Curated scripture collections for deeper meditation on each leadership dimension." },
                 { icon: "↺", title: "Save & Resume", desc: "Your progress is saved automatically. Leave and return anytime without losing your work." },
@@ -121,21 +124,30 @@ export default function Welcome() {
           </div>
         </div>
 
+        {/* ── Cohort Banner ── */}
+        <div style={{ maxWidth: 720, margin: "0 auto", padding: "48px 24px" }}>
+          <div style={{ background: "linear-gradient(135deg, " + NAVY + ", #0a2a4d)", borderRadius: 14, padding: 32, textAlign: "center", border: "1px solid rgba(200,169,81,0.15)" }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: "#fff", marginBottom: 8 }}>Interested in a Live Cohort Experience?</h3>
+            <p style={{ fontSize: 14, color: "#c8cdd6", lineHeight: 1.6, marginBottom: 16 }}>We offer facilitated 8-week cohort groups with live teaching, group processing, and prophetic commissioning. Limited to 12 participants per cohort.</p>
+            <a href="mailto:info@awakeningdestiny.global" style={{ color: GOLD, fontWeight: 600, textDecoration: "none", fontSize: 14 }}>Contact us for group pricing →</a>
+          </div>
+        </div>
+
         {/* ── CTA ── */}
-        <div style={{ padding: "64px 24px", textAlign: "center" }}>
+        <div style={{ padding: "32px 24px 64px", textAlign: "center" }}>
           <div style={{ maxWidth: 520, margin: "0 auto" }}>
             <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.6rem", fontWeight: 700, color: NAVY, marginBottom: 8 }}>Ready to Begin?</p>
             <p style={{ fontSize: 14, color: "#666", lineHeight: 1.7, marginBottom: 24 }}>
-              Start with the free Introduction to assess your readiness. When you are ready for the full formation experience, unlock all five modules for $3.99.
+              Start with the free Introduction to assess your readiness. When you are ready for the full formation experience, unlock all five modules from the training dashboard.
             </p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
               <button onClick={function() { window.location.href = "/modules/introduction"; }}
                 style={{ padding: "14px 36px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>
                 Start Free Introduction
               </button>
-              <button onClick={handleCheckout}
+              <button onClick={function() { window.location.href = "/"; }}
                 style={{ padding: "14px 36px", background: GOLD, color: NAVY, border: "none", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>
-                Unlock Full Program — $3.99
+                Enter Training Dashboard
               </button>
             </div>
           </div>
@@ -143,6 +155,7 @@ export default function Welcome() {
 
         {/* ── Footer ── */}
         <div style={{ background: NAVY, padding: "32px 24px", textAlign: "center" }}>
+          <img src="/images/logo.jpg" alt="Awakening Destiny Global" style={{ width: 60, height: "auto", margin: "0 auto 12px", display: "block", borderRadius: 6 }} />
           <p style={{ fontSize: 13, fontWeight: 600, color: GOLD, marginBottom: 4 }}>Awakening Destiny Global</p>
           <p style={{ fontSize: 11, color: "#6b7280", fontStyle: "italic", marginBottom: 8 }}>From Design to Destiny</p>
           <p style={{ fontSize: 11, color: "#4b5563" }}>© 2026 Awakening Destiny Global · awakeningdestiny.global</p>
