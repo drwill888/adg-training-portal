@@ -1,7 +1,6 @@
 // pages/api/training/chat.js
 import { getEmbedding } from "@/lib/embeddings";
 import { matchTrainingChunks } from "@/lib/retrieval";
-import { anthropic } from "@/lib/anthropic";
 import { ADG_SYSTEM_PROMPT, buildUserPrompt } from "@/lib/prompts";
 
 export default async function handler(req, res) {
@@ -37,26 +36,36 @@ export default async function handler(req, res) {
     const userPrompt = buildUserPrompt({
       question,
       context: context || "No relevant training content was found for this question.",
-      userProfile: null, // Phase 2: pass actual user profile here
+      userProfile: null,
     });
 
-    // 5. Call Claude
-    const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1500,
-      system: ADG_SYSTEM_PROMPT,
-      messages: [
-        { role: "user", content: userPrompt },
-      ],
+    // 5. Call OpenAI
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + process.env.OPENAI_API_KEY,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        max_tokens: 1500,
+        messages: [
+          { role: "system", content: ADG_SYSTEM_PROMPT },
+          { role: "user", content: userPrompt },
+        ],
+      }),
     });
 
-    // 6. Extract text response
-    const answer = response.content
-      .filter((block) => block.type === "text")
-      .map((block) => block.text)
-      .join("\n");
+    const data = await response.json();
 
-    // 7. Return answer with source references
+    if (response.status !== 200) {
+      console.error("OpenAI error:", JSON.stringify(data));
+      return res.status(500).json({ error: "Failed to generate response." });
+    }
+
+    const answer = data.choices?.[0]?.message?.content || "";
+
+    // 6. Return answer with source references
     return res.status(200).json({
       answer,
       sources: matches.map((m) => ({
