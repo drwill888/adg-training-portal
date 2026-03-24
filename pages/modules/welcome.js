@@ -67,7 +67,7 @@ export default function Welcome() {
           <div style={{ background: NAVY, borderRadius: 12, padding: "20px 24px", display: "flex", alignItems: "center", gap: 16 }}>
             <span style={{ fontSize: 28 }}>📖</span>
             <div>
-              <p style={{ fontSize: 13, fontWeight: 600, color: GOLD_BRIGHT }}>Includes AI-Powered Personal Blueprint</p>
+              <p style={{ fontSize: 13, fontWeight: 600, color: GOLD_BRIGHT }}>Includes Personal Blueprint</p>
               <p style={{ fontSize: 12, color: "#c8cdd6" }}>Each module generates a personalized leadership analysis based on your responses.</p>
             </div>
           </div>
