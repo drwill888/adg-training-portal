@@ -104,7 +104,7 @@ export default function Welcome() {
               {[
                 { icon: "◈", title: "Free Introduction", desc: "Assess your readiness and establish your formation posture before entering the modules." },
                 { icon: "✦", title: "5 Leadership Modules", desc: "Calling, Connection, Competency, Capacity, and Convergence — each with teaching, diagnostics, and commitments." },
-                { icon: "🎯", title: "AI-Powered Blueprints", desc: "Personalized leadership analysis generated from your responses at the end of each module." },
+                { icon: "🎯", title: "Blueprints", desc: "Personalized leadership analysis generated from your responses at the end of each module." },
                 { icon: "📄", title: "Downloadable Reports", desc: "Export your blueprint as a document to revisit, share with mentors, and track growth." },
                 { icon: "📖", title: "Scripture Study Banks", desc: "Curated scripture collections for deeper meditation on each leadership dimension." },
                 { icon: "↺", title: "Save & Resume", desc: "Your progress is saved automatically. Leave and return anytime without losing your work." },
