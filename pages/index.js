@@ -490,7 +490,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ═══ SECTION 9 — TESTIMONIALS ═══ */}
+        {/* ═══ SECTION 9 — TESTIMONIALS ═══ *
         <section id="testimonials">
           <div className="container">
             <div style={{textAlign:'center', maxWidth:'560px', margin:'0 auto'}}>
@@ -512,6 +512,7 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+        /}
 
         {/* ═══ SECTION 10 — MEET THE LEADER ═══ */}
         <section id="leader">
