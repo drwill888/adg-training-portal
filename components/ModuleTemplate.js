@@ -5,6 +5,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import FlameMark from "./FlameMark";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
+import { downloadCertificate } from "../lib/certificate";
 
 var NAVY = "#021A35";
 var GOLD = "#FDD20D";
@@ -529,19 +530,7 @@ export default function ModuleTemplate({ config }) {
               {commitmentPrompts.map(function(c) {
                 return (
                   <div key={c.id}>
-                    <label className="block text-sm font-semibold mb-2" style={{ color: NAVY }}>{c.label}</label>
-                    <textarea
-                      className="w-full rounded-xl p-3 text-sm leading-relaxed resize-none focus:outline-none"
-                      style={{ border: "1px solid #ddd", minHeight: 90 }}
-                      rows={4} placeholder={c.placeholder}
-                      value={commitments[c.id] || ""}
-                      onChange={function(e) { var id = c.id; var v = e.target.value; setCommitments(function(p) { var n = Object.assign({}, p); n[id] = v; return n; }); }}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-            {revisitTriggers && revisitTriggers.length > 0 && (
+                c
               <div className="p-5 rounded-xl" style={{ background: accentLight }}>
                 <h4 className="font-bold mb-3" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{title} is a Living Discipline</h4>
                 <p className="text-sm mb-3 leading-relaxed" style={{ color: "#333" }}>What you write today is not a one-time exercise. Return to it regularly as your season deepens.</p>
@@ -619,6 +608,20 @@ export default function ModuleTemplate({ config }) {
                 })}
               </div>
             )}
+            {moduleNum === 6 && aiSummary && (
+              <button onClick={function() {
+               supabase.auth.getSession().then(function(result) {
+               var session = result.data.session;
+                var email = session && session.user ? session.user.email : "Leader";
+               var name = email.split("@")[0].replace(/[._]/g, " ");
+                name = name.split(" ").map(function(w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(" ");
+              downloadCertificate(name);
+            })
+         }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all"
+              style={{ border: "2px solid #021A35", color: "#021A35", background: "#FFF9E6" }}>
+             🎓 Download Completion Certificate
+         </button>
+        )}
 
             {scriptures && (
               <button onClick={function() { setShowScriptures(true); }}
