@@ -31,7 +31,7 @@ export default function Success() {
           Your payment was successful. You now have full access to all five modules of the 5C Leadership Blueprint.
         </p>
         <button
-          onClick={() => router.push('/')}
+          onClick={() => router.push('/dashboard')}
           style={{
             marginTop: '24px',
             padding: '12px 32px',

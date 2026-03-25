@@ -172,7 +172,7 @@ export default async function handler(req, res) {
   try {
     // 1 — Send results to the leader
     await resend.emails.send({
-      from: 'assessment@5cblueprint.awakeningdestiny.global',
+      from: 'assessment@awakeningdestiny.global',
       to: [email],
       subject: `${firstName}, Your 5C Leadership Profile Is Ready`,
       html: buildLeaderEmail({ firstName, scores, totalScore, strongest, gap }),
@@ -180,7 +180,7 @@ export default async function handler(req, res) {
 
     // 2 — Send notification to Will
     await resend.emails.send({
-      from: 'assessment@5cblueprint.awakeningdestiny.global',
+      from: 'assessment@awakeningdestiny.global',
       to: ['info@awakeningdestiny.global'],
       subject: `New Assessment: ${firstName} ${lastName} — ${totalScore}/125`,
       html: buildNotificationEmail({ firstName, lastName, email, scores, totalScore, strongest, gap }),

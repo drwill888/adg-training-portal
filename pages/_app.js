@@ -6,7 +6,7 @@ import '../styles/globals.css'
 import TrainingChat from '../components/TrainingChat'
 
 // Pages that don't require authentication
-const publicPages = ['/login', '/auth/callback', '/auth/reset-password']
+const publicPages = ['/login', '/auth/callback', '/auth/reset-password', '/', '/assessment']
 
 export default function App({ Component, pageProps }) {
   const router = useRouter()
@@ -41,7 +41,7 @@ export default function App({ Component, pageProps }) {
       router.replace('/login')
     } else if (session && router.pathname === '/login') {
       // Already signed in + on login page = go to dashboard
-      router.replace('/')
+      router.replace('/dashboard')
     }
   }, [session, loading, router.pathname])
 

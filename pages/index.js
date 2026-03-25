@@ -1,297 +1,604 @@
 // pages/index.js
-import { useState, useEffect } from "react";
-import { usePaymentStatus } from "../lib/usePaymentStatus";
-import { supabase } from "../lib/supabase";
+// 5C Leadership Blueprint — Landing Page
+// Move current pages/index.js (dashboard) to pages/dashboard.js first
 
-function useIsMobile(breakpoint = 768) {
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth < breakpoint : false
-  );
+import Head from 'next/head';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { supabase } from '../lib/supabase';
+
+const css = `
+  #adg-5c, #adg-5c * { box-sizing: border-box !important; }
+  #adg-5c *:not(script):not(style) { font-family: 'Outfit', sans-serif !important; }
+
+  #adg-5c {
+    background: #021A35 !important;
+    color: #FDF8F0 !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    line-height: normal !important;
+    --navy: #021A35;
+    --gold: #FDD20D;
+    --blue: #0172BC;
+    --orange: #F47722;
+    --red: #EE3124;
+    --cream: #FDF8F0;
+    --navy-light: #0a2d52;
+    --gold-dim: rgba(253,210,13,0.12);
+    --gold-line: rgba(253,210,13,0.35);
+  }
+
+  #adg-5c .section-title { font-family: 'Cormorant Garamond', serif !important; font-size: clamp(2.2rem, 5vw, 3.8rem) !important; font-weight: 600 !important; line-height: 1.1 !important; color: #FDF8F0 !important; }
+  #adg-5c .section-title em { color: #FDD20D !important; font-style: italic !important; }
+  #adg-5c .body-text { font-size: 1.05rem !important; line-height: 1.8 !important; color: rgba(253,248,240,0.8) !important; }
+  #adg-5c .gold-line { width: 48px !important; height: 2px !important; background: #FDD20D !important; margin: 1.2rem 0 !important; display: block !important; }
+  #adg-5c .gold-line.center { margin: 1.2rem auto !important; }
+  #adg-5c .container { max-width: 1140px !important; margin: 0 auto !important; padding: 0 2rem !important; }
+  #adg-5c .gold-divider { height: 1px !important; background: linear-gradient(90deg, transparent, rgba(253,210,13,0.35), transparent) !important; display: block !important; }
+
+  #adg-5c .section-badge { display: inline-block !important; background: rgba(253,210,13,0.12) !important; border: 1px solid rgba(253,210,13,0.35) !important; color: #FDD20D !important; font-size: 0.65rem !important; letter-spacing: 0.25em !important; text-transform: uppercase !important; padding: 0.3rem 0.8rem !important; margin-bottom: 1.25rem !important; font-weight: 600 !important; }
+  #adg-5c .section-badge.dark { background: rgba(2,26,53,0.08) !important; border-color: rgba(2,26,53,0.2) !important; color: #0172BC !important; }
+  #adg-5c .section-badge.red { background: rgba(238,49,36,0.08) !important; border-color: rgba(238,49,36,0.2) !important; color: #EE3124 !important; }
+  #adg-5c .section-badge.orange { background: rgba(244,119,34,0.08) !important; border-color: rgba(244,119,34,0.2) !important; color: #F47722 !important; }
+
+  #adg-5c .btn-primary { background: #FDD20D !important; color: #021A35 !important; font-family: 'Outfit', sans-serif !important; font-size: 0.85rem !important; font-weight: 700 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; padding: 1rem 2.2rem !important; border: none !important; cursor: pointer !important; text-decoration: none !important; display: inline-block !important; transition: transform 0.2s, box-shadow 0.2s !important; border-radius: 0 !important; }
+  #adg-5c .btn-primary:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 30px rgba(253,210,13,0.3) !important; background: #FDD20D !important; color: #021A35 !important; }
+  #adg-5c .btn-gold-outline { background: transparent !important; color: #FDD20D !important; font-family: 'Outfit', sans-serif !important; font-size: 0.85rem !important; font-weight: 700 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; padding: 1rem 2.2rem !important; border: 1px solid #FDD20D !important; cursor: pointer !important; text-decoration: none !important; display: inline-block !important; border-radius: 0 !important; }
+  #adg-5c .btn-gold-outline:hover { background: #FDD20D !important; color: #021A35 !important; }
+
+  #adg-5c nav { position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; z-index: 99999 !important; padding: 1.25rem 2rem !important; display: flex !important; align-items: center !important; justify-content: space-between !important; background: rgba(2,26,53,0.97) !important; backdrop-filter: blur(12px) !important; border-bottom: 1px solid rgba(253,210,13,0.35) !important; border-top: none !important; border-left: none !important; border-right: none !important; margin: 0 !important; }
+  #adg-5c .nav-logo { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; font-weight: 600 !important; color: #FDF8F0 !important; text-decoration: none !important; }
+  #adg-5c .nav-logo span { color: #FDD20D !important; }
+  #adg-5c .nav-right { display: flex !important; align-items: center !important; gap: 1rem !important; }
+  #adg-5c .nav-assess { font-size: 0.75rem !important; color: #FDD20D !important; text-decoration: none !important; letter-spacing: 0.08em !important; font-weight: 600 !important; }
+  #adg-5c .nav-cta { background: #FDD20D !important; color: #021A35 !important; font-family: 'Outfit', sans-serif !important; font-size: 0.8rem !important; font-weight: 700 !important; letter-spacing: 0.08em !important; text-transform: uppercase !important; padding: 0.6rem 1.4rem !important; border: none !important; cursor: pointer !important; text-decoration: none !important; display: inline-block !important; border-radius: 0 !important; }
+
+  #adg-5c #hero { min-height: 100vh !important; display: flex !important; align-items: center !important; position: relative !important; overflow: hidden !important; padding: 8rem 2rem 5rem !important; background: #021A35 !important; }
+  #adg-5c .hero-bg { position: absolute !important; inset: 0 !important; background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(1,114,188,0.12) 0%, transparent 70%), radial-gradient(ellipse 60% 80% at 10% 80%, rgba(253,210,13,0.06) 0%, transparent 60%), #021A35 !important; }
+  #adg-5c .hero-grid { position: absolute !important; inset: 0 !important; background-image: linear-gradient(rgba(253,210,13,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(253,210,13,0.04) 1px, transparent 1px) !important; background-size: 60px 60px !important; }
+  #adg-5c .hero-content { position: relative !important; z-index: 2 !important; max-width: 780px !important; }
+  #adg-5c .hero-eyebrow { display: inline-flex !important; align-items: center !important; gap: 0.75rem !important; background: rgba(253,210,13,0.12) !important; border: 1px solid rgba(253,210,13,0.35) !important; padding: 0.4rem 1rem !important; margin-bottom: 2rem !important; font-size: 0.7rem !important; font-weight: 600 !important; letter-spacing: 0.25em !important; text-transform: uppercase !important; color: #FDD20D !important; }
+  #adg-5c .hero-title { font-family: 'Cormorant Garamond', serif !important; font-size: clamp(3rem, 7vw, 5.5rem) !important; font-weight: 700 !important; line-height: 1.0 !important; margin-bottom: 1.5rem !important; color: #FDF8F0 !important; }
+  #adg-5c .hero-title .accent { color: #FDD20D !important; display: block !important; font-style: italic !important; }
+  #adg-5c .hero-subtitle { font-size: 1.15rem !important; line-height: 1.75 !important; color: rgba(253,248,240,0.78) !important; max-width: 600px !important; margin-bottom: 2.5rem !important; }
+  #adg-5c .hero-actions { display: flex !important; gap: 1rem !important; flex-wrap: wrap !important; margin-bottom: 2rem !important; }
+  #adg-5c .hero-assess-nudge { display: flex !important; align-items: center !important; gap: 0.75rem !important; margin-bottom: 3rem !important; }
+  #adg-5c .assess-nudge-line { height: 1px !important; width: 32px !important; background: rgba(253,210,13,0.35) !important; }
+  #adg-5c .assess-nudge-text { font-size: 0.78rem !important; color: rgba(253,248,240,0.45) !important; letter-spacing: 0.05em !important; }
+  #adg-5c .assess-nudge-link { font-size: 0.78rem !important; color: #FDD20D !important; font-weight: 600 !important; text-decoration: none !important; letter-spacing: 0.05em !important; border-bottom: 1px solid rgba(253,210,13,0.3) !important; }
+  #adg-5c .hero-5c-row { display: flex !important; gap: 1.5rem !important; flex-wrap: wrap !important; }
+  #adg-5c .hero-c { display: flex !important; align-items: center !important; gap: 0.5rem !important; opacity: 0.55 !important; font-size: 0.8rem !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; font-weight: 500 !important; color: #FDF8F0 !important; }
+  #adg-5c .hero-c-dot { width: 6px !important; height: 6px !important; border-radius: 50% !important; background: #FDD20D !important; flex-shrink: 0 !important; }
+  #adg-5c .hero-scroll { position: absolute !important; bottom: 2.5rem !important; left: 50% !important; transform: translateX(-50%) !important; display: flex !important; flex-direction: column !important; align-items: center !important; gap: 0.5rem !important; font-size: 0.7rem !important; letter-spacing: 0.2em !important; text-transform: uppercase !important; opacity: 0.4 !important; color: #FDF8F0 !important; }
+  #adg-5c .scroll-line { width: 1px !important; height: 40px !important; background: #FDF8F0 !important; animation: adgScrollPulse 2s infinite !important; }
+  @keyframes adgScrollPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+  #adg-5c #assess-teaser { padding: 5rem 2rem !important; background: #0a2d52 !important; position: relative !important; overflow: hidden !important; }
+  #adg-5c #assess-teaser::before { content: '' !important; position: absolute !important; inset: 0 !important; background: radial-gradient(ellipse 70% 100% at 50% 50%, rgba(253,210,13,0.05) 0%, transparent 70%) !important; }
+  #adg-5c .assess-inner { position: relative !important; z-index: 2 !important; display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 4rem !important; align-items: center !important; }
+  #adg-5c .assess-right { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 1rem !important; }
+  #adg-5c .assess-score-card { padding: 1.25rem !important; border: 1px solid rgba(253,210,13,0.35) !important; background: rgba(253,210,13,0.12) !important; text-align: center !important; }
+  #adg-5c .assess-score-card .dim-label { font-size: 0.65rem !important; letter-spacing: 0.2em !important; text-transform: uppercase !important; color: #FDD20D !important; font-weight: 700 !important; margin-bottom: 0.4rem !important; display: block !important; }
+  #adg-5c .assess-score-card .dim-bar-track { height: 3px !important; background: rgba(253,210,13,0.15) !important; margin-bottom: 0.4rem !important; }
+  #adg-5c .assess-score-card .dim-bar-fill { height: 100% !important; background: #FDD20D !important; display: block !important; }
+  #adg-5c .assess-score-card .dim-status { font-size: 0.7rem !important; color: rgba(253,248,240,0.55) !important; display: block !important; }
+  #adg-5c .assess-output { margin-top: 1.5rem !important; padding: 1.25rem !important; border-left: 3px solid #FDD20D !important; background: rgba(253,210,13,0.05) !important; }
+  #adg-5c .assess-output p { font-family: 'Cormorant Garamond', serif !important; font-size: 1.1rem !important; font-style: italic !important; line-height: 1.7 !important; color: #FDF8F0 !important; margin-bottom: 0.5rem !important; }
+  #adg-5c .assess-output .output-sub { font-size: 0.75rem !important; color: rgba(253,248,240,0.45) !important; font-style: normal !important; }
+
+  #adg-5c #problem { padding: 7rem 2rem !important; background: #FDF8F0 !important; color: #021A35 !important; }
+  #adg-5c #problem .section-title { color: #021A35 !important; }
+  #adg-5c #problem .body-text { color: rgba(2,26,53,0.75) !important; }
+  #adg-5c .pain-grid { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important; gap: 1.5rem !important; margin-top: 3rem !important; }
+  #adg-5c .pain-card { border-left: 3px solid #021A35 !important; padding: 1.5rem !important; background: rgba(2,26,53,0.04) !important; }
+  #adg-5c .pain-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.25rem !important; font-weight: 600 !important; color: #021A35 !important; margin-bottom: 0.5rem !important; }
+  #adg-5c .pain-card p { font-size: 0.95rem !important; line-height: 1.7 !important; color: rgba(2,26,53,0.7) !important; }
+
+  #adg-5c #solution { padding: 7rem 2rem !important; background: #021A35 !important; text-align: center !important; position: relative !important; overflow: hidden !important; }
+  #adg-5c #solution::before { content: '5C' !important; position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%,-50%) !important; font-family: 'Cormorant Garamond', serif !important; font-size: 28rem !important; font-weight: 700 !important; color: rgba(253,210,13,0.03) !important; pointer-events: none !important; white-space: nowrap !important; }
+  #adg-5c .solution-inner { position: relative !important; z-index: 2 !important; }
+  #adg-5c .solution-description { max-width: 680px !important; margin: 0 auto 2.5rem !important; }
+
+  #adg-5c #pillars { padding: 7rem 2rem !important; background: #0a2d52 !important; }
+  #adg-5c .pillars-intro { text-align: center !important; max-width: 640px !important; margin: 0 auto 4rem !important; }
+  #adg-5c .pillar-item { display: grid !important; grid-template-columns: 80px 1fr !important; border-bottom: 1px solid rgba(253,210,13,0.15) !important; padding: 2.5rem 0 !important; gap: 2rem !important; align-items: start !important; background: transparent !important; }
+  #adg-5c .pillar-num { font-family: 'Cormorant Garamond', serif !important; font-size: 4rem !important; font-weight: 700 !important; color: #FDD20D !important; line-height: 1 !important; opacity: 0.9 !important; }
+  #adg-5c .pillar-body h3 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.9rem !important; font-weight: 600 !important; color: #FDF8F0 !important; margin-bottom: 0.3rem !important; }
+  #adg-5c .pillar-body .pillar-sub { font-size: 0.75rem !important; letter-spacing: 0.2em !important; text-transform: uppercase !important; color: #FDD20D !important; font-weight: 600 !important; margin-bottom: 0.9rem !important; display: block !important; }
+  #adg-5c .pillar-body p { font-size: 0.98rem !important; line-height: 1.75 !important; color: rgba(253,248,240,0.72) !important; max-width: 640px !important; }
+  #adg-5c .pillar-outcomes { display: flex !important; flex-wrap: wrap !important; gap: 0.5rem !important; margin-top: 1rem !important; }
+  #adg-5c .pillar-tag { font-size: 0.72rem !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; border: 1px solid rgba(253,210,13,0.3) !important; color: rgba(253,210,13,0.7) !important; padding: 0.25rem 0.7rem !important; background: transparent !important; }
+
+  #adg-5c #who { padding: 7rem 2rem !important; background: #FDF8F0 !important; color: #021A35 !important; }
+  #adg-5c #who .section-title { color: #021A35 !important; }
+  #adg-5c .audience-grid { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important; gap: 1.5rem !important; margin-top: 3rem !important; }
+  #adg-5c .audience-card { background: #021A35 !important; color: #FDF8F0 !important; padding: 2rem 1.5rem !important; border-bottom: 3px solid #FDD20D !important; border-top: none !important; border-left: none !important; border-right: none !important; }
+  #adg-5c .audience-card .icon { font-size: 1.8rem !important; margin-bottom: 1rem !important; display: block !important; }
+  #adg-5c .audience-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.3rem !important; font-weight: 600 !important; margin-bottom: 0.5rem !important; color: #FDD20D !important; }
+  #adg-5c .audience-card p { font-size: 0.9rem !important; line-height: 1.65 !important; color: rgba(253,248,240,0.72) !important; }
+  #adg-5c .not-for { margin-top: 3rem !important; padding: 2rem !important; border: 1px solid rgba(2,26,53,0.15) !important; background: rgba(2,26,53,0.04) !important; }
+  #adg-5c .not-for h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; color: #021A35 !important; margin-bottom: 0.75rem !important; }
+  #adg-5c .not-for p { font-size: 0.95rem !important; line-height: 1.7 !important; color: rgba(2,26,53,0.65) !important; }
+
+  #adg-5c #deliverables { padding: 7rem 2rem !important; background: #021A35 !important; }
+  #adg-5c .deliverables-intro { max-width: 620px !important; margin-bottom: 4rem !important; }
+  #adg-5c .deliverables-grid { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; gap: 1.5rem !important; }
+  #adg-5c .deliverable-card { background: rgba(253,210,13,0.05) !important; border: 1px solid rgba(253,210,13,0.2) !important; padding: 2rem !important; }
+  #adg-5c .deliverable-card .d-icon { width: 44px !important; height: 44px !important; background: rgba(253,210,13,0.12) !important; border: 1px solid rgba(253,210,13,0.35) !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.2rem !important; margin-bottom: 1.2rem !important; }
+  #adg-5c .deliverable-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.3rem !important; font-weight: 600 !important; color: #FDD20D !important; margin-bottom: 0.5rem !important; }
+  #adg-5c .deliverable-card p { font-size: 0.92rem !important; line-height: 1.7 !important; color: rgba(253,248,240,0.7) !important; }
+  #adg-5c .pathway-card { background: rgba(253,210,13,0.05) !important; border: 1px solid rgba(253,210,13,0.2) !important; padding: 2rem !important; grid-column: span 2 !important; }
+  #adg-5c .pathway-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.3rem !important; font-weight: 600 !important; color: #FDD20D !important; margin-bottom: 1.25rem !important; }
+  #adg-5c .pathway-options { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 1.5rem !important; }
+  #adg-5c .pathway-option { padding: 1.25rem !important; border: 1px solid rgba(253,210,13,0.2) !important; background: transparent !important; }
+  #adg-5c .pathway-option h5 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.1rem !important; font-weight: 600 !important; color: #FDF8F0 !important; margin-bottom: 0.4rem !important; }
+  #adg-5c .pathway-option p { font-size: 0.88rem !important; line-height: 1.65 !important; color: rgba(253,248,240,0.65) !important; }
+
+  #adg-5c #journey { padding: 7rem 2rem !important; background: #0a2d52 !important; }
+  #adg-5c .journey-intro { text-align: center !important; max-width: 600px !important; margin: 0 auto 4rem !important; }
+  #adg-5c .journey-steps { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important; gap: 0 !important; }
+  #adg-5c .journey-step { padding: 2rem !important; position: relative !important; background: transparent !important; }
+  #adg-5c .journey-step:not(:last-child)::after { content: '→' !important; position: absolute !important; right: -0.5rem !important; top: 50% !important; transform: translateY(-50%) !important; color: #FDD20D !important; font-size: 1.5rem !important; opacity: 0.4 !important; }
+  #adg-5c .step-num { font-family: 'Cormorant Garamond', serif !important; font-size: 3rem !important; font-weight: 700 !important; color: #FDD20D !important; line-height: 1 !important; margin-bottom: 0.75rem !important; display: block !important; }
+  #adg-5c .journey-step h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; font-weight: 600 !important; color: #FDF8F0 !important; margin-bottom: 0.4rem !important; }
+  #adg-5c .journey-step p { font-size: 0.88rem !important; line-height: 1.6 !important; color: rgba(253,248,240,0.65) !important; }
+
+  #adg-5c #testimonials { padding: 7rem 2rem !important; background: #021A35 !important; }
+  #adg-5c .testimonials-grid { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important; gap: 2rem !important; margin-top: 3rem !important; }
+  #adg-5c .testimonial-card { padding: 2.5rem !important; border: 1px solid rgba(253,210,13,0.2) !important; position: relative !important; background: transparent !important; }
+  #adg-5c .testimonial-card::before { content: '\\201C' !important; position: absolute !important; top: 1rem !important; left: 1.5rem !important; font-family: 'Cormorant Garamond', serif !important; font-size: 5rem !important; line-height: 1 !important; color: #FDD20D !important; opacity: 0.2 !important; }
+  #adg-5c .testimonial-card blockquote { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; font-style: italic !important; line-height: 1.65 !important; color: #FDF8F0 !important; margin-bottom: 1.5rem !important; position: relative !important; z-index: 1 !important; border: none !important; padding: 0 !important; }
+  #adg-5c .testimonial-author { font-size: 0.8rem !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; color: #FDD20D !important; font-weight: 600 !important; display: block !important; }
+  #adg-5c .testimonial-role { font-size: 0.8rem !important; color: rgba(253,248,240,0.5) !important; margin-top: 0.2rem !important; display: block !important; }
+
+  #adg-5c #leader { padding: 7rem 2rem !important; background: #FDF8F0 !important; color: #021A35 !important; }
+  #adg-5c .leader-layout { display: grid !important; grid-template-columns: 1fr 1.4fr !important; gap: 5rem !important; align-items: center !important; }
+  #adg-5c .leader-photo-box { background: #021A35 !important; aspect-ratio: 3/4 !important; display: flex !important; align-items: center !important; justify-content: center !important; position: relative !important; overflow: hidden !important; }
+  #adg-5c .leader-photo-box::after { content: '' !important; position: absolute !important; bottom: 0 !important; left: 0 !important; right: 0 !important; height: 4px !important; background: #FDD20D !important; }
+  #adg-5c .leader-photo-placeholder { text-align: center !important; color: rgba(253,248,240,0.3) !important; font-size: 0.85rem !important; letter-spacing: 0.1em !important; }
+  #adg-5c .leader-content h2 { font-family: 'Cormorant Garamond', serif !important; font-size: clamp(2rem, 4vw, 3rem) !important; font-weight: 600 !important; line-height: 1.1 !important; color: #021A35 !important; margin-bottom: 0.5rem !important; }
+  #adg-5c .leader-title { font-size: 0.78rem !important; letter-spacing: 0.18em !important; text-transform: uppercase !important; color: #F47722 !important; font-weight: 600 !important; margin-bottom: 1.5rem !important; display: block !important; }
+  #adg-5c .leader-content p { font-size: 0.98rem !important; line-height: 1.8 !important; color: rgba(2,26,53,0.75) !important; margin-bottom: 1rem !important; }
+  #adg-5c .leader-credentials { display: flex !important; flex-wrap: wrap !important; gap: 0.5rem !important; margin-top: 1.5rem !important; }
+  #adg-5c .cred-tag { font-size: 0.72rem !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; border: 1px solid rgba(2,26,53,0.25) !important; color: rgba(2,26,53,0.6) !important; padding: 0.3rem 0.75rem !important; background: transparent !important; }
+
+  #adg-5c #faq { padding: 7rem 2rem !important; background: #0a2d52 !important; }
+  #adg-5c .faq-list { max-width: 740px !important; margin-top: 3rem !important; }
+  #adg-5c .faq-item { border-bottom: 1px solid rgba(253,210,13,0.15) !important; padding: 1.75rem 0 !important; border-top: none !important; border-left: none !important; border-right: none !important; background: transparent !important; }
+  #adg-5c .faq-item h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; font-weight: 600 !important; color: #FDF8F0 !important; margin-bottom: 0.75rem !important; }
+  #adg-5c .faq-item p { font-size: 0.95rem !important; line-height: 1.75 !important; color: rgba(253,248,240,0.68) !important; }
+
+  #adg-5c #cta-close { padding: 8rem 2rem !important; background: #021A35 !important; text-align: center !important; position: relative !important; overflow: hidden !important; }
+  #adg-5c #cta-close::before { content: '' !important; position: absolute !important; inset: 0 !important; background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(253,210,13,0.07) 0%, transparent 70%) !important; }
+  #adg-5c .cta-inner { position: relative !important; z-index: 2 !important; max-width: 680px !important; margin: 0 auto !important; }
+  #adg-5c .cta-dual { display: flex !important; gap: 1rem !important; justify-content: center !important; flex-wrap: wrap !important; }
+  #adg-5c .cta-subtext { font-size: 0.82rem !important; color: rgba(253,248,240,0.4) !important; margin-top: 1.5rem !important; letter-spacing: 0.05em !important; display: block !important; }
+
+  #adg-5c footer { background: #010f1f !important; padding: 3rem 2rem !important; border-top: 1px solid rgba(253,210,13,0.35) !important; }
+  #adg-5c .footer-inner { display: flex !important; align-items: center !important; justify-content: space-between !important; flex-wrap: wrap !important; gap: 1rem !important; }
+  #adg-5c .footer-brand { font-family: 'Cormorant Garamond', serif !important; font-size: 1.1rem !important; font-weight: 600 !important; color: rgba(253,248,240,0.6) !important; }
+  #adg-5c .footer-brand span { color: #FDD20D !important; }
+  #adg-5c .footer-links { display: flex !important; gap: 2rem !important; flex-wrap: wrap !important; }
+  #adg-5c .footer-links a { font-size: 0.8rem !important; color: rgba(253,248,240,0.4) !important; text-decoration: none !important; letter-spacing: 0.08em !important; }
+  #adg-5c .footer-links a:hover { color: #FDD20D !important; }
+  #adg-5c .footer-copy { font-size: 0.78rem !important; color: rgba(253,248,240,0.3) !important; text-align: center !important; margin-top: 2rem !important; display: block !important; }
+
+  @media (max-width: 768px) {
+    #adg-5c .assess-inner { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+    #adg-5c .leader-layout { grid-template-columns: 1fr !important; }
+    #adg-5c .leader-photo-box { aspect-ratio: 1/1 !important; }
+    #adg-5c .journey-step:not(:last-child)::after { display: none !important; }
+    #adg-5c .pillar-item { grid-template-columns: 60px 1fr !important; }
+    #adg-5c .pathway-card { grid-column: span 1 !important; }
+    #adg-5c .pathway-options { grid-template-columns: 1fr !important; }
+  }
+`;
+
+const BOOKING_URL = 'https://link.createassistants.ai/widget/booking/oBN5QzfslWc8BLBaKQpH';
+
+export default function LandingPage() {
+  const router = useRouter();
+  const [checking, setChecking] = useState(true);
+
+  // ─── SESSION CHECK — redirect logged-in users to dashboard ───
   useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < breakpoint);
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
-  }, [breakpoint]);
-  return isMobile;
-}
+    async function checkSession() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          router.push('/dashboard');
+        } else {
+          setChecking(false);
+        }
+      } catch (e) {
+        setChecking(false);
+      }
+    }
+    checkSession();
+  }, []);
 
-const colors = {
-  navy: "#021A35", navyLight: "#0a2a4d", navyMid: "#132f50",
-  skyBlue: "#00AEEF", royalBlue: "#0172BC", orange: "#F47722",
-  gold: "#C8A951", white: "#FFFFFF", offWhite: "#F8F9FC",
-  gray200: "#e2e6ed", gray300: "#c8cdd6", gray500: "#6b7280",
-  cream: "#FDF8F0",
-};
-
-const modules = [
-  { id: 0, title: "Introduction", subtitle: "Course Foundation", icon: "◈", href: "/modules/introduction", free: true },
-  { id: 1, title: "Calling", subtitle: "Potential (Purpose)", question: "Who was I designed to become?", icon: "①", href: "/modules/calling" },
-  { id: 2, title: "Connection", subtitle: "Identity (Relationships)", question: "Whose am I?", icon: "②", href: "/modules/connection" },
-  { id: 3, title: "Competency", subtitle: "Excellence (Credibility)", question: "Can I carry what I'm called to build?", icon: "③", href: "/modules/competency" },
-  { id: 4, title: "Capacity", subtitle: "Character (Sustainability)", question: "Can I sustain what I'm building?", icon: "④", href: "/modules/capacity" },
-  { id: 5, title: "Convergence", subtitle: "Sweet Spot (Impact)", question: "Am I operating in my sweet spot?", icon: "⑤", href: "/modules/convergence" },
-  { id: 6, title: "Commissioning", subtitle: "Sent (Deployment)", icon: "◉", href: "/modules/commissioning" },
-];
-
-const accents = [colors.gold, colors.skyBlue, colors.royalBlue, colors.orange, colors.skyBlue, "#EE3124", colors.gold];
-
-// Total steps per module for progress calculation
-const TOTAL_STEPS = { 0: 9, 1: 11, 2: 11, 3: 11, 4: 11, 5: 11, 6: 8 };
-
-function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
-  const isMobile = useIsMobile();
-  const navItems = [
-    { key: "dashboard", label: "Dashboard", icon: "⬡" },
-    ...modules.map(m => ({ key: "mod-" + m.id, label: m.id === 0 ? "Introduction" : m.id === 6 ? "Commissioning" : m.id + ". " + m.title, icon: m.icon, href: m.href, locked: !m.free && !paid })),
-  ];
-
+  // ─── Show nothing while session check runs — prevents flash ───
+  if (checking) return null;
   return (
     <>
-      {isMobile && open && <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 49 }} />}
-      <div style={{ width: 260, minHeight: "100vh", background: colors.navy, flexShrink: 0, display: "flex", flexDirection: "column", ...(isMobile ? { position: "fixed", top: 0, left: 0, zIndex: 50, height: "100vh", overflowY: "auto", transform: open ? "translateX(0)" : "translateX(-100%)", transition: "transform 0.3s ease" } : {}) }}>
-        <div style={{ padding: "24px 16px 16px", borderBottom: "1px solid " + colors.navyMid, textAlign: "center" }}>
-          <div style={{ fontSize: 14, color: colors.white, fontWeight: 700, marginBottom: 4 }}>5C Leadership Blueprint</div>
-          <div style={{ fontSize: 11, color: colors.gold, fontStyle: "italic" }}>Awakening Destiny Global</div>
-        </div>
-        <div style={{ padding: "12px 0", flex: 1, overflowY: "auto" }}>
-          {navItems.map(function(item) {
-            var act = currentPage === item.key;
-            return (
-              <div key={item.key}
-                onClick={function() {
-                  if (item.locked) return;
-                  if (item.href) { window.location.href = item.href; } else { setCurrentPage(item.key); if (isMobile) onClose(); }
-                }}
-                style={{ padding: "10px 20px", cursor: item.locked ? "default" : "pointer", display: "flex", alignItems: "center", gap: 10, background: act ? colors.navyLight : "transparent", borderLeft: act ? "3px solid " + colors.gold : "3px solid transparent", opacity: item.locked ? 0.4 : 1, transition: "all 0.2s" }}
-                onMouseEnter={function(e) { if (!act && !item.locked) e.currentTarget.style.background = colors.navyLight; }}
-                onMouseLeave={function(e) { if (!act && !item.locked) e.currentTarget.style.background = "transparent"; }}>
-                <span style={{ fontSize: 14, width: 22, textAlign: "center", color: act ? colors.skyBlue : colors.gray300 }}>{item.locked ? "🔒" : item.icon}</span>
-                <span style={{ fontSize: 13, fontWeight: act ? 600 : 400, color: act ? colors.white : colors.gray300 }}>{item.label}</span>
-              </div>
-            );
-          })}
-        </div>
-        <div style={{ padding: "16px 20px", borderTop: "1px solid " + colors.navyMid, textAlign: "center" }}>
-          <div style={{ fontSize: 11, color: colors.gray500 }}>From Design to Destiny</div>
-        </div>
-      </div>
-    </>
-  );
-}
+      <Head>
+        <title>5C Leadership Blueprint | Awakening Destiny Global</title>
+        <meta name="description" content="The 5C Leadership Blueprint equips Kingdom leaders, entrepreneurs, and emerging voices to build with clarity, walk in identity, and lead with enduring impact." />
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      </Head>
 
-// ─── PROGRESS BAR COMPONENT ──────────────────────────────────
-function ProgressBar({ percent, accent, height }) {
-  return (
-    <div style={{ width: "100%", height: height || 6, background: colors.gray200, borderRadius: 4, overflow: "hidden" }}>
-      <div style={{ width: percent + "%", height: "100%", background: accent || colors.gold, borderRadius: 4, transition: "width 0.4s ease" }} />
-    </div>
-  );
-}
+      <style dangerouslySetInnerHTML={{ __html: css }} />
 
-async function handleCheckout() {
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-    const email = session?.user?.email;
-    const res = await fetch('/api/checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-    const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
-    }
-  } catch (err) {
-    console.error('Checkout error:', err);
-    alert('Something went wrong. Please try again.');
-  }
-}
+      <div id="adg-5c">
 
-export default function App() {
-  var isMobile = useIsMobile();
-  var pageState = useState("dashboard");
-  var page = pageState[0];
-  var setPage = pageState[1];
-  var sidebarState = useState(false);
-  var sidebarOpen = sidebarState[0];
-  var setSidebarOpen = sidebarState[1];
-  var { paid, loading } = usePaymentStatus();
-
-  // ─── LEARNER FIRST NAME ──────────────────────────────────
-  const [firstName, setFirstName] = useState("");
-  useEffect(() => {
-    async function loadName() {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) {
-          // Try user_metadata first, then profiles table
-          const meta = session.user.user_metadata;
-          if (meta?.first_name) {
-            setFirstName(meta.first_name);
-          } else if (meta?.full_name) {
-            setFirstName(meta.full_name.split(" ")[0]);
-          } else {
-            // Fallback: query profiles table
-            const { data } = await supabase
-              .from("profiles")
-              .select("first_name")
-              .eq("id", session.user.id)
-              .single();
-            if (data?.first_name) setFirstName(data.first_name);
-          }
-        }
-      } catch (e) { /* silent fallback */ }
-    }
-    loadName();
-  }, []);
-
-  // ─── MODULE PROGRESS ──────────────────────────────────────
-  const [progress, setProgress] = useState({});
-  useEffect(() => {
-    async function loadProgress() {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session?.user) return;
-        const { data } = await supabase
-          .from("user_progress")
-          .select("module_id, current_step")
-          .eq("user_id", session.user.id);
-        if (data) {
-          const map = {};
-          data.forEach(function(row) { map[row.module_id] = row.current_step; });
-          setProgress(map);
-        }
-      } catch (e) { /* silent fallback */ }
-    }
-    loadProgress();
-  }, []);
-
-  // Calculate overall completion
-  var totalSteps = 0;
-  var completedSteps = 0;
-  modules.forEach(function(m) {
-    var total = TOTAL_STEPS[m.id] || 10;
-    totalSteps += total;
-    completedSteps += Math.min(progress[m.id] || 0, total);
-  });
-  var overallPercent = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
-
-  var greeting = firstName ? ("Welcome back, " + firstName) : "Welcome";
-
-  return (
-    <div style={{ display: "flex", minHeight: "100vh", fontFamily: "'Raleway','Segoe UI',sans-serif", background: colors.offWhite }}>
-      <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet" />
-      <Sidebar currentPage={page} setCurrentPage={setPage} open={sidebarOpen} onClose={function() { setSidebarOpen(false); }} paid={paid} />
-      <div style={{ flex: 1, minHeight: "100vh", overflowY: "auto" }}>
-        <div style={{ padding: isMobile ? "10px 16px" : "12px 40px", borderBottom: "1px solid " + colors.gray200, background: colors.white, display: "flex", alignItems: "center", gap: 12, position: "sticky", top: 0, zIndex: 30 }}>
-          {isMobile && (
-            <button onClick={function() { setSidebarOpen(function(s) { return !s; }); }} style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", flexDirection: "column", gap: 5 }}>
-              <div style={{ width: 22, height: 2, background: colors.navy, borderRadius: 2 }} />
-              <div style={{ width: 22, height: 2, background: colors.navy, borderRadius: 2 }} />
-              <div style={{ width: 22, height: 2, background: colors.navy, borderRadius: 2 }} />
-            </button>
-          )}
-          <div style={{ fontSize: 13, color: colors.gray500 }}>Dashboard</div>
-        </div>
-
-        <div style={{ padding: isMobile ? "20px 16px" : "32px 40px", maxWidth: 960 }}>
-
-          {/* ═══ GREETING + PROGRESS ═══ */}
-          <h1 style={{ fontSize: 26, fontWeight: 700, color: colors.navy, margin: "0 0 4px" }}>{greeting}</h1>
-          <p style={{ fontSize: 14, color: colors.gray500, margin: "0 0 20px", fontStyle: "italic" }}>Your leadership formation journey — from design to destiny.</p>
-
-          {/* Overall progress bar */}
-          <div style={{ marginBottom: 28, padding: "16px 20px", background: colors.white, borderRadius: 10, border: "1px solid " + colors.gray200 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: colors.navy }}>Overall Progress</span>
-              <span style={{ fontSize: 13, fontWeight: 700, color: colors.gold }}>{overallPercent}%</span>
-            </div>
-            <ProgressBar percent={overallPercent} accent={colors.gold} height={8} />
+        {/* NAV */}
+        <nav>
+          <a href="/" className="nav-logo">5C <span>Blueprint</span></a>
+          <div className="nav-right">
+            <a href="/assessment" className="nav-assess">Take the Assessment →</a>
+            <a href={BOOKING_URL} className="nav-cta" target="_blank" rel="noopener noreferrer">Apply Now</a>
           </div>
+        </nav>
 
-          {/* ═══ MARKETING / UNLOCK CTA ═══ */}
-          {!paid && !loading && (
-            <div style={{ padding: isMobile ? 20 : 28, background: "linear-gradient(135deg, #021A35 0%, #0a2a4d 100%)", borderRadius: 14, marginBottom: 28, border: "1px solid rgba(200,169,81,0.2)" }}>
-              <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.12em", fontWeight: 700, marginBottom: 10 }}>THE 5C LEADERSHIP BLUEPRINT</div>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 700, color: colors.white, lineHeight: 1.35, marginBottom: 12 }}>
-                Most leaders are overcommitted and underaligned. This training changes that.
-              </div>
-              <p style={{ fontSize: 13, color: colors.gray300, lineHeight: 1.7, margin: "0 0 10px" }}>
-                The 5C Blueprint is a formation experience — not a course. Five integrated dimensions that move you from scattered potential to focused, sustainable impact. Each module builds on the last. By the end, you will have a personalized leadership blueprint anchored in your calling, sharpened by honest self-assessment, and ready to deploy.
+        {/* ═══ SECTION 1 — HERO ═══ */}
+        <section id="hero">
+          <div className="hero-bg"></div>
+          <div className="hero-grid"></div>
+          <div className="container hero-content">
+            <div className="hero-eyebrow">Awakening Destiny Global</div>
+            <h1 className="hero-title">
+              You Were Not Built<br />
+              <span className="accent">to Lead Alone.</span>
+            </h1>
+            <p className="hero-subtitle">
+              The 5C Leadership Blueprint is an apostolic-prophetic framework that equips Kingdom leaders, entrepreneurs, and emerging voices to build with clarity, walk in identity, and lead with enduring impact — not just for a season, but for generations.
+            </p>
+            <div className="hero-actions">
+              <a href={BOOKING_URL} className="btn-primary" target="_blank" rel="noopener noreferrer">Book Discovery Call</a>
+              <a href="/assessment" className="btn-gold-outline">Take the Free Assessment</a>
+            </div>
+            <div className="hero-assess-nudge">
+              <div className="assess-nudge-line"></div>
+              <span className="assess-nudge-text">Not sure where to start?</span>
+              <a href="/assessment" className="assess-nudge-link">Discover your leadership profile in 10 minutes</a>
+            </div>
+            <div className="hero-5c-row">
+              {['Calling','Connection','Competency','Capacity','Convergence'].map(c => (
+                <div key={c} className="hero-c"><div className="hero-c-dot"></div> {c}</div>
+              ))}
+            </div>
+          </div>
+          <div className="hero-scroll"><div className="scroll-line"></div>Scroll</div>
+        </section>
+
+        {/* ═══ SECTION 2 — ASSESSMENT TEASER ═══ */}
+        <section id="assess-teaser">
+          <div className="container assess-inner">
+            <div className="assess-left">
+              <div className="section-badge">Free Assessment</div>
+              <h2 className="section-title" style={{marginBottom:'1rem'}}>Know Where You<br /><em>Stand Before You Build</em></h2>
+              <div className="gold-line"></div>
+              <p className="body-text" style={{marginBottom:'1.75rem'}}>
+                Before you enroll, take the 5C Leadership Assessment — 25 questions, 5 dimensions, 10 minutes. Walk away with a clear picture of your strongest dimension, your greatest gap, and your most strategic next step. Your personalized profile is sent directly to your inbox.
               </p>
-              <p style={{ fontSize: 13, color: colors.gray300, lineHeight: 1.7, margin: "0 0 20px" }}>
-                Personalized summaries. Pre-and-post diagnostics that show your growth. A downloadable blueprint document you can revisit for years. Built for Kingdom entrepreneurs, pastors, prophetic voices, and emerging leaders who are done with surface-level development.
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 20 }}>
-                {["Calling — Who you are", "Connection — Whose you are", "Competency — What you carry", "Capacity — What you sustain", "Convergence — Where it all aligns"].map(function(item, i) {
-                  return (
-                    <div key={i} style={{ fontSize: 12, padding: "5px 12px", background: "rgba(200,169,81,0.12)", border: "1px solid rgba(200,169,81,0.25)", borderRadius: 6, color: colors.gold, fontWeight: 500 }}>
-                      {item}
-                    </div>
-                  );
-                })}
+              <div className="assess-output">
+                <p>&ldquo;You are strongest in: <strong style={{color:'#FDD20D'}}>Calling</strong><br />
+                Your greatest gap is: <strong style={{color:'#F47722'}}>Capacity</strong><br />
+                Your next step is: <strong style={{color:'#FDF8F0'}}>The 5C Blueprint</strong>&rdquo;</p>
+                <span className="output-sub">Sample output — your profile will reflect your actual responses.</span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-                <button onClick={handleCheckout}
-                  style={{ padding: "12px 36px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
-                  Unlock Full Access — $3.99
-                </button>
-                <span style={{ fontSize: 12, color: colors.gray500 }}>Introduction module is free — start there.</span>
+              <div style={{marginTop:'1.75rem'}}>
+                <a href="/assessment" className="btn-primary">Take the Free Assessment</a>
               </div>
             </div>
-          )}
+            <div className="assess-right">
+              {[
+                {label:'Calling', pct:'88%', status:'Strong · 22/25'},
+                {label:'Connection', pct:'64%', status:'Developing · 16/25'},
+                {label:'Competency', pct:'72%', status:'Developing · 18/25'},
+                {label:'Capacity', pct:'44%', status:'Misaligned · 11/25'},
+              ].map(d => (
+                <div key={d.label} className="assess-score-card">
+                  <div className="dim-label">{d.label}</div>
+                  <div className="dim-bar-track"><div className="dim-bar-fill" style={{width:d.pct}}></div></div>
+                  <div className="dim-status">{d.status}</div>
+                </div>
+              ))}
+              <div className="assess-score-card" style={{gridColumn:'span 2'}}>
+                <div className="dim-label">Convergence</div>
+                <div className="dim-bar-track"><div className="dim-bar-fill" style={{width:'60%'}}></div></div>
+                <div className="dim-status">Developing · 15/25</div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-          {/* ═══ MODULE GRID ═══ */}
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 16, marginBottom: 24 }}>
-            {modules.map(function(m, i) {
-              var locked = !m.free && !paid;
-              var stepsDone = progress[m.id] || 0;
-              var stepsTotal = TOTAL_STEPS[m.id] || 10;
-              var modPercent = Math.min(Math.round((stepsDone / stepsTotal) * 100), 100);
-              return (
-                <div key={m.id}
-                  onClick={function() { if (!locked) window.location.href = m.href; }}
-                  style={{ background: colors.white, borderRadius: 12, padding: 20, border: "1px solid " + colors.gray200, borderTop: "3px solid " + (locked ? colors.gray300 : accents[i]), cursor: locked ? "default" : "pointer", opacity: locked ? 0.6 : 1, position: "relative", transition: "box-shadow 0.2s" }}
-                  onMouseEnter={function(e) { if (!locked) e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)"; }}
-                  onMouseLeave={function(e) { if (!locked) e.currentTarget.style.boxShadow = "none"; }}>
-                  {locked && (
-                    <div style={{ position: "absolute", top: 12, right: 12, fontSize: 14 }}>🔒</div>
-                  )}
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
-                    <div style={{ width: 40, height: 40, borderRadius: 10, background: (locked ? colors.gray300 : accents[i]) + "22", border: "2px solid " + (locked ? colors.gray300 : accents[i]), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, color: locked ? colors.gray300 : accents[i], flexShrink: 0 }}>{m.icon}</div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 15, fontWeight: 700, color: colors.navy }}>{m.title}</div>
-                      <div style={{ fontSize: 12, color: colors.gray500, fontStyle: "italic" }}>{m.subtitle}</div>
+        {/* ═══ SECTION 3 — THE PROBLEM ═══ */}
+        <section id="problem">
+          <div className="container">
+            <div className="section-badge dark">The Reality</div>
+            <h2 className="section-title" style={{color:'#021A35'}}>Most Leaders Are <em style={{color:'#0172BC'}}>Busy — but Not Built.</em></h2>
+            <div className="gold-line" style={{background:'#0172BC'}}></div>
+            <p className="body-text" style={{maxWidth:'640px', marginBottom:'3rem', color:'rgba(2,26,53,0.75)'}}>
+              They&apos;re showing up, working hard, even producing results. But underneath the activity is a quiet ache — a sense that something essential is missing. Gifted people running on borrowed frameworks. Leaders who haven&apos;t yet connected their gifts to their governance.
+            </p>
+            <div className="pain-grid">
+              {[
+                {title:'Gifted but Directionless', body:"You know you're called, but clarity about your specific assignment remains elusive. The gift is real — the lane isn't defined."},
+                {title:'Isolated in Leadership', body:"You're carrying weight that was never meant to be carried alone. The higher you go, the thinner the relational oxygen."},
+                {title:'Competent but Not Aligned', body:"Skills are sharp. But skills disconnected from calling produce exhaustion, not legacy. You're performing without fully thriving."},
+                {title:'Capacity Without Structure', body:"Vision is abundant. But without rhythms that sustain — spiritual, physical, relational — leaders peak early and burn out quietly."},
+                {title:'Activity Without Convergence', body:"Doing more isn't the problem. You need the moment where assignment, anointing, and alignment converge into unstoppable momentum."},
+                {title:'No Proven Roadmap', body:"Leadership development in the Kingdom is often fragmented — part church, part business school, part self-help. You need an integrated framework."},
+              ].map(card => (
+                <div key={card.title} className="pain-card">
+                  <h4>{card.title}</h4>
+                  <p>{card.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ SECTION 4 — SOLUTION INTRO ═══ */}
+        <section id="solution">
+          <div className="container solution-inner">
+            <div className="section-badge">The Blueprint</div>
+            <h2 className="section-title" style={{marginBottom:'1.5rem'}}>Introducing the<br /><em>5C Leadership Blueprint</em></h2>
+            <div className="gold-line center"></div>
+            <div className="solution-description">
+              <p className="body-text">
+                The 5C Blueprint is a proven, Spirit-led leadership development system built on five foundational dimensions — each one unlocking the next, each one essential to the whole. It&apos;s not a self-improvement program. It&apos;s a Kingdom alignment process — systematic enough for the strategist in you, revelatory enough for the prophet in you.
+              </p>
+            </div>
+            <a href="#pillars" className="btn-primary">See the 5 Dimensions</a>
+          </div>
+        </section>
+
+        {/* ═══ SECTION 5 — THE 5 PILLARS ═══ */}
+        <section id="pillars">
+          <div className="container">
+            <div className="pillars-intro">
+              <div className="section-badge">The Framework</div>
+              <h2 className="section-title">Five Dimensions.<br /><em>One Complete Leader.</em></h2>
+            </div>
+            <div>
+              {[
+                { num:'01', sub:'The First Dimension', name:'Calling', body:"Every Kingdom leader must begin here — not with what they can do, but with who they are and what they were made for. Calling is the anchor. Without it, gifted people drift. This dimension cuts through the noise of opinion, expectation, and assignment confusion to give you the language and the clarity to name your specific purpose in the Kingdom. You'll move from a vague sense of destiny to a defined sense of direction.", tags:['Identity Clarity','Assignment Definition','Prophetic Affirmation'], last:false },
+                { num:'02', sub:'The Second Dimension', name:'Connection', body:"No assignment is fulfilled in isolation. The Kingdom was designed for covenant relationship — not networking, not transactional collaboration, but deep, accountable, Spirit-aligned connection. This dimension builds the relational architecture that sustains your leadership over time. You'll learn how to attract and steward the right relationships, identify spiritual family, and lead within community without losing yourself — and without your identity depending on the room.", tags:['Relational Intelligence','Covenant vs. Contract','Identity Security','Spiritual Family'], last:false },
+                { num:'03', sub:'The Third Dimension', name:'Competency', body:"Anointing opens doors. Competency keeps you in the room. This dimension bridges spiritual gifting with strategic skill-building — because excellence is not worldly, it's biblical. You'll sharpen the functional skills that your specific assignment demands: communication, decision-making, business acumen, organizational leadership, and Spirit-led problem solving. Competency aligned to calling produces exponential output.", tags:['Strategic Thinking','Business Acumen','Communication Mastery'], last:false },
+                { num:'04', sub:'The Fourth Dimension', name:'Capacity', body:"Your next level is always held by your current capacity. This isn't just about bandwidth — it's about the spiritual, physical, emotional, and organizational infrastructure needed to hold what God has designed for you. Many leaders are called to more but cannot sustain more. This dimension addresses the rhythms, structures, and internal realities that either expand or limit your impact. Sustainable Kingdom leadership requires a prepared vessel.", tags:['Sustainable Rhythms','Emotional Health','Resource Stewardship'], last:false },
+                { num:'05', sub:'The Fifth Dimension', name:'Convergence', body:"Convergence is the moment everything comes together — when your calling, relationships, competencies, and capacity align under the hand of God and produce lasting fruit. This is not a distant dream; it is a designed destination. In this dimension, you move from preparation into full deployment. You step into the fullness of your assignment, your enterprise takes shape, your voice carries greater weight, and your leadership becomes a gateway for others.", tags:['Legacy Formation','Enterprise Launch','Generational Impact'], last:true },
+              ].map(p => (
+                <div key={p.num} className="pillar-item" style={p.last ? {borderBottom:'none'} : {}}>
+                  <div className="pillar-num">{p.num}</div>
+                  <div className="pillar-body">
+                    <div className="pillar-sub">{p.sub}</div>
+                    <h3>{p.name}</h3>
+                    <p>{p.body}</p>
+                    <div className="pillar-outcomes">
+                      {p.tags.map(t => <span key={t} className="pillar-tag">{t}</span>)}
                     </div>
                   </div>
-                  {/* Module progress indicator */}
-                  {!locked && (
-                    <div style={{ marginBottom: 8 }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                        <span style={{ fontSize: 11, color: colors.gray500 }}>{modPercent === 100 ? "Complete" : modPercent > 0 ? "In progress" : "Not started"}</span>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: accents[i] }}>{modPercent}%</span>
-                      </div>
-                      <ProgressBar percent={modPercent} accent={accents[i]} height={4} />
-                    </div>
-                  )}
-                  {m.question && <div style={{ fontSize: 13, color: locked ? colors.gray500 : "#0172BC", fontStyle: "italic", borderTop: "1px solid " + colors.gray200, paddingTop: 10 }}>{m.question}</div>}
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
+        </section>
 
-          {/* ═══ START HERE CTA ═══ */}
-          <div style={{ padding: 24, background: colors.navy, borderRadius: 12, textAlign: "center" }}>
-            <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>START HERE</div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Begin with the Introduction</div>
-            <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16 }}>Understand the framework before entering the modules.</div>
-            <button onClick={function() { window.location.href = "/modules/introduction"; }}
-              style={{ padding: "10px 32px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
-              Begin
-            </button>
+        {/* ═══ SECTION 6 — WHO IT'S FOR ═══ */}
+        <section id="who">
+          <div className="container">
+            <div className="section-badge red">Who This Is For</div>
+            <h2 className="section-title" style={{color:'#021A35'}}>Built for Leaders<br />Who <em style={{color:'#EE3124'}}>Know They&apos;re Called</em> to More</h2>
+            <div className="gold-line" style={{background:'#EE3124'}}></div>
+            <div className="audience-grid">
+              {[
+                {icon:'⚡', title:'Kingdom Entrepreneurs', body:"Business builders who want enterprise that reflects the Kingdom — profitable, purposeful, and Spirit-led from the boardroom to the balance sheet."},
+                {icon:'🔥', title:'Emerging Leaders', body:"Called ones in transition — moving from potential into purpose, from the preparation room into the deployment room."},
+                {icon:'👑', title:'Pastors & Apostolic Leaders', body:"Shepherds and builders who need a framework that integrates spiritual governance with organizational effectiveness."},
+                {icon:'🌐', title:'Prophetic Voices', body:"Those who carry prophetic grace and need the structural wisdom to steward their gift with both accuracy and accountability."},
+                {icon:'🏗', title:'Executive Leaders', body:"High-capacity leaders at the peak of influence who sense that something deeper — something Kingdom — is being required of them now."},
+                {icon:'🙏', title:'Intercessors & Prayer Leaders', body:"Those who operate in intercession and need to understand how their gift is a leadership gift — one that shapes strategy, not just atmosphere."},
+              ].map(card => (
+                <div key={card.title} className="audience-card">
+                  <div className="icon">{card.icon}</div>
+                  <h4>{card.title}</h4>
+                  <p>{card.body}</p>
+                </div>
+              ))}
+            </div>
+            <div className="not-for">
+              <h4>This is not for everyone — and that&apos;s intentional.</h4>
+              <p>The 5C Blueprint is not a shortcut to success, a motivational boost, or a self-improvement program. It requires honest self-assessment, spiritual hunger, and a genuine willingness to be built. If you&apos;re looking for quick wins without transformation — this isn&apos;t your program. But if you are ready to be aligned, equipped, and deployed — welcome home.</p>
+            </div>
           </div>
-        </div>
+        </section>
+
+        {/* ═══ SECTION 7 — WHAT YOU GET ═══ */}
+        <section id="deliverables">
+          <div className="container">
+            <div className="deliverables-intro">
+              <div className="section-badge">What&apos;s Included</div>
+              <h2 className="section-title">Everything You Need to<br /><em>Build and Sustain</em></h2>
+              <div className="gold-line"></div>
+              <p className="body-text">This isn&apos;t a course you watch and forget. Every element is designed to produce real transformation — in your identity, your clarity, and your Kingdom enterprise.</p>
+            </div>
+            <div className="deliverables-grid">
+              {[
+                {icon:'📖', title:'5C Curriculum Modules', body:"Seven structured modules — Introduction, one for each of the 5 Dimensions, and a Commissioning — each building sequentially on the last with revelatory teaching, biblical foundations, and strategic frameworks."},
+                {icon:'💬', title:'Interactive Reflection Questions', body:"Each module includes guided reflection questions designed to draw out what's already in you — surfacing clarity, confronting blind spots, and anchoring revelation to real application."},
+                {icon:'✍️', title:'Personalized Summaries', body:"At the close of each module, receive a personalized leadership summary tailored to your responses — a written declaration of where you are and where you're going."},
+                {icon:'🧠', title:'AI Leadership Assistant', body:"Your built-in guide throughout the Blueprint. Ask questions, go deeper on content, process what you're learning — available to you at every step of the journey."},
+                {icon:'🙏', title:'Prayer & Activation Support', body:"Every dimension includes targeted prayers and prophetic activations — so when you're stuck, unsure, or need a breakthrough, you have a Kingdom-anchored way forward built right into the experience."},
+                {icon:'📖', title:'Reference Blogs & Scripture Study', body:"Each module connects to curated blog content and Scripture references for those who want to go deeper — anchoring the teaching in the Word and extending the revelation beyond the module."},
+                {icon:'🎙', title:'Podcast Training Series', body:"Access to the 5C Blueprint podcast — episodes that expand on each module with prophetic teaching, interviews, and leadership activation content to reinforce what you're building."},
+                {icon:'📜', title:'Certificate of Commissioning', body:"Upon completing all five dimensions, receive a formal Certificate of Commissioning — a tangible marker of the work done, the ground covered, and the assignment ahead."},
+              ].map(card => (
+                <div key={card.title} className="deliverable-card">
+                  <div className="d-icon">{card.icon}</div>
+                  <h4>{card.title}</h4>
+                  <p>{card.body}</p>
+                </div>
+              ))}
+              <div className="pathway-card">
+                <div className="d-icon">🛤</div>
+                <h4>Two Pathways — One Blueprint</h4>
+                <div className="pathway-options">
+                  <div className="pathway-option">
+                    <h5>Individual</h5>
+                    <p>Move through the Blueprint at your own pace, fully online — on your schedule, in your season. Complete access to all modules, tools, and resources.</p>
+                  </div>
+                  <div className="pathway-option">
+                    <h5>Cohort</h5>
+                    <p>Join a live cohort experience with peer community, group coaching sessions, and real-time apostolic leadership input. Iron sharpening iron — in community.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ SECTION 8 — HOW IT WORKS ═══ */}
+        <section id="journey">
+          <div className="container">
+            <div className="journey-intro">
+              <div className="section-badge">The Process</div>
+              <h2 className="section-title">How the <em>Blueprint Works</em></h2>
+              <p className="body-text" style={{marginTop:'1rem'}}>From your first step to your commissioning moment — here is the path.</p>
+            </div>
+            <div className="journey-steps">
+              {[
+                {num:'01', title:'Take the Assessment', body:"Start with the free 5C Leadership Assessment to get your profile — your strongest dimension, your gap, and your next step."},
+                {num:'02', title:'Apply & Align', body:"A brief discovery call to confirm fit, clarify your current season, and open the blueprint process with intentionality — not transactions."},
+                {num:'03', title:'Build Through the 5Cs', body:"Move through each module — sequentially and intentionally. Individual pace or live cohort. Each C unlocks the next."},
+                {num:'04', title:'Integrate & Apply', body:"Coaching sessions translate learning into real strategy — your business, your leadership structure, your Kingdom enterprise taking shape."},
+                {num:'05', title:'Commission & Deploy', body:"Complete the blueprint. Receive your Certificate of Commissioning. Step into your assignment with clarity and authority."},
+              ].map(step => (
+                <div key={step.num} className="journey-step">
+                  <div className="step-num">{step.num}</div>
+                  <h4>{step.title}</h4>
+                  <p>{step.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ SECTION 9 — TESTIMONIALS ═══ */}
+        <section id="testimonials">
+          <div className="container">
+            <div style={{textAlign:'center', maxWidth:'560px', margin:'0 auto'}}>
+              <div className="section-badge">Voices of the Blueprint</div>
+              <h2 className="section-title">The <em>Fruit</em> Speaks</h2>
+            </div>
+            <div className="testimonials-grid">
+              {[
+                {quote:"The 5C Blueprint gave me language for something I'd been experiencing for years but couldn't articulate. For the first time, my calling, my gifts, and my business were all speaking the same language.", author:"[Leader Name]", role:"Kingdom Entrepreneur, City/State"},
+                {quote:"I came in as a pastor who had a business on the side. I left as a Kingdom architect who happened to pastor a congregation. The shift in identity changed everything — the way I lead, the way I build, the way I pray.", author:"[Leader Name]", role:"Apostolic Leader, City/State"},
+                {quote:"What I found here wasn't just training — it was alignment. The framework exposed where I was leaking capacity and gave me the tools to rebuild from the inside out. My team felt the difference before I told them anything changed.", author:"[Leader Name]", role:"Executive Leader, City/State"},
+              ].map((t, i) => (
+                <div key={i} className="testimonial-card">
+                  <blockquote>{t.quote}</blockquote>
+                  <span className="testimonial-author">{t.author}</span>
+                  <span className="testimonial-role">{t.role}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ SECTION 10 — MEET THE LEADER ═══ */}
+        <section id="leader">
+          <div className="container">
+            <div className="leader-layout">
+              <div className="leader-photo-box">
+                <div className="leader-photo-placeholder">
+                  [Photo of Will Meier]<br /><br />
+                  <span style={{fontSize:'0.7rem'}}>Replace with professional<br />headshot or ministry photo</span>
+                </div>
+              </div>
+              <div className="leader-content">
+                <div className="section-badge orange">About Your Guide</div>
+                <h2>Will Meier</h2>
+                <div className="leader-title">Apostle · Prophet · Business Consultant · Coach · Speaker</div>
+                <p>Will Meier is the founder of Awakening Destiny Global — a Kingdom leadership development organization with one clear mandate: restore, align, and deploy. His assignment is not to build programs — it&apos;s to build people, who build nations.</p>
+                <p>Operating with apostolic and prophetic grace, Will brings a rare integration of revelatory insight and strategic precision. His engineering background formed the systematic framework that undergirds the 5C Blueprint — not as an academic exercise, but as a battle-tested architecture for Kingdom leaders in every sphere of influence.</p>
+                <p>He has served Kingdom entrepreneurs, intercessors, pastors, and executive leaders across nations — equipping them with the Word, spiritual gifts, prophetic insight, and the business acumen to build enterprises that endure beyond a single generation.</p>
+                <div className="leader-credentials">
+                  {['Apostolic Leader','Prophetic Voice','Business Consultant','Leadership Coach','Speaker','Founder, ADG'].map(c => (
+                    <span key={c} className="cred-tag">{c}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ SECTION 11 — FAQ ═══ */}
+        <section id="faq">
+          <div className="container">
+            <div className="section-badge">Common Questions</div>
+            <h2 className="section-title">Clarity Before <em>You Commit</em></h2>
+            <div className="faq-list">
+              {[
+                {q:"Is this a church program or a business program?", a:"It's neither — and it's both. The 5C Blueprint is a Kingdom framework, which means it integrates spiritual formation, biblical governance, and strategic business development into one cohesive system. You don't have to choose between the pulpit and the marketplace here. Both are addressed with equal depth and authority."},
+                {q:"What if I'm not sure what my calling is yet?", a:"That's exactly why the first dimension is Calling. You don't need to arrive with certainty — you need to arrive with hunger. The process itself is designed to surface, clarify, and articulate the assignment you've already been given. Many leaders discover in this module what they've known in their spirit for years but never had language for."},
+                {q:"Where do I start if I've never done anything like this?", a:"Start with the free 5C Leadership Assessment. It takes 10 minutes and gives you a clear picture of where you stand across all five dimensions. Your profile will tell you exactly where the Blueprint will have the greatest impact on your leadership."},
+                {q:"What's the difference between Individual and Cohort?", a:"The Individual pathway gives you complete access to all modules at your own pace — ideal if your schedule is unpredictable or you prefer to move at the speed of your season. The Cohort pathway adds live coaching sessions, peer community, and real-time group engagement. Same Blueprint, different experience."},
+                {q:"Is this only for leaders in ministry?", a:"No. The 5C Blueprint was specifically designed for the full spectrum of Kingdom leadership — business owners, corporate executives, nonprofit founders, creatives, educators, and ministry leaders alike. If you operate with influence and you carry a Kingdom assignment, this framework is for you."},
+                {q:"What makes this different from other leadership programs?", a:"Most leadership programs are built on either academic theory or marketplace strategy. The 5C Blueprint is built on apostolic wisdom — it operates at the intersection of the supernatural and the strategic. The revelatory dimension is not an add-on; it's the engine. The result is a framework that transforms identity, not just skill-sets."},
+                {q:"What is the investment?", a:"Investment details are discussed personally during your discovery call. We want to understand your specific season, your goals, and your level of readiness before presenting the right enrollment path. This conversation protects your time and ensures the right fit for both of us."},
+              ].map(faq => (
+                <div key={faq.q} className="faq-item">
+                  <h4>{faq.q}</h4>
+                  <p>{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ SECTION 12 — CLOSING CTA ═══ */}
+        <section id="cta-close">
+          <div className="container cta-inner">
+            <div className="section-badge">Your Next Step</div>
+            <h2 className="section-title">The Blueprint Is Already<br />Written on <em>Your Life.</em></h2>
+            <div className="gold-line center"></div>
+            <p className="body-text">
+              You didn&apos;t land here by accident. Something in you recognizes what&apos;s being offered — not just a program, but a process. Not just training, but transformation. The 5C Blueprint is the framework that will help you read what God has already written on your life and build accordingly.
+            </p>
+            <div className="cta-dual">
+              <a href="/assessment" className="btn-gold-outline">Take the Free Assessment</a>
+              <a href={BOOKING_URL} className="btn-primary" target="_blank" rel="noopener noreferrer">Book Your Discovery Call</a>
+            </div>
+            <span className="cta-subtext">Start with the assessment. Begin with a conversation. Either way — you move forward.</span>
+          </div>
+        </section>
+
+        <div className="gold-divider"></div>
+
+        {/* FOOTER */}
+        <footer>
+          <div className="container">
+            <div className="footer-inner">
+              <div className="footer-brand">Awakening Destiny <span>Global</span></div>
+              <div className="footer-links">
+                <a href="https://awakeningdestiny.global" target="_blank" rel="noopener noreferrer">Main Site</a>
+                <a href="/assessment">Assessment</a>
+                <a href="mailto:info@awakeningdestiny.global">Contact</a>
+                <a href="#pillars">The 5Cs</a>
+                <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">Apply</a>
+              </div>
+            </div>
+            <span className="footer-copy">© 2026 Awakening Destiny Global · 5cblueprint.awakeningdestiny.global · All Rights Reserved</span>
+          </div>
+        </footer>
+
       </div>
-    </div>
+    </>
   );
 }
