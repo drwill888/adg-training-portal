@@ -554,7 +554,7 @@ export default function ModuleTemplate({ config }) {
               </div>
             )}
           </div>
-        );
+        )
 
       case "summary":
         return (
