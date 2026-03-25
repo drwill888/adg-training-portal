@@ -1,7 +1,7 @@
 // components/ModuleTemplate.js
 // Shared rendering engine for all 5C Leadership Blueprint modules
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import FlameMark from "./FlameMark";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
@@ -11,17 +11,16 @@ var NAVY = "#021A35";
 var GOLD = "#FDD20D";
 
 var STEPS = [
-  { id: "activation",      label: "Activation" },
-  { id: "pre-diagnostic",  label: "Pre-Check" },
-  { id: "teaching",        label: "Teaching" },
-  { id: "exemplar",        label: "Exemplar" },
-  { id: "stages",          label: "Stages" },
+  { id: "activation", label: "Activation" },
+  { id: "pre-diagnostic", label: "Pre-Check" },
+  { id: "teaching", label: "Teaching" },
+  { id: "exemplar", label: "Exemplar" },
+  { id: "stages", label: "Stages" },
   { id: "post-diagnostic", label: "Post-Check" },
-  { id: "commitment",      label: "Commitment" },
-  { id: "summary",         label: "Blueprint" },
+  { id: "commitment", label: "Commitment" },
+  { id: "summary", label: "Blueprint" },
 ];
 
-/* ── Modal Overlay ── */
 function Modal({ open, onClose, children }) {
   if (!open) return null;
   return (
@@ -30,13 +29,12 @@ function Modal({ open, onClose, children }) {
       <div style={{ position: "relative", width: "90%", maxWidth: 640, maxHeight: "85vh", overflowY: "auto", background: "#fff", borderRadius: 16, padding: "32px 28px", boxShadow: "0 24px 64px rgba(0,0,0,0.3)" }}>
         <button onClick={onClose} style={{ position: "absolute", top: 12, right: 16, background: "none", border: "none", fontSize: 24, cursor: "pointer", color: "#999" }}>×</button>
         {children}
-        <p style={{ fontSize: 11, color: "#bbb", textAlign: "center", marginBottom: 16 }}>Tap outside or press × to close</p>
+        <button onClick={onClose} style={{ display: "block", width: "100%", marginTop: 24, padding: "12px 0", background: NAVY, color: GOLD, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", textAlign: "center" }}>Close Window</button>
       </div>
     </div>
   );
 }
 
-/* ── Scripture Modal Content (scriptures only) ── */
 function ScriptureContent({ scriptures }) {
   if (!scriptures) return null;
   return (
@@ -58,15 +56,12 @@ function ScriptureContent({ scriptures }) {
   );
 }
 
-/* ── Book Chapter Modal Content ── */
 function BookChapterContent({ chapter }) {
   if (!chapter) return null;
   return (
     <div>
       <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, color: GOLD, marginBottom: 4 }}>From the Book</p>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "1.6rem", fontWeight: 700, marginBottom: 16 }}>
-        {chapter.title}
-      </h2>
+      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "1.6rem", fontWeight: 700, marginBottom: 16 }}>{chapter.title}</h2>
       {chapter.paragraphs.map(function(p, i) {
         if (p.type === "scripture") {
           return <p key={i} style={{ fontSize: 14, color: NAVY, fontStyle: "italic", borderLeft: "3px solid " + GOLD, paddingLeft: 16, margin: "16px 0", lineHeight: 1.7 }}>{p.text}</p>;
@@ -79,20 +74,11 @@ function BookChapterContent({ chapter }) {
 }
 
 function PauseTextarea({ prompt }) {
-  var state = useState("");
-  var val = state[0];
-  var setVal = state[1];
+  var s = useState("");
   return (
     <div className="mb-4">
       {prompt && <p className="text-sm mb-2" style={{ color: "#333" }}>{prompt}</p>}
-      <textarea
-        className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none"
-        style={{ border: "1px solid #ddd", background: "#fff", minHeight: 80 }}
-        rows={3}
-        placeholder="Write your response here..."
-        value={val}
-        onChange={function(e) { setVal(e.target.value); }}
-      />
+      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 80 }} rows={3} placeholder="Write your response here..." value={s[0]} onChange={function(e) { s[1](e.target.value); }} />
     </div>
   );
 }
@@ -102,29 +88,10 @@ function ScoreButtons({ itemNum, scores, setScores, accent }) {
     <div style={{ display: "flex", gap: 4, alignItems: "center", flexShrink: 0, flexWrap: "wrap" }}>
       {[1, 2, 3, 4, 5].map(function(score) {
         return (
-          <button key={score}
-            onClick={function() { setScores(function(p) { return Object.assign({}, p, { [itemNum]: score }); }); }}
-            style={{
-              width: 32, height: 32, borderRadius: 6, fontSize: 13, fontWeight: "bold",
-              border: "none", cursor: "pointer", transition: "all 0.15s",
-              background: scores[itemNum] === score ? accent : "#f0f0f0",
-              color: scores[itemNum] === score ? NAVY : "#999",
-            }}>
-            {score}
-          </button>
+          <button key={score} onClick={function() { setScores(function(p) { var n = Object.assign({}, p); n[itemNum] = score; return n; }); }} style={{ width: 32, height: 32, borderRadius: 6, fontSize: 13, fontWeight: "bold", border: "none", cursor: "pointer", transition: "all 0.15s", background: scores[itemNum] === score ? accent : "#f0f0f0", color: scores[itemNum] === score ? NAVY : "#999" }}>{score}</button>
         );
       })}
-      <button
-        onClick={function() { setScores(function(p) { return Object.assign({}, p, { [itemNum]: "na" }); }); }}
-        style={{
-          height: 32, padding: "0 7px", borderRadius: 6, fontSize: 11,
-          fontWeight: "bold", cursor: "pointer", transition: "all 0.15s",
-          background: scores[itemNum] === "na" ? "#6b7280" : "transparent",
-          color: scores[itemNum] === "na" ? "#fff" : "#bbb",
-          border: "1px dashed #ccc",
-        }}>
-        N/A
-      </button>
+      <button onClick={function() { setScores(function(p) { var n = Object.assign({}, p); n[itemNum] = "na"; return n; }); }} style={{ height: 32, padding: "0 7px", borderRadius: 6, fontSize: 11, fontWeight: "bold", cursor: "pointer", transition: "all 0.15s", background: scores[itemNum] === "na" ? "#6b7280" : "transparent", color: scores[itemNum] === "na" ? "#fff" : "#bbb", border: "1px dashed #ccc" }}>N/A</button>
     </div>
   );
 }
@@ -155,20 +122,11 @@ function DiagnosticSection({ diagnostic, scores, setScores, accent, label }) {
 }
 
 function Reflect({ prompt }) {
-  var state = useState("");
-  var val = state[0];
-  var setVal = state[1];
+  var s = useState("");
   return (
     <div className="mb-5 p-4 rounded-xl" style={{ background: "#f9fafb", border: "1px solid #e5e7eb" }}>
       <p className="text-sm font-semibold mb-3" style={{ color: NAVY }}>{prompt}</p>
-      <textarea
-        className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none"
-        style={{ border: "1px solid #ddd", background: "#fff", minHeight: 90 }}
-        rows={4}
-        placeholder="Write your honest reflection here..."
-        value={val}
-        onChange={function(e) { setVal(e.target.value); }}
-      />
+      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 90 }} rows={4} placeholder="Write your honest reflection here..." value={s[0]} onChange={function(e) { s[1](e.target.value); }} />
     </div>
   );
 }
@@ -187,20 +145,14 @@ function downloadBlueprint(title, commitments, summary) {
   html += '<h1>' + title + ' Blueprint</h1>';
   html += '<p><strong>5C Leadership Blueprint - Awakening Destiny Global</strong></p>';
   html += '<p style="color:#888;font-style:italic;">Generated ' + new Date().toLocaleDateString() + '</p>';
-  if (summary) {
-    html += '<div class="section"><h2>Leadership Analysis</h2><p>' + summary.replace(/\n/g, "<br/>") + '</p></div>';
-  }
+  if (summary) { html += '<div class="section"><h2>Leadership Analysis</h2><p>' + summary.replace(/\n/g, "<br/>") + '</p></div>'; }
   html += '<h2>Your Commitments</h2>';
-  Object.entries(commitments).forEach(function(entry) {
-    html += '<p><strong>' + entry[0].replace(/_/g, " ") + ':</strong> ' + (entry[1] || "(not completed)") + '</p>';
-  });
-  html += '<footer style="margin-top:48px;padding-top:16px;border-top:1px solid #ddd;font-size:11px;color:#aaa;"><p>© 2026 Awakening Destiny Global - awakeningdestiny.global</p><p>Review this blueprint regularly. Let it anchor your decisions and deepen your alignment.</p></footer></body></html>';
+  Object.entries(commitments).forEach(function(entry) { html += '<p><strong>' + entry[0].replace(/_/g, " ") + ':</strong> ' + (entry[1] || "(not completed)") + '</p>'; });
+  html += '<footer style="margin-top:48px;padding-top:16px;border-top:1px solid #ddd;font-size:11px;color:#aaa;"><p>© 2026 Awakening Destiny Global - awakeningdestiny.global</p></footer></body></html>';
   var blob = new Blob([html], { type: "application/msword" });
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
-  a.href = url;
-  a.download = title + "-Blueprint.doc";
-  a.click();
+  a.href = url; a.download = title + "-Blueprint.doc"; a.click();
   URL.revokeObjectURL(url);
 }
 
@@ -231,96 +183,57 @@ export default function ModuleTemplate({ config }) {
   var payLoading = payStatus.loading;
   var isFree = moduleNum === 0;
 
-  var stepState = useState(0);
-  var step = stepState[0];
-  var setStep = stepState[1];
-  var preState = useState({});
-  var preScores = preState[0];
-  var setPreScores = preState[1];
-  var postState = useState({});
-  var postScores = postState[0];
-  var setPostScores = postState[1];
-  var commitState = useState({});
-  var commitments = commitState[0];
-  var setCommitments = commitState[1];
-  var summaryState = useState("");
-  var aiSummary = summaryState[0];
-  var setAiSummary = summaryState[1];
-  var loadState = useState(false);
-  var loading = loadState[0];
-  var setLoading = loadState[1];
-  var scriptModalState = useState(false);
-  var showScriptures = scriptModalState[0];
-  var setShowScriptures = scriptModalState[1];
-  var bookModalState = useState(false);
-  var showBookChapter = bookModalState[0];
-  var setShowBookChapter = bookModalState[1];
-  var resumeState = useState(false);
-  var resumeLoaded = resumeState[0];
-  var setResumeLoaded = resumeState[1];
+  var stepS = useState(0); var step = stepS[0]; var setStep = stepS[1];
+  var preS = useState({}); var preScores = preS[0]; var setPreScores = preS[1];
+  var postS = useState({}); var postScores = postS[0]; var setPostScores = postS[1];
+  var comS = useState({}); var commitments = comS[0]; var setCommitments = comS[1];
+  var sumS = useState(""); var aiSummary = sumS[0]; var setAiSummary = sumS[1];
+  var ldS = useState(false); var loading = ldS[0]; var setLoading = ldS[1];
+  var scS = useState(false); var showScriptures = scS[0]; var setShowScriptures = scS[1];
+  var bkS = useState(false); var showBookChapter = bkS[0]; var setShowBookChapter = bkS[1];
+  var rlS = useState(false); var resumeLoaded = rlS[0]; var setResumeLoaded = rlS[1];
   var topRef = useRef(null);
   var cur = STEPS[step];
-
   var scrollTop = function() { if (topRef.current) topRef.current.scrollIntoView({ behavior: "smooth" }); };
 
   useEffect(function() {
-    async function loadProgress() {
+    async function load() {
       try {
-        var sessionResult = await supabase.auth.getSession();
-        var session = sessionResult.data.session;
-        if (!session || !session.user || !session.user.email) { setResumeLoaded(true); return; }
-        var result = await supabase
-          .from("module_progress")
-          .select("*")
-          .eq("user_email", session.user.email)
-          .eq("module_num", moduleNum)
-          .single();
-        if (result.data) {
-          if (result.data.step) setStep(result.data.step);
-          if (result.data.pre_scores) setPreScores(result.data.pre_scores);
-          if (result.data.post_scores) setPostScores(result.data.post_scores);
-          if (result.data.commitments) setCommitments(result.data.commitments);
-          if (result.data.ai_summary) setAiSummary(result.data.ai_summary);
+        var sr = await supabase.auth.getSession();
+        var ss = sr.data.session;
+        if (!ss || !ss.user || !ss.user.email) { setResumeLoaded(true); return; }
+        var r = await supabase.from("module_progress").select("*").eq("user_email", ss.user.email).eq("module_num", moduleNum).single();
+        if (r.data) {
+          if (r.data.step) setStep(r.data.step);
+          if (r.data.pre_scores) setPreScores(r.data.pre_scores);
+          if (r.data.post_scores) setPostScores(r.data.post_scores);
+          if (r.data.commitments) setCommitments(r.data.commitments);
+          if (r.data.ai_summary) setAiSummary(r.data.ai_summary);
         }
       } catch (e) {}
       setResumeLoaded(true);
     }
-    loadProgress();
+    load();
   }, [moduleNum]);
 
   useEffect(function() {
     if (!resumeLoaded) return;
-    var timer = setTimeout(function() {
+    var t = setTimeout(function() {
       async function save() {
         try {
-          var sessionResult = await supabase.auth.getSession();
-          var session = sessionResult.data.session;
-          if (!session || !session.user || !session.user.email) return;
-          await supabase
-            .from("module_progress")
-            .upsert({
-              user_email: session.user.email,
-              module_num: moduleNum,
-              step: step,
-              pre_scores: preScores,
-              post_scores: postScores,
-              commitments: commitments,
-              ai_summary: aiSummary,
-              updated_at: new Date().toISOString(),
-            }, { onConflict: "user_email,module_num" });
+          var sr = await supabase.auth.getSession();
+          var ss = sr.data.session;
+          if (!ss || !ss.user || !ss.user.email) return;
+          await supabase.from("module_progress").upsert({ user_email: ss.user.email, module_num: moduleNum, step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, updated_at: new Date().toISOString() }, { onConflict: "user_email,module_num" });
         } catch (e) {}
       }
       save();
     }, 1500);
-    return function() { clearTimeout(timer); };
+    return function() { clearTimeout(t); };
   }, [step, preScores, postScores, commitments, aiSummary, resumeLoaded, moduleNum]);
 
   if (!isFree && payLoading) {
-    return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAF8" }}>
-        <p style={{ color: "#999", fontSize: 14 }}>Loading...</p>
-      </div>
-    );
+    return (<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAF8" }}><p style={{ color: "#999", fontSize: 14 }}>Loading...</p></div>);
   }
 
   if (!isFree && !paid) {
@@ -331,15 +244,8 @@ export default function ModuleTemplate({ config }) {
           <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "2rem", marginBottom: 12 }}>This Module Requires Full Access</h1>
           <p style={{ color: "#666", fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>Unlock all five modules of the 5C Leadership Blueprint to continue your formation journey.</p>
-          <button onClick={function() {
-            fetch('/api/checkout', { method: 'POST' }).then(function(r) { return r.json(); }).then(function(data) {
-              if (data.url) window.location.href = data.url;
-            }).catch(function() { alert('Something went wrong. Please try again.'); });
-          }} style={{ padding: "12px 32px", background: GOLD, color: NAVY, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", marginBottom: 12 }}>
-            Unlock — $3.99
-          </button>
-          <br />
-          <a href="/" style={{ color: "#888", fontSize: 13 }}>← Back to Dashboard</a>
+          <button onClick={function() { fetch('/api/checkout', { method: 'POST' }).then(function(r) { return r.json(); }).then(function(d) { if (d.url) window.location.href = d.url; }).catch(function() { alert('Something went wrong.'); }); }} style={{ padding: "12px 32px", background: GOLD, color: NAVY, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", marginBottom: 12 }}>Unlock — $3.99</button>
+          <br /><a href="/" style={{ color: "#888", fontSize: 13 }}>← Back to Dashboard</a>
         </div>
       </div>
     );
@@ -347,21 +253,25 @@ export default function ModuleTemplate({ config }) {
 
   var generateSummary = function() {
     setLoading(true);
-    var commitStr = Object.entries(commitments).map(function(entry) {
-      return entry[0].replace(/_/g, " ") + ": " + (entry[1] || "(left blank)");
-    }).join("\n");
-    var blankFields = Object.entries(commitments).filter(function(entry) {
-      return !entry[1] || entry[1].trim() === "";
-    }).map(function(entry) { return entry[0].replace(/_/g, " "); });
-    var blankNotice = blankFields.length > 0
-      ? "\n\nThe following fields were left blank: " + blankFields.join(", ") + ". Name what was left unanswered and challenge them to return and complete the work before moving forward."
-      : "";
-    var prompt = "You are an apostolic leadership development coach with the 5C Leadership Blueprint (Awakening Destiny Global). Analyze this leader's responses for the " + title + " dimension.\n\nRules:\n- Keep your response under 150 words.\n- Be concise. No filler. Every sentence must be actionable or diagnostic.\n- Do not repeat what the leader wrote back to them.\n- Be direct, apostolic in tone, prophetically insightful, and practically actionable.\n- If fields were left blank, name what was left unanswered and challenge them to return and complete the work.\n- Do not fabricate analysis for empty fields.\n\n" + aiPromptContext + "\n\nTheir Commitments:\n" + commitStr + blankNotice + "\n\nKeep it focused, specific, and formative.";
+    var commitStr = Object.entries(commitments).map(function(e) { return e[0].replace(/_/g, " ") + ": " + (e[1] || "(left blank)"); }).join("\n");
+    var blanks = Object.entries(commitments).filter(function(e) { return !e[1] || e[1].trim() === ""; }).map(function(e) { return e[0].replace(/_/g, " "); });
+    var blankNote = blanks.length > 0 ? "\n\nThe following fields were left blank: " + blanks.join(", ") + ". Name what was left unanswered and challenge them to return and complete the work." : "";
+    var prompt = "You are an apostolic leadership development coach with the 5C Leadership Blueprint (Awakening Destiny Global). Analyze this leader's responses for the " + title + " dimension.\n\nRules:\n- Keep your response under 150 words.\n- Be concise. No filler. Every sentence must be actionable or diagnostic.\n- Do not repeat what the leader wrote back to them.\n- Be direct, apostolic in tone, prophetically insightful, and practically actionable.\n- If fields were left blank, name what was left unanswered and challenge them to return and complete the work.\n- Do not fabricate analysis for empty fields.\n\n" + aiPromptContext + "\n\nTheir Commitments:\n" + commitStr + blankNote + "\n\nKeep it focused, specific, and formative.";
     fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt }) })
       .then(function(r) { return r.json(); })
-      .then(function(data) { setAiSummary(data.response || ""); })
+      .then(function(d) { setAiSummary(d.response || ""); })
       .catch(function() { setAiSummary("Unable to generate analysis at this time. Please try again."); })
       .finally(function() { setLoading(false); });
+  };
+
+  var handleCertificate = function() {
+    supabase.auth.getSession().then(function(result) {
+      var session = result.data.session;
+      var email = session && session.user ? session.user.email : "Leader";
+      var name = email.split("@")[0].replace(/[._]/g, " ");
+      name = name.split(" ").map(function(w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(" ");
+      downloadCertificate(name);
+    });
   };
 
   var renderStep = function() {
@@ -372,8 +282,7 @@ export default function ModuleTemplate({ config }) {
           <div className="space-y-6">
             <SectionHead sub="Set aside distractions. You are entering formational territory.">Welcome to {title}</SectionHead>
             {bookChapter && (
-              <button onClick={function() { setShowBookChapter(true); }}
-                style={{ width: "100%", padding: "16px 20px", background: NAVY, borderRadius: 12, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
+              <button onClick={function() { setShowBookChapter(true); }} style={{ width: "100%", padding: "16px 20px", background: NAVY, borderRadius: 12, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
                 <span style={{ fontSize: 24 }}>📖</span>
                 <div style={{ textAlign: "left" }}>
                   <div style={{ fontSize: 13, fontWeight: 700, color: GOLD }}>From the Book: Leaders for Life</div>
@@ -383,10 +292,10 @@ export default function ModuleTemplate({ config }) {
             )}
             <div className="p-6 rounded-2xl" style={{ background: NAVY, color: "#fff" }}>
               {question && (
-                <>
+                <div>
                   <p className="text-xs uppercase tracking-widest mb-2 font-semibold" style={{ color: accent }}>The Central Question</p>
                   <p className="text-lg italic mb-4" style={{ fontFamily: "'Cormorant Garamond', serif" }}>"{question}"</p>
-                </>
+                </div>
               )}
               <p className="text-sm leading-relaxed" style={{ color: "#c8cdd6" }}>{activationText}</p>
             </div>
@@ -431,13 +340,10 @@ export default function ModuleTemplate({ config }) {
             <SectionHead sub="These principles anchor everything about this dimension.">{principles.length} Governing Principles</SectionHead>
             {principles.map(function(p, idx) {
               var promptList = p.prompts ? p.prompts : (p.prompt ? [p.prompt] : []);
-              var isAddendum = p.addendum === true;
+              var isAdd = p.addendum === true;
               return (
-                <div key={idx} className="p-5 sm:p-6 rounded-xl"
-                  style={{ background: isAddendum ? "#fafafa" : accentLight, borderLeft: "4px solid " + (isAddendum ? accentMid : accent), border: isAddendum ? "1px solid #e5e7eb" : "none", borderLeftWidth: 4, borderLeftStyle: "solid", borderLeftColor: isAddendum ? accentMid : accent }}>
-                  {isAddendum && (
-                    <p className="text-xs uppercase tracking-widest font-semibold mb-3" style={{ color: accentMid }}>Addendum Principle</p>
-                  )}
+                <div key={idx} className="p-5 sm:p-6 rounded-xl" style={{ background: isAdd ? "#fafafa" : accentLight, borderLeftWidth: 4, borderLeftStyle: "solid", borderLeftColor: isAdd ? accentMid : accent, border: isAdd ? "1px solid #e5e7eb" : "none" }}>
+                  {isAdd && <p className="text-xs uppercase tracking-widest font-semibold mb-3" style={{ color: accentMid }}>Addendum Principle</p>}
                   <div className="flex items-start gap-3 mb-3">
                     <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0" style={{ background: NAVY, color: accentMid }}>{idx + 1}</div>
                     <div>
@@ -471,12 +377,7 @@ export default function ModuleTemplate({ config }) {
               <p className="text-sm font-bold mb-3 uppercase tracking-wide" style={{ color: NAVY }}>What this teaches us:</p>
               <ul className="space-y-2.5">
                 {exemplar.lessons.map(function(l, i) {
-                  return (
-                    <li key={i} className="flex gap-3 text-sm">
-                      <span className="mt-0.5 flex-shrink-0 font-bold" style={{ color: accent }}>✦</span>
-                      <span style={{ color: "#333" }}>{l}</span>
-                    </li>
-                  );
+                  return (<li key={i} className="flex gap-3 text-sm"><span className="mt-0.5 flex-shrink-0 font-bold" style={{ color: accent }}>✦</span><span style={{ color: "#333" }}>{l}</span></li>);
                 })}
               </ul>
             </div>
@@ -530,19 +431,20 @@ export default function ModuleTemplate({ config }) {
               {commitmentPrompts.map(function(c) {
                 return (
                   <div key={c.id}>
-                c
+                    <label className="block text-sm font-semibold mb-2" style={{ color: NAVY }}>{c.label}</label>
+                    <textarea className="w-full rounded-xl p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", minHeight: 90 }} rows={4} placeholder={c.placeholder} value={commitments[c.id] || ""} onChange={function(e) { var id = c.id; var v = e.target.value; setCommitments(function(p) { var n = Object.assign({}, p); n[id] = v; return n; }); }} />
+                  </div>
+                );
+              })}
+            </div>
+            {revisitTriggers && revisitTriggers.length > 0 && (
               <div className="p-5 rounded-xl" style={{ background: accentLight }}>
                 <h4 className="font-bold mb-3" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{title} is a Living Discipline</h4>
                 <p className="text-sm mb-3 leading-relaxed" style={{ color: "#333" }}>What you write today is not a one-time exercise. Return to it regularly as your season deepens.</p>
                 <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: NAVY }}>Revisit when:</p>
                 <ul className="space-y-2">
                   {revisitTriggers.map(function(t, i) {
-                    return (
-                      <li key={i} className="flex items-start gap-3 text-sm">
-                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: accentMid }} />
-                        <span style={{ color: "#444" }}>{t}</span>
-                      </li>
-                    );
+                    return (<li key={i} className="flex items-start gap-3 text-sm"><span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: accentMid }} /><span style={{ color: "#444" }}>{t}</span></li>);
                   })}
                 </ul>
               </div>
@@ -554,16 +456,14 @@ export default function ModuleTemplate({ config }) {
               </div>
             )}
           </div>
-        )
+        );
 
       case "summary":
         return (
           <div className="space-y-6">
             <SectionHead sub={"Based on your reflections and commitments — your personalized " + title + " analysis."}>Your {title} Blueprint</SectionHead>
             {!aiSummary && !loading && (
-              <button onClick={generateSummary} className="w-full py-4 rounded-2xl font-bold text-base transition-all" style={{ background: NAVY, color: accentMid }}>
-                Generate My {title} Blueprint →
-              </button>
+              <button onClick={generateSummary} className="w-full py-4 rounded-2xl font-bold text-base transition-all" style={{ background: NAVY, color: accentMid }}>Generate My {title} Blueprint →</button>
             )}
             {loading && (
               <div className="text-center py-12">
@@ -572,7 +472,7 @@ export default function ModuleTemplate({ config }) {
               </div>
             )}
             {aiSummary && (
-              <>
+              <div>
                 <div className="p-6 rounded-2xl" style={{ border: "2px solid " + accent, background: accentLight }}>
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: NAVY, color: accentMid, fontSize: 14 }}>✦</div>
@@ -580,10 +480,12 @@ export default function ModuleTemplate({ config }) {
                   </div>
                   <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#222" }}>{para}</p>; })}</div>
                 </div>
-                <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#fff" }}>
-                  ↓ Download My {title} Blueprint (.doc)
-                </button>
-              </>
+                <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#fff", marginTop: 12 }}>↓ Download My {title} Blueprint (.doc)</button>
+              </div>
+            )}
+
+            {moduleNum === 6 && aiSummary && (
+              <button onClick={handleCertificate} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#FFF9E6" }}>🎓 Download Completion Certificate</button>
             )}
 
             {config.resources && config.resources.blogs && (
@@ -600,40 +502,19 @@ export default function ModuleTemplate({ config }) {
                   })}
                 </div>
                 {config.resources.links && config.resources.links.map(function(l, i) {
-                  return (
-                    <a key={i} href={l.url} target="_blank" rel="noopener noreferrer" style={{ display: "block", marginTop: 10, fontSize: 13, color: "#0172BC" }}>
-                      {l.title} →
-                    </a>
-                  );
+                  return (<a key={i} href={l.url} target="_blank" rel="noopener noreferrer" style={{ display: "block", marginTop: 10, fontSize: 13, color: "#0172BC" }}>{l.title} →</a>);
                 })}
               </div>
             )}
-            {moduleNum === 6 && aiSummary && (
-              <button onClick={function() {
-               supabase.auth.getSession().then(function(result) {
-               var session = result.data.session;
-                var email = session && session.user ? session.user.email : "Leader";
-               var name = email.split("@")[0].replace(/[._]/g, " ");
-                name = name.split(" ").map(function(w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(" ");
-              downloadCertificate(name);
-            })
-         }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all"
-              style={{ border: "2px solid #021A35", color: "#021A35", background: "#FFF9E6" }}>
-             🎓 Download Completion Certificate
-         </button>
-        )}
 
             {scriptures && (
-              <button onClick={function() { setShowScriptures(true); }}
-                className="w-full py-3 rounded-2xl font-semibold text-sm transition-all"
-                style={{ border: "2px solid " + GOLD, color: NAVY, background: "#FFF9E6" }}>
-                📖 Scriptures for Further Study
-              </button>
+              <button onClick={function() { setShowScriptures(true); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + GOLD, color: NAVY, background: "#FFF9E6" }}>📖 Scriptures for Further Study</button>
             )}
           </div>
         );
 
-      default: return null;
+      default:
+        return null;
     }
   };
 
@@ -664,9 +545,7 @@ export default function ModuleTemplate({ config }) {
         <div className="flex items-center gap-1 overflow-x-auto pb-1">
           {STEPS.map(function(s, i) {
             return (
-              <button key={s.id} onClick={function() { setStep(i); scrollTop(); }}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all flex-shrink-0"
-                style={{ background: i === step ? accent : i < step ? accentLight : "transparent", color: i === step ? NAVY : i < step ? accent : "#bbb", border: "1px solid " + (i <= step ? accent : "#e5e5e5") }}>
+              <button key={s.id} onClick={function() { setStep(i); scrollTop(); }} className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all flex-shrink-0" style={{ background: i === step ? accent : i < step ? accentLight : "transparent", color: i === step ? NAVY : i < step ? accent : "#bbb", border: "1px solid " + (i <= step ? accent : "#e5e5e5") }}>
                 {i < step ? "✓ " : ""}{s.label}
               </button>
             );
@@ -685,11 +564,9 @@ export default function ModuleTemplate({ config }) {
 
       <div className="fixed bottom-0 left-0 right-0 border-t py-3 z-40" style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderColor: "#f0f0f0" }}>
         <div className="max-w-3xl mx-auto px-4 flex justify-between items-center">
-          <button onClick={function() { if (step > 0) { setStep(step - 1); scrollTop(); } }} disabled={step === 0}
-            className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: "1.5px solid " + NAVY }}>← Previous</button>
+          <button onClick={function() { if (step > 0) { setStep(step - 1); scrollTop(); } }} disabled={step === 0} className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: "1.5px solid " + NAVY }}>← Previous</button>
           <span className="text-xs" style={{ color: "#bbb" }}>{step + 1} / {STEPS.length}</span>
-          <button onClick={function() { if (step < STEPS.length - 1) { setStep(step + 1); scrollTop(); } }} disabled={step === STEPS.length - 1}
-            className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-30" style={{ background: NAVY, color: accentMid }}>Next →</button>
+          <button onClick={function() { if (step < STEPS.length - 1) { setStep(step + 1); scrollTop(); } }} disabled={step === STEPS.length - 1} className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-30" style={{ background: NAVY, color: accentMid }}>Next →</button>
         </div>
         <p className="text-center text-xs mt-1.5" style={{ color: "#ccc" }}>© 2026 Awakening Destiny Global</p>
       </div>
