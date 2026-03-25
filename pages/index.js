@@ -92,7 +92,7 @@ const css = `
   #adg-5c #problem { padding: 7rem 2rem !important; background: #FDF8F0 !important; color: #021A35 !important; }
   #adg-5c #problem .section-title { color: #021A35 !important; }
   #adg-5c #problem .body-text { color: rgba(2,26,53,0.75) !important; }
-  #adg-5c .pain-grid { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important; gap: 1.5rem !important; margin-top: 3rem !important; }
+  #adg-5c .pain-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; margin-top: 3rem !important; }
   #adg-5c .pain-card { border-left: 3px solid #021A35 !important; padding: 1.5rem !important; background: rgba(2,26,53,0.04) !important; }
   #adg-5c .pain-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.25rem !important; font-weight: 600 !important; color: #021A35 !important; margin-bottom: 0.5rem !important; }
   #adg-5c .pain-card p { font-size: 0.95rem !important; line-height: 1.7 !important; color: rgba(2,26,53,0.7) !important; }
@@ -114,7 +114,7 @@ const css = `
 
   #adg-5c #who { padding: 7rem 2rem !important; background: #FDF8F0 !important; color: #021A35 !important; }
   #adg-5c #who .section-title { color: #021A35 !important; }
-  #adg-5c .audience-grid { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important; gap: 1.5rem !important; margin-top: 3rem !important; }
+  #adg-5c .audience-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; margin-top: 3rem !important; }
   #adg-5c .audience-card { background: #021A35 !important; color: #FDF8F0 !important; padding: 2rem 1.5rem !important; border-bottom: 3px solid #FDD20D !important; border-top: none !important; border-left: none !important; border-right: none !important; }
   #adg-5c .audience-card .icon { font-size: 1.8rem !important; margin-bottom: 1rem !important; display: block !important; }
   #adg-5c .audience-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.3rem !important; font-weight: 600 !important; margin-bottom: 0.5rem !important; color: #FDD20D !important; }
@@ -125,12 +125,12 @@ const css = `
 
   #adg-5c #deliverables { padding: 7rem 2rem !important; background: #021A35 !important; }
   #adg-5c .deliverables-intro { max-width: 620px !important; margin-bottom: 4rem !important; }
-  #adg-5c .deliverables-grid { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; gap: 1.5rem !important; }
+  #adg-5c .deliverables-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
   #adg-5c .deliverable-card { background: rgba(253,210,13,0.05) !important; border: 1px solid rgba(253,210,13,0.2) !important; padding: 2rem !important; }
   #adg-5c .deliverable-card .d-icon { width: 44px !important; height: 44px !important; background: rgba(253,210,13,0.12) !important; border: 1px solid rgba(253,210,13,0.35) !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.2rem !important; margin-bottom: 1.2rem !important; }
   #adg-5c .deliverable-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.3rem !important; font-weight: 600 !important; color: #FDD20D !important; margin-bottom: 0.5rem !important; }
   #adg-5c .deliverable-card p { font-size: 0.92rem !important; line-height: 1.7 !important; color: rgba(253,248,240,0.7) !important; }
-  #adg-5c .pathway-card { background: rgba(253,210,13,0.05) !important; border: 1px solid rgba(253,210,13,0.2) !important; padding: 2rem !important; grid-column: span 2 !important; }
+  #adg-5c .pathway-card { background: rgba(253,210,13,0.05) !important; border: 1px solid rgba(253,210,13,0.2) !important; padding: 2rem !important; grid-column: span 3 !important; }
   #adg-5c .pathway-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.3rem !important; font-weight: 600 !important; color: #FDD20D !important; margin-bottom: 1.25rem !important; }
   #adg-5c .pathway-options { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 1.5rem !important; }
   #adg-5c .pathway-option { padding: 1.25rem !important; border: 1px solid rgba(253,210,13,0.2) !important; background: transparent !important; }
@@ -236,6 +236,8 @@ export default function LandingPage() {
 
         {/* NAV */}
         <nav>
+
+
           <a href="/" className="nav-logo">5C <span>Blueprint</span></a>
           <div className="nav-right">
             <a href="/assessment" className="nav-assess">Take the Assessment →</a>
