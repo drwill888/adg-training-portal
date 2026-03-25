@@ -38,7 +38,7 @@ export default function Welcome() {
           <div style={{ maxWidth: 720, margin: "0 auto", position: "relative" }}>
 
             {/* Logo */}
-            <img src="/images/logo.jpg" alt="Awakening Destiny Global" style={{ width: 120, height: "auto", margin: "0 auto 20px", display: "block", borderRadius: 8 }} />
+            <img src="public/images/Awakening Destiny Global_ADG - Multicolor Logo.jpg" alt="Awakening Destiny Global" style={{ width: 120, height: "auto", margin: "0 auto 20px", display: "block", borderRadius: 8 }} />
 
             <p style={{ fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 600, color: GOLD, marginBottom: 16 }}>Awakening Destiny Global</p>
             <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2.2rem, 5vw, 3.4rem)", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginBottom: 20 }}>
