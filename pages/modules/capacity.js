@@ -322,6 +322,18 @@ const config = {
       ["Burns out and blames others", "Builds rhythms that sustain endurance"],
     ],
   },
+
+  activationPrayer: {
+    theme: 'Strength & Endurance',
+    context: 'When you are stretched, pressured, or fatigued',
+    scriptures: [
+      { ref: 'Colossians 1:11', text: '...strengthened with all might, according to His glorious power...' },
+      { ref: 'Isaiah 40:31', text: 'But those who wait on the Lord shall renew their strength...' },
+      { ref: '2 Corinthians 4:16', text: '...the inward man is being renewed day by day.' },
+      { ref: 'James 1:2-4', text: 'Count it all joy... knowing that the testing of your faith produces patience. But let patience have its perfect work...' },
+    ],
+    prayer: `Father, strengthen me with all might according to Your glorious power. Let endurance and patience be established in me with joy — not striving.\n\nAs I wait on You, renew my strength. Let me run and not be weary. Let me walk and not faint.\n\nIn every trial, produce steadfastness in me. Let patience have its perfect work so I am complete, lacking nothing.\n\nThough outwardly I feel pressure, inwardly renew me day by day. Increase my capacity to carry what You have entrusted to me.\n\nStretch me — but do not break me. Expand me — but do not overwhelm me.\n\nI decree that I am strengthened, sustained, and expanded by Your power.`,
+  },
 };
 
 export default function CapacityModule() {

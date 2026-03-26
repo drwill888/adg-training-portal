@@ -192,6 +192,18 @@ var config = {
   },
   bookChapter: bookChapter,
   scriptures: scriptures,
+
+  activationPrayer: {
+    theme: 'Alignment in Christ',
+    context: 'When you are preparing your heart to receive, align, and be strengthened in the Lord',
+    scriptures: [
+      { ref: 'Colossians 2:10', text: 'And you are complete in Him, who is the head of all principality and power.' },
+      { ref: 'Ephesians 1:18-19', text: 'The eyes of your understanding being enlightened; that you may know what is the hope of His calling... and what is the exceeding greatness of His power toward us who believe...' },
+      { ref: 'Romans 12:1-2', text: 'Present your bodies a living sacrifice... and do not be conformed to this world, but be transformed by the renewing of your mind...' },
+    ],
+    prayer: `Father, I come before You in the name of Jesus, yielding myself afresh to You.\n\nThank You that I am complete in Christ. Thank You that my life is not rooted in lack, fear, striving, or performance, but in Your finished work.\n\nOpen the eyes of my understanding. Enlighten my heart. Let me see what You are saying and discern what You are doing in this season.\n\nRenew my mind and align my heart with heaven. Wash away confusion, passivity, distraction, and unbelief. Bring every part of my life into agreement with Your will.\n\nI present myself to You as a living sacrifice. Consecrate my thoughts, my desires, my gifts, my relationships, and my assignment.\n\nAs I pray through these 5Cs, establish me in Christ. Bring clarity to my calling. Root me in divine connection. Grow me in wisdom and competency. Strengthen and enlarge my capacity. Bring all things into convergence.\n\nI decree that I am aligned in Christ, awakened by the Spirit, and ready to receive all that You desire to form in me and release through me.\n\nIn Jesus' name. Amen.`,
+  },
+  podcast: { showId: '2527180', episodeId: '18846412' },
 };
 
 export default function IntroductionModule() {

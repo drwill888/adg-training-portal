@@ -33,7 +33,7 @@ const modules = [
   { id: 3, title: "Competency", subtitle: "Excellence (Credibility)", question: "Can I carry what I'm called to build?", icon: "③", href: "/modules/competency" },
   { id: 4, title: "Capacity", subtitle: "Character (Sustainability)", question: "Can I sustain what I'm building?", icon: "④", href: "/modules/capacity" },
   { id: 5, title: "Convergence", subtitle: "Sweet Spot (Impact)", question: "Am I operating in my sweet spot?", icon: "⑤", href: "/modules/convergence" },
-  { id: 6, title: "Commissioning", subtitle: "Sent (Deployment)", icon: "◉", href: "/modules/commissioning" },
+  { id: 6, title: "Commissioning", subtitle: "Bonus Module", icon: "◉", href: "/modules/commissioning", bonus: true },
 ];
 
 const accents = [colors.gold, colors.skyBlue, colors.royalBlue, colors.orange, colors.skyBlue, "#EE3124", colors.gold];
@@ -269,6 +269,9 @@ export default function Dashboard() {
                 </button>
                 <span style={{ fontSize: 12, color: colors.gray500 }}>Introduction module is free — start there.</span>
               </div>
+              <p style={{ fontSize: 11, color: colors.gray500, marginTop: 10 }}>
+                7-day satisfaction guarantee. If the Blueprint is not what you expected, email <a href="mailto:info@awakeningdestiny.global" style={{ color: colors.gold }}>info@awakeningdestiny.global</a> within 7 days for a full refund — no questions asked.
+              </p>
             </div>
           )}
 
@@ -287,6 +290,9 @@ export default function Dashboard() {
                   onMouseLeave={function(e) { if (!locked) e.currentTarget.style.boxShadow = "none"; }}>
                   {locked && (
                     <div style={{ position: "absolute", top: 12, right: 12, fontSize: 14 }}>🔒</div>
+                  )}
+                  {m.bonus && !locked && (
+                    <div style={{ position: "absolute", top: 12, right: 12, fontSize: 10, fontWeight: 700, background: colors.gold, color: colors.navy, padding: "2px 8px", borderRadius: 4, letterSpacing: "0.08em" }}>BONUS</div>
                   )}
                   <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
                     <div style={{ width: 40, height: 40, borderRadius: 10, background: (locked ? colors.gray300 : accents[i]) + "22", border: "2px solid " + (locked ? colors.gray300 : accents[i]), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, color: locked ? colors.gray300 : accents[i], flexShrink: 0 }}>{m.icon}</div>

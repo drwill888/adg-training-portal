@@ -130,12 +130,6 @@ const css = `
   #adg-5c .deliverable-card .d-icon { width: 44px !important; height: 44px !important; background: rgba(253,210,13,0.12) !important; border: 1px solid rgba(253,210,13,0.35) !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.2rem !important; margin-bottom: 1.2rem !important; }
   #adg-5c .deliverable-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.3rem !important; font-weight: 600 !important; color: #FDD20D !important; margin-bottom: 0.5rem !important; }
   #adg-5c .deliverable-card p { font-size: 0.92rem !important; line-height: 1.7 !important; color: rgba(253,248,240,0.7) !important; }
-  #adg-5c .pathway-card { background: rgba(253,210,13,0.05) !important; border: 1px solid rgba(253,210,13,0.2) !important; padding: 2rem !important; grid-column: span 3 !important; }
-  #adg-5c .pathway-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.3rem !important; font-weight: 600 !important; color: #FDD20D !important; margin-bottom: 1.25rem !important; }
-  #adg-5c .pathway-options { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 1.5rem !important; }
-  #adg-5c .pathway-option { padding: 1.25rem !important; border: 1px solid rgba(253,210,13,0.2) !important; background: transparent !important; }
-  #adg-5c .pathway-option h5 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.1rem !important; font-weight: 600 !important; color: #FDF8F0 !important; margin-bottom: 0.4rem !important; }
-  #adg-5c .pathway-option p { font-size: 0.88rem !important; line-height: 1.65 !important; color: rgba(253,248,240,0.65) !important; }
 
   #adg-5c #journey { padding: 7rem 2rem !important; background: #0a2d52 !important; }
   #adg-5c .journey-intro { text-align: center !important; max-width: 600px !important; margin: 0 auto 4rem !important; }
@@ -145,14 +139,6 @@ const css = `
   #adg-5c .step-num { font-family: 'Cormorant Garamond', serif !important; font-size: 3rem !important; font-weight: 700 !important; color: #FDD20D !important; line-height: 1 !important; margin-bottom: 0.75rem !important; display: block !important; }
   #adg-5c .journey-step h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; font-weight: 600 !important; color: #FDF8F0 !important; margin-bottom: 0.4rem !important; }
   #adg-5c .journey-step p { font-size: 0.88rem !important; line-height: 1.6 !important; color: rgba(253,248,240,0.65) !important; }
-
-  #adg-5c #testimonials { padding: 7rem 2rem !important; background: #021A35 !important; }
-  #adg-5c .testimonials-grid { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important; gap: 2rem !important; margin-top: 3rem !important; }
-  #adg-5c .testimonial-card { padding: 2.5rem !important; border: 1px solid rgba(253,210,13,0.2) !important; position: relative !important; background: transparent !important; }
-  #adg-5c .testimonial-card::before { content: '\\201C' !important; position: absolute !important; top: 1rem !important; left: 1.5rem !important; font-family: 'Cormorant Garamond', serif !important; font-size: 5rem !important; line-height: 1 !important; color: #FDD20D !important; opacity: 0.2 !important; }
-  #adg-5c .testimonial-card blockquote { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; font-style: italic !important; line-height: 1.65 !important; color: #FDF8F0 !important; margin-bottom: 1.5rem !important; position: relative !important; z-index: 1 !important; border: none !important; padding: 0 !important; }
-  #adg-5c .testimonial-author { font-size: 0.8rem !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; color: #FDD20D !important; font-weight: 600 !important; display: block !important; }
-  #adg-5c .testimonial-role { font-size: 0.8rem !important; color: rgba(253,248,240,0.5) !important; margin-top: 0.2rem !important; display: block !important; }
 
   #adg-5c #leader { padding: 7rem 2rem !important; background: #FDF8F0 !important; color: #021A35 !important; }
   #adg-5c .leader-layout { display: grid !important; grid-template-columns: 1fr 1.4fr !important; gap: 5rem !important; align-items: center !important; }
@@ -192,8 +178,6 @@ const css = `
     #adg-5c .leader-photo-box { aspect-ratio: 1/1 !important; }
     #adg-5c .journey-step:not(:last-child)::after { display: none !important; }
     #adg-5c .pillar-item { grid-template-columns: 60px 1fr !important; }
-    #adg-5c .pathway-card { grid-column: span 1 !important; }
-    #adg-5c .pathway-options { grid-template-columns: 1fr !important; }
   }
 `;
 
@@ -203,7 +187,6 @@ export default function LandingPage() {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
 
-  // ─── SESSION CHECK — redirect logged-in users to dashboard ───
   useEffect(() => {
     async function checkSession() {
       try {
@@ -220,8 +203,8 @@ export default function LandingPage() {
     checkSession();
   }, []);
 
-  // ─── Show nothing while session check runs — prevents flash ───
   if (checking) return null;
+
   return (
     <>
       <Head>
@@ -236,8 +219,6 @@ export default function LandingPage() {
 
         {/* NAV */}
         <nav>
-
-
           <a href="/" className="nav-logo">5C <span>Blueprint</span></a>
           <div className="nav-right">
             <a href="/assessment" className="nav-assess">Take the Assessment →</a>
@@ -420,7 +401,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ═══ SECTION 7 — WHAT YOU GET ═══ */}
+        {/* ═══ SECTION 7 — WHAT YOU GET (3x3 GRID) ═══ */}
         <section id="deliverables">
           <div className="container">
             <div className="deliverables-intro">
@@ -439,6 +420,7 @@ export default function LandingPage() {
                 {icon:'📖', title:'Reference Blogs & Scripture Study', body:"Each module connects to curated blog content and Scripture references for those who want to go deeper — anchoring the teaching in the Word and extending the revelation beyond the module."},
                 {icon:'🎙', title:'Podcast Training Series', body:"Access to the 5C Blueprint podcast — episodes that expand on each module with prophetic teaching, interviews, and leadership activation content to reinforce what you're building."},
                 {icon:'📜', title:'Certificate of Commissioning', body:"Upon completing all five dimensions, receive a formal Certificate of Commissioning — a tangible marker of the work done, the ground covered, and the assignment ahead."},
+                {icon:'🛤', title:'Individual or Cohort', body:"Choose your path — move through the Blueprint at your own pace with full module access, or join a live cohort with peer community, group coaching, and real-time apostolic leadership input. One Blueprint. Two ways to build."},
               ].map(card => (
                 <div key={card.title} className="deliverable-card">
                   <div className="d-icon">{card.icon}</div>
@@ -446,20 +428,6 @@ export default function LandingPage() {
                   <p>{card.body}</p>
                 </div>
               ))}
-              <div className="pathway-card">
-                <div className="d-icon">🛤</div>
-                <h4>Two Pathways — One Blueprint</h4>
-                <div className="pathway-options">
-                  <div className="pathway-option">
-                    <h5>Individual</h5>
-                    <p>Move through the Blueprint at your own pace, fully online — on your schedule, in your season. Complete access to all modules, tools, and resources.</p>
-                  </div>
-                  <div className="pathway-option">
-                    <h5>Cohort</h5>
-                    <p>Join a live cohort experience with peer community, group coaching sessions, and real-time apostolic leadership input. Iron sharpening iron — in community.</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </section>
@@ -490,31 +458,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ═══ SECTION 9 — TESTIMONIALS ═══ *
-        <section id="testimonials">
-          <div className="container">
-            <div style={{textAlign:'center', maxWidth:'560px', margin:'0 auto'}}>
-              <div className="section-badge">Voices of the Blueprint</div>
-              <h2 className="section-title">The <em>Fruit</em> Speaks</h2>
-            </div>
-            <div className="testimonials-grid">
-              {[
-                {quote:"The 5C Blueprint gave me language for something I'd been experiencing for years but couldn't articulate. For the first time, my calling, my gifts, and my business were all speaking the same language.", author:"[Leader Name]", role:"Kingdom Entrepreneur, City/State"},
-                {quote:"I came in as a pastor who had a business on the side. I left as a Kingdom architect who happened to pastor a congregation. The shift in identity changed everything — the way I lead, the way I build, the way I pray.", author:"[Leader Name]", role:"Apostolic Leader, City/State"},
-                {quote:"What I found here wasn't just training — it was alignment. The framework exposed where I was leaking capacity and gave me the tools to rebuild from the inside out. My team felt the difference before I told them anything changed.", author:"[Leader Name]", role:"Executive Leader, City/State"},
-              ].map((t, i) => (
-                <div key={i} className="testimonial-card">
-                  <blockquote>{t.quote}</blockquote>
-                  <span className="testimonial-author">{t.author}</span>
-                  <span className="testimonial-role">{t.role}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        /}
-
-        {/* ═══ SECTION 10 — MEET THE LEADER ═══ */}
+        {/* ═══ SECTION 9 — MEET THE LEADER ═══ */}
         <section id="leader">
           <div className="container">
             <div className="leader-layout">
@@ -541,7 +485,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ═══ SECTION 11 — FAQ ═══ */}
+        {/* ═══ SECTION 10 — FAQ ═══ */}
         <section id="faq">
           <div className="container">
             <div className="section-badge">Common Questions</div>
@@ -565,7 +509,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ═══ SECTION 12 — CLOSING CTA ═══ */}
+        {/* ═══ SECTION 11 — CLOSING CTA ═══ */}
         <section id="cta-close">
           <div className="container cta-inner">
             <div className="section-badge">Your Next Step</div>
@@ -579,6 +523,7 @@ export default function LandingPage() {
               <a href={BOOKING_URL} className="btn-primary" target="_blank" rel="noopener noreferrer">Book Your Discovery Call</a>
             </div>
             <span className="cta-subtext">Start with the assessment. Begin with a conversation. Either way — you move forward.</span>
+            <span className="cta-subtext" style={{marginTop:'0.5rem', fontSize:'0.75rem', opacity: 0.5}}>7-day satisfaction guarantee. If the Blueprint is not what you expected, email info@awakeningdestiny.global within 7 days for a full refund.</span>
           </div>
         </section>
 

@@ -1,5 +1,6 @@
 // pages/training-bot.jsx
 import { useState, useRef, useEffect } from "react";
+import { usePaymentStatus } from "../lib/usePaymentStatus";
 
 const BRAND = {
   navy: "#021A35",
@@ -22,6 +23,8 @@ const MODULES = [
   { value: "general", label: "General" },
 ];
 
+const FREE_MESSAGE_LIMIT = 7;
+
 export default function TrainingBotPage() {
   const [activeTab, setActiveTab] = useState("chat");
 
@@ -30,6 +33,8 @@ export default function TrainingBotPage() {
   const [question, setQuestion] = useState("");
   const [selectedModule, setSelectedModule] = useState("");
   const [loadingChat, setLoadingChat] = useState(false);
+  const { paid } = usePaymentStatus();
+  const [userMessageCount, setUserMessageCount] = useState(0);
   const messagesEndRef = useRef(null);
 
   // Ingest state
@@ -47,10 +52,13 @@ export default function TrainingBotPage() {
   async function handleAsk() {
     if (!question.trim() || loadingChat) return;
 
+    if (!paid && userMessageCount >= FREE_MESSAGE_LIMIT) return;
+
     const userMessage = { role: "user", content: question };
     setMessages((prev) => [...prev, userMessage]);
     setQuestion("");
     setLoadingChat(true);
+    if (!paid) setUserMessageCount((c) => c + 1);
 
     try {
       const res = await fetch("/api/training/chat", {
@@ -257,6 +265,30 @@ export default function TrainingBotPage() {
                 </select>
               </div>
 
+              {/* Rate limit paywall */}
+              {!paid && userMessageCount >= FREE_MESSAGE_LIMIT && (
+                <div style={{
+                  padding: "20px 24px",
+                  marginBottom: 16,
+                  background: BRAND.navy,
+                  borderRadius: 12,
+                  textAlign: "center",
+                }}>
+                  <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 700, color: BRAND.gold, marginBottom: 8 }}>
+                    You've reached your free message limit
+                  </p>
+                  <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", lineHeight: 1.6, marginBottom: 16 }}>
+                    You've used your {FREE_MESSAGE_LIMIT} free questions. Unlock full access to the 5C Blueprint for unlimited coaching assistance.
+                  </p>
+                  <button
+                    onClick={function() { fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) }).then(r => r.json()).then(d => { if (d.url) window.location.href = d.url; }).catch(() => alert('Something went wrong.')); }}
+                    style={{ padding: "10px 28px", background: BRAND.gold, color: BRAND.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                    Unlock Full Access
+                  </button>
+                  <p style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 10 }}>7-day satisfaction guarantee — full refund if it's not right for you.</p>
+                </div>
+              )}
+
               {/* Messages */}
               <div
                 style={{
@@ -405,6 +437,11 @@ export default function TrainingBotPage() {
               </div>
 
               {/* Input */}
+              {!paid && (
+                <p style={{ fontSize: 11, color: userMessageCount >= FREE_MESSAGE_LIMIT ? "#ef4444" : BRAND.navy + "60", marginBottom: 6, textAlign: "right" }}>
+                  {Math.max(0, FREE_MESSAGE_LIMIT - userMessageCount)} free {FREE_MESSAGE_LIMIT - userMessageCount === 1 ? "message" : "messages"} remaining
+                </p>
+              )}
               <div style={{ display: "flex", gap: "8px" }}>
                 <textarea
                   value={question}
@@ -425,20 +462,20 @@ export default function TrainingBotPage() {
                 />
                 <button
                   onClick={handleAsk}
-                  disabled={loadingChat || !question.trim()}
+                  disabled={loadingChat || !question.trim() || (!paid && userMessageCount >= FREE_MESSAGE_LIMIT)}
                   style={{
                     padding: "12px 24px",
                     borderRadius: "10px",
                     border: "none",
-                    backgroundColor: loadingChat ? BRAND.navy + "60" : BRAND.navy,
+                    backgroundColor: (loadingChat || (!paid && userMessageCount >= FREE_MESSAGE_LIMIT)) ? BRAND.navy + "60" : BRAND.navy,
                     color: BRAND.gold,
                     fontWeight: 700,
                     fontSize: "14px",
-                    cursor: loadingChat ? "not-allowed" : "pointer",
+                    cursor: (loadingChat || (!paid && userMessageCount >= FREE_MESSAGE_LIMIT)) ? "not-allowed" : "pointer",
                     fontFamily: "'Outfit', sans-serif",
                   }}
                 >
-                  Ask
+                  {!paid && userMessageCount >= FREE_MESSAGE_LIMIT ? "Upgrade to Ask" : "Ask"}
                 </button>
               </div>
             </div>

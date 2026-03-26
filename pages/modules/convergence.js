@@ -313,6 +313,16 @@ const config = {
       ["Builds what attracts attention", "Builds what outlasts personality"],
     ],
   },
+
+  activationPrayer: {
+    theme: 'Fullness & Integration',
+    context: 'When everything must come together into maturity and fruit',
+    scriptures: [
+      { ref: 'Ephesians 3:18-19', text: '...that you may be able to comprehend... and to know the love of Christ... that you may be filled with all the fullness of God.' },
+      { ref: 'Romans 8:28', text: 'All things work together for good...' },
+    ],
+    prayer: `Father, bring me into the fullness of Christ. Let me comprehend the depth, width, and height of Your love.\n\nTake every part of my life — every season, every experience — and bring it into alignment. Let nothing be wasted.\n\nWhere there has been fragmentation, bring integration. Where there has been confusion, bring clarity.\n\nFill me with all Your fullness. Let my life reflect maturity, wholeness, and fruitfulness.\n\nI decree that everything is coming together according to Your purpose.`,
+  },
 };
 
 export default function ConvergenceModule() {

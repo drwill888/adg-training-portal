@@ -220,6 +220,17 @@ var config = {
     ],
   },
   scriptures: scriptures,
+
+  activationPrayer: {
+    theme: 'Identity & Purpose',
+    context: 'When you need clarity and grounding in who you are',
+    scriptures: [
+      { ref: 'Ephesians 1:17-18', text: '...that the God of our Lord Jesus Christ, the Father of glory, may give to you the spirit of wisdom and revelation in the knowledge of Him, the eyes of your understanding being enlightened; that you may know what is the hope of His calling...' },
+      { ref: 'Romans 8:30', text: 'Whom He predestined, these He also called...' },
+      { ref: '2 Timothy 1:9', text: 'Who has saved us and called us with a holy calling...' },
+    ],
+    prayer: `Father of glory, I ask that You release the spirit of wisdom and revelation in the knowledge of You.\n\nEnlighten the eyes of my understanding.\n\nLet me see clearly the hope of Your calling. Anchor me in identity, not performance.\n\nI break agreement with confusion, striving, and misalignment. I decree that clarity is established and purpose is awakened.\n\nI will know who I am. I will walk in the hope of my calling.`,
+  },
 };
 
 export default function CallingModule() {

@@ -282,6 +282,16 @@ const config = {
       ["Driven by fear of failure", "Anchored in love"],
     ],
   },
+
+  activationPrayer: {
+    theme: 'Relationship & Rootedness',
+    context: 'When alignment and abiding need strengthening',
+    scriptures: [
+      { ref: 'Philippians 1:9-11', text: 'And this I pray, that your love may abound still more and more in knowledge and all discernment...' },
+      { ref: 'Romans 8:15', text: '...but you received the Spirit of adoption by whom we cry out, Abba, Father.' },
+    ],
+    prayer: `Father, I come to You as Abba — my Father. I receive the Spirit of adoption, not fear, not distance, not separation.\n\nRoot me deeply in Your love. Let my love abound more and more — with knowledge and discernment.\n\nEstablish divine connection in my life — first with You, then with others. Remove isolation, independence, and misalignment.\n\nAlign my heart with Your heart. Align my relationships with Your design.\n\nLet love govern my connections — pure, discerning, and fruitful. Let every relationship be ordered by Your wisdom and sustained by Your grace.\n\nI decree that I am connected, aligned, and flowing in covenant relationship. My life is rooted in the Father, established in love, and joined to the right people.`,
+  },
 };
 
 export default function ConnectionModule() {

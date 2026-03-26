@@ -215,6 +215,16 @@ const config = {
       ["Impact ends with presence", "Impact outlasts personality"],
     ],
   },
+
+  activationPrayer: {
+    theme: 'Authority & Release',
+    context: 'When you are stepping into assignment and movement',
+    scriptures: [
+      { ref: '2 Thessalonians 1:11-12', text: '...that our God would count you worthy of this calling, and fulfill all the good pleasure of His goodness and the work of faith with power...' },
+      { ref: 'Matthew 28:18-19', text: 'All authority has been given to Me... Go therefore...' },
+    ],
+    prayer: `Father, count me worthy of the calling You have given me. Fulfill every assignment and every work of faith with power.\n\nRelease grace to walk in obedience and authority. Remove fear, hesitation, and delay.\n\nAs You have sent me, I go. As You have spoken, I will act.\n\nI decree that I move in power, not fear. I walk in authority, not hesitation.\n\nI am sent, aligned, and established in my assignment.`,
+  },
 };
 
 export default function CommissioningModule() {

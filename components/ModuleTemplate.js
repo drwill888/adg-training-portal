@@ -10,7 +10,7 @@ import { downloadCertificate } from "../lib/certificate";
 var NAVY = "#021A35";
 var GOLD = "#FDD20D";
 
-var STEPS = [
+var STEPS_DEFAULT = [
   { id: "activation", label: "Activation" },
   { id: "pre-diagnostic", label: "Pre-Check" },
   { id: "teaching", label: "Teaching" },
@@ -18,6 +18,16 @@ var STEPS = [
   { id: "stages", label: "Stages" },
   { id: "post-diagnostic", label: "Post-Check" },
   { id: "commitment", label: "Commitment" },
+  { id: "summary", label: "Blueprint" },
+];
+
+var STEPS_INTRO = [
+  { id: "activation", label: "Activation" },
+  { id: "teaching", label: "Teaching" },
+  { id: "exemplar", label: "Exemplar" },
+  { id: "stages", label: "Stages" },
+  { id: "commitment", label: "Commitment" },
+  { id: "assessment", label: "Assessment" },
   { id: "summary", label: "Blueprint" },
 ];
 
@@ -177,11 +187,14 @@ export default function ModuleTemplate({ config }) {
   var contrastTable = config.contrastTable;
   var scriptures = config.scriptures;
   var bookChapter = config.bookChapter;
+  var activationPrayer = config.activationPrayer;
+  var podcast = config.podcast;
 
   var payStatus = usePaymentStatus();
   var paid = payStatus.paid;
   var payLoading = payStatus.loading;
   var isFree = moduleNum === 0;
+  var STEPS = moduleNum === 0 ? STEPS_INTRO : STEPS_DEFAULT;
 
   var stepS = useState(0); var step = stepS[0]; var setStep = stepS[1];
   var preS = useState({}); var preScores = preS[0]; var setPreScores = preS[1];
@@ -192,6 +205,7 @@ export default function ModuleTemplate({ config }) {
   var scS = useState(false); var showScriptures = scS[0]; var setShowScriptures = scS[1];
   var bkS = useState(false); var showBookChapter = bkS[0]; var setShowBookChapter = bkS[1];
   var rlS = useState(false); var resumeLoaded = rlS[0]; var setResumeLoaded = rlS[1];
+  var poS = useState(false); var prayerOpen = poS[0]; var setPrayerOpen = poS[1];
   var topRef = useRef(null);
   var cur = STEPS[step];
   var scrollTop = function() { if (topRef.current) topRef.current.scrollIntoView({ behavior: "smooth" }); };
@@ -303,6 +317,22 @@ export default function ModuleTemplate({ config }) {
               <SectionHead sub="Take three minutes in silence. Write the first honest answer that surfaces.">Activation Prompts</SectionHead>
               {activationPrompts.map(function(p, i) { return <Reflect key={i} prompt={p} />; })}
             </div>
+            {podcast && (
+              <div style={{ marginTop: 24 }}>
+                <p className="text-xs uppercase tracking-widest font-semibold mb-3" style={{ color: accent }}>Podcast — Introduction Episode</p>
+                <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid #e5e7eb" }}>
+                  <iframe
+                    src={"https://www.buzzsprout.com/" + podcast.showId + "/" + podcast.episodeId + "?client_source=small_player&iframe=true"}
+                    loading="lazy"
+                    width="100%"
+                    height="200"
+                    frameBorder="0"
+                    scrolling="no"
+                    title="5C Blueprint Podcast"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         );
 
@@ -462,13 +492,48 @@ export default function ModuleTemplate({ config }) {
         return (
           <div className="space-y-6">
             <SectionHead sub={"Based on your reflections and commitments — your personalized " + title + " analysis."}>Your {title} Blueprint</SectionHead>
+            {activationPrayer && (
+              <div style={{ marginBottom: 8 }}>
+                <button
+                  onClick={function() { setPrayerOpen(function(o) { return !o; }); }}
+                  style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 18px", background: "transparent", border: "1px solid " + accent + "66", borderRadius: 12, cursor: "pointer", textAlign: "left" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{ fontSize: 18 }}>🙏</span>
+                    <div>
+                      <p style={{ fontSize: 13, fontWeight: 700, color: NAVY, margin: 0 }}>Activation Prayer — {activationPrayer.theme}</p>
+                      <p style={{ fontSize: 11, color: "#888", margin: 0 }}>{activationPrayer.context}</p>
+                    </div>
+                  </div>
+                  <span style={{ fontSize: 12, color: accent, fontWeight: 700 }}>{prayerOpen ? "Close ↑" : "Open ↓"}</span>
+                </button>
+                {prayerOpen && (
+                  <div style={{ padding: "20px 18px", background: "#FAFAF8", border: "1px solid " + accent + "44", borderTop: "none", borderRadius: "0 0 12px 12px" }}>
+                    <div style={{ marginBottom: 16 }}>
+                      {activationPrayer.scriptures.map(function(s, i) {
+                        return (
+                          <div key={i} style={{ padding: "10px 14px", borderLeft: "3px solid " + accent, marginBottom: 8, background: "#fff", borderRadius: "0 8px 8px 0" }}>
+                            <p style={{ fontSize: 12, fontWeight: 700, color: NAVY, margin: "0 0 2px" }}>{s.ref}</p>
+                            <p style={{ fontSize: 12, color: "#555", margin: 0, fontStyle: "italic" }}>{s.text}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div style={{ padding: "16px 18px", background: NAVY, borderRadius: 10 }}>
+                      {activationPrayer.prayer.split("\n\n").map(function(para, i) {
+                        return <p key={i} style={{ fontSize: 13, color: "#c8cdd6", lineHeight: 1.8, margin: "0 0 10px" }}>{para}</p>;
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
             {!aiSummary && !loading && (
-              <button onClick={generateSummary} className="w-full py-4 rounded-2xl font-bold text-base transition-all" style={{ background: NAVY, color: accentMid }}>Generate My {title} Blueprint →</button>
+              <button onClick={generateSummary} className="w-full py-4 rounded-2xl font-bold text-base transition-all" style={{ background: NAVY, color: accentMid }}>Generate My Personalized Summary →</button>
             )}
             {loading && (
               <div className="text-center py-12">
                 <div className="w-10 h-10 border-4 rounded-full animate-spin mx-auto mb-4" style={{ borderColor: accentLight, borderTopColor: accent }} />
-                <p className="text-sm" style={{ color: "#999" }}>Generating your personalized blueprint...</p>
+                <p className="text-sm" style={{ color: "#999" }}>Generating your personalized summary...</p>
               </div>
             )}
             {aiSummary && (
@@ -513,6 +578,14 @@ export default function ModuleTemplate({ config }) {
           </div>
         );
 
+      case "assessment":
+        return (
+          <div className="space-y-6">
+            <SectionHead sub="This is your honest formation check. Rate each statement as you stand right now — not as you hope to be.">Formation Readiness Assessment</SectionHead>
+            <DiagnosticSection diagnostic={diagnostic} scores={postScores} setScores={setPostScores} accent={accent} label="Formation Assessment" />
+          </div>
+        );
+
       default:
         return null;
     }
@@ -534,7 +607,7 @@ export default function ModuleTemplate({ config }) {
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
           <a href="/" className="text-sm font-medium flex items-center gap-1.5 hover:opacity-70 transition-opacity" style={{ color: NAVY }}>← Dashboard</a>
           <div className="text-center">
-            <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: NAVY }}>{moduleNum === 0 ? "Introduction" : moduleNum === 6 ? "Commissioning" : "Module " + moduleNum}</p>
+            <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: NAVY }}>{moduleNum === 0 ? "Introduction" : moduleNum === 6 ? "Bonus Module" : "Module " + moduleNum}</p>
             <p className="text-sm font-bold" style={{ color: NAVY }}>{title}</p>
           </div>
           <div style={{ width: 28, display: "flex", justifyContent: "flex-end" }}><FlameMark size={28} /></div>

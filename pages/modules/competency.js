@@ -310,6 +310,16 @@ const config = {
       ["Leads by emotion", "Leads by wisdom and preparation"],
     ],
   },
+
+  activationPrayer: {
+    theme: 'Wisdom & Stewardship of Grace',
+    context: 'When you need growth in skill, wisdom, and execution',
+    scriptures: [
+      { ref: 'Colossians 1:9-10', text: '...that you may be filled with the knowledge of His will in all wisdom and spiritual understanding...' },
+      { ref: '1 Peter 4:10', text: 'As each one has received a gift, minister it to one another, as good stewards of the manifold grace of God.' },
+    ],
+    prayer: `Father, fill me with the knowledge of Your will in all wisdom and spiritual understanding. Reveal how I am to walk, build, and execute what You have entrusted to me.\n\nTeach me to steward the grace You have given me. Let every gift in my life be activated, refined, and released.\n\nRemove passivity, fear, and neglect of my gifts. Establish diligence, excellence, and faithfulness in me.\n\nI decree that I am a good steward of the grace of God. I grow in skill, wisdom, and effectiveness.\n\nWhat You have placed in me will not remain dormant. It will be developed, multiplied, and released for Your glory.`,
+  },
 };
 
 export default function CompetencyModule() {
