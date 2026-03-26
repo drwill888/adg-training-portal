@@ -1,5 +1,6 @@
 // components/TrainingChat.js
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 
 const BRAND = {
   navy: "#021A35",
@@ -22,21 +23,35 @@ const MODULES = [
   { value: "general", label: "General" },
 ];
 
+const ROUTE_MODULE_MAP = {
+  "/modules/introduction": "introduction",
+  "/modules/calling": "calling",
+  "/modules/connection": "connection",
+  "/modules/competency": "competency",
+  "/modules/capacity": "capacity",
+  "/modules/convergence": "convergence",
+  "/modules/commissioning": "commissioning",
+  "/dashboard": "general",
+  "/training-bot": "general",
+};
+
 export default function TrainingChat({ defaultModule }) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [question, setQuestion] = useState("");
-  const [selectedModule, setSelectedModule] = useState(defaultModule || "");
+
+  const detectedModule = ROUTE_MODULE_MAP[router.pathname] || defaultModule || "";
+  const [selectedModule, setSelectedModule] = useState(detectedModule);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Update module filter when parent page changes it
+  // Auto-update module when route changes
   useEffect(() => {
-    if (defaultModule) {
-      setSelectedModule(defaultModule);
-    }
-  }, [defaultModule]);
+    const detected = ROUTE_MODULE_MAP[router.pathname] || defaultModule || "";
+    setSelectedModule(detected);
+  }, [router.pathname, defaultModule]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -224,7 +239,9 @@ export default function TrainingChat({ defaultModule }) {
                   margin: 0,
                 }}
               >
-                Awakening Destiny Global
+                {selectedModule && selectedModule !== "general"
+                  ? selectedModule.charAt(0).toUpperCase() + selectedModule.slice(1) + " Module"
+                  : "Awakening Destiny Global"}
               </p>
             </div>
             {/* Module Filter */}
@@ -279,7 +296,9 @@ export default function TrainingChat({ defaultModule }) {
                   How can I help?
                 </p>
                 <p style={{ fontSize: "13px", lineHeight: 1.5 }}>
-                  Ask about the 5C Blueprint — Calling, Connection, Competency, Capacity, or Convergence.
+                  {selectedModule && selectedModule !== "general"
+                    ? `You\'re in the ${selectedModule.charAt(0).toUpperCase() + selectedModule.slice(1)} module. Ask me anything about it.`
+                    : "Ask about the 5C Blueprint — Calling, Connection, Competency, Capacity, or Convergence."}
                 </p>
               </div>
             )}
