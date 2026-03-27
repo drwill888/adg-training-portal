@@ -328,7 +328,18 @@ const config = {
 export default function ConvergenceModule() {
   return (
     <>
-      <Head><title>Convergence | 5C Leadership Blueprint</title></Head>
+      <Head>
+        <title>Convergence | 5C Leadership Blueprint</title>
+        <meta name="description" content="Module 5: Find your sweet spot where calling, connection, competency, and capacity align for maximum impact." />
+        <meta property="og:title" content="Convergence | 5C Leadership Blueprint" />
+        <meta property="og:description" content="Module 5: Find your sweet spot where calling, connection, competency, and capacity align for maximum impact." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://5cblueprint.awakeningdestiny.global/modules/convergence" />
+        <meta property="og:site_name" content="5C Leadership Blueprint" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Convergence | 5C Leadership Blueprint" />
+        <meta name="twitter:description" content="Module 5: Find your sweet spot where calling, connection, competency, and capacity align for maximum impact." />
+      </Head>
       <ModuleTemplate config={config} />
     </>
   );

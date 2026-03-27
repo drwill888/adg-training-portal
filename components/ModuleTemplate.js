@@ -206,6 +206,7 @@ export default function ModuleTemplate({ config }) {
   var bkS = useState(false); var showBookChapter = bkS[0]; var setShowBookChapter = bkS[1];
   var rlS = useState(false); var resumeLoaded = rlS[0]; var setResumeLoaded = rlS[1];
   var poS = useState(false); var prayerOpen = poS[0]; var setPrayerOpen = poS[1];
+  var rtS = useState(null); var resumeToast = rtS[0]; var setResumeToast = rtS[1];
   var topRef = useRef(null);
   var cur = STEPS[step];
   var scrollTop = function() { if (topRef.current) topRef.current.scrollIntoView({ behavior: "smooth" }); };
@@ -218,11 +219,17 @@ export default function ModuleTemplate({ config }) {
         if (!ss || !ss.user || !ss.user.email) { setResumeLoaded(true); return; }
         var r = await supabase.from("module_progress").select("*").eq("user_email", ss.user.email).eq("module_num", moduleNum).single();
         if (r.data) {
+          var savedStep = r.data.step || 0;
           if (r.data.step) setStep(r.data.step);
           if (r.data.pre_scores) setPreScores(r.data.pre_scores);
           if (r.data.post_scores) setPostScores(r.data.post_scores);
           if (r.data.commitments) setCommitments(r.data.commitments);
           if (r.data.ai_summary) setAiSummary(r.data.ai_summary);
+          if (savedStep > 0) {
+            var stepList = moduleNum === 0 ? STEPS_INTRO : STEPS_DEFAULT;
+            var stepName = stepList[savedStep] ? stepList[savedStep].label : ("step " + savedStep);
+            setResumeToast("Welcome back! Resuming from " + stepName);
+          }
         }
       } catch (e) {}
       setResumeLoaded(true);
@@ -245,6 +252,12 @@ export default function ModuleTemplate({ config }) {
     }, 1500);
     return function() { clearTimeout(t); };
   }, [step, preScores, postScores, commitments, aiSummary, resumeLoaded, moduleNum]);
+
+  useEffect(function() {
+    if (!resumeToast) return;
+    var t = setTimeout(function() { setResumeToast(null); }, 4000);
+    return function() { clearTimeout(t); };
+  }, [resumeToast]);
 
   if (!isFree && payLoading) {
     return (<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAF8" }}><p style={{ color: "#999", fontSize: 14 }}>Loading...</p></div>);
@@ -634,6 +647,10 @@ export default function ModuleTemplate({ config }) {
         </div>
         {renderStep()}
       </div>
+
+      {resumeToast && (
+        <div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 9998, background: "#fff", color: "#021A35", borderLeft: "4px solid #C8A951", borderRadius: 8, padding: "12px 20px", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", fontSize: 13, fontFamily: "'Raleway', 'Outfit', sans-serif", whiteSpace: "nowrap", transition: "opacity 0.3s" }}>{resumeToast}</div>
+      )}
 
       <div className="fixed bottom-0 left-0 right-0 border-t py-3 z-40" style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderColor: "#f0f0f0" }}>
         <div className="max-w-3xl mx-auto px-4 flex justify-between items-center">

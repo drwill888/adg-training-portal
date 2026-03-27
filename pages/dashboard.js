@@ -1,6 +1,7 @@
 // pages/dashboard.js
 // Renamed from pages/index.js — dashboard now lives at /dashboard
 
+import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
@@ -99,14 +100,14 @@ function ProgressBar({ percent, accent, height }) {
 }
 
 // ─── CHECKOUT — success redirects to /dashboard ───────────────────
-async function handleCheckout() {
+async function handleCheckout(pathway) {
   try {
     const { data: { session } } = await supabase.auth.getSession();
     const email = session?.user?.email;
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, pathway: pathway || 'individual' }),
     });
     const data = await res.json();
     if (data.url) {
@@ -200,8 +201,21 @@ export default function Dashboard() {
   var greeting = firstName ? ("Welcome back, " + firstName) : "Welcome";
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", fontFamily: "'Raleway','Segoe UI',sans-serif", background: colors.offWhite }}>
-      <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet" />
+    <>
+      <Head>
+        <title>Dashboard | 5C Leadership Blueprint</title>
+        <meta name="description" content="Track your leadership formation journey across all five dimensions of the Blueprint." />
+        <meta property="og:title" content="Dashboard | 5C Leadership Blueprint" />
+        <meta property="og:description" content="Track your leadership formation journey across all five dimensions of the Blueprint." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://5cblueprint.awakeningdestiny.global/dashboard" />
+        <meta property="og:site_name" content="5C Leadership Blueprint" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Dashboard | 5C Leadership Blueprint" />
+        <meta name="twitter:description" content="Track your leadership formation journey across all five dimensions of the Blueprint." />
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet" />
+      </Head>
+      <div style={{ display: "flex", minHeight: "100vh", fontFamily: "'Raleway','Segoe UI',sans-serif", background: colors.offWhite }}>
 
       <Sidebar
         currentPage={page}
@@ -265,9 +279,16 @@ export default function Dashboard() {
                 <button
                   onClick={handleCheckout}
                   style={{ padding: "12px 36px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
-                  Unlock Full Access
+                  Unlock Full Access — $79.99
                 </button>
-                <span style={{ fontSize: 12, color: colors.gray500 }}>Introduction module is free — start there.</span>
+                <span style={{ fontSize: 12, color: colors.gray500 }}>Introduction module is free. Full access unlocks all 5 modules + bonus Commissioning module.</span>
+              </div>
+              <div style={{ marginTop: 10 }}>
+                <span
+                  onClick={() => handleCheckout('cohort')}
+                  style={{ fontSize: 12, color: '#C8A951', cursor: 'pointer', textDecoration: 'underline' }}>
+                  Or join a cohort — $297
+                </span>
               </div>
               <p style={{ fontSize: 11, color: colors.gray500, marginTop: 10 }}>
                 7-day satisfaction guarantee. If the Blueprint is not what you expected, email <a href="mailto:info@awakeningdestiny.global" style={{ color: colors.gold }}>info@awakeningdestiny.global</a> within 7 days for a full refund — no questions asked.

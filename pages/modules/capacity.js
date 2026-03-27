@@ -339,7 +339,18 @@ const config = {
 export default function CapacityModule() {
   return (
     <>
-      <Head><title>Capacity | 5C Leadership Blueprint</title></Head>
+      <Head>
+        <title>Capacity | 5C Leadership Blueprint</title>
+        <meta name="description" content="Module 4: Build the character and sustainability to carry your calling for the long haul." />
+        <meta property="og:title" content="Capacity | 5C Leadership Blueprint" />
+        <meta property="og:description" content="Module 4: Build the character and sustainability to carry your calling for the long haul." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://5cblueprint.awakeningdestiny.global/modules/capacity" />
+        <meta property="og:site_name" content="5C Leadership Blueprint" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Capacity | 5C Leadership Blueprint" />
+        <meta name="twitter:description" content="Module 4: Build the character and sustainability to carry your calling for the long haul." />
+      </Head>
       <ModuleTemplate config={config} />
     </>
   );

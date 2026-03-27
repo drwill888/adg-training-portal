@@ -297,7 +297,18 @@ const config = {
 export default function ConnectionModule() {
   return (
     <>
-      <Head><title>Connection | 5C Leadership Blueprint</title></Head>
+      <Head>
+        <title>Connection | 5C Leadership Blueprint</title>
+        <meta name="description" content="Module 2: Whose are you? Explore identity, belonging, and the relationships that sustain your calling." />
+        <meta property="og:title" content="Connection | 5C Leadership Blueprint" />
+        <meta property="og:description" content="Module 2: Whose are you? Explore identity, belonging, and the relationships that sustain your calling." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://5cblueprint.awakeningdestiny.global/modules/connection" />
+        <meta property="og:site_name" content="5C Leadership Blueprint" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Connection | 5C Leadership Blueprint" />
+        <meta name="twitter:description" content="Module 2: Whose are you? Explore identity, belonging, and the relationships that sustain your calling." />
+      </Head>
       <ModuleTemplate config={config} />
     </>
   );

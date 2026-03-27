@@ -325,7 +325,18 @@ const config = {
 export default function CompetencyModule() {
   return (
     <>
-      <Head><title>Competency | 5C Leadership Blueprint</title></Head>
+      <Head>
+        <title>Competency | 5C Leadership Blueprint</title>
+        <meta name="description" content="Module 3: Develop the skills, excellence, and credibility needed to carry what you're called to build." />
+        <meta property="og:title" content="Competency | 5C Leadership Blueprint" />
+        <meta property="og:description" content="Module 3: Develop the skills, excellence, and credibility needed to carry what you're called to build." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://5cblueprint.awakeningdestiny.global/modules/competency" />
+        <meta property="og:site_name" content="5C Leadership Blueprint" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Competency | 5C Leadership Blueprint" />
+        <meta name="twitter:description" content="Module 3: Develop the skills, excellence, and credibility needed to carry what you're called to build." />
+      </Head>
       <ModuleTemplate config={config} />
     </>
   );

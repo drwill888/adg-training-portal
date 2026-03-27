@@ -71,7 +71,18 @@ export default function LoginPage({ session }) {
 
   return (
     <>
-      <Head><title>{isForgot ? 'Reset Password' : 'Sign In'} | 5C Leadership Blueprint</title></Head>
+      <Head>
+        <title>Sign In | 5C Leadership Blueprint</title>
+        <meta name="description" content="Sign in to your 5C Leadership Blueprint account to continue your formation journey." />
+        <meta property="og:title" content="Sign In | 5C Leadership Blueprint" />
+        <meta property="og:description" content="Sign in to your 5C Leadership Blueprint account to continue your formation journey." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://5cblueprint.awakeningdestiny.global/login" />
+        <meta property="og:site_name" content="5C Leadership Blueprint" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Sign In | 5C Leadership Blueprint" />
+        <meta name="twitter:description" content="Sign in to your 5C Leadership Blueprint account to continue your formation journey." />
+      </Head>
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F8F9FC', fontFamily: "'Raleway', sans-serif" }}>
         <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet" />
         <div style={{ width: '100%', maxWidth: 420, padding: '0 20px' }}>

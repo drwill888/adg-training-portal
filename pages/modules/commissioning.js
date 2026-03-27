@@ -230,7 +230,18 @@ const config = {
 export default function CommissioningModule() {
   return (
     <>
-      <Head><title>Commissioning | 5C Leadership Blueprint</title></Head>
+      <Head>
+        <title>Commissioning | 5C Leadership Blueprint</title>
+        <meta name="description" content="Bonus module: You've been formed. Now be deployed. Receive your commissioning into Kingdom leadership." />
+        <meta property="og:title" content="Commissioning | 5C Leadership Blueprint" />
+        <meta property="og:description" content="Bonus module: You've been formed. Now be deployed. Receive your commissioning into Kingdom leadership." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://5cblueprint.awakeningdestiny.global/modules/commissioning" />
+        <meta property="og:site_name" content="5C Leadership Blueprint" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Commissioning | 5C Leadership Blueprint" />
+        <meta name="twitter:description" content="Bonus module: You've been formed. Now be deployed. Receive your commissioning into Kingdom leadership." />
+      </Head>
       <ModuleTemplate config={config} />
     </>
   );

@@ -218,7 +218,16 @@ export default function Assessment() {
   return (
     <>
       <Head>
-        <title>5C Leadership Assessment | Awakening Destiny Global</title>
+        <title>Leadership Diagnostic | 5C Leadership Blueprint</title>
+        <meta name="description" content="Take the 25-question diagnostic assessment to identify your leadership strengths and growth edges across all five dimensions." />
+        <meta property="og:title" content="Leadership Diagnostic | 5C Leadership Blueprint" />
+        <meta property="og:description" content="Take the 25-question diagnostic assessment to identify your leadership strengths and growth edges across all five dimensions." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://5cblueprint.awakeningdestiny.global/assessment" />
+        <meta property="og:site_name" content="5C Leadership Blueprint" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Leadership Diagnostic | 5C Leadership Blueprint" />
+        <meta name="twitter:description" content="Take the 25-question diagnostic assessment to identify your leadership strengths and growth edges across all five dimensions." />
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
 

@@ -236,7 +236,18 @@ var config = {
 export default function CallingModule() {
   return (
     <>
-      <Head><title>Calling | 5C Leadership Blueprint</title></Head>
+      <Head>
+        <title>Calling | 5C Leadership Blueprint</title>
+        <meta name="description" content="Module 1: Discover who you were designed to become. Explore your calling, purpose, and divine assignment." />
+        <meta property="og:title" content="Calling | 5C Leadership Blueprint" />
+        <meta property="og:description" content="Module 1: Discover who you were designed to become. Explore your calling, purpose, and divine assignment." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://5cblueprint.awakeningdestiny.global/modules/calling" />
+        <meta property="og:site_name" content="5C Leadership Blueprint" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Calling | 5C Leadership Blueprint" />
+        <meta name="twitter:description" content="Module 1: Discover who you were designed to become. Explore your calling, purpose, and divine assignment." />
+      </Head>
       <ModuleTemplate config={config} />
     </>
   );

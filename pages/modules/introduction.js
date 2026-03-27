@@ -209,7 +209,18 @@ var config = {
 export default function IntroductionModule() {
   return (
     <>
-      <Head><title>Introduction | 5C Leadership Blueprint</title></Head>
+      <Head>
+        <title>Introduction | 5C Leadership Blueprint</title>
+        <meta name="description" content="Begin your formation journey with the course foundation module — free to all learners." />
+        <meta property="og:title" content="Introduction | 5C Leadership Blueprint" />
+        <meta property="og:description" content="Begin your formation journey with the course foundation module — free to all learners." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://5cblueprint.awakeningdestiny.global/modules/introduction" />
+        <meta property="og:site_name" content="5C Leadership Blueprint" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Introduction | 5C Leadership Blueprint" />
+        <meta name="twitter:description" content="Begin your formation journey with the course foundation module — free to all learners." />
+      </Head>
       <ModuleTemplate config={config} />
     </>
   );
