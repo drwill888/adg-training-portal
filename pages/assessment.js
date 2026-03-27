@@ -123,9 +123,25 @@ function getNextStep(gapId) {
 }
 
 // ════════════════════════════════════════
+// MOBILE HOOK
+// ════════════════════════════════════════
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < breakpoint : false
+  );
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, [breakpoint]);
+  return isMobile;
+}
+
+// ════════════════════════════════════════
 // MAIN COMPONENT
 // ════════════════════════════════════════
 export default function Assessment() {
+  const isMobile = useIsMobile();
   const [screen, setScreen] = useState('intro'); // intro | assessment | gate | results
   const [answers, setAnswers] = useState({});
   const [userData, setUserData] = useState({ firstName: '', lastName: '', email: '' });
@@ -360,7 +376,8 @@ export default function Assessment() {
                               key={n}
                               onClick={() => selectRating(key, n)}
                               style={{
-                                flex: 1, padding: '0.6rem 0.3rem', textAlign: 'center',
+                                flex: 1, padding: isMobile ? '10px 14px' : '10px 12px', textAlign: 'center',
+                                minWidth: 44, minHeight: 44,
                                 background: selected === n ? colors.gold : 'transparent',
                                 border: `1px solid ${selected === n ? colors.gold : 'rgba(253,210,13,0.2)'}`,
                                 color: selected === n ? colors.navy : colors.gray,
