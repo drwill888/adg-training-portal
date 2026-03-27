@@ -268,8 +268,8 @@ export default function ModuleTemplate({ config }) {
         try {
           var sr = await supabase.auth.getSession();
           var ss = sr.data.session;
-          if (!ss || !ss.user || !ss.user.email) { done(null); return; }
-          await supabase.from("module_progress").upsert({ user_email: ss.user.email, module_num: moduleNum, step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, reflections: nextReflections, updated_at: new Date().toISOString() }, { onConflict: "user_email,module_num" });
+          if (!ss || !ss.user) { done(null); return; }
+          await supabase.from("user_progress").upsert({ user_id: ss.user.id, module_id: moduleNum, current_step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, reflections: nextReflections, updated_at: new Date().toISOString() }, { onConflict: "user_id,module_id" });
           done(null);
         } catch (e) {
           console.error("Failed to auto-save reflection:", e);
@@ -285,11 +285,11 @@ export default function ModuleTemplate({ config }) {
       try {
         var sr = await supabase.auth.getSession();
         var ss = sr.data.session;
-        if (!ss || !ss.user || !ss.user.email) { setResumeLoaded(true); return; }
-        var r = await supabase.from("module_progress").select("*").eq("user_email", ss.user.email).eq("module_num", moduleNum).single();
+        if (!ss || !ss.user) { setResumeLoaded(true); return; }
+        var r = await supabase.from("user_progress").select("*").eq("user_id", ss.user.id).eq("module_id", moduleNum).single();
         if (r.data) {
-          var savedStep = r.data.step || 0;
-          if (r.data.step) setStep(r.data.step);
+          var savedStep = r.data.current_step || 0;
+          if (r.data.current_step) setStep(r.data.current_step);
           if (r.data.pre_scores) setPreScores(r.data.pre_scores);
           if (r.data.post_scores) setPostScores(r.data.post_scores);
           if (r.data.commitments) setCommitments(r.data.commitments);
@@ -317,8 +317,8 @@ export default function ModuleTemplate({ config }) {
         try {
           var sr = await supabase.auth.getSession();
           var ss = sr.data.session;
-          if (!ss || !ss.user || !ss.user.email) return;
-          await supabase.from("module_progress").upsert({ user_email: ss.user.email, module_num: moduleNum, step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, reflections: reflections, updated_at: new Date().toISOString() }, { onConflict: "user_email,module_num" });
+          if (!ss || !ss.user) return;
+          await supabase.from("user_progress").upsert({ user_id: ss.user.id, module_id: moduleNum, current_step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, reflections: reflections, updated_at: new Date().toISOString() }, { onConflict: "user_id,module_id" });
         } catch (e) {
           console.error("Failed to save progress:", e);
           setSaveError("Progress didn't save. Check your connection and try again.");
