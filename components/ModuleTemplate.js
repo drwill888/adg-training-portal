@@ -304,14 +304,35 @@ export default function ModuleTemplate({ config }) {
       .finally(function() { setLoading(false); });
   };
 
-  var handleCertificate = function() {
-    supabase.auth.getSession().then(function(result) {
-      var session = result.data.session;
-      var email = session && session.user ? session.user.email : "Leader";
-      var name = email.split("@")[0].replace(/[._]/g, " ");
-      name = name.split(" ").map(function(w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(" ");
-      downloadCertificate(name);
-    });
+  var handleCertificate = async function() {
+    var sessionRes = await supabase.auth.getSession();
+    var session = sessionRes.data.session;
+    var email = session && session.user ? session.user.email : "";
+    var user = session && session.user ? session.user : null;
+
+    // Try to get real name from session metadata or profile
+    var certName = "";
+    try {
+      // Check user_metadata first (set at signup)
+      if (user?.user_metadata?.full_name) {
+        certName = user.user_metadata.full_name;
+      } else if (user?.user_metadata?.first_name) {
+        certName = user.user_metadata.first_name + (user.user_metadata.last_name ? " " + user.user_metadata.last_name : "");
+      } else {
+        // Fall back to profile table
+        var profileRes = await supabase.from("user_profiles").select("full_name").eq("id", user.id).single();
+        if (profileRes.data?.full_name) {
+          certName = profileRes.data.full_name;
+        }
+      }
+    } catch (e) { /* silent — use fallback */ }
+
+    // Final fallback: derive from email as before
+    if (!certName && email) {
+      certName = email.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+    }
+
+    downloadCertificate(certName || "Leader");
   };
 
   var renderStep = function() {
