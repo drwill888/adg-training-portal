@@ -230,6 +230,7 @@ export default function LandingPage() {
           <a href="/" className="nav-logo">5C <span>Blueprint</span></a>
           <div className="nav-right">
             <a href="/assessment" className="nav-assess">Take the Assessment →</a>
+            <a href="/login" className="nav-assess" style={{marginLeft: '0.5rem'}}>Login</a>
             <a href={BOOKING_URL} className="nav-cta" target="_blank" rel="noopener noreferrer">Apply Now</a>
           </div>
         </nav>
@@ -248,8 +249,8 @@ export default function LandingPage() {
               The 5C Leadership Blueprint is an apostolic-prophetic framework that equips Kingdom leaders, entrepreneurs, and emerging voices to build with clarity, walk in identity, and lead with enduring impact — not just for a season, but for generations.
             </p>
             <div className="hero-actions">
-              <a href={BOOKING_URL} className="btn-primary" target="_blank" rel="noopener noreferrer">Book Discovery Call</a>
-              <a href="/assessment" className="btn-gold-outline">Take the Free Assessment</a>
+              <a href="/login" className="btn-primary">Access the Course</a>
+              <a href={BOOKING_URL} className="btn-gold-outline" target="_blank" rel="noopener noreferrer">Book Discovery Call</a>
             </div>
             <div className="hero-assess-nudge">
               <div className="assess-nudge-line"></div>
