@@ -28,13 +28,13 @@ const colors = {
 };
 
 const modules = [
-  { id: 0, title: "Introduction", subtitle: "Course Foundation", icon: "◈", href: "/modules/introduction", free: true },
-  { id: 1, title: "Calling", subtitle: "Potential (Purpose)", question: "Who was I designed to become?", icon: "①", href: "/modules/calling" },
-  { id: 2, title: "Connection", subtitle: "Identity (Relationships)", question: "Whose am I?", icon: "②", href: "/modules/connection" },
-  { id: 3, title: "Competency", subtitle: "Excellence (Credibility)", question: "Can I carry what I'm called to build?", icon: "③", href: "/modules/competency" },
-  { id: 4, title: "Capacity", subtitle: "Character (Sustainability)", question: "Can I sustain what I'm building?", icon: "④", href: "/modules/capacity" },
-  { id: 5, title: "Convergence", subtitle: "Sweet Spot (Impact)", question: "Am I operating in my sweet spot?", icon: "⑤", href: "/modules/convergence" },
-  { id: 6, title: "Commissioning", subtitle: "Bonus Module", icon: "◉", href: "/modules/commissioning", bonus: true },
+  { id: 0, title: "Introduction", subtitle: "Course Foundation", icon: "◈", href: "/modules/introduction", free: true, timeEstimate: "~30 min" },
+  { id: 1, title: "Calling", subtitle: "Potential (Purpose)", question: "Who was I designed to become?", icon: "①", href: "/modules/calling", timeEstimate: "~60 min" },
+  { id: 2, title: "Connection", subtitle: "Identity (Relationships)", question: "Whose am I?", icon: "②", href: "/modules/connection", timeEstimate: "~60 min" },
+  { id: 3, title: "Competency", subtitle: "Excellence (Credibility)", question: "Can I carry what I'm called to build?", icon: "③", href: "/modules/competency", timeEstimate: "~60 min" },
+  { id: 4, title: "Capacity", subtitle: "Character (Sustainability)", question: "Can I sustain what I'm building?", icon: "④", href: "/modules/capacity", timeEstimate: "~60 min" },
+  { id: 5, title: "Convergence", subtitle: "Sweet Spot (Impact)", question: "Am I operating in my sweet spot?", icon: "⑤", href: "/modules/convergence", timeEstimate: "~60 min" },
+  { id: 6, title: "Commissioning", subtitle: "Bonus Module", icon: "◉", href: "/modules/commissioning", bonus: true, timeEstimate: "~45 min" },
 ];
 
 const accents = [colors.gold, colors.skyBlue, colors.royalBlue, colors.orange, colors.skyBlue, "#EE3124", colors.gold];
@@ -167,6 +167,27 @@ export default function Dashboard() {
     loadName();
   }, []);
 
+  // ─── ASSESSMENT HISTORY ──────────────────────────────────────────
+  var assessHistState = useState([]);
+  var assessHist = assessHistState[0];
+  var setAssessHist = assessHistState[1];
+  useEffect(() => {
+    async function loadAssessHistory() {
+      try {
+        var { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user) return;
+        var aResult = await supabase
+          .from("assessments")
+          .select("id, total_score, max_possible, dimension_scores, taken_at")
+          .eq("user_id", session.user.id)
+          .order("taken_at", { ascending: false })
+          .limit(5);
+        if (aResult.data) setAssessHist(aResult.data);
+      } catch (e) { /* silent fallback */ }
+    }
+    loadAssessHistory();
+  }, []);
+
   // ─── MODULE PROGRESS ─────────────────────────────────────────────
   const [progress, setProgress] = useState({});
   useEffect(() => {
@@ -253,6 +274,40 @@ export default function Dashboard() {
             <ProgressBar percent={overallPercent} accent={colors.gold} height={8} />
           </div>
 
+          {/* ─── ASSESSMENT HISTORY ─── */}
+          {assessHist.length > 0 && (
+            <div style={{ marginBottom: 24, padding: "20px 24px", background: colors.white, borderRadius: 12, border: "1px solid " + colors.gray200 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: colors.navy }}>Assessment History</span>
+                <a href="/assessment" style={{ fontSize: 12, color: colors.royalBlue, textDecoration: "none" }}>Retake →</a>
+              </div>
+              {assessHist.map(function(a, i) {
+                var pct = Math.round((a.total_score / (a.max_possible || 125)) * 100);
+                var date = new Date(a.taken_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+                var dims = ["calling", "connection", "competency", "capacity", "convergence"];
+                var scores = a.dimension_scores || {};
+                return (
+                  <div key={a.id} style={{ marginBottom: i < assessHist.length - 1 ? 12 : 0, paddingBottom: i < assessHist.length - 1 ? 12 : 0, borderBottom: i < assessHist.length - 1 ? "1px solid " + colors.gray200 : "none" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                      <span style={{ fontSize: 12, color: colors.gray500 }}>{date}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: colors.navy }}>{a.total_score}/125 <span style={{ fontSize: 11, color: colors.gold, fontWeight: 600 }}>({pct}%)</span></span>
+                    </div>
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                      {dims.map(function(d) {
+                        var s = scores[d] || 0;
+                        return (
+                          <div key={d} style={{ fontSize: 10, padding: "2px 8px", borderRadius: 4, background: colors.offWhite, border: "1px solid " + colors.gray200, color: colors.gray500 }}>
+                            {d.charAt(0).toUpperCase() + d.slice(1)}: <span style={{ fontWeight: 700, color: colors.navy }}>{s}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
           {/* ─── MARKETING / UNLOCK CTA ─── */}
           {!paid && !loading && (
             <div style={{ padding: isMobile ? 20 : 28, background: "linear-gradient(135deg, #021A35 0%, #0a2a4d 100%)", borderRadius: 14, marginBottom: 28, border: "1px solid rgba(200,169,81,0.2)" }}>
@@ -320,6 +375,7 @@ export default function Dashboard() {
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 15, fontWeight: 700, color: colors.navy }}>{m.title}</div>
                       <div style={{ fontSize: 12, color: colors.gray500, fontStyle: "italic" }}>{m.subtitle}</div>
+                      <div style={{ fontSize: 11, color: colors.gray500, marginTop: 2 }}>🕐 {m.timeEstimate}</div>
                     </div>
                   </div>
                   {!locked && (
