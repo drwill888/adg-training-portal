@@ -83,12 +83,34 @@ function BookChapterContent({ chapter }) {
   );
 }
 
-function PauseTextarea({ prompt }) {
+function PauseTextarea({ prompt, onAutoSave }) {
   var s = useState("");
+  var indS = useState(null); var saveInd = indS[0]; var setSaveInd = indS[1];
+  var timerRef = useRef(null);
+  function handleChange(e) {
+    var val = e.target.value;
+    s[1](val);
+    if (!onAutoSave) return;
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(function() {
+      setSaveInd("saving");
+      onAutoSave(val, function(err) {
+        if (err) {
+          setSaveInd("error");
+        } else {
+          setSaveInd("saved");
+          setTimeout(function() { setSaveInd(null); }, 2000);
+        }
+      });
+    }, 500);
+  }
+  var indColor = saveInd === "saving" ? "#999" : saveInd === "saved" ? "#16a34a" : saveInd === "error" ? "#dc2626" : "transparent";
+  var indText = saveInd === "saving" ? "Saving\u2026" : saveInd === "saved" ? "\u2713 Saved" : saveInd === "error" ? "Not saved" : "";
   return (
     <div className="mb-4">
       {prompt && <p className="text-sm mb-2" style={{ color: "#333" }}>{prompt}</p>}
-      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 80 }} rows={3} placeholder="Write your response here..." value={s[0]} onChange={function(e) { s[1](e.target.value); }} />
+      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 80 }} rows={3} placeholder="Write your response here..." value={s[0]} onChange={handleChange} />
+      <p style={{ fontSize: 11, color: indColor, marginTop: 4, height: 16 }}>{indText}</p>
     </div>
   );
 }
@@ -131,12 +153,34 @@ function DiagnosticSection({ diagnostic, scores, setScores, accent, label }) {
   );
 }
 
-function Reflect({ prompt }) {
+function Reflect({ prompt, onAutoSave }) {
   var s = useState("");
+  var indS = useState(null); var saveInd = indS[0]; var setSaveInd = indS[1];
+  var timerRef = useRef(null);
+  function handleChange(e) {
+    var val = e.target.value;
+    s[1](val);
+    if (!onAutoSave) return;
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(function() {
+      setSaveInd("saving");
+      onAutoSave(val, function(err) {
+        if (err) {
+          setSaveInd("error");
+        } else {
+          setSaveInd("saved");
+          setTimeout(function() { setSaveInd(null); }, 2000);
+        }
+      });
+    }, 500);
+  }
+  var indColor = saveInd === "saving" ? "#999" : saveInd === "saved" ? "#16a34a" : saveInd === "error" ? "#dc2626" : "transparent";
+  var indText = saveInd === "saving" ? "Saving\u2026" : saveInd === "saved" ? "\u2713 Saved" : saveInd === "error" ? "Not saved" : "";
   return (
     <div className="mb-5 p-4 rounded-xl" style={{ background: "#f9fafb", border: "1px solid #e5e7eb" }}>
       <p className="text-sm font-semibold mb-3" style={{ color: NAVY }}>{prompt}</p>
-      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 90 }} rows={4} placeholder="Write your honest reflection here..." value={s[0]} onChange={function(e) { s[1](e.target.value); }} />
+      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 90 }} rows={4} placeholder="Write your honest reflection here..." value={s[0]} onChange={handleChange} />
+      <p style={{ fontSize: 11, color: indColor, marginTop: 4, height: 16 }}>{indText}</p>
     </div>
   );
 }
@@ -210,9 +254,31 @@ export default function ModuleTemplate({ config }) {
   var leS = useState(null); var loadError = leS[0]; var setLoadError = leS[1];
   var seS = useState(null); var saveError = seS[0]; var setSaveError = seS[1];
   var sueS = useState(null); var summaryError = sueS[0]; var setSummaryError = sueS[1];
+  var rfS = useState({}); var reflections = rfS[0]; var setReflections = rfS[1];
   var topRef = useRef(null);
   var cur = STEPS[step];
   var scrollTop = function() { if (topRef.current) topRef.current.scrollIntoView({ behavior: "smooth" }); };
+
+  var makeAutoSave = function(key) {
+    return function(val, done) {
+      var nextReflections = Object.assign({}, reflections);
+      nextReflections[key] = val;
+      setReflections(nextReflections);
+      async function persist() {
+        try {
+          var sr = await supabase.auth.getSession();
+          var ss = sr.data.session;
+          if (!ss || !ss.user || !ss.user.email) { done(null); return; }
+          await supabase.from("module_progress").upsert({ user_email: ss.user.email, module_num: moduleNum, step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, reflections: nextReflections, updated_at: new Date().toISOString() }, { onConflict: "user_email,module_num" });
+          done(null);
+        } catch (e) {
+          console.error("Failed to auto-save reflection:", e);
+          done(e);
+        }
+      }
+      persist();
+    };
+  };
 
   useEffect(function() {
     async function load() {
@@ -228,6 +294,7 @@ export default function ModuleTemplate({ config }) {
           if (r.data.post_scores) setPostScores(r.data.post_scores);
           if (r.data.commitments) setCommitments(r.data.commitments);
           if (r.data.ai_summary) setAiSummary(r.data.ai_summary);
+          if (r.data.reflections) setReflections(r.data.reflections);
           if (savedStep > 0) {
             var stepList = moduleNum === 0 ? STEPS_INTRO : STEPS_DEFAULT;
             var stepName = stepList[savedStep] ? stepList[savedStep].label : ("step " + savedStep);
@@ -251,7 +318,7 @@ export default function ModuleTemplate({ config }) {
           var sr = await supabase.auth.getSession();
           var ss = sr.data.session;
           if (!ss || !ss.user || !ss.user.email) return;
-          await supabase.from("module_progress").upsert({ user_email: ss.user.email, module_num: moduleNum, step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, updated_at: new Date().toISOString() }, { onConflict: "user_email,module_num" });
+          await supabase.from("module_progress").upsert({ user_email: ss.user.email, module_num: moduleNum, step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, reflections: reflections, updated_at: new Date().toISOString() }, { onConflict: "user_email,module_num" });
         } catch (e) {
           console.error("Failed to save progress:", e);
           setSaveError("Progress didn't save. Check your connection and try again.");
@@ -261,7 +328,7 @@ export default function ModuleTemplate({ config }) {
       save();
     }, 1500);
     return function() { clearTimeout(t); };
-  }, [step, preScores, postScores, commitments, aiSummary, resumeLoaded, moduleNum]);
+  }, [step, preScores, postScores, commitments, aiSummary, reflections, resumeLoaded, moduleNum]);
 
   useEffect(function() {
     if (!resumeToast) return;
@@ -362,7 +429,7 @@ export default function ModuleTemplate({ config }) {
             </div>
             <div>
               <SectionHead sub="Take three minutes in silence. Write the first honest answer that surfaces.">Activation Prompts</SectionHead>
-              {activationPrompts.map(function(p, i) { return <Reflect key={i} prompt={p} />; })}
+              {activationPrompts.map(function(p, i) { return <Reflect key={i} prompt={p} onAutoSave={makeAutoSave("activation_" + i)} />; })}
             </div>
             {podcast && (
               <div style={{ marginTop: 24 }}>
@@ -435,7 +502,7 @@ export default function ModuleTemplate({ config }) {
                   {promptList.length > 0 && (
                     <div className="pt-4" style={{ borderTop: "1px solid " + accent + "44" }}>
                       <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: NAVY }}>Pause & Process</p>
-                      {promptList.map(function(q, qi) { return <PauseTextarea key={qi} prompt={q} />; })}
+                      {promptList.map(function(q, qi) { return <PauseTextarea key={qi} prompt={q} onAutoSave={makeAutoSave("teaching_" + idx + "_" + qi)} />; })}
                     </div>
                   )}
                 </div>
@@ -467,7 +534,7 @@ export default function ModuleTemplate({ config }) {
             {exemplar.questions && exemplar.questions.length > 0 && (
               <div>
                 <p className="text-sm font-semibold mb-3" style={{ color: NAVY }}>Coaching Questions:</p>
-                {exemplar.questions.map(function(q, i) { return <Reflect key={i} prompt={q} />; })}
+                {exemplar.questions.map(function(q, i) { return <Reflect key={i} prompt={q} onAutoSave={makeAutoSave("exemplar_" + i)} />; })}
               </div>
             )}
           </div>
@@ -492,7 +559,7 @@ export default function ModuleTemplate({ config }) {
             })}
             <div className="p-4 rounded-xl" style={{ background: accentLight }}>
               <p className="text-sm font-semibold mb-2" style={{ color: NAVY }}>Which stage are you in right now?</p>
-              <PauseTextarea prompt="Name the stage and describe the specific evidence that supports your answer." />
+              <PauseTextarea prompt="Name the stage and describe the specific evidence that supports your answer." onAutoSave={makeAutoSave("stages_current")} />
             </div>
           </div>
         );
@@ -529,7 +596,7 @@ export default function ModuleTemplate({ config }) {
             {applicationQuestions && applicationQuestions.length > 0 && (
               <div>
                 <SectionHead sub="Translate this dimension into leadership behavior.">Application Moment</SectionHead>
-                {applicationQuestions.map(function(q, i) { return <Reflect key={i} prompt={q} />; })}
+                {applicationQuestions.map(function(q, i) { return <Reflect key={i} prompt={q} onAutoSave={makeAutoSave("commitment_app_" + i)} />; })}
               </div>
             )}
           </div>
