@@ -83,8 +83,8 @@ function BookChapterContent({ chapter }) {
   );
 }
 
-function PauseTextarea({ prompt, onAutoSave }) {
-  var s = useState("");
+function PauseTextarea({ prompt, onAutoSave, initialValue }) {
+  var s = useState(initialValue || "");
   var indS = useState(null); var saveInd = indS[0]; var setSaveInd = indS[1];
   var timerRef = useRef(null);
   function handleChange(e) {
@@ -153,8 +153,8 @@ function DiagnosticSection({ diagnostic, scores, setScores, accent, label }) {
   );
 }
 
-function Reflect({ prompt, onAutoSave }) {
-  var s = useState("");
+function Reflect({ prompt, onAutoSave, initialValue }) {
+  var s = useState(initialValue || "");
   var indS = useState(null); var saveInd = indS[0]; var setSaveInd = indS[1];
   var timerRef = useRef(null);
   function handleChange(e) {
@@ -429,7 +429,7 @@ export default function ModuleTemplate({ config }) {
             </div>
             <div>
               <SectionHead sub="Take three minutes in silence. Write the first honest answer that surfaces.">Activation Prompts</SectionHead>
-              {activationPrompts.map(function(p, i) { return <Reflect key={i} prompt={p} onAutoSave={makeAutoSave("activation_" + i)} />; })}
+              {activationPrompts.map(function(p, i) { return <Reflect key={i} prompt={p} onAutoSave={makeAutoSave("activation_" + i)} initialValue={reflections["activation_" + i] || ""} />; })}
             </div>
             {podcast && (
               <div style={{ marginTop: 24 }}>
@@ -502,7 +502,7 @@ export default function ModuleTemplate({ config }) {
                   {promptList.length > 0 && (
                     <div className="pt-4" style={{ borderTop: "1px solid " + accent + "44" }}>
                       <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: NAVY }}>Pause & Process</p>
-                      {promptList.map(function(q, qi) { return <PauseTextarea key={qi} prompt={q} onAutoSave={makeAutoSave("teaching_" + idx + "_" + qi)} />; })}
+                      {promptList.map(function(q, qi) { return <PauseTextarea key={qi} prompt={q} onAutoSave={makeAutoSave("teaching_" + idx + "_" + qi)} initialValue={reflections["teaching_" + idx + "_" + qi] || ""} />; })}
                     </div>
                   )}
                 </div>
@@ -534,7 +534,7 @@ export default function ModuleTemplate({ config }) {
             {exemplar.questions && exemplar.questions.length > 0 && (
               <div>
                 <p className="text-sm font-semibold mb-3" style={{ color: NAVY }}>Coaching Questions:</p>
-                {exemplar.questions.map(function(q, i) { return <Reflect key={i} prompt={q} onAutoSave={makeAutoSave("exemplar_" + i)} />; })}
+                {exemplar.questions.map(function(q, i) { return <Reflect key={i} prompt={q} onAutoSave={makeAutoSave("exemplar_" + i)} initialValue={reflections["exemplar_" + i] || ""} />; })}
               </div>
             )}
           </div>
@@ -559,7 +559,7 @@ export default function ModuleTemplate({ config }) {
             })}
             <div className="p-4 rounded-xl" style={{ background: accentLight }}>
               <p className="text-sm font-semibold mb-2" style={{ color: NAVY }}>Which stage are you in right now?</p>
-              <PauseTextarea prompt="Name the stage and describe the specific evidence that supports your answer." onAutoSave={makeAutoSave("stages_current")} />
+              <PauseTextarea prompt="Name the stage and describe the specific evidence that supports your answer." onAutoSave={makeAutoSave("stages_current")} initialValue={reflections["stages_current"] || ""} />
             </div>
           </div>
         );
@@ -596,7 +596,7 @@ export default function ModuleTemplate({ config }) {
             {applicationQuestions && applicationQuestions.length > 0 && (
               <div>
                 <SectionHead sub="Translate this dimension into leadership behavior.">Application Moment</SectionHead>
-                {applicationQuestions.map(function(q, i) { return <Reflect key={i} prompt={q} onAutoSave={makeAutoSave("commitment_app_" + i)} />; })}
+                {applicationQuestions.map(function(q, i) { return <Reflect key={i} prompt={q} onAutoSave={makeAutoSave("commitment_app_" + i)} initialValue={reflections["commitment_app_" + i] || ""} />; })}
               </div>
             )}
           </div>
