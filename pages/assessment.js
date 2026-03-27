@@ -1,6 +1,7 @@
 // pages/assessment.js
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { supabase } from '../lib/supabase';
 
 // ════════════════════════════════════════
 // BRAND COLORS
@@ -132,6 +133,7 @@ export default function Assessment() {
   const [emailSent, setEmailSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [gateError, setGateError] = useState('');
+  const [resultSaved, setResultSaved] = useState(false);
 
   const totalQuestions = 25;
   const answeredCount = Object.keys(answers).length;
@@ -186,6 +188,24 @@ export default function Assessment() {
     });
 
     setResults({ scores, totalScore, strongest, gap });
+
+    // ─── SAVE TO DATABASE ───
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        await supabase.from('assessments').insert({
+          user_id: session.user.id,
+          answers: answers,
+          dimension_scores: scores,
+          total_score: totalScore,
+          max_possible: 125,
+        });
+        setResultSaved(true);
+      }
+    } catch (err) {
+      console.error('Failed to save assessment:', err);
+      // Non-fatal — user still sees results
+    }
 
     // ─── SEND EMAIL VIA API ENDPOINT ───
     try {
@@ -447,6 +467,13 @@ export default function Assessment() {
               {emailSent && (
                 <div style={{ padding: '1rem', background: 'rgba(74,222,128,0.08)', border: '1px solid rgba(74,222,128,0.2)', marginBottom: '2rem', fontSize: '0.85rem', color: colors.green, textAlign: 'center' }}>
                   ✓ Your full results have been sent to {userData.email}
+                </div>
+              )}
+
+              {/* Saved Confirmation */}
+              {resultSaved && (
+                <div style={{ fontSize: 12, color: '#16a34a', marginTop: 8, textAlign: 'center' }}>
+                  ✓ Your results have been saved to your profile.
                 </div>
               )}
 

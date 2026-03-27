@@ -207,6 +207,9 @@ export default function ModuleTemplate({ config }) {
   var rlS = useState(false); var resumeLoaded = rlS[0]; var setResumeLoaded = rlS[1];
   var poS = useState(false); var prayerOpen = poS[0]; var setPrayerOpen = poS[1];
   var rtS = useState(null); var resumeToast = rtS[0]; var setResumeToast = rtS[1];
+  var leS = useState(null); var loadError = leS[0]; var setLoadError = leS[1];
+  var seS = useState(null); var saveError = seS[0]; var setSaveError = seS[1];
+  var sueS = useState(null); var summaryError = sueS[0]; var setSummaryError = sueS[1];
   var topRef = useRef(null);
   var cur = STEPS[step];
   var scrollTop = function() { if (topRef.current) topRef.current.scrollIntoView({ behavior: "smooth" }); };
@@ -231,7 +234,10 @@ export default function ModuleTemplate({ config }) {
             setResumeToast("Welcome back! Resuming from " + stepName);
           }
         }
-      } catch (e) {}
+      } catch (e) {
+        console.error("Failed to load progress:", e);
+        setLoadError("Couldn't load your progress. Your work is safe — refresh to try again.");
+      }
       setResumeLoaded(true);
     }
     load();
@@ -246,7 +252,11 @@ export default function ModuleTemplate({ config }) {
           var ss = sr.data.session;
           if (!ss || !ss.user || !ss.user.email) return;
           await supabase.from("module_progress").upsert({ user_email: ss.user.email, module_num: moduleNum, step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, updated_at: new Date().toISOString() }, { onConflict: "user_email,module_num" });
-        } catch (e) {}
+        } catch (e) {
+          console.error("Failed to save progress:", e);
+          setSaveError("Progress didn't save. Check your connection and try again.");
+          setTimeout(function() { setSaveError(null); }, 5000);
+        }
       }
       save();
     }, 1500);
@@ -287,7 +297,10 @@ export default function ModuleTemplate({ config }) {
     fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt }) })
       .then(function(r) { return r.json(); })
       .then(function(d) { setAiSummary(d.response || ""); })
-      .catch(function() { setAiSummary("Unable to generate analysis at this time. Please try again."); })
+      .catch(function(e) {
+        console.error("Failed to generate AI summary:", e);
+        setSummaryError("Summary unavailable right now — your responses are saved and you can continue.");
+      })
       .finally(function() { setLoading(false); });
   };
 
@@ -541,7 +554,12 @@ export default function ModuleTemplate({ config }) {
               </div>
             )}
             {!aiSummary && !loading && (
-              <button onClick={generateSummary} className="w-full py-4 rounded-2xl font-bold text-base transition-all" style={{ background: NAVY, color: accentMid }}>Generate My Personalized Summary →</button>
+              <div>
+                <button onClick={generateSummary} className="w-full py-4 rounded-2xl font-bold text-base transition-all" style={{ background: NAVY, color: accentMid }}>Generate My Personalized Summary →</button>
+                {summaryError && (
+                  <p style={{ fontSize: 12, color: "#991b1b", marginTop: 8 }}>⚠ Summary unavailable right now — your responses are saved and you can continue.</p>
+                )}
+              </div>
             )}
             {loading && (
               <div className="text-center py-12">
@@ -645,6 +663,16 @@ export default function ModuleTemplate({ config }) {
           <h2 className="text-2xl sm:text-3xl font-bold" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{title}{subtitle ? ": " + subtitle : ""}</h2>
           {question && <p className="text-sm mt-1 italic" style={{ color: "#888" }}>Central Question: {question}</p>}
         </div>
+        {loadError && (
+          <div style={{ background: "#fef2f2", border: "1px solid #fca5a5", borderRadius: 8, padding: "10px 16px", fontSize: 12, color: "#991b1b", marginBottom: 12 }}>
+            {loadError}
+          </div>
+        )}
+        {saveError && (
+          <div style={{ background: "#fef2f2", border: "1px solid #fca5a5", borderRadius: 8, padding: "10px 16px", fontSize: 12, color: "#991b1b", marginBottom: 12 }}>
+            {saveError}
+          </div>
+        )}
         {renderStep()}
       </div>
 
