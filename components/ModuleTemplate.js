@@ -85,6 +85,7 @@ function BookChapterContent({ chapter }) {
 
 function PauseTextarea({ prompt, onAutoSave, initialValue }) {
   var s = useState(initialValue || "");
+  useEffect(function() { if (initialValue) s[1](initialValue); }, [initialValue]);
   var indS = useState(null); var saveInd = indS[0]; var setSaveInd = indS[1];
   var timerRef = useRef(null);
   function handleChange(e) {
@@ -155,6 +156,7 @@ function DiagnosticSection({ diagnostic, scores, setScores, accent, label }) {
 
 function Reflect({ prompt, onAutoSave, initialValue }) {
   var s = useState(initialValue || "");
+  useEffect(function() { if (initialValue) s[1](initialValue); }, [initialValue]);
   var indS = useState(null); var saveInd = indS[0]; var setSaveInd = indS[1];
   var timerRef = useRef(null);
   function handleChange(e) {
