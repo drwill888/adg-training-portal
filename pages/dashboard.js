@@ -41,14 +41,8 @@ const accents = [colors.gold, colors.skyBlue, colors.royalBlue, colors.orange, c
 
 const TOTAL_STEPS = { 0: 9, 1: 11, 2: 11, 3: 11, 4: 11, 5: 11, 6: 8 };
 
-function Sidebar({ currentPage, setCurrentPage, open, onClose, paid, progress }) {
+function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
   const isMobile = useIsMobile();
-  function isSidebarModuleUnlocked(moduleId) {
-    if (moduleId === 0) return true;
-    if (!paid) return false;
-    if (moduleId === 1) return (progress[0] || 0) >= TOTAL_STEPS[0];
-    return (progress[moduleId - 1] || 0) >= TOTAL_STEPS[moduleId - 1];
-  }
   const navItems = [
     { key: "dashboard", label: "Dashboard", icon: "⬡" },
     ...modules.map(m => ({
@@ -56,7 +50,7 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose, paid, progress })
       label: m.id === 0 ? "Introduction" : m.id === 6 ? "Commissioning" : m.id + ". " + m.title,
       icon: m.icon,
       href: m.href,
-      locked: !isSidebarModuleUnlocked(m.id),
+      locked: !m.free && !paid,
     })),
   ];
 
@@ -206,13 +200,6 @@ export default function Dashboard() {
 
   var greeting = firstName ? ("Welcome back, " + firstName) : "Welcome";
 
-  function isModuleUnlocked(moduleId) {
-    if (moduleId === 0) return true; // Introduction always free
-    if (!paid) return false; // Must have paid for modules 1-6
-    if (moduleId === 1) return (progress[0] || 0) >= TOTAL_STEPS[0]; // Intro complete
-    return (progress[moduleId - 1] || 0) >= TOTAL_STEPS[moduleId - 1];
-  }
-
   return (
     <>
       <Head>
@@ -236,7 +223,6 @@ export default function Dashboard() {
         open={sidebarOpen}
         onClose={function() { setSidebarOpen(false); }}
         paid={paid}
-        progress={progress}
       />
 
       <div style={{ flex: 1, minHeight: "100vh", overflowY: "auto" }}>
@@ -313,20 +299,17 @@ export default function Dashboard() {
           {/* ─── MODULE GRID ─── */}
           <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 16, marginBottom: 24 }}>
             {modules.map(function(m, i) {
-              var locked = !isModuleUnlocked(m.id);
-              var prereqLocked = paid && locked;
-              var paymentLocked = !paid && m.id !== 0;
+              var locked = !m.free && !paid;
               var stepsDone = progress[m.id] || 0;
               var stepsTotal = TOTAL_STEPS[m.id] || 10;
               var modPercent = Math.min(Math.round((stepsDone / stepsTotal) * 100), 100);
-              var prevModule = m.id > 0 ? modules[m.id - 1] : null;
               return (
                 <div key={m.id}
                   onClick={function() { if (!locked) window.location.href = m.href; }}
-                  style={{ background: colors.white, borderRadius: 12, padding: 20, border: "1px solid " + colors.gray200, borderTop: "3px solid " + (locked ? colors.gray300 : accents[i]), cursor: locked ? "default" : "pointer", opacity: prereqLocked ? 0.75 : paymentLocked ? 0.6 : 1, position: "relative", transition: "box-shadow 0.2s" }}
+                  style={{ background: colors.white, borderRadius: 12, padding: 20, border: "1px solid " + colors.gray200, borderTop: "3px solid " + (locked ? colors.gray300 : accents[i]), cursor: locked ? "default" : "pointer", opacity: locked ? 0.6 : 1, position: "relative", transition: "box-shadow 0.2s" }}
                   onMouseEnter={function(e) { if (!locked) e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)"; }}
                   onMouseLeave={function(e) { if (!locked) e.currentTarget.style.boxShadow = "none"; }}>
-                  {paymentLocked && (
+                  {locked && (
                     <div style={{ position: "absolute", top: 12, right: 12, fontSize: 14 }}>🔒</div>
                   )}
                   {m.bonus && !locked && (
@@ -337,9 +320,6 @@ export default function Dashboard() {
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 15, fontWeight: 700, color: colors.navy }}>{m.title}</div>
                       <div style={{ fontSize: 12, color: colors.gray500, fontStyle: "italic" }}>{m.subtitle}</div>
-                      {prereqLocked && prevModule && (
-                        <div style={{ fontSize: 11, color: colors.gray500, fontStyle: "italic", marginTop: 2 }}>Complete {prevModule.title} first</div>
-                      )}
                     </div>
                   </div>
                   {!locked && (

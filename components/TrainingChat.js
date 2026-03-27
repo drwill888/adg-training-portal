@@ -147,8 +147,8 @@ export default function TrainingChat({ defaultModule }) {
           width: "60px",
           height: "60px",
           borderRadius: "50%",
-          backgroundColor: BRAND.navy,
-          border: `3px solid ${BRAND.gold}`,
+          backgroundColor: "#00AEEF",
+          border: `3px solid ${BRAND.navy}`,
           cursor: "pointer",
           display: "flex",
           alignItems: "center",
@@ -167,12 +167,12 @@ export default function TrainingChat({ defaultModule }) {
         }}
       >
         {isOpen ? (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={BRAND.gold} strokeWidth="2.5" strokeLinecap="round">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         ) : (
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={BRAND.gold} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
           </svg>
         )}
@@ -230,7 +230,7 @@ export default function TrainingChat({ defaultModule }) {
                   lineHeight: 1.2,
                 }}
               >
-                5C Training Assistant
+                C-Help
               </h2>
               <p
                 style={{
@@ -449,8 +449,8 @@ export default function TrainingChat({ defaultModule }) {
                 padding: "10px 16px",
                 borderRadius: "10px",
                 border: "none",
-                backgroundColor: loading ? BRAND.navy + "50" : BRAND.navy,
-                color: BRAND.gold,
+                backgroundColor: loading ? "#00AEEF80" : "#00AEEF",
+                color: "white",
                 fontWeight: 700,
                 fontSize: "13px",
                 cursor: loading ? "not-allowed" : "pointer",
