@@ -261,17 +261,21 @@ export default function ModuleTemplate({ config }) {
   var cur = STEPS[step];
   var scrollTop = function() { if (topRef.current) topRef.current.scrollIntoView({ behavior: "smooth" }); };
 
+  var lsKey = "adg_ref_" + moduleNum;
+
   var makeAutoSave = function(key) {
     return function(val, done) {
       var nextReflections = Object.assign({}, reflections);
       nextReflections[key] = val;
       setReflections(nextReflections);
+      try { localStorage.setItem(lsKey, JSON.stringify(nextReflections)); } catch(e) {}
       async function persist() {
         try {
           var sr = await supabase.auth.getSession();
           var ss = sr.data.session;
           if (!ss || !ss.user) { done(null); return; }
-          await supabase.from("user_progress").upsert({ user_id: ss.user.id, module_id: moduleNum, current_step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, reflections: nextReflections, updated_at: new Date().toISOString() }, { onConflict: "user_id,module_id" });
+          var result = await supabase.from("user_progress").upsert({ user_id: ss.user.id, module_id: moduleNum, current_step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, reflections: nextReflections, updated_at: new Date().toISOString() }, { onConflict: "user_id,module_id" });
+          if (result.error) throw result.error;
           done(null);
         } catch (e) {
           console.error("Failed to auto-save reflection:", e);
@@ -284,28 +288,39 @@ export default function ModuleTemplate({ config }) {
 
   useEffect(function() {
     async function load() {
+      var loadedFromDB = false;
       try {
         var sr = await supabase.auth.getSession();
         var ss = sr.data.session;
-        if (!ss || !ss.user) { setResumeLoaded(true); return; }
-        var r = await supabase.from("user_progress").select("*").eq("user_id", ss.user.id).eq("module_id", moduleNum).single();
-        if (r.data) {
-          var savedStep = r.data.current_step || 0;
-          if (r.data.current_step) setStep(r.data.current_step);
-          if (r.data.pre_scores) setPreScores(r.data.pre_scores);
-          if (r.data.post_scores) setPostScores(r.data.post_scores);
-          if (r.data.commitments) setCommitments(r.data.commitments);
-          if (r.data.ai_summary) setAiSummary(r.data.ai_summary);
-          if (r.data.reflections) setReflections(r.data.reflections);
-          if (savedStep > 0) {
-            var stepList = moduleNum === 0 ? STEPS_INTRO : STEPS_DEFAULT;
-            var stepName = stepList[savedStep] ? stepList[savedStep].label : ("step " + savedStep);
-            setResumeToast("Welcome back! Resuming from " + stepName);
+        if (ss && ss.user) {
+          var r = await supabase.from("user_progress").select("*").eq("user_id", ss.user.id).eq("module_id", moduleNum).single();
+          if (r.data) {
+            loadedFromDB = true;
+            var savedStep = r.data.current_step || 0;
+            if (r.data.current_step) setStep(r.data.current_step);
+            if (r.data.pre_scores) setPreScores(r.data.pre_scores);
+            if (r.data.post_scores) setPostScores(r.data.post_scores);
+            if (r.data.commitments) setCommitments(r.data.commitments);
+            if (r.data.ai_summary) setAiSummary(r.data.ai_summary);
+            var dbReflections = r.data.reflections || {};
+            if (Object.keys(dbReflections).length > 0) {
+              setReflections(dbReflections);
+            } else {
+              try { var ls = localStorage.getItem(lsKey); if (ls) setReflections(JSON.parse(ls)); } catch(e) {}
+            }
+            if (savedStep > 0) {
+              var stepList = moduleNum === 0 ? STEPS_INTRO : STEPS_DEFAULT;
+              var stepName = stepList[savedStep] ? stepList[savedStep].label : ("step " + savedStep);
+              setResumeToast("Welcome back! Resuming from " + stepName);
+            }
           }
         }
       } catch (e) {
         console.error("Failed to load progress:", e);
         setLoadError("Couldn't load your progress. Your work is safe — refresh to try again.");
+      }
+      if (!loadedFromDB) {
+        try { var ls = localStorage.getItem(lsKey); if (ls) setReflections(JSON.parse(ls)); } catch(e) {}
       }
       setResumeLoaded(true);
     }
