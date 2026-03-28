@@ -864,7 +864,12 @@ export default function ModuleTemplate({ config }) {
           <button onClick={function() { if (step > 0) { setStep(step - 1); scrollTop(); } }} disabled={step === 0} className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: "1.5px solid " + NAVY }}>← Previous</button>
           <span className="text-xs" style={{ color: "#bbb" }}>{step + 1} / {STEPS.length}</span>
           {step === STEPS.length - 1 ? (
-            <a href="/" className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all" style={{ background: GOLD, color: NAVY, textDecoration: "none" }}>Dashboard →</a>
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <a href="/" style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13, fontWeight: 600, color: NAVY, border: "1.5px solid " + NAVY, textDecoration: "none", whiteSpace: "nowrap" }}>Dashboard</a>
+              {moduleNum < 6 && (
+                <a href={["/modules/introduction","/modules/calling","/modules/connection","/modules/competency","/modules/capacity","/modules/convergence","/modules/commissioning"][moduleNum + 1]} style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13, fontWeight: 700, background: NAVY, color: accentMid, textDecoration: "none", whiteSpace: "nowrap" }}>Next Module →</a>
+              )}
+            </div>
           ) : (
             <button onClick={function() { setStep(step + 1); scrollTop(); }} className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all" style={{ background: NAVY, color: accentMid }}>Next →</button>
           )}
