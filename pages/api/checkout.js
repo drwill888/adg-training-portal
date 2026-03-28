@@ -15,9 +15,7 @@ export default async function handler(req, res) {
   // pathway: 'individual' (default) or 'cohort'
   // Price IDs come from your Stripe dashboard — add both to .env.local
 
-  const priceId = pathway === 'cohort'
-    ? process.env.STRIPE_PRICE_COHORT      // $297
-    : process.env.STRIPE_PRICE_INDIVIDUAL; // $79.99
+  const priceId = process.env.STRIPE_PRICE_ID;
 
   try {
     const session = await stripe.checkout.sessions.create({
