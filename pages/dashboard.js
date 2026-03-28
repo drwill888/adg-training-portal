@@ -39,7 +39,7 @@ const modules = [
 
 const accents = [colors.gold, colors.skyBlue, colors.royalBlue, colors.orange, colors.skyBlue, "#EE3124", colors.gold];
 
-const TOTAL_STEPS = { 0: 9, 1: 11, 2: 11, 3: 11, 4: 11, 5: 11, 6: 8 };
+const TOTAL_STEPS = { 0: 7, 1: 8, 2: 8, 3: 8, 4: 8, 5: 8, 6: 8 };
 
 function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
   const isMobile = useIsMobile();
@@ -228,9 +228,10 @@ export default function Dashboard() {
   var totalSteps = 0;
   var completedSteps = 0;
   modules.forEach(function(m) {
-    var total = TOTAL_STEPS[m.id] || 10;
+    var total = TOTAL_STEPS[m.id] || 8;
     totalSteps += total;
-    completedSteps += Math.min(progress[m.id] || 0, total);
+    var done = progress[m.id] || 0;
+    completedSteps += done === 0 ? 0 : Math.min(done + 1, total);
   });
   var overallPercent = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
 
@@ -371,8 +372,8 @@ export default function Dashboard() {
             {modules.map(function(m, i) {
               var locked = !m.free && !paid;
               var stepsDone = progress[m.id] || 0;
-              var stepsTotal = TOTAL_STEPS[m.id] || 10;
-              var modPercent = Math.min(Math.round((stepsDone / stepsTotal) * 100), 100);
+              var stepsTotal = TOTAL_STEPS[m.id] || 8;
+              var modPercent = stepsDone === 0 ? 0 : Math.min(Math.round(((stepsDone + 1) / stepsTotal) * 100), 100);
               return (
                 <div key={m.id}
                   onClick={function() { if (!locked) window.location.href = m.href; }}

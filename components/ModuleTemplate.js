@@ -863,7 +863,11 @@ export default function ModuleTemplate({ config }) {
         <div className="max-w-3xl mx-auto px-4 flex justify-between items-center">
           <button onClick={function() { if (step > 0) { setStep(step - 1); scrollTop(); } }} disabled={step === 0} className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: "1.5px solid " + NAVY }}>← Previous</button>
           <span className="text-xs" style={{ color: "#bbb" }}>{step + 1} / {STEPS.length}</span>
-          <button onClick={function() { if (step < STEPS.length - 1) { setStep(step + 1); scrollTop(); } }} disabled={step === STEPS.length - 1} className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all disabled:opacity-30" style={{ background: NAVY, color: accentMid }}>Next →</button>
+          {step === STEPS.length - 1 ? (
+            <a href="/" className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all" style={{ background: GOLD, color: NAVY, textDecoration: "none" }}>Dashboard →</a>
+          ) : (
+            <button onClick={function() { setStep(step + 1); scrollTop(); }} className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all" style={{ background: NAVY, color: accentMid }}>Next →</button>
+          )}
         </div>
         <p className="text-center text-xs mt-1.5" style={{ color: "#ccc" }}>© 2026 Awakening Destiny Global</p>
       </div>
