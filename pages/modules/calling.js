@@ -184,6 +184,30 @@ var scriptures = {
   ],
 };
 
+const resources = {
+  sectionTitle: "Additional Resources",
+  blogs: [
+    {
+      title: "Embracing Your Apostolic Calling — Part 1",
+      url: "https://awakeningdestiny.global/embracing-your-apostolic-calling-part-1/",
+      description: "The true essence of apostolic calling — stepping beyond vocational limitations into divine stewardship.",
+    },
+    {
+      title: "6 Step Discovery of Your Destiny Scrolls",
+      url: "https://awakeningdestiny.global/6-step-discovery-of-your-destiny-scrolls/",
+      description: "Practical steps to align with the divine purpose God has written over your life.",
+    },
+    {
+      title: "Searching for Identity & Tribes — 12 Stones",
+      url: "https://awakeningdestiny.global/searching-for-identity-tribes-12-stones/",
+      description: "Unlocking spiritual identity and discovering your tribe through the twelve stones of the high priest's ephod.",
+    },
+  ],
+  links: [
+    { title: "Awakening Destiny Global", url: "https://awakeningdestiny.global", description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources." },
+  ],
+};
+
 var config = {
   moduleNum: 1,
   title: "Calling",
@@ -220,6 +244,7 @@ var config = {
     ],
   },
   scriptures: scriptures,
+  resources: resources,
 
   activationPrayer: {
     theme: 'Identity & Purpose',

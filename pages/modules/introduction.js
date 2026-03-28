@@ -155,6 +155,20 @@ var scriptures = {
   ],
 };
 
+const resources = {
+  sectionTitle: "Resources",
+  book: {
+    title: "Leaders for Life: Creating Champions Through the NOW Leadership Process",
+    author: "Will Meier",
+    url: "https://www.amazon.com/Leaders-Life-Creating-Champions-Leadership/dp/1939944473",
+    description: "A practical handbook that introduces the 12C NOW Leadership model — integrating biblical perspective with contemporary case studies to create champions who solve complex problems.",
+    coverImage: "/images/leaders-for-life-cover.jpg",
+  },
+  links: [
+    { title: "Awakening Destiny Global", url: "https://awakeningdestiny.global", description: "Explore additional teaching, prophetic insight, and Kingdom leadership resources." },
+  ],
+};
+
 var config = {
   moduleNum: 0,
   title: "Introduction",
@@ -192,6 +206,7 @@ var config = {
   },
   bookChapter: bookChapter,
   scriptures: scriptures,
+  resources: resources,
 
   activationPrayer: {
     theme: 'Alignment in Christ',
