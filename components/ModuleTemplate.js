@@ -258,6 +258,8 @@ export default function ModuleTemplate({ config }) {
   var seS = useState(null); var saveError = seS[0]; var setSaveError = seS[1];
   var sueS = useState(null); var summaryError = sueS[0]; var setSummaryError = sueS[1];
   var rfS = useState({}); var reflections = rfS[0]; var setReflections = rfS[1];
+  var ecS = useState(0); var enhanceCount = ecS[0]; var setEnhanceCount = ecS[1];
+  var efS = useState(""); var enhanceFeedback = efS[0]; var setEnhanceFeedback = efS[1];
   var reflectionsRef = useRef({});
   var topRef = useRef(null);
   var cur = STEPS[step];
@@ -465,8 +467,11 @@ export default function ModuleTemplate({ config }) {
       });
       diagNote = "\n\nFormation Diagnostic Scores:\n" + catLines.join("\n");
     }
-    var previousSummary = aiSummary ? "\n\nPrevious summary (the leader felt this was too gentle — go deeper):\n" + aiSummary : "";
-    var prompt = "Write an ENHANCED Leadership Blueprint Summary for this leader in the " + title + " module. The previous version was too gentle. This version should be more direct, more honest, and more challenging — while remaining pastorally warm and Kingdom-focused.\n\nTarget length: 400–500 words. Write in natural paragraphs — no headers, no bullet points, no bold or markdown.\n\nTONE SHIFT for this version:\n- Be more direct about what you actually see in their responses.\n- Name tensions, contradictions, or gaps that the previous summary softened or avoided.\n- A trusted mentor who loves them enough to tell them the hard truth, not just the comfortable one.\n- Do not shame — but do not sugarcoat either. There is a difference between encouragement and flattery.\n- If their responses reveal avoidance, vagueness, or incomplete thinking, name it gently but clearly.\n- Still honor the courage it takes to engage this material — but don't let that honor become a way of avoiding the harder word.\n\nSTRUCTURE:\n1. Name something specific from their responses — something that reveals where they actually are, not where they wish they were.\n2. Identify the central formation challenge this leader faces in the " + title + " dimension. Be specific. What is the one thing holding them back the most?\n3. If diagnostic scores are low in any area, name what that likely means for their leadership in concrete terms — not just abstractly.\n4. What is the one thing they most need to do, decide, or change? Give them something concrete and actionable.\n5. End with a direct, prophetically grounded call forward — specific to the " + title + " dimension. Make it memorable. Make it land.\n\nIMPORTANT:\n- Quote or paraphrase something they actually wrote.\n- Do NOT begin with a salutation, greeting, or 'Dear [name]'.\n- Do NOT repeat the previous summary — go deeper, not wider.\n- Sound like a seasoned apostolic-prophetic coach who has seen this pattern before and loves this leader too much to leave them where they are.\n\n" + aiPromptContext + diagNote + previousSummary + "\n\nTheir Responses and Commitments:\n" + commitStr + blankNote + "\n\nBegin immediately with substantive content.";
+    var previousSummary = aiSummary ? "\n\nPrevious summary (the leader wants it revised — do not repeat it):\n" + aiSummary : "";
+    var feedbackNote = enhanceFeedback.trim() ? "\n\nSpecific direction from the leader: \"" + enhanceFeedback.trim() + "\"\nAddress this directly in your revision." : "";
+    var prompt = "Write a REVISED Leadership Blueprint Summary for this leader in the " + title + " module. The leader has reviewed the previous version and wants something deeper and more direct.\n\nTarget length: 400–500 words. Write in natural paragraphs — no headers, no bullet points, no bold or markdown.\n\nTONE SHIFT for this version:\n- Be more direct about what you actually see in their responses.\n- Name tensions, contradictions, or gaps that the previous summary softened or avoided.\n- A trusted mentor who loves them enough to tell them the hard truth, not just the comfortable one.\n- Do not shame — but do not sugarcoat either. There is a difference between encouragement and flattery.\n- If their responses reveal avoidance, vagueness, or incomplete thinking, name it gently but clearly.\n- Still honor the courage it takes to engage this material — but don't let that honor become a way of avoiding the harder word.\n\nSTRUCTURE:\n1. Name something specific from their responses — something that reveals where they actually are, not where they wish they were.\n2. Identify the central formation challenge this leader faces in the " + title + " dimension. Be specific. What is the one thing holding them back the most?\n3. If diagnostic scores are low in any area, name what that likely means for their leadership in concrete terms — not just abstractly.\n4. What is the one thing they most need to do, decide, or change? Give them something concrete and actionable.\n5. End with a direct, prophetically grounded call forward — specific to the " + title + " dimension. Make it memorable. Make it land.\n\nIMPORTANT:\n- Quote or paraphrase something they actually wrote.\n- Do NOT begin with a salutation, greeting, or 'Dear [name]'.\n- Do NOT repeat the previous summary — go deeper, not wider.\n- Sound like a seasoned apostolic-prophetic coach who has seen this pattern before and loves this leader too much to leave them where they are.\n\n" + aiPromptContext + diagNote + previousSummary + feedbackNote + "\n\nTheir Responses and Commitments:\n" + commitStr + blankNote + "\n\nBegin immediately with substantive content.";
+    setEnhanceCount(function(c) { return c + 1; });
+    setEnhanceFeedback("");
     fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt, systemPrompt: ADG_SYSTEM_PROMPT }) })
       .then(function(r) { return r.json(); })
       .then(function(d) { setAiSummary(d.response || ""); })
@@ -850,10 +855,23 @@ export default function ModuleTemplate({ config }) {
                   </div>
                   <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#222" }}>{para}</p>; })}</div>
                 </div>
-                <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-                  <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="py-3 rounded-2xl font-semibold text-sm transition-all" style={{ flex: 1, border: "2px solid " + NAVY, color: NAVY, background: "#fff" }}>↓ Download Blueprint (.doc)</button>
-                  <button onClick={enhanceSummary} className="py-3 rounded-2xl font-semibold text-sm transition-all" style={{ flex: 1, border: "2px solid #7c3aed", color: "#7c3aed", background: "#faf5ff" }} title="Get a more direct, deeper version of your summary">⚡ Go Deeper</button>
-                </div>
+                <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#fff", marginTop: 12 }}>↓ Download Blueprint (.doc)</button>
+                {enhanceCount < 3 && (
+                  <div style={{ marginTop: 14, padding: "14px 16px", background: "#faf5ff", border: "1.5px solid #7c3aed33", borderRadius: 14 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed", marginBottom: 6 }}>⚡ Go Deeper {enhanceCount > 0 ? "(" + (3 - enhanceCount) + " remaining)" : ""}</p>
+                    <textarea
+                      value={enhanceFeedback}
+                      onChange={function(e) { setEnhanceFeedback(e.target.value); }}
+                      placeholder="Optional: tell the coach what to focus on — e.g. 'be more direct about my gaps' or 'focus on practical next steps'"
+                      rows={2}
+                      style={{ width: "100%", fontSize: 12, padding: "8px 10px", borderRadius: 8, border: "1px solid #c4b5fd", background: "#fff", color: "#333", resize: "none", outline: "none", boxSizing: "border-box", marginBottom: 8 }}
+                    />
+                    <button onClick={enhanceSummary} className="w-full py-2 rounded-xl font-bold text-sm" style={{ background: "#7c3aed", color: "#fff" }}>Revise My Summary →</button>
+                  </div>
+                )}
+                {enhanceCount >= 3 && (
+                  <p style={{ fontSize: 12, color: "#7c3aed", textAlign: "center", marginTop: 10 }}>You've reached the maximum revisions. Download your blueprint above.</p>
+                )}
               </div>
             )}
 
