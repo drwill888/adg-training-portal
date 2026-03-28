@@ -436,6 +436,44 @@ export default function ModuleTemplate({ config }) {
       .finally(function() { setLoading(false); });
   };
 
+  var enhanceSummary = function() {
+    setLoading(true);
+    var commitStr = Object.entries(commitments).map(function(e) { return e[0].replace(/_/g, " ") + ": " + (e[1] || "(left blank)"); }).join("\n");
+    var blanks = Object.entries(commitments).filter(function(e) { return !e[1] || e[1].trim() === ""; }).map(function(e) { return e[0].replace(/_/g, " "); });
+    var blankNote = blanks.length > 0 ? "\n\nThe following fields were left blank: " + blanks.join(", ") + ". Address the absence directly — what does leaving it blank reveal? Challenge them to complete it." : "";
+    var diagNote = "";
+    if (diagnostic && Object.keys(postScores).length > 0) {
+      var catMap3 = {};
+      diagnostic.forEach(function(d) {
+        if (!catMap3[d.cat]) catMap3[d.cat] = { items: [] };
+        catMap3[d.cat].items.push(d.num);
+      });
+      var hasPreScores = Object.keys(preScores).length > 0;
+      var catLines = Object.entries(catMap3).map(function(entry) {
+        var catName = entry[0]; var items = entry[1].items;
+        var preTotal = 0; var postTotal = 0;
+        items.forEach(function(n) {
+          var pre = preScores[n]; if (pre && pre !== "na") preTotal += Number(pre);
+          var post = postScores[n]; if (post && post !== "na") postTotal += Number(post);
+        });
+        var max = items.length * 5;
+        var pct = max > 0 ? Math.round((postTotal / max) * 100) : 0;
+        var lbl = pct >= 80 ? "Strong" : pct >= 55 ? "Developing" : "Needs Attention";
+        var delta = postTotal - preTotal;
+        var deltaStr = hasPreScores ? " | Pre: " + preTotal + " → Post: " + postTotal + " (shift: " + (delta >= 0 ? "+" : "") + delta + ")" : "";
+        return catName + ": " + postTotal + "/" + max + " (" + lbl + ")" + deltaStr;
+      });
+      diagNote = "\n\nFormation Diagnostic Scores:\n" + catLines.join("\n");
+    }
+    var previousSummary = aiSummary ? "\n\nPrevious summary (the leader felt this was too gentle — go deeper):\n" + aiSummary : "";
+    var prompt = "Write an ENHANCED Leadership Blueprint Summary for this leader in the " + title + " module. The previous version was too gentle. This version should be more direct, more honest, and more challenging — while remaining pastorally warm and Kingdom-focused.\n\nTarget length: 400–500 words. Write in natural paragraphs — no headers, no bullet points, no bold or markdown.\n\nTONE SHIFT for this version:\n- Be more direct about what you actually see in their responses.\n- Name tensions, contradictions, or gaps that the previous summary softened or avoided.\n- A trusted mentor who loves them enough to tell them the hard truth, not just the comfortable one.\n- Do not shame — but do not sugarcoat either. There is a difference between encouragement and flattery.\n- If their responses reveal avoidance, vagueness, or incomplete thinking, name it gently but clearly.\n- Still honor the courage it takes to engage this material — but don't let that honor become a way of avoiding the harder word.\n\nSTRUCTURE:\n1. Name something specific from their responses — something that reveals where they actually are, not where they wish they were.\n2. Identify the central formation challenge this leader faces in the " + title + " dimension. Be specific. What is the one thing holding them back the most?\n3. If diagnostic scores are low in any area, name what that likely means for their leadership in concrete terms — not just abstractly.\n4. What is the one thing they most need to do, decide, or change? Give them something concrete and actionable.\n5. End with a direct, prophetically grounded call forward — specific to the " + title + " dimension. Make it memorable. Make it land.\n\nIMPORTANT:\n- Quote or paraphrase something they actually wrote.\n- Do NOT begin with a salutation, greeting, or 'Dear [name]'.\n- Do NOT repeat the previous summary — go deeper, not wider.\n- Sound like a seasoned apostolic-prophetic coach who has seen this pattern before and loves this leader too much to leave them where they are.\n\n" + aiPromptContext + diagNote + previousSummary + "\n\nTheir Responses and Commitments:\n" + commitStr + blankNote + "\n\nBegin immediately with substantive content.";
+    fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt, systemPrompt: ADG_SYSTEM_PROMPT }) })
+      .then(function(r) { return r.json(); })
+      .then(function(d) { setAiSummary(d.response || ""); })
+      .catch(function(e) { console.error("Enhance summary failed:", e); })
+      .finally(function() { setLoading(false); });
+  };
+
   var handleCertificate = async function() {
     var sessionRes = await supabase.auth.getSession();
     var session = sessionRes.data.session;
@@ -812,7 +850,10 @@ export default function ModuleTemplate({ config }) {
                   </div>
                   <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#222" }}>{para}</p>; })}</div>
                 </div>
-                <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#fff", marginTop: 12 }}>↓ Download My {title} Blueprint (.doc)</button>
+                <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+                  <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="py-3 rounded-2xl font-semibold text-sm transition-all" style={{ flex: 1, border: "2px solid " + NAVY, color: NAVY, background: "#fff" }}>↓ Download Blueprint (.doc)</button>
+                  <button onClick={enhanceSummary} className="py-3 rounded-2xl font-semibold text-sm transition-all" style={{ flex: 1, border: "2px solid #7c3aed", color: "#7c3aed", background: "#faf5ff" }} title="Get a more direct, deeper version of your summary">⚡ Go Deeper</button>
+                </div>
               </div>
             )}
 
