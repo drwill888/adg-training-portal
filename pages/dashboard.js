@@ -152,7 +152,7 @@ export default function Dashboard() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ session_id }),
     }).then(() => {
-      router.replace('/dashboard');
+      window.location.href = '/dashboard';
     }).catch(() => {});
   }, [router.query.session_id]);
 
