@@ -6,6 +6,11 @@ export default async function handler(req, res) {
     const { prompt, messages } = req.body;
     const msgs = messages || [{ role: "user", content: prompt }];
 
+    const { systemPrompt } = req.body;
+    const finalMsgs = systemPrompt
+      ? [{ role: "system", content: systemPrompt }, ...msgs]
+      : msgs;
+
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -14,8 +19,8 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "gpt-4o",
-        max_tokens: 1024,
-        messages: msgs,
+        max_tokens: 1800,
+        messages: finalMsgs,
       }),
     });
 
