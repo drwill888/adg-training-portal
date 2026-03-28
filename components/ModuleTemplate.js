@@ -304,7 +304,11 @@ export default function ModuleTemplate({ config }) {
             if (r.data.current_step) setStep(r.data.current_step);
             if (r.data.pre_scores && Object.keys(r.data.pre_scores).length > 0) setPreScores(r.data.pre_scores);
             if (r.data.post_scores && Object.keys(r.data.post_scores).length > 0) setPostScores(r.data.post_scores);
-            if (r.data.commitments) setCommitments(r.data.commitments);
+            if (r.data.commitments && Object.keys(r.data.commitments).length > 0) {
+              setCommitments(r.data.commitments);
+            } else {
+              try { var lsCom2 = localStorage.getItem("adg_com_" + moduleNum); if (lsCom2) { var co2 = JSON.parse(lsCom2); if (Object.keys(co2).length > 0) setCommitments(co2); } } catch(e) {}
+            }
             if (r.data.ai_summary) setAiSummary(r.data.ai_summary);
             var dbReflections = r.data.reflections || {};
             if (Object.keys(dbReflections).length > 0) {
@@ -327,6 +331,7 @@ export default function ModuleTemplate({ config }) {
       if (!loadedFromDB) {
         try { var ls = localStorage.getItem(lsKey); if (ls) { var lsR = JSON.parse(ls); reflectionsRef.current = lsR; setReflections(lsR); } } catch(e) {}
         try { var lsSc = localStorage.getItem("adg_scores_" + moduleNum); if (lsSc) { var sc = JSON.parse(lsSc); if (sc.pre) setPreScores(sc.pre); if (sc.post) setPostScores(sc.post); } } catch(e) {}
+        try { var lsCom = localStorage.getItem("adg_com_" + moduleNum); if (lsCom) { var co = JSON.parse(lsCom); if (Object.keys(co).length > 0) setCommitments(co); } } catch(e) {}
       }
       setResumeLoaded(true);
     }
@@ -357,6 +362,11 @@ export default function ModuleTemplate({ config }) {
     if (!resumeLoaded) return;
     try { localStorage.setItem("adg_scores_" + moduleNum, JSON.stringify({ pre: preScores, post: postScores })); } catch(e) {}
   }, [preScores, postScores, moduleNum, resumeLoaded]);
+
+  useEffect(function() {
+    if (!resumeLoaded) return;
+    try { localStorage.setItem("adg_com_" + moduleNum, JSON.stringify(commitments)); } catch(e) {}
+  }, [commitments, moduleNum, resumeLoaded]);
 
   useEffect(function() {
     if (!resumeToast) return;
