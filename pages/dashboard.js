@@ -334,7 +334,7 @@ export default function Dashboard() {
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
                 <button
-                  onClick={handleCheckout}
+                  onClick={() => handleCheckout('individual')}
                   style={{ padding: "12px 36px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
                   Unlock Full Access — $79.99
                 </button>
