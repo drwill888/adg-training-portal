@@ -398,7 +398,7 @@ export default function ModuleTemplate({ config }) {
     var commitStr = Object.entries(commitments).map(function(e) { return e[0].replace(/_/g, " ") + ": " + (e[1] || "(left blank)"); }).join("\n");
     var blanks = Object.entries(commitments).filter(function(e) { return !e[1] || e[1].trim() === ""; }).map(function(e) { return e[0].replace(/_/g, " "); });
     var blankNote = blanks.length > 0 ? "\n\nThe following fields were left blank: " + blanks.join(", ") + ". Name what was left unanswered and challenge them to return and complete the work." : "";
-    // Build diagnostic score summary if available
+    // Build diagnostic score summary (pre + post + delta) if available
     var diagNote = "";
     if (diagnostic && Object.keys(postScores).length > 0) {
       var catMap2 = {};
@@ -406,16 +406,23 @@ export default function ModuleTemplate({ config }) {
         if (!catMap2[d.cat]) catMap2[d.cat] = { items: [] };
         catMap2[d.cat].items.push(d.num);
       });
+      var hasPreScores = Object.keys(preScores).length > 0;
       var catLines = Object.entries(catMap2).map(function(entry) {
         var catName = entry[0]; var items = entry[1].items;
-        var total = 0; var count = 0;
-        items.forEach(function(n) { var v = postScores[n]; if (v && v !== "na") { total += Number(v); count++; } });
+        var preTotal = 0; var postTotal = 0;
+        items.forEach(function(n) {
+          var pre = preScores[n]; if (pre && pre !== "na") preTotal += Number(pre);
+          var post = postScores[n]; if (post && post !== "na") postTotal += Number(post);
+        });
         var max = items.length * 5;
-        var pct = max > 0 ? Math.round((total / max) * 100) : 0;
+        var pct = max > 0 ? Math.round((postTotal / max) * 100) : 0;
         var lbl = pct >= 80 ? "Strong" : pct >= 55 ? "Developing" : "Needs Attention";
-        return catName + ": " + total + "/" + max + " (" + lbl + ")";
+        var delta = postTotal - preTotal;
+        var deltaStr = hasPreScores ? " | Pre: " + preTotal + " → Post: " + postTotal + " (shift: " + (delta >= 0 ? "+" : "") + delta + ")" : "";
+        return catName + ": " + postTotal + "/" + max + " (" + lbl + ")" + deltaStr;
       });
-      diagNote = "\n\nFormation Readiness Diagnostic Scores:\n" + catLines.join("\n") + "\nReference these scores specifically — acknowledge their strengths and gently name the areas needing most attention.";
+      var shiftNote = hasPreScores ? " Where there is meaningful growth (positive shift), affirm the movement. Where there is little change or regression, gently invite deeper formation." : "";
+      diagNote = "\n\nFormation Diagnostic Scores (Post-Teaching):\n" + catLines.join("\n") + "\nReference these scores specifically — acknowledge strengths and gently name areas needing most attention." + shiftNote;
     }
     var prompt = "You are a pastoral leadership development coach with the 5C Leadership Blueprint (Awakening Destiny Global). Your role is to affirm, encourage, and gently guide — like a trusted mentor who believes deeply in this leader's potential.\n\nAnalyze this leader's responses for the " + title + " dimension and write a warm, personalized summary (200-250 words).\n\nTone guidelines:\n- Do NOT begin with a salutation like 'Dear [name]' or any greeting. Jump directly into the content.\n- Begin by affirming what is genuinely strong or hopeful in their responses.\n- Be encouraging and pastorally warm — this leader has taken a courageous step by engaging this material.\n- Gently surface areas for growth without harsh critique. Frame gaps as invitations, not failures.\n- Use language of possibility, formation, and Kingdom purpose.\n- Be specific to what they actually wrote — make them feel seen and understood.\n- End with an encouraging word that calls them forward into their assignment.\n- If fields were left blank, gently invite them to return and complete the work — frame it as an opportunity, not a failure.\n- Do not fabricate analysis for empty fields.\n\n" + aiPromptContext + diagNote + "\n\nTheir Commitments:\n" + commitStr + blankNote + "\n\nWrite as a trusted coach who is genuinely rooting for this leader. Begin immediately with substantive content — no salutation, no greeting.";
     fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt }) })
@@ -623,6 +630,7 @@ export default function ModuleTemplate({ config }) {
 
       case "post-diagnostic": {
         var postDiagCats = [];
+        var hasPreForCompare = diagnostic && Object.keys(preScores).length > 0;
         if (diagnostic && Object.keys(postScores).length > 0) {
           var pdCatMap = {};
           diagnostic.forEach(function(d) {
@@ -630,13 +638,18 @@ export default function ModuleTemplate({ config }) {
             pdCatMap[d.cat].items.push(d.num);
           });
           postDiagCats = Object.values(pdCatMap).map(function(c) {
-            var total = 0; var count = 0;
-            c.items.forEach(function(n) { var v = postScores[n]; if (v && v !== "na") { total += Number(v); count++; } });
+            var preTotal = 0; var postTotal = 0;
+            c.items.forEach(function(n) {
+              var pre = preScores[n]; if (pre && pre !== "na") preTotal += Number(pre);
+              var post = postScores[n]; if (post && post !== "na") postTotal += Number(post);
+            });
             var maxP = c.items.length * 5;
-            var pct = maxP > 0 ? Math.round((total / maxP) * 100) : 0;
-            var lbl = pct >= 80 ? "Strong" : pct >= 55 ? "Developing" : "Needs Attention";
-            var clr = pct >= 80 ? "#16a34a" : pct >= 55 ? "#b45309" : "#dc2626";
-            return { name: c.name, total: total, max: maxP, pct: pct, label: lbl, barColor: clr };
+            var postPct = maxP > 0 ? Math.round((postTotal / maxP) * 100) : 0;
+            var prePct = maxP > 0 ? Math.round((preTotal / maxP) * 100) : 0;
+            var delta = postTotal - preTotal;
+            var lbl = postPct >= 80 ? "Strong" : postPct >= 55 ? "Developing" : "Needs Attention";
+            var clr = postPct >= 80 ? "#16a34a" : postPct >= 55 ? "#b45309" : "#dc2626";
+            return { name: c.name, preTotal: preTotal, postTotal: postTotal, max: maxP, postPct: postPct, prePct: prePct, delta: delta, label: lbl, barColor: clr };
           });
         }
         return (
@@ -645,18 +658,51 @@ export default function ModuleTemplate({ config }) {
             {postDiagCats.length > 0 && (
               <div style={{ background: NAVY, borderRadius: 16, padding: "24px 24px 20px", marginTop: 8 }}>
                 <p style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: GOLD, fontWeight: 700, marginBottom: 4 }}>Your {title} Results</p>
-                <p style={{ fontSize: 13, color: "#9ca3af", marginBottom: 20, lineHeight: 1.5 }}>Here is how you scored across each formation category. These scores will inform your Leadership Blueprint summary.</p>
-                <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                <p style={{ fontSize: 13, color: "#9ca3af", marginBottom: 20, lineHeight: 1.5 }}>{hasPreForCompare ? "Here is how your scores shifted from before to after the teaching." : "Here is how you scored across each formation category."} These scores will inform your Leadership Blueprint summary.</p>
+                {hasPreForCompare && (
+                  <div style={{ display: "flex", gap: 16, marginBottom: 20, fontSize: 11, color: "#9ca3af" }}>
+                    <span style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 10, height: 10, borderRadius: 2, background: "#3b5c85", display: "inline-block" }} />Pre-Teaching</span>
+                    <span style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 10, height: 10, borderRadius: 2, background: GOLD, display: "inline-block" }} />Post-Teaching</span>
+                  </div>
+                )}
+                <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
                   {postDiagCats.map(function(c) {
+                    var deltaSign = c.delta > 0 ? "+" : "";
+                    var deltaColor = c.delta > 0 ? "#4ade80" : c.delta < 0 ? "#f87171" : "#9ca3af";
                     return (
                       <div key={c.name}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                           <span style={{ fontSize: 13, fontWeight: 600, color: "#f3f4f6" }}>{c.name}</span>
-                          <span style={{ fontSize: 12, fontWeight: 700, color: c.barColor }}>{c.label} — {c.total}/{c.max}</span>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                            {hasPreForCompare && c.delta !== 0 && (
+                              <span style={{ fontSize: 11, fontWeight: 700, color: deltaColor }}>{deltaSign}{c.delta} pts</span>
+                            )}
+                            <span style={{ fontSize: 12, fontWeight: 700, color: c.barColor }}>{c.label} — {c.postTotal}/{c.max}</span>
+                          </div>
                         </div>
-                        <div style={{ height: 8, background: "#1e3a5f", borderRadius: 4, overflow: "hidden" }}>
-                          <div style={{ height: "100%", width: c.pct + "%", background: c.barColor, borderRadius: 4, transition: "width 0.6s ease" }} />
-                        </div>
+                        {hasPreForCompare && (
+                          <div style={{ marginBottom: 4 }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
+                              <span style={{ fontSize: 10, color: "#6b7280", width: 72, flexShrink: 0 }}>Pre-Teaching</span>
+                              <div style={{ flex: 1, height: 6, background: "#1e3a5f", borderRadius: 3, overflow: "hidden" }}>
+                                <div style={{ height: "100%", width: c.prePct + "%", background: "#3b5c85", borderRadius: 3, transition: "width 0.6s ease" }} />
+                              </div>
+                              <span style={{ fontSize: 10, color: "#6b7280", width: 28, textAlign: "right" }}>{c.preTotal}</span>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                              <span style={{ fontSize: 10, color: "#6b7280", width: 72, flexShrink: 0 }}>Post-Teaching</span>
+                              <div style={{ flex: 1, height: 6, background: "#1e3a5f", borderRadius: 3, overflow: "hidden" }}>
+                                <div style={{ height: "100%", width: c.postPct + "%", background: c.barColor, borderRadius: 3, transition: "width 0.6s ease" }} />
+                              </div>
+                              <span style={{ fontSize: 10, color: "#6b7280", width: 28, textAlign: "right" }}>{c.postTotal}</span>
+                            </div>
+                          </div>
+                        )}
+                        {!hasPreForCompare && (
+                          <div style={{ height: 8, background: "#1e3a5f", borderRadius: 4, overflow: "hidden" }}>
+                            <div style={{ height: "100%", width: c.postPct + "%", background: c.barColor, borderRadius: 4, transition: "width 0.6s ease" }} />
+                          </div>
+                        )}
                       </div>
                     );
                   })}
