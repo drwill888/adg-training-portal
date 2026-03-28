@@ -112,10 +112,12 @@ async function handleCheckout(pathway) {
     const data = await res.json();
     if (data.url) {
       window.location.href = data.url;
+    } else {
+      alert('Checkout error: ' + (data.error || 'No URL returned'));
     }
   } catch (err) {
     console.error('Checkout error:', err);
-    alert('Something went wrong. Please try again.');
+    alert('Something went wrong: ' + err.message);
   }
 }
 
