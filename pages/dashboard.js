@@ -143,6 +143,19 @@ export default function Dashboard() {
     checkAuth();
   }, []);
 
+  // ─── VERIFY PAYMENT on return from Stripe ────────────────────────
+  useEffect(() => {
+    const session_id = router.query.session_id;
+    if (!session_id) return;
+    fetch('/api/verify-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id }),
+    }).then(() => {
+      router.replace('/dashboard');
+    }).catch(() => {});
+  }, [router.query.session_id]);
+
   // ─── LEARNER FIRST NAME ──────────────────────────────────────────
   const [firstName, setFirstName] = useState("");
   useEffect(() => {
