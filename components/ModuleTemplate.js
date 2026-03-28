@@ -387,7 +387,7 @@ export default function ModuleTemplate({ config }) {
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "2rem", marginBottom: 12 }}>This Module Requires Full Access</h1>
           <p style={{ color: "#666", fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>Unlock all five modules of the 5C Leadership Blueprint to continue your formation journey.</p>
           <button onClick={function() { fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pathway: 'individual' }) }).then(function(r) { return r.json(); }).then(function(d) { if (d.url) window.location.href = d.url; }).catch(function() { alert('Something went wrong.'); }); }} style={{ padding: "12px 32px", background: GOLD, color: NAVY, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", marginBottom: 12 }}>Unlock — $79.99</button>
-          <br /><a href="/" style={{ color: "#888", fontSize: 13 }}>← Back to Dashboard</a>
+          <br /><a href="/dashboard" style={{ color: "#888", fontSize: 13 }}>← Back to Dashboard</a>
         </div>
       </div>
     );
@@ -621,8 +621,52 @@ export default function ModuleTemplate({ config }) {
           </div>
         );
 
-      case "post-diagnostic":
-        return <DiagnosticSection diagnostic={diagnostic} scores={postScores} setScores={setPostScores} accent={accent} label="Post-Teaching Self-Assessment — What Has Shifted?" />;
+      case "post-diagnostic": {
+        var postDiagCats = [];
+        if (diagnostic && Object.keys(postScores).length > 0) {
+          var pdCatMap = {};
+          diagnostic.forEach(function(d) {
+            if (!pdCatMap[d.cat]) pdCatMap[d.cat] = { name: d.cat, items: [] };
+            pdCatMap[d.cat].items.push(d.num);
+          });
+          postDiagCats = Object.values(pdCatMap).map(function(c) {
+            var total = 0; var count = 0;
+            c.items.forEach(function(n) { var v = postScores[n]; if (v && v !== "na") { total += Number(v); count++; } });
+            var maxP = c.items.length * 5;
+            var pct = maxP > 0 ? Math.round((total / maxP) * 100) : 0;
+            var lbl = pct >= 80 ? "Strong" : pct >= 55 ? "Developing" : "Needs Attention";
+            var clr = pct >= 80 ? "#16a34a" : pct >= 55 ? "#b45309" : "#dc2626";
+            return { name: c.name, total: total, max: maxP, pct: pct, label: lbl, barColor: clr };
+          });
+        }
+        return (
+          <div className="space-y-6">
+            <DiagnosticSection diagnostic={diagnostic} scores={postScores} setScores={setPostScores} accent={accent} label="Post-Teaching Self-Assessment — What Has Shifted?" />
+            {postDiagCats.length > 0 && (
+              <div style={{ background: NAVY, borderRadius: 16, padding: "24px 24px 20px", marginTop: 8 }}>
+                <p style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: GOLD, fontWeight: 700, marginBottom: 4 }}>Your {title} Results</p>
+                <p style={{ fontSize: 13, color: "#9ca3af", marginBottom: 20, lineHeight: 1.5 }}>Here is how you scored across each formation category. These scores will inform your Leadership Blueprint summary.</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                  {postDiagCats.map(function(c) {
+                    return (
+                      <div key={c.name}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                          <span style={{ fontSize: 13, fontWeight: 600, color: "#f3f4f6" }}>{c.name}</span>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: c.barColor }}>{c.label} — {c.total}/{c.max}</span>
+                        </div>
+                        <div style={{ height: 8, background: "#1e3a5f", borderRadius: 4, overflow: "hidden" }}>
+                          <div style={{ height: "100%", width: c.pct + "%", background: c.barColor, borderRadius: 4, transition: "width 0.6s ease" }} />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <p style={{ fontSize: 12, color: "#6b7280", marginTop: 18, lineHeight: 1.6, fontStyle: "italic" }}>Strong ≥ 80% &nbsp;·&nbsp; Developing ≥ 55% &nbsp;·&nbsp; Needs Attention &lt; 55%</p>
+              </div>
+            )}
+          </div>
+        );
+      }
 
       case "commitment":
         return (
@@ -825,7 +869,7 @@ export default function ModuleTemplate({ config }) {
 
       <div className="sticky top-0 z-50 border-b" style={{ background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", borderColor: "#f0f0f0" }}>
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <a href="/" className="text-sm font-medium flex items-center gap-1.5 hover:opacity-70 transition-opacity" style={{ color: NAVY }}>← Dashboard</a>
+          <a href="/dashboard" className="text-sm font-medium flex items-center gap-1.5 hover:opacity-70 transition-opacity" style={{ color: NAVY }}>← Dashboard</a>
           <div className="text-center">
             <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: NAVY }}>{moduleNum === 0 ? "Introduction" : moduleNum === 6 ? "Bonus Module" : "Module " + moduleNum}</p>
             <p className="text-sm font-bold" style={{ color: NAVY }}>{title}</p>
@@ -875,9 +919,28 @@ export default function ModuleTemplate({ config }) {
           <span className="text-xs" style={{ color: "#bbb" }}>{step + 1} / {STEPS.length}</span>
           {step === STEPS.length - 1 ? (
             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              <a href="/" style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13, fontWeight: 600, color: NAVY, border: "1.5px solid " + NAVY, textDecoration: "none", whiteSpace: "nowrap" }}>Dashboard</a>
+              <button onClick={async function() {
+                try {
+                  var sr = await supabase.auth.getSession();
+                  var ss = sr.data.session;
+                  if (ss && ss.user) {
+                    await supabase.from("user_progress").upsert({ user_id: ss.user.id, module_id: moduleNum, current_step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, reflections: reflectionsRef.current, updated_at: new Date().toISOString() }, { onConflict: "user_id,module_id" });
+                  }
+                } catch(e) { console.error("Save before navigate failed:", e); }
+                window.location.href = "/dashboard";
+              }} style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13, fontWeight: 600, color: NAVY, border: "1.5px solid " + NAVY, background: "transparent", cursor: "pointer", whiteSpace: "nowrap" }}>Dashboard</button>
               {moduleNum < 6 && (
-                <a href={["/modules/introduction","/modules/calling","/modules/connection","/modules/competency","/modules/capacity","/modules/convergence","/modules/commissioning"][moduleNum + 1]} style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13, fontWeight: 700, background: NAVY, color: accentMid, textDecoration: "none", whiteSpace: "nowrap" }}>Next Module →</a>
+                <button onClick={async function() {
+                  var nextUrl = ["/modules/introduction","/modules/calling","/modules/connection","/modules/competency","/modules/capacity","/modules/convergence","/modules/commissioning"][moduleNum + 1];
+                  try {
+                    var sr = await supabase.auth.getSession();
+                    var ss = sr.data.session;
+                    if (ss && ss.user) {
+                      await supabase.from("user_progress").upsert({ user_id: ss.user.id, module_id: moduleNum, current_step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, reflections: reflectionsRef.current, updated_at: new Date().toISOString() }, { onConflict: "user_id,module_id" });
+                    }
+                  } catch(e) { console.error("Save before navigate failed:", e); }
+                  window.location.href = nextUrl;
+                }} style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13, fontWeight: 700, background: NAVY, color: accentMid, border: "none", cursor: "pointer", whiteSpace: "nowrap" }}>Next Module →</button>
               )}
             </div>
           ) : (
