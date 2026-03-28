@@ -257,6 +257,7 @@ export default function ModuleTemplate({ config }) {
   var seS = useState(null); var saveError = seS[0]; var setSaveError = seS[1];
   var sueS = useState(null); var summaryError = sueS[0]; var setSummaryError = sueS[1];
   var rfS = useState({}); var reflections = rfS[0]; var setReflections = rfS[1];
+  var reflectionsRef = useRef({});
   var topRef = useRef(null);
   var cur = STEPS[step];
   var scrollTop = function() { if (topRef.current) topRef.current.scrollIntoView({ behavior: "smooth" }); };
@@ -265,8 +266,10 @@ export default function ModuleTemplate({ config }) {
 
   var makeAutoSave = function(key) {
     return function(val, done) {
-      var nextReflections = Object.assign({}, reflections);
+      // Use ref so concurrent saves don't overwrite each other with stale state
+      var nextReflections = Object.assign({}, reflectionsRef.current);
       nextReflections[key] = val;
+      reflectionsRef.current = nextReflections;
       setReflections(nextReflections);
       try { localStorage.setItem(lsKey, JSON.stringify(nextReflections)); } catch(e) {}
       async function persist() {
@@ -274,7 +277,8 @@ export default function ModuleTemplate({ config }) {
           var sr = await supabase.auth.getSession();
           var ss = sr.data.session;
           if (!ss || !ss.user) { done(null); return; }
-          var result = await supabase.from("user_progress").upsert({ user_id: ss.user.id, module_id: moduleNum, current_step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, reflections: nextReflections, updated_at: new Date().toISOString() }, { onConflict: "user_id,module_id" });
+          // Read from ref at save time to get latest combined value
+          var result = await supabase.from("user_progress").upsert({ user_id: ss.user.id, module_id: moduleNum, current_step: step, pre_scores: preScores, post_scores: postScores, commitments: commitments, ai_summary: aiSummary, reflections: reflectionsRef.current, updated_at: new Date().toISOString() }, { onConflict: "user_id,module_id" });
           if (result.error) throw result.error;
           done(null);
         } catch (e) {
@@ -298,15 +302,16 @@ export default function ModuleTemplate({ config }) {
             loadedFromDB = true;
             var savedStep = r.data.current_step || 0;
             if (r.data.current_step) setStep(r.data.current_step);
-            if (r.data.pre_scores) setPreScores(r.data.pre_scores);
-            if (r.data.post_scores) setPostScores(r.data.post_scores);
+            if (r.data.pre_scores && Object.keys(r.data.pre_scores).length > 0) setPreScores(r.data.pre_scores);
+            if (r.data.post_scores && Object.keys(r.data.post_scores).length > 0) setPostScores(r.data.post_scores);
             if (r.data.commitments) setCommitments(r.data.commitments);
             if (r.data.ai_summary) setAiSummary(r.data.ai_summary);
             var dbReflections = r.data.reflections || {};
             if (Object.keys(dbReflections).length > 0) {
+              reflectionsRef.current = dbReflections;
               setReflections(dbReflections);
             } else {
-              try { var ls = localStorage.getItem(lsKey); if (ls) setReflections(JSON.parse(ls)); } catch(e) {}
+              try { var ls = localStorage.getItem(lsKey); if (ls) { var lsR = JSON.parse(ls); reflectionsRef.current = lsR; setReflections(lsR); } } catch(e) {}
             }
             if (savedStep > 0) {
               var stepList = moduleNum === 0 ? STEPS_INTRO : STEPS_DEFAULT;
@@ -320,7 +325,8 @@ export default function ModuleTemplate({ config }) {
         setLoadError("Couldn't load your progress. Your work is safe — refresh to try again.");
       }
       if (!loadedFromDB) {
-        try { var ls = localStorage.getItem(lsKey); if (ls) setReflections(JSON.parse(ls)); } catch(e) {}
+        try { var ls = localStorage.getItem(lsKey); if (ls) { var lsR = JSON.parse(ls); reflectionsRef.current = lsR; setReflections(lsR); } } catch(e) {}
+        try { var lsSc = localStorage.getItem("adg_scores_" + moduleNum); if (lsSc) { var sc = JSON.parse(lsSc); if (sc.pre) setPreScores(sc.pre); if (sc.post) setPostScores(sc.post); } } catch(e) {}
       }
       setResumeLoaded(true);
     }
@@ -346,6 +352,11 @@ export default function ModuleTemplate({ config }) {
     }, 1500);
     return function() { clearTimeout(t); };
   }, [step, preScores, postScores, commitments, aiSummary, reflections, resumeLoaded, moduleNum]);
+
+  useEffect(function() {
+    if (!resumeLoaded) return;
+    try { localStorage.setItem("adg_scores_" + moduleNum, JSON.stringify({ pre: preScores, post: postScores })); } catch(e) {}
+  }, [preScores, postScores, moduleNum, resumeLoaded]);
 
   useEffect(function() {
     if (!resumeToast) return;
@@ -377,7 +388,26 @@ export default function ModuleTemplate({ config }) {
     var commitStr = Object.entries(commitments).map(function(e) { return e[0].replace(/_/g, " ") + ": " + (e[1] || "(left blank)"); }).join("\n");
     var blanks = Object.entries(commitments).filter(function(e) { return !e[1] || e[1].trim() === ""; }).map(function(e) { return e[0].replace(/_/g, " "); });
     var blankNote = blanks.length > 0 ? "\n\nThe following fields were left blank: " + blanks.join(", ") + ". Name what was left unanswered and challenge them to return and complete the work." : "";
-    var prompt = "You are a pastoral leadership development coach with the 5C Leadership Blueprint (Awakening Destiny Global). Your role is to affirm, encourage, and gently guide — like a trusted mentor who believes deeply in this leader's potential.\n\nAnalyze this leader's responses for the " + title + " dimension and write a warm, personalized summary (200-250 words).\n\nTone guidelines:\n- Begin by affirming what is genuinely strong or hopeful in their responses.\n- Be encouraging and pastorally warm — this leader has taken a courageous step by engaging this material.\n- Gently surface areas for growth without harsh critique. Frame gaps as invitations, not failures.\n- Use language of possibility, formation, and Kingdom purpose.\n- Be specific to what they actually wrote — make them feel seen and understood.\n- End with an encouraging word that calls them forward into their assignment.\n- If fields were left blank, gently invite them to return and complete the work — frame it as an opportunity, not a failure.\n- Do not fabricate analysis for empty fields.\n\n" + aiPromptContext + "\n\nTheir Commitments:\n" + commitStr + blankNote + "\n\nWrite as a trusted coach who is genuinely rooting for this leader.";
+    // Build diagnostic score summary if available
+    var diagNote = "";
+    if (diagnostic && Object.keys(postScores).length > 0) {
+      var catMap2 = {};
+      diagnostic.forEach(function(d) {
+        if (!catMap2[d.cat]) catMap2[d.cat] = { items: [] };
+        catMap2[d.cat].items.push(d.num);
+      });
+      var catLines = Object.entries(catMap2).map(function(entry) {
+        var catName = entry[0]; var items = entry[1].items;
+        var total = 0; var count = 0;
+        items.forEach(function(n) { var v = postScores[n]; if (v && v !== "na") { total += Number(v); count++; } });
+        var max = items.length * 5;
+        var pct = max > 0 ? Math.round((total / max) * 100) : 0;
+        var lbl = pct >= 80 ? "Strong" : pct >= 55 ? "Developing" : "Needs Attention";
+        return catName + ": " + total + "/" + max + " (" + lbl + ")";
+      });
+      diagNote = "\n\nFormation Readiness Diagnostic Scores:\n" + catLines.join("\n") + "\nReference these scores specifically — acknowledge their strengths and gently name the areas needing most attention.";
+    }
+    var prompt = "You are a pastoral leadership development coach with the 5C Leadership Blueprint (Awakening Destiny Global). Your role is to affirm, encourage, and gently guide — like a trusted mentor who believes deeply in this leader's potential.\n\nAnalyze this leader's responses for the " + title + " dimension and write a warm, personalized summary (200-250 words).\n\nTone guidelines:\n- Begin by affirming what is genuinely strong or hopeful in their responses.\n- Be encouraging and pastorally warm — this leader has taken a courageous step by engaging this material.\n- Gently surface areas for growth without harsh critique. Frame gaps as invitations, not failures.\n- Use language of possibility, formation, and Kingdom purpose.\n- Be specific to what they actually wrote — make them feel seen and understood.\n- End with an encouraging word that calls them forward into their assignment.\n- If fields were left blank, gently invite them to return and complete the work — frame it as an opportunity, not a failure.\n- Do not fabricate analysis for empty fields.\n\n" + aiPromptContext + diagNote + "\n\nTheir Commitments:\n" + commitStr + blankNote + "\n\nWrite as a trusted coach who is genuinely rooting for this leader.";
     fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt }) })
       .then(function(r) { return r.json(); })
       .then(function(d) { setAiSummary(d.response || ""); })
@@ -714,13 +744,57 @@ export default function ModuleTemplate({ config }) {
           </div>
         );
 
-      case "assessment":
+      case "assessment": {
+        // Build per-category results
+        var diagCats = [];
+        if (diagnostic && Object.keys(postScores).length > 0) {
+          var catMap = {};
+          diagnostic.forEach(function(d) {
+            if (!catMap[d.cat]) catMap[d.cat] = { name: d.cat, items: [] };
+            catMap[d.cat].items.push(d.num);
+          });
+          diagCats = Object.values(catMap).map(function(c) {
+            var total = 0; var count = 0;
+            c.items.forEach(function(n) {
+              var v = postScores[n];
+              if (v && v !== "na") { total += Number(v); count++; }
+            });
+            var maxPossible = c.items.length * 5;
+            var pct = maxPossible > 0 ? Math.round((total / maxPossible) * 100) : 0;
+            var label = pct >= 80 ? "Strong" : pct >= 55 ? "Developing" : "Needs Attention";
+            var barColor = pct >= 80 ? "#16a34a" : pct >= 55 ? "#b45309" : "#dc2626";
+            return { name: c.name, total: total, max: maxPossible, pct: pct, label: label, barColor: barColor, scored: count };
+          });
+        }
         return (
           <div className="space-y-6">
             <SectionHead sub="This is your honest formation check. Rate each statement as you stand right now — not as you hope to be.">Formation Readiness Assessment</SectionHead>
             <DiagnosticSection diagnostic={diagnostic} scores={postScores} setScores={setPostScores} accent={accent} label="Formation Assessment" />
+            {diagCats.length > 0 && (
+              <div style={{ background: NAVY, borderRadius: 16, padding: "24px 24px 20px", marginTop: 8 }}>
+                <p style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: GOLD, fontWeight: 700, marginBottom: 4 }}>Your Readiness Results</p>
+                <p style={{ fontSize: 13, color: "#9ca3af", marginBottom: 20, lineHeight: 1.5 }}>Here is how you scored across each formation category.</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                  {diagCats.map(function(c) {
+                    return (
+                      <div key={c.name}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                          <span style={{ fontSize: 13, fontWeight: 600, color: "#f3f4f6" }}>{c.name}</span>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: c.barColor }}>{c.label} — {c.total}/{c.max}</span>
+                        </div>
+                        <div style={{ height: 8, background: "#1e3a5f", borderRadius: 4, overflow: "hidden" }}>
+                          <div style={{ height: "100%", width: c.pct + "%", background: c.barColor, borderRadius: 4, transition: "width 0.6s ease" }} />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <p style={{ fontSize: 12, color: "#6b7280", marginTop: 18, lineHeight: 1.6, fontStyle: "italic" }}>Strong ≥ 80% &nbsp;·&nbsp; Developing ≥ 55% &nbsp;·&nbsp; Needs Attention &lt; 55%</p>
+              </div>
+            )}
           </div>
         );
+      }
 
       default:
         return null;
