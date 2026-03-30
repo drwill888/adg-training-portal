@@ -12,7 +12,7 @@ export default function Success() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: colors.cream,
+      backgroundColor: colors.navy,
       fontFamily: fonts.body,
     }}>
       <div style={{
@@ -22,13 +22,13 @@ export default function Success() {
       }}>
         <h1 style={{
           fontFamily: fonts.heading,
-          color: colors.navy,
+          color: colors.cream,
           fontSize: '2.5rem',
           marginBottom: '16px',
         }}>
           Welcome to the 5C Blueprint
         </h1>
-        <p style={{ color: colors.navy, fontSize: '1.1rem', lineHeight: '1.6' }}>
+        <p style={{ color: '#c8cdd6', fontSize: '1.1rem', lineHeight: '1.6' }}>
           Your payment was successful. You now have full access to all five modules of the 5C Leadership Blueprint.
         </p>
         <button
@@ -43,6 +43,8 @@ export default function Success() {
             fontSize: '1rem',
             fontWeight: '600',
             cursor: 'pointer',
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
           }}
         >
           Go to Dashboard
@@ -50,4 +52,4 @@ export default function Success() {
       </div>
     </div>
   );
-} 
+}

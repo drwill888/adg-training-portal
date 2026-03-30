@@ -38,8 +38,8 @@ function Modal({ open, onClose, children }) {
   return (
     <div style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div onClick={onClose} style={{ position: "absolute", inset: 0, background: "rgba(2,26,53,0.85)" }} />
-      <div style={{ position: "relative", width: "90%", maxWidth: 640, maxHeight: "85vh", overflowY: "auto", background: "#fff", borderRadius: 16, padding: "32px 28px", boxShadow: "0 24px 64px rgba(0,0,0,0.3)" }}>
-        <button onClick={onClose} style={{ position: "absolute", top: 12, right: 16, background: "none", border: "none", fontSize: 24, cursor: "pointer", color: "#999" }}>×</button>
+      <div style={{ position: "relative", width: "90%", maxWidth: 640, maxHeight: "85vh", overflowY: "auto", background: "#0a2d52", borderRadius: 16, padding: "32px 28px", boxShadow: "0 24px 64px rgba(0,0,0,0.5)", border: "1px solid rgba(253,210,13,0.15)" }}>
+        <button onClick={onClose} style={{ position: "absolute", top: 12, right: 16, background: "none", border: "none", fontSize: 24, cursor: "pointer", color: "#6b7280" }}>×</button>
         {children}
         <button onClick={onClose} style={{ display: "block", width: "100%", marginTop: 24, padding: "12px 0", background: NAVY, color: GOLD, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", textAlign: "center" }}>Close Window</button>
       </div>
@@ -52,14 +52,14 @@ function ScriptureContent({ scriptures }) {
   return (
     <div>
       <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, color: GOLD, marginBottom: 4 }}>Further Study</p>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "1.6rem", fontWeight: 700, marginBottom: 12 }}>Scriptures for Further Study</h2>
-      <p style={{ fontSize: 14, color: "#555", lineHeight: 1.7, marginBottom: 24, fontStyle: "italic" }}>{scriptures.intro}</p>
+      <h2 style={{ fontFamily: fonts.heading, color: "#FDF8F0", fontSize: "1.6rem", fontWeight: 700, marginBottom: 12 }}>Scriptures for Further Study</h2>
+      <p style={{ fontSize: 14, color: "#9ca3af", lineHeight: 1.7, marginBottom: 24, fontStyle: "italic" }}>{scriptures.intro}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {scriptures.verses.map(function(v, i) {
           return (
-            <div key={i} style={{ padding: "12px 16px", borderRadius: 10, background: i % 2 === 0 ? "#FFF9E6" : "#f9fafb", borderLeft: "3px solid " + GOLD }}>
-              <span style={{ fontWeight: 700, color: NAVY, fontSize: 13 }}>{v.ref}</span>
-              <span style={{ color: "#555", fontSize: 13 }}> — {v.text}</span>
+            <div key={i} style={{ padding: "12px 16px", borderRadius: 10, background: i % 2 === 0 ? "rgba(253,210,13,0.08)" : "rgba(10,45,82,0.5)", borderLeft: "3px solid " + GOLD }}>
+              <span style={{ fontWeight: 700, color: "#FDF8F0", fontSize: 13 }}>{v.ref}</span>
+              <span style={{ color: "#9ca3af", fontSize: 13 }}> — {v.text}</span>
             </div>
           );
         })}
@@ -73,14 +73,14 @@ function BookChapterContent({ chapter }) {
   return (
     <div>
       <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, color: GOLD, marginBottom: 4 }}>From the Book</p>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "1.6rem", fontWeight: 700, marginBottom: 16 }}>{chapter.title}</h2>
+      <h2 style={{ fontFamily: fonts.heading, color: "#FDF8F0", fontSize: "1.6rem", fontWeight: 700, marginBottom: 16 }}>{chapter.title}</h2>
       {chapter.paragraphs.map(function(p, i) {
         if (p.type === "scripture") {
-          return <p key={i} style={{ fontSize: 14, color: NAVY, fontStyle: "italic", borderLeft: "3px solid " + GOLD, paddingLeft: 16, margin: "16px 0", lineHeight: 1.7 }}>{p.text}</p>;
+          return <p key={i} style={{ fontSize: 14, color: "#FDF8F0", fontStyle: "italic", borderLeft: "3px solid " + GOLD, paddingLeft: 16, margin: "16px 0", lineHeight: 1.7 }}>{p.text}</p>;
         }
-        return <p key={i} style={{ fontSize: 14, color: "#333", lineHeight: 1.8, marginBottom: 14 }}>{p.text}</p>;
+        return <p key={i} style={{ fontSize: 14, color: "#FDF8F0", lineHeight: 1.8, marginBottom: 14 }}>{p.text}</p>;
       })}
-      {chapter.source && <p style={{ fontSize: 12, color: "#999", marginTop: 20, fontStyle: "italic" }}>{chapter.source}</p>}
+      {chapter.source && <p style={{ fontSize: 12, color: "#6b7280", marginTop: 20, fontStyle: "italic" }}>{chapter.source}</p>}
     </div>
   );
 }
@@ -90,10 +90,10 @@ function ScoreButtons({ itemNum, scores, setScores, accent }) {
     <div style={{ display: "flex", gap: 4, alignItems: "center", flexShrink: 0, flexWrap: "wrap" }}>
       {[1, 2, 3, 4, 5].map(function(score) {
         return (
-          <button key={score} onClick={function() { setScores(function(p) { var n = Object.assign({}, p); n[itemNum] = score; return n; }); }} style={{ width: 32, height: 32, borderRadius: 6, fontSize: 13, fontWeight: "bold", border: "none", cursor: "pointer", transition: "all 0.15s", background: scores[itemNum] === score ? accent : "#f0f0f0", color: scores[itemNum] === score ? NAVY : "#999" }}>{score}</button>
+          <button key={score} onClick={function() { setScores(function(p) { var n = Object.assign({}, p); n[itemNum] = score; return n; }); }} style={{ width: 32, height: 32, borderRadius: 6, fontSize: 13, fontWeight: "bold", border: "none", cursor: "pointer", transition: "all 0.15s", background: scores[itemNum] === score ? GOLD : "rgba(253,210,13,0.1)", color: scores[itemNum] === score ? NAVY : "#9ca3af" }}>{score}</button>
         );
       })}
-      <button onClick={function() { setScores(function(p) { var n = Object.assign({}, p); n[itemNum] = "na"; return n; }); }} style={{ height: 32, padding: "0 7px", borderRadius: 6, fontSize: 11, fontWeight: "bold", cursor: "pointer", transition: "all 0.15s", background: scores[itemNum] === "na" ? "#6b7280" : "transparent", color: scores[itemNum] === "na" ? "#fff" : "#bbb", border: "1px dashed #ccc" }}>N/A</button>
+      <button onClick={function() { setScores(function(p) { var n = Object.assign({}, p); n[itemNum] = "na"; return n; }); }} style={{ height: 32, padding: "0 7px", borderRadius: 6, fontSize: 11, fontWeight: "bold", cursor: "pointer", transition: "all 0.15s", background: scores[itemNum] === "na" ? "#6b7280" : "transparent", color: scores[itemNum] === "na" ? "#fff" : "#6b7280", border: "1px dashed rgba(253,210,13,0.2)" }}>N/A</button>
     </div>
   );
 }
@@ -102,17 +102,17 @@ function DiagnosticSection({ diagnostic, scores, setScores, accent, label }) {
   return (
     <div className="space-y-4">
       <div className="mb-2">
-        <p className="text-xs uppercase tracking-widest font-semibold mb-1" style={{ color: accent }}>{label}</p>
-        <p className="text-sm" style={{ color: "#666" }}>Rate each statement: 1 = Not true · 5 = Absolutely true · N/A = Does not apply</p>
+        <p className="text-xs uppercase tracking-widest font-semibold mb-1" style={{ color: GOLD }}>{label}</p>
+        <p className="text-sm" style={{ color: "#9ca3af" }}>Rate each statement: 1 = Not true · 5 = Absolutely true · N/A = Does not apply</p>
       </div>
       {diagnostic.map(function(d) {
         return (
-          <div key={d.num} className="p-4 border rounded-xl bg-white" style={{ borderColor: "#e5e7eb" }}>
+          <div key={d.num} className="p-4 rounded-xl" style={{ background: "rgba(10,45,82,0.6)", border: "1px solid rgba(253,210,13,0.1)" }}>
             <div className="flex items-start justify-between gap-4 flex-wrap sm:flex-nowrap">
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: accent }}>{d.cat}</p>
-                <p className="text-sm leading-relaxed" style={{ color: "#333" }}>{d.text}</p>
-                {d.ref && <p className="text-xs mt-1.5" style={{ color: "#aaa" }}>{d.ref}</p>}
+                <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: GOLD }}>{d.cat}</p>
+                <p className="text-sm leading-relaxed" style={{ color: "#FDF8F0" }}>{d.text}</p>
+                {d.ref && <p className="text-xs mt-1.5" style={{ color: "#6b7280" }}>{d.ref}</p>}
               </div>
               <ScoreButtons itemNum={d.num} scores={scores} setScores={setScores} accent={accent} />
             </div>
@@ -150,16 +150,16 @@ function Reflect({ prompt, onAutoSave, initialValue, inline }) {
   if (inline) {
     return (
       <div className="mb-4">
-        {prompt && <p className="text-sm mb-2" style={{ color: "#333" }}>{prompt}</p>}
-        <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 80 }} rows={3} placeholder="Write your response here..." value={s[0]} onChange={handleChange} />
+        {prompt && <p className="text-sm mb-2" style={{ color: "#FDF8F0" }}>{prompt}</p>}
+        <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid rgba(253,210,13,0.2)", background: "rgba(10,45,82,0.6)", color: "#FDF8F0", minHeight: 80 }} rows={3} placeholder="Write your response here..." value={s[0]} onChange={handleChange} />
         <p style={{ fontSize: 11, color: indColor, marginTop: 4, height: 16 }}>{indText}</p>
       </div>
     );
   }
   return (
-    <div className="mb-5 p-4 rounded-xl" style={{ background: "#f9fafb", border: "1px solid #e5e7eb" }}>
-      <p className="text-sm font-semibold mb-3" style={{ color: NAVY }}>{prompt}</p>
-      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 90 }} rows={4} placeholder="Write your honest reflection here..." value={s[0]} onChange={handleChange} />
+    <div className="mb-5 p-4 rounded-xl" style={{ background: "rgba(10,45,82,0.5)", border: "1px solid rgba(253,210,13,0.1)" }}>
+      <p className="text-sm font-semibold mb-3" style={{ color: GOLD }}>{prompt}</p>
+      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid rgba(253,210,13,0.2)", background: "rgba(10,45,82,0.6)", color: "#FDF8F0", minHeight: 90 }} rows={4} placeholder="Write your honest reflection here..." value={s[0]} onChange={handleChange} />
       <p style={{ fontSize: 11, color: indColor, marginTop: 4, height: 16 }}>{indText}</p>
     </div>
   );
@@ -168,8 +168,8 @@ function Reflect({ prompt, onAutoSave, initialValue, inline }) {
 function SectionHead({ children, sub }) {
   return (
     <div className="mb-5">
-      <h3 className="text-xl sm:text-2xl font-bold" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{children}</h3>
-      {sub && <p className="text-sm mt-1.5" style={{ color: "#888" }}>{sub}</p>}
+      <h3 className="text-xl sm:text-2xl font-bold" style={{ color: "#FDF8F0", fontFamily: fonts.heading }}>{children}</h3>
+      {sub && <p className="text-sm mt-1.5" style={{ color: "#9ca3af" }}>{sub}</p>}
     </div>
   );
 }
@@ -382,7 +382,7 @@ export default function ModuleTemplate({ config }) {
   }, [resumeToast]);
 
   if (!isFree && payLoading) {
-    return (<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#021A35" }}><p style={{ color: "#999", fontSize: 14 }}>Loading...</p></div>);
+    return (<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#021A35" }}><p style={{ color: "#6b7280", fontSize: 14 }}>Loading...</p></div>);
   }
 
   if (!isFree && !paid) {
@@ -392,9 +392,9 @@ export default function ModuleTemplate({ config }) {
         <div style={{ textAlign: "center", maxWidth: 440, padding: 40 }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "2rem", marginBottom: 12 }}>This Module Requires Full Access</h1>
-          <p style={{ color: "#666", fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>Unlock all five modules of the 5C Leadership Blueprint to continue your formation journey.</p>
+          <p style={{ color: "#9ca3af", fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>Unlock all five modules of the 5C Leadership Blueprint to continue your formation journey.</p>
           <button onClick={function() { fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pathway: 'individual' }) }).then(function(r) { return r.json(); }).then(function(d) { if (d.url) window.location.href = d.url; }).catch(function() { alert('Something went wrong.'); }); }} style={{ padding: "12px 32px", background: GOLD, color: NAVY, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", marginBottom: 12 }}>Unlock — $79.99</button>
-          <br /><a href="/dashboard" style={{ color: "#888", fontSize: 13 }}>← Back to Dashboard</a>
+          <br /><a href="/dashboard" style={{ color: "#9ca3af", fontSize: 13 }}>← Back to Dashboard</a>
         </div>
       </div>
     );
@@ -546,7 +546,7 @@ export default function ModuleTemplate({ config }) {
             {podcast && (
               <div style={{ marginTop: 24 }}>
                 <p className="text-xs uppercase tracking-widest font-semibold mb-3" style={{ color: accent }}>Podcast — Introduction Episode</p>
-                <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid #e5e7eb" }}>
+                <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(253,210,13,0.1)" }}>
                   <iframe
                     src={"https://www.buzzsprout.com/" + podcast.showId + "/" + podcast.episodeId + "?client_source=small_player&iframe=true"}
                     loading="lazy"
@@ -571,20 +571,20 @@ export default function ModuleTemplate({ config }) {
             {contrastTable && (
               <div className="mb-2">
                 <SectionHead sub="Which column describes your default — not your best day, but under pressure?">{contrastTable.title || "Two Ways to Lead"}</SectionHead>
-                <div className="overflow-x-auto rounded-xl border" style={{ borderColor: "#e5e7eb" }}>
+                <div className="overflow-x-auto rounded-xl" style={{ border: "1px solid rgba(253,210,13,0.15)" }}>
                   <table style={{ width: "100%", borderCollapse: "collapse" }}>
                     <thead>
                       <tr>
-                        <th style={{ background: "#f9fafb", color: "#555", fontWeight: 700, fontSize: 13, padding: "12px 16px", textAlign: "left", borderBottom: "1px solid #e5e7eb" }}>{contrastTable.leftTitle}</th>
-                        <th style={{ background: accentLight, color: NAVY, fontWeight: 700, fontSize: 13, padding: "12px 16px", textAlign: "left", borderBottom: "1px solid #e5e7eb" }}>{contrastTable.rightTitle}</th>
+                        <th style={{ background: "rgba(10,45,82,0.8)", color: "#9ca3af", fontWeight: 700, fontSize: 13, padding: "12px 16px", textAlign: "left", borderBottom: "1px solid rgba(253,210,13,0.1)" }}>{contrastTable.leftTitle}</th>
+                        <th style={{ background: "rgba(253,210,13,0.1)", color: GOLD, fontWeight: 700, fontSize: 13, padding: "12px 16px", textAlign: "left", borderBottom: "1px solid rgba(253,210,13,0.1)" }}>{contrastTable.rightTitle}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {contrastTable.rows.map(function(row, i) {
                         return (
-                          <tr key={i} style={{ borderBottom: "1px solid #f0f0f0" }}>
-                            <td style={{ padding: "10px 16px", fontSize: 13, color: "#666", background: "#fff" }}>{row[0]}</td>
-                            <td style={{ padding: "10px 16px", fontSize: 13, color: NAVY, fontWeight: 500, background: i % 2 === 0 ? accentLight + "66" : "#fff" }}>{row[1]}</td>
+                          <tr key={i} style={{ borderBottom: "1px solid rgba(253,210,13,0.06)" }}>
+                            <td style={{ padding: "10px 16px", fontSize: 13, color: "#9ca3af", background: "rgba(10,45,82,0.5)" }}>{row[0]}</td>
+                            <td style={{ padding: "10px 16px", fontSize: 13, color: "#FDF8F0", fontWeight: 500, background: i % 2 === 0 ? "rgba(253,210,13,0.06)" : "rgba(10,45,82,0.3)" }}>{row[1]}</td>
                           </tr>
                         );
                       })}
@@ -599,7 +599,7 @@ export default function ModuleTemplate({ config }) {
               var isAdd = p.addendum === true;
               var isOpen = !!openPrinciples[idx];
               return (
-                <div key={idx} className="rounded-xl overflow-hidden" style={{ background: isAdd ? "#fafafa" : accentLight, borderLeftWidth: 4, borderLeftStyle: "solid", borderLeftColor: isAdd ? accentMid : accent, border: isAdd ? "1px solid #e5e7eb" : "none" }}>
+                <div key={idx} className="rounded-xl overflow-hidden" style={{ background: isAdd ? "rgba(10,45,82,0.5)" : "rgba(10,45,82,0.4)", borderLeftWidth: 4, borderLeftStyle: "solid", borderLeftColor: isAdd ? accentMid : GOLD, border: isAdd ? "1px solid rgba(253,210,13,0.1)" : "1px solid rgba(253,210,13,0.08)" }}>
                   <button
                     onClick={function() { setOpenPrinciples(function(prev) { var next = Object.assign({}, prev); next[idx] = !prev[idx]; return next; }); }}
                     style={{ width: "100%", padding: "16px 20px", background: "transparent", border: "none", cursor: "pointer", textAlign: "left", display: "flex", alignItems: "center", gap: 12 }}>
@@ -607,7 +607,7 @@ export default function ModuleTemplate({ config }) {
                     <div style={{ flex: 1 }}>
                       {isAdd && <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: accentMid, marginBottom: 2 }}>Addendum Principle</p>}
                       <h4 className="font-bold text-lg" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif", margin: 0 }}>{p.title}</h4>
-                      {p.ref && <p className="text-xs mt-0.5" style={{ color: "#999", margin: 0 }}>{p.ref}</p>}
+                      {p.ref && <p className="text-xs mt-0.5" style={{ color: "#6b7280", margin: 0 }}>{p.ref}</p>}
                     </div>
                     <span style={{ fontSize: 14, color: accent, fontWeight: 700, flexShrink: 0 }}>{isOpen ? "−" : "+"}</span>
                   </button>
@@ -615,11 +615,11 @@ export default function ModuleTemplate({ config }) {
                     <div style={{ padding: "0 20px 20px" }}>
                       {p.scripture && <p className="text-sm italic mb-4" style={{ color: NAVY, borderLeft: "2px solid " + accent, paddingLeft: 12 }}>{p.scripture}</p>}
                       <div className="space-y-3 mb-4">
-                        {p.paragraphs.map(function(para, i) { return <p key={i} className="text-sm leading-relaxed" style={{ color: "#333" }}>{para}</p>; })}
+                        {p.paragraphs.map(function(para, i) { return <p key={i} className="text-sm leading-relaxed" style={{ color: "#FDF8F0" }}>{para}</p>; })}
                       </div>
                       {promptList.length > 0 && (
                         <div className="pt-4" style={{ borderTop: "1px solid " + accent + "44" }}>
-                          <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: NAVY }}>Pause & Process</p>
+                          <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: GOLD }}>Pause & Process</p>
                           {promptList.map(function(q, qi) { return <Reflect inline key={qi} prompt={q} onAutoSave={makeAutoSave("teaching_" + idx + "_" + qi)} initialValue={reflections["teaching_" + idx + "_" + qi] || ""} />; })}
                         </div>
                       )}
@@ -635,13 +635,13 @@ export default function ModuleTemplate({ config }) {
         return (
           <div className="space-y-6">
             <SectionHead sub={exemplar.subtitle}>{exemplar.title}</SectionHead>
-            <p className="text-sm leading-relaxed" style={{ color: "#333" }}>{exemplar.intro}</p>
-            {exemplar.intro2 && <p className="text-sm leading-relaxed" style={{ color: "#333" }}>{exemplar.intro2}</p>}
+            <p className="text-sm leading-relaxed" style={{ color: "#FDF8F0" }}>{exemplar.intro}</p>
+            {exemplar.intro2 && <p className="text-sm leading-relaxed" style={{ color: "#FDF8F0" }}>{exemplar.intro2}</p>}
             <div className="p-5 rounded-xl" style={{ background: accentLight, border: "1px solid " + accent + "44" }}>
-              <p className="text-sm font-bold mb-3 uppercase tracking-wide" style={{ color: NAVY }}>What this teaches us:</p>
+              <p className="text-sm font-bold mb-3 uppercase tracking-wide" style={{ color: GOLD }}>What this teaches us:</p>
               <ul className="space-y-2.5">
                 {exemplar.lessons.map(function(l, i) {
-                  return (<li key={i} className="flex gap-3 text-sm"><span className="mt-0.5 flex-shrink-0 font-bold" style={{ color: accent }}>✦</span><span style={{ color: "#333" }}>{l}</span></li>);
+                  return (<li key={i} className="flex gap-3 text-sm"><span className="mt-0.5 flex-shrink-0 font-bold" style={{ color: accent }}>✦</span><span style={{ color: "#FDF8F0" }}>{l}</span></li>);
                 })}
               </ul>
             </div>
@@ -653,7 +653,7 @@ export default function ModuleTemplate({ config }) {
             )}
             {exemplar.questions && exemplar.questions.length > 0 && (
               <div>
-                <p className="text-sm font-semibold mb-3" style={{ color: NAVY }}>Coaching Questions:</p>
+                <p className="text-sm font-semibold mb-3" style={{ color: GOLD }}>Coaching Questions:</p>
                 {exemplar.questions.map(function(q, i) { return <Reflect key={i} prompt={q} onAutoSave={makeAutoSave("exemplar_" + i)} initialValue={reflections["exemplar_" + i] || ""} />; })}
               </div>
             )}
@@ -666,19 +666,19 @@ export default function ModuleTemplate({ config }) {
             <SectionHead sub="These stages are recognizable across every leader's journey. You are in one right now.">Stages of {title} Development</SectionHead>
             {stages.map(function(s, i) {
               return (
-                <div key={i} className="p-5 rounded-xl" style={{ background: "#fff", border: "1px solid #e5e7eb", borderLeft: "4px solid " + accent }}>
+                <div key={i} className="p-5 rounded-xl" style={{ background: "rgba(10,45,82,0.6)", border: "1px solid rgba(253,210,13,0.1)", borderLeft: "4px solid " + accent }}>
                   <h4 className="font-bold mb-2" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif", fontSize: 17 }}>{s.title}</h4>
-                  <p className="text-sm leading-relaxed" style={{ color: "#444" }}>{s.description}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: "#c8cdd6" }}>{s.description}</p>
                   {s.markers && (
                     <ul className="mt-3 space-y-1.5">
-                      {s.markers.map(function(m, j) { return <li key={j} className="flex gap-2 text-xs" style={{ color: "#666" }}><span style={{ color: accent }}>·</span> {m}</li>; })}
+                      {s.markers.map(function(m, j) { return <li key={j} className="flex gap-2 text-xs" style={{ color: "#9ca3af" }}><span style={{ color: accent }}>·</span> {m}</li>; })}
                     </ul>
                   )}
                 </div>
               );
             })}
             <div className="p-4 rounded-xl" style={{ background: accentLight }}>
-              <p className="text-sm font-semibold mb-2" style={{ color: NAVY }}>Which stage are you in right now?</p>
+              <p className="text-sm font-semibold mb-2" style={{ color: "#FDF8F0" }}>Which stage are you in right now?</p>
               <Reflect inline prompt="Name the stage and describe the specific evidence that supports your answer." onAutoSave={makeAutoSave("stages_current")} initialValue={reflections["stages_current"] || ""} />
             </div>
           </div>
@@ -778,20 +778,20 @@ export default function ModuleTemplate({ config }) {
               {commitmentPrompts.map(function(c) {
                 return (
                   <div key={c.id}>
-                    <label className="block text-sm font-semibold mb-2" style={{ color: NAVY }}>{c.label}</label>
-                    <textarea className="w-full rounded-xl p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", minHeight: 90 }} rows={4} placeholder={c.placeholder} value={commitments[c.id] || ""} onChange={function(e) { var id = c.id; var v = e.target.value; setCommitments(function(p) { var n = Object.assign({}, p); n[id] = v; return n; }); }} />
+                    <label className="block text-sm font-semibold mb-2" style={{ color: "#FDF8F0" }}>{c.label}</label>
+                    <textarea className="w-full rounded-xl p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid rgba(253,210,13,0.2)", background: "rgba(10,45,82,0.6)", color: "#FDF8F0", minHeight: 90 }} rows={4} placeholder={c.placeholder} value={commitments[c.id] || ""} onChange={function(e) { var id = c.id; var v = e.target.value; setCommitments(function(p) { var n = Object.assign({}, p); n[id] = v; return n; }); }} />
                   </div>
                 );
               })}
             </div>
             {revisitTriggers && revisitTriggers.length > 0 && (
               <div className="p-5 rounded-xl" style={{ background: accentLight }}>
-                <h4 className="font-bold mb-3" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{title} is a Living Discipline</h4>
-                <p className="text-sm mb-3 leading-relaxed" style={{ color: "#333" }}>What you write today is not a one-time exercise. Return to it regularly as your season deepens.</p>
-                <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: NAVY }}>Revisit when:</p>
+                <h4 className="font-bold mb-3" style={{ color: "#FDF8F0", fontFamily: fonts.heading }}>{title} is a Living Discipline</h4>
+                <p className="text-sm mb-3 leading-relaxed" style={{ color: "#FDF8F0" }}>What you write today is not a one-time exercise. Return to it regularly as your season deepens.</p>
+                <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: GOLD }}>Revisit when:</p>
                 <ul className="space-y-2">
                   {revisitTriggers.map(function(t, i) {
-                    return (<li key={i} className="flex items-start gap-3 text-sm"><span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: accentMid }} /><span style={{ color: "#444" }}>{t}</span></li>);
+                    return (<li key={i} className="flex items-start gap-3 text-sm"><span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: accentMid }} /><span style={{ color: "#c8cdd6" }}>{t}</span></li>);
                   })}
                 </ul>
               </div>
@@ -817,8 +817,8 @@ export default function ModuleTemplate({ config }) {
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     <span style={{ fontSize: 18 }}>🙏</span>
                     <div>
-                      <p style={{ fontSize: 13, fontWeight: 700, color: NAVY, margin: 0 }}>Activation Prayer — {activationPrayer.theme}</p>
-                      <p style={{ fontSize: 11, color: "#888", margin: 0 }}>{activationPrayer.context}</p>
+                      <p style={{ fontSize: 13, fontWeight: 700, color: "#FDF8F0", margin: 0 }}>Activation Prayer — {activationPrayer.theme}</p>
+                      <p style={{ fontSize: 11, color: "#9ca3af", margin: 0 }}>{activationPrayer.context}</p>
                     </div>
                   </div>
                   <span style={{ fontSize: 12, color: accent, fontWeight: 700 }}>{prayerOpen ? "Close ↑" : "Open ↓"}</span>
@@ -828,9 +828,9 @@ export default function ModuleTemplate({ config }) {
                     <div style={{ marginBottom: 16 }}>
                       {activationPrayer.scriptures.map(function(s, i) {
                         return (
-                          <div key={i} style={{ padding: "10px 14px", borderLeft: "3px solid " + accent, marginBottom: 8, background: "#fff", borderRadius: "0 8px 8px 0" }}>
+                          <div key={i} style={{ padding: "10px 14px", borderLeft: "3px solid " + accent, marginBottom: 8, background: "rgba(10,45,82,0.6)", borderRadius: "0 8px 8px 0" }}>
                             <p style={{ fontSize: 12, fontWeight: 700, color: NAVY, margin: "0 0 2px" }}>{s.ref}</p>
-                            <p style={{ fontSize: 12, color: "#555", margin: 0, fontStyle: "italic" }}>{s.text}</p>
+                            <p style={{ fontSize: 12, color: "#9ca3af", margin: 0, fontStyle: "italic" }}>{s.text}</p>
                           </div>
                         );
                       })}
@@ -855,7 +855,7 @@ export default function ModuleTemplate({ config }) {
             {loading && (
               <div className="text-center py-12">
                 <div className="w-10 h-10 border-4 rounded-full animate-spin mx-auto mb-4" style={{ borderColor: accentLight, borderTopColor: accent }} />
-                <p className="text-sm" style={{ color: "#999" }}>Generating your personalized summary...</p>
+                <p className="text-sm" style={{ color: "#6b7280" }}>Generating your personalized summary...</p>
               </div>
             )}
             {aiSummary && (
@@ -867,39 +867,39 @@ export default function ModuleTemplate({ config }) {
                   </div>
                   <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#222" }}>{para}</p>; })}</div>
                 </div>
-                <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#fff", marginTop: 12 }}>↓ Download Blueprint (.docx)</button>
+                <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "1px solid rgba(253,210,13,0.3)", color: GOLD, background: "transparent", marginTop: 12 }}>↓ Download Blueprint (.docx)</button>
                 {enhanceCount < 3 && (
-                  <div style={{ marginTop: 14, padding: "14px 16px", background: "#faf5ff", border: "1.5px solid #7c3aed33", borderRadius: 14 }}>
-                    <p style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed", marginBottom: 6 }}>⚡ Go Deeper {enhanceCount > 0 ? "(" + (3 - enhanceCount) + " remaining)" : ""}</p>
+                  <div style={{ marginTop: 14, padding: "14px 16px", background: "rgba(253,210,13,0.06)", border: "1px solid rgba(253,210,13,0.2)", borderRadius: 14 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: GOLD, marginBottom: 6 }}>Go Deeper {enhanceCount > 0 ? "(" + (3 - enhanceCount) + " remaining)" : ""}</p>
                     <textarea
                       value={enhanceFeedback}
                       onChange={function(e) { setEnhanceFeedback(e.target.value); }}
-                      placeholder="Optional: tell the coach what to focus on — e.g. 'be more direct about my gaps' or 'focus on practical next steps'"
+                      placeholder="Optional: tell the coach what to focus on..."
                       rows={2}
-                      style={{ width: "100%", fontSize: 12, padding: "8px 10px", borderRadius: 8, border: "1px solid #c4b5fd", background: "#fff", color: "#333", resize: "none", outline: "none", boxSizing: "border-box", marginBottom: 8 }}
+                      style={{ width: "100%", fontSize: 12, padding: "8px 10px", borderRadius: 8, border: "1px solid rgba(253,210,13,0.2)", background: "rgba(10,45,82,0.6)", color: "#FDF8F0", resize: "none", outline: "none", boxSizing: "border-box", marginBottom: 8 }}
                     />
-                    <button onClick={enhanceSummary} className="w-full py-2 rounded-xl font-bold text-sm" style={{ background: "#7c3aed", color: "#fff" }}>Revise My Summary →</button>
+                    <button onClick={enhanceSummary} className="w-full py-2 rounded-xl font-bold text-sm" style={{ background: GOLD, color: NAVY }}>Revise My Summary →</button>
                   </div>
                 )}
                 {enhanceCount >= 3 && (
-                  <p style={{ fontSize: 12, color: "#7c3aed", textAlign: "center", marginTop: 10 }}>You've reached the maximum revisions. Download your blueprint above.</p>
+                  <p style={{ fontSize: 12, color: GOLD, textAlign: "center", marginTop: 10 }}>You have reached the maximum revisions. Download your blueprint above.</p>
                 )}
               </div>
             )}
 
             {moduleNum === 6 && aiSummary && (
-              <button onClick={handleCertificate} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#FFF9E6" }}>🎓 Download Completion Certificate</button>
+              <button onClick={handleCertificate} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "1px solid rgba(253,210,13,0.3)", color: GOLD, background: "transparent" }}>Download Completion Certificate</button>
             )}
 
             {config.resources && config.resources.blogs && (
               <div style={{ marginTop: 16 }}>
-                <p style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 12 }}>Blog Articles & Resources</p>
+                <p style={{ fontSize: 13, fontWeight: 700, color: "#FDF8F0", marginBottom: 12 }}>Blog Articles & Resources</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {config.resources.blogs.map(function(b, i) {
                     return (
-                      <a key={i} href={b.url} target="_blank" rel="noopener noreferrer" style={{ padding: "14px 16px", borderRadius: 10, background: "#fff", border: "1px solid #e5e7eb", textDecoration: "none", display: "block" }}>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 2 }}>{b.title}</div>
-                        <div style={{ fontSize: 12, color: "#666", lineHeight: 1.5 }}>{b.description}</div>
+                      <a key={i} href={b.url} target="_blank" rel="noopener noreferrer" style={{ padding: "14px 16px", borderRadius: 10, background: "rgba(10,45,82,0.6)", border: "1px solid rgba(253,210,13,0.1)", textDecoration: "none", display: "block" }}>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: "#FDF8F0", marginBottom: 2 }}>{b.title}</div>
+                        <div style={{ fontSize: 12, color: "#9ca3af", lineHeight: 1.5 }}>{b.description}</div>
                       </a>
                     );
                   })}
@@ -911,7 +911,7 @@ export default function ModuleTemplate({ config }) {
             )}
 
             {scriptures && (
-              <button onClick={function() { setShowScriptures(true); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + GOLD, color: NAVY, background: "#FFF9E6" }}>📖 Scriptures for Further Study</button>
+              <button onClick={function() { setShowScriptures(true); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "1px solid rgba(253,210,13,0.3)", color: GOLD, background: "transparent" }}>Scriptures for Further Study</button>
             )}
           </div>
         );
@@ -1030,7 +1030,7 @@ export default function ModuleTemplate({ config }) {
       </div>
 
       {resumeToast && (
-        <div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 9998, background: "#fff", color: NAVY, borderLeft: "4px solid " + GOLD, borderRadius: 8, padding: "12px 20px", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", fontSize: 13, fontFamily: fonts.body, whiteSpace: "nowrap", transition: "opacity 0.3s" }}>{resumeToast}</div>
+        <div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 9998, background: "#0a2d52", color: "#FDF8F0", borderLeft: "4px solid " + GOLD, borderRadius: 8, padding: "12px 20px", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", fontSize: 13, fontFamily: fonts.body, whiteSpace: "nowrap", transition: "opacity 0.3s" }}>{resumeToast}</div>
       )}
 
       <div className="fixed bottom-0 left-0 right-0 py-3 z-40" style={{ background: "rgba(2,26,53,0.97)", backdropFilter: "blur(12px)", borderTop: "1px solid rgba(253,210,13,0.15)" }}>

@@ -55,13 +55,13 @@ export default function ResetPassword() {
   return (
     <>
       <Head><title>Set New Password | 5C Leadership Blueprint</title></Head>
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: colors.cream, fontFamily: fonts.body }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: colors.navy, fontFamily: fonts.body }}>
         <div style={{ width: '100%', maxWidth: 420, padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: 32 }}>
-            <h1 style={{ color: navy, fontSize: 24, fontWeight: 700, margin: '0 0 4px' }}>5C Leadership Blueprint</h1>
+            <h1 style={{ color: colors.cream, fontSize: 24, fontWeight: 700, margin: '0 0 4px' }}>5C Leadership Blueprint</h1>
             <p style={{ color: gold, fontSize: 13, margin: 0, fontStyle: 'italic' }}>Awakening Destiny Global</p>
           </div>
-          <div style={{ background: '#fff', borderRadius: 12, padding: 32, boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
+          <div style={{ background: colors.navyLight, borderRadius: 12, padding: 32, border: '1px solid rgba(253,210,13,0.15)' }}>
             {!ready && !message ? (
               <div style={{ textAlign: 'center' }}>
                 <div style={{
@@ -70,7 +70,7 @@ export default function ResetPassword() {
                   margin: '0 auto 20px', animation: 'spin 1s linear infinite',
                 }} />
                 <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
-                <p style={{ color: navy, fontWeight: 600, fontSize: 14 }}>Verifying your reset link...</p>
+                <p style={{ color: colors.cream, fontWeight: 600, fontSize: 14 }}>Verifying your reset link...</p>
                 <p style={{ color: gray, fontSize: 13, marginTop: 8 }}>
                   If this takes too long, your link may have expired.{' '}
                   <span onClick={() => { window.location.href = '/login' }}
@@ -81,25 +81,25 @@ export default function ResetPassword() {
               </div>
             ) : (
               <>
-                <h2 style={{ color: navy, fontSize: 18, fontWeight: 700, margin: '0 0 24px' }}>
+                <h2 style={{ color: colors.cream, fontSize: 18, fontWeight: 700, margin: '0 0 24px' }}>
                   Set New Password
                 </h2>
                 <div style={{ marginBottom: 16 }}>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: navy, marginBottom: 6 }}>New Password</label>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: colors.cream, marginBottom: 6 }}>New Password</label>
                   <input type="password" value={password} onChange={e => setPassword(e.target.value)}
-                    style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e6ed', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none' }}
+                    style={{ width: '100%', padding: '10px 12px', border: '1px solid rgba(253,210,13,0.2)', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none', background: colors.navyMid, color: colors.cream }}
                     placeholder="At least 6 characters" onKeyDown={e => e.key === 'Enter' && handleReset()} />
                 </div>
                 <div style={{ marginBottom: 24 }}>
-                  <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: navy, marginBottom: 6 }}>Confirm Password</label>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: colors.cream, marginBottom: 6 }}>Confirm Password</label>
                   <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}
-                    style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e6ed', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none' }}
+                    style={{ width: '100%', padding: '10px 12px', border: '1px solid rgba(253,210,13,0.2)', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none', background: colors.navyMid, color: colors.cream }}
                     placeholder="••••••••" onKeyDown={e => e.key === 'Enter' && handleReset()} />
                 </div>
                 {error && <p style={{ color: '#EE3124', fontSize: 13, marginBottom: 16 }}>{error}</p>}
                 {message && <p style={{ color: '#0172BC', fontSize: 13, marginBottom: 16 }}>{message}</p>}
                 <button onClick={handleReset} disabled={loading || !!message}
-                  style={{ width: '100%', padding: '12px', background: navy, color: '#FDD20D', border: 'none', borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: loading ? 'default' : 'pointer', opacity: loading || message ? 0.7 : 1 }}>
+                  style={{ width: '100%', padding: '12px', background: gold, color: navy, border: 'none', borderRadius: 8, fontSize: 15, fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', cursor: loading ? 'default' : 'pointer', opacity: loading || message ? 0.7 : 1 }}>
                   {loading ? 'Please wait...' : 'Update Password'}
                 </button>
               </>

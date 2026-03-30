@@ -55,7 +55,7 @@ export default function AuthCallback() {
   return (
     <div style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center',
-      justifyContent: 'center', background: colors.cream,
+      justifyContent: 'center', background: colors.navy,
       fontFamily: fonts.body,
     }}>
       <div style={{ textAlign: 'center' }}>
