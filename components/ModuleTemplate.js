@@ -85,39 +85,6 @@ function BookChapterContent({ chapter }) {
   );
 }
 
-function PauseTextarea({ prompt, onAutoSave, initialValue }) {
-  var s = useState(initialValue || "");
-  useEffect(function() { if (initialValue) s[1](initialValue); }, [initialValue]);
-  var indS = useState(null); var saveInd = indS[0]; var setSaveInd = indS[1];
-  var timerRef = useRef(null);
-  function handleChange(e) {
-    var val = e.target.value;
-    s[1](val);
-    if (!onAutoSave) return;
-    clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(function() {
-      setSaveInd("saving");
-      onAutoSave(val, function(err) {
-        if (err) {
-          setSaveInd("error");
-        } else {
-          setSaveInd("saved");
-          setTimeout(function() { setSaveInd(null); }, 2000);
-        }
-      });
-    }, 500);
-  }
-  var indColor = saveInd === "saving" ? "#999" : saveInd === "saved" ? "#16a34a" : saveInd === "error" ? "#dc2626" : "transparent";
-  var indText = saveInd === "saving" ? "Saving\u2026" : saveInd === "saved" ? "\u2713 Saved" : saveInd === "error" ? "Not saved" : "";
-  return (
-    <div className="mb-4">
-      {prompt && <p className="text-sm mb-2" style={{ color: "#333" }}>{prompt}</p>}
-      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 80 }} rows={3} placeholder="Write your response here..." value={s[0]} onChange={handleChange} />
-      <p style={{ fontSize: 11, color: indColor, marginTop: 4, height: 16 }}>{indText}</p>
-    </div>
-  );
-}
-
 function ScoreButtons({ itemNum, scores, setScores, accent }) {
   return (
     <div style={{ display: "flex", gap: 4, alignItems: "center", flexShrink: 0, flexWrap: "wrap" }}>
@@ -156,7 +123,7 @@ function DiagnosticSection({ diagnostic, scores, setScores, accent, label }) {
   );
 }
 
-function Reflect({ prompt, onAutoSave, initialValue }) {
+function Reflect({ prompt, onAutoSave, initialValue, inline }) {
   var s = useState(initialValue || "");
   useEffect(function() { if (initialValue) s[1](initialValue); }, [initialValue]);
   var indS = useState(null); var saveInd = indS[0]; var setSaveInd = indS[1];
@@ -180,6 +147,15 @@ function Reflect({ prompt, onAutoSave, initialValue }) {
   }
   var indColor = saveInd === "saving" ? "#999" : saveInd === "saved" ? "#16a34a" : saveInd === "error" ? "#dc2626" : "transparent";
   var indText = saveInd === "saving" ? "Saving\u2026" : saveInd === "saved" ? "\u2713 Saved" : saveInd === "error" ? "Not saved" : "";
+  if (inline) {
+    return (
+      <div className="mb-4">
+        {prompt && <p className="text-sm mb-2" style={{ color: "#333" }}>{prompt}</p>}
+        <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 80 }} rows={3} placeholder="Write your response here..." value={s[0]} onChange={handleChange} />
+        <p style={{ fontSize: 11, color: indColor, marginTop: 4, height: 16 }}>{indText}</p>
+      </div>
+    );
+  }
   return (
     <div className="mb-5 p-4 rounded-xl" style={{ background: "#f9fafb", border: "1px solid #e5e7eb" }}>
       <p className="text-sm font-semibold mb-3" style={{ color: NAVY }}>{prompt}</p>
@@ -198,20 +174,46 @@ function SectionHead({ children, sub }) {
   );
 }
 
-function downloadBlueprint(title, commitments, summary) {
-  var html = '<html><head><meta charset="utf-8"/><style>body{font-family:Georgia,serif;color:#333;line-height:1.7;margin:40px;}h1{color:#021A35;font-size:26px;}h2{color:#FDD20D;font-size:18px;border-bottom:2px solid #FDD20D;padding-bottom:4px;margin-top:28px;}.section{background:#FFF9E6;border-left:4px solid #FDD20D;padding:16px;margin:20px 0;border-radius:4px;}p{margin:8px 0;}</style></head><body>';
-  html += '<h1>' + title + ' Blueprint</h1>';
-  html += '<p><strong>5C Leadership Blueprint - Awakening Destiny Global</strong></p>';
-  html += '<p style="color:#888;font-style:italic;">Generated ' + new Date().toLocaleDateString() + '</p>';
-  if (summary) { html += '<div class="section"><h2>Leadership Analysis</h2><p>' + summary.replace(/\n/g, "<br/>") + '</p></div>'; }
-  html += '<h2>Your Commitments</h2>';
-  Object.entries(commitments).forEach(function(entry) { html += '<p><strong>' + entry[0].replace(/_/g, " ") + ':</strong> ' + (entry[1] || "(not completed)") + '</p>'; });
-  html += '<footer style="margin-top:48px;padding-top:16px;border-top:1px solid #ddd;font-size:11px;color:#aaa;"><p>© 2026 Awakening Destiny Global - awakeningdestiny.global</p></footer></body></html>';
-  var blob = new Blob([html], { type: "application/msword" });
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement("a");
-  a.href = url; a.download = title + "-Blueprint.doc"; a.click();
-  URL.revokeObjectURL(url);
+async function downloadBlueprint(title, commitments, summary) {
+  var { Document, Packer, Paragraph, TextRun, HeadingLevel, BorderStyle, AlignmentType } = await import("docx");
+  var { saveAs } = await import("file-saver");
+
+  var children = [];
+
+  // Title
+  children.push(new Paragraph({ heading: HeadingLevel.TITLE, children: [new TextRun({ text: title + " Blueprint", bold: true, size: 48, color: "021A35" })] }));
+  children.push(new Paragraph({ children: [new TextRun({ text: "5C Leadership Blueprint — Awakening Destiny Global", bold: true, size: 22, color: "6b7280" })] }));
+  children.push(new Paragraph({ children: [new TextRun({ text: "Generated " + new Date().toLocaleDateString(), italics: true, size: 20, color: "999999" })] }));
+  children.push(new Paragraph({ text: "" }));
+
+  // Summary
+  if (summary) {
+    children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: "Leadership Analysis", bold: true, size: 28, color: "021A35" })] }));
+    summary.split("\n\n").forEach(function(para) {
+      children.push(new Paragraph({ spacing: { after: 120 }, children: [new TextRun({ text: para, size: 22 })] }));
+    });
+    children.push(new Paragraph({ text: "" }));
+  }
+
+  // Commitments
+  children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: "Your Commitments", bold: true, size: 28, color: "021A35" })] }));
+  Object.entries(commitments).forEach(function(entry) {
+    children.push(new Paragraph({ spacing: { after: 80 }, children: [
+      new TextRun({ text: entry[0].replace(/_/g, " ") + ": ", bold: true, size: 22 }),
+      new TextRun({ text: entry[1] || "(not completed)", size: 22 }),
+    ] }));
+  });
+
+  // Footer
+  children.push(new Paragraph({ text: "" }));
+  children.push(new Paragraph({ border: { top: { style: BorderStyle.SINGLE, size: 1, color: "DDDDDD" } }, spacing: { before: 400 }, children: [new TextRun({ text: "© 2026 Awakening Destiny Global — awakeningdestiny.global", size: 18, color: "AAAAAA", italics: true })] }));
+
+  var doc = new Document({
+    sections: [{ properties: {}, children: children }],
+  });
+
+  var blob = await Packer.toBlob(doc);
+  saveAs(blob, title + "-Blueprint.docx");
 }
 
 export default function ModuleTemplate({ config }) {
@@ -261,6 +263,7 @@ export default function ModuleTemplate({ config }) {
   var rfS = useState({}); var reflections = rfS[0]; var setReflections = rfS[1];
   var ecS = useState(0); var enhanceCount = ecS[0]; var setEnhanceCount = ecS[1];
   var efS = useState(""); var enhanceFeedback = efS[0]; var setEnhanceFeedback = efS[1];
+  var opS = useState({ 0: true }); var openPrinciples = opS[0]; var setOpenPrinciples = opS[1];
   var reflectionsRef = useRef({});
   var topRef = useRef(null);
   var cur = STEPS[step];
@@ -590,28 +593,36 @@ export default function ModuleTemplate({ config }) {
                 </div>
               </div>
             )}
-            <SectionHead sub="These principles anchor everything about this dimension.">{principles.length} Governing Principles</SectionHead>
+            <SectionHead sub="These principles anchor everything about this dimension. Tap each to expand.">{principles.length} Governing Principles</SectionHead>
             {principles.map(function(p, idx) {
               var promptList = p.prompts ? p.prompts : (p.prompt ? [p.prompt] : []);
               var isAdd = p.addendum === true;
+              var isOpen = !!openPrinciples[idx];
               return (
-                <div key={idx} className="p-5 sm:p-6 rounded-xl" style={{ background: isAdd ? "#fafafa" : accentLight, borderLeftWidth: 4, borderLeftStyle: "solid", borderLeftColor: isAdd ? accentMid : accent, border: isAdd ? "1px solid #e5e7eb" : "none" }}>
-                  {isAdd && <p className="text-xs uppercase tracking-widest font-semibold mb-3" style={{ color: accentMid }}>Addendum Principle</p>}
-                  <div className="flex items-start gap-3 mb-3">
+                <div key={idx} className="rounded-xl overflow-hidden" style={{ background: isAdd ? "#fafafa" : accentLight, borderLeftWidth: 4, borderLeftStyle: "solid", borderLeftColor: isAdd ? accentMid : accent, border: isAdd ? "1px solid #e5e7eb" : "none" }}>
+                  <button
+                    onClick={function() { setOpenPrinciples(function(prev) { var next = Object.assign({}, prev); next[idx] = !prev[idx]; return next; }); }}
+                    style={{ width: "100%", padding: "16px 20px", background: "transparent", border: "none", cursor: "pointer", textAlign: "left", display: "flex", alignItems: "center", gap: 12 }}>
                     <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0" style={{ background: NAVY, color: accentMid }}>{idx + 1}</div>
-                    <div>
-                      <h4 className="font-bold text-lg" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{p.title}</h4>
-                      {p.ref && <p className="text-xs mt-0.5" style={{ color: "#999" }}>{p.ref}</p>}
+                    <div style={{ flex: 1 }}>
+                      {isAdd && <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: accentMid, marginBottom: 2 }}>Addendum Principle</p>}
+                      <h4 className="font-bold text-lg" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif", margin: 0 }}>{p.title}</h4>
+                      {p.ref && <p className="text-xs mt-0.5" style={{ color: "#999", margin: 0 }}>{p.ref}</p>}
                     </div>
-                  </div>
-                  {p.scripture && <p className="text-sm italic mb-4" style={{ color: NAVY, borderLeft: "2px solid " + accent, paddingLeft: 12, marginLeft: 44 }}>{p.scripture}</p>}
-                  <div className="space-y-3 mb-4">
-                    {p.paragraphs.map(function(para, i) { return <p key={i} className="text-sm leading-relaxed" style={{ color: "#333" }}>{para}</p>; })}
-                  </div>
-                  {promptList.length > 0 && (
-                    <div className="pt-4" style={{ borderTop: "1px solid " + accent + "44" }}>
-                      <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: NAVY }}>Pause & Process</p>
-                      {promptList.map(function(q, qi) { return <PauseTextarea key={qi} prompt={q} onAutoSave={makeAutoSave("teaching_" + idx + "_" + qi)} initialValue={reflections["teaching_" + idx + "_" + qi] || ""} />; })}
+                    <span style={{ fontSize: 14, color: accent, fontWeight: 700, flexShrink: 0 }}>{isOpen ? "−" : "+"}</span>
+                  </button>
+                  {isOpen && (
+                    <div style={{ padding: "0 20px 20px" }}>
+                      {p.scripture && <p className="text-sm italic mb-4" style={{ color: NAVY, borderLeft: "2px solid " + accent, paddingLeft: 12 }}>{p.scripture}</p>}
+                      <div className="space-y-3 mb-4">
+                        {p.paragraphs.map(function(para, i) { return <p key={i} className="text-sm leading-relaxed" style={{ color: "#333" }}>{para}</p>; })}
+                      </div>
+                      {promptList.length > 0 && (
+                        <div className="pt-4" style={{ borderTop: "1px solid " + accent + "44" }}>
+                          <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: NAVY }}>Pause & Process</p>
+                          {promptList.map(function(q, qi) { return <Reflect inline key={qi} prompt={q} onAutoSave={makeAutoSave("teaching_" + idx + "_" + qi)} initialValue={reflections["teaching_" + idx + "_" + qi] || ""} />; })}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -668,7 +679,7 @@ export default function ModuleTemplate({ config }) {
             })}
             <div className="p-4 rounded-xl" style={{ background: accentLight }}>
               <p className="text-sm font-semibold mb-2" style={{ color: NAVY }}>Which stage are you in right now?</p>
-              <PauseTextarea prompt="Name the stage and describe the specific evidence that supports your answer." onAutoSave={makeAutoSave("stages_current")} initialValue={reflections["stages_current"] || ""} />
+              <Reflect inline prompt="Name the stage and describe the specific evidence that supports your answer." onAutoSave={makeAutoSave("stages_current")} initialValue={reflections["stages_current"] || ""} />
             </div>
           </div>
         );
@@ -856,7 +867,7 @@ export default function ModuleTemplate({ config }) {
                   </div>
                   <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#222" }}>{para}</p>; })}</div>
                 </div>
-                <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#fff", marginTop: 12 }}>↓ Download Blueprint (.doc)</button>
+                <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#fff", marginTop: 12 }}>↓ Download Blueprint (.docx)</button>
                 {enhanceCount < 3 && (
                   <div style={{ marginTop: 14, padding: "14px 16px", background: "#faf5ff", border: "1.5px solid #7c3aed33", borderRadius: 14 }}>
                     <p style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed", marginBottom: 6 }}>⚡ Go Deeper {enhanceCount > 0 ? "(" + (3 - enhanceCount) + " remaining)" : ""}</p>

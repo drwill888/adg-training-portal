@@ -284,19 +284,44 @@ export default function Dashboard() {
             <ProgressBar percent={overallPercent} accent={colors.gold} height={8} />
           </div>
 
-          {/* ─── START HERE (new users — Introduction not started) ─── */}
-          {!progress[0] && (
-            <div style={{ padding: 24, background: colors.navy, borderRadius: 12, textAlign: "center", marginBottom: 24 }}>
-              <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>START HERE</div>
-              <div style={{ fontSize: 16, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Begin with the Introduction</div>
-              <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16 }}>Understand the framework before entering the modules.</div>
-              <button
-                onClick={function() { window.location.href = "/modules/introduction"; }}
-                style={{ padding: "10px 32px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
-                Begin
-              </button>
-            </div>
-          )}
+          {/* ─── START HERE / CONTINUE (contextual next-up card) ─── */}
+          {(function() {
+            // Find the next incomplete module
+            var nextMod = null;
+            for (var mi = 0; mi < modules.length; mi++) {
+              var m = modules[mi];
+              if (m.id === 6) continue; // skip bonus
+              var locked = !m.free && !paid;
+              if (locked) continue;
+              var stepsDone = progress[m.id] || 0;
+              var stepsTotal = TOTAL_STEPS[m.id] || 8;
+              var pct = stepsDone === 0 ? 0 : Math.min(Math.round(((stepsDone + 1) / stepsTotal) * 100), 100);
+              if (pct < 100) { nextMod = { mod: m, percent: pct, index: mi }; break; }
+            }
+            if (!nextMod) return null;
+            var isFirstTime = !progress[0];
+            var nm = nextMod.mod;
+            var acc = accents[nextMod.index];
+            return (
+              <div style={{ padding: 24, background: isFirstTime ? colors.navy : colors.white, borderRadius: 12, marginBottom: 24, border: isFirstTime ? "none" : "2px solid " + acc, textAlign: isFirstTime ? "center" : "left" }}>
+                <div style={{ fontSize: 11, color: isFirstTime ? colors.gold : acc, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>{isFirstTime ? "START HERE" : "CONTINUE"}</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: isFirstTime ? colors.white : colors.navy, marginBottom: 4 }}>
+                  {isFirstTime ? "Begin with the Introduction" : nm.title + (nextMod.percent > 0 ? " — " + nextMod.percent + "% complete" : "")}
+                </div>
+                <div style={{ fontSize: 13, color: isFirstTime ? colors.gray300 : colors.gray500, marginBottom: 16 }}>
+                  {isFirstTime ? "Understand the framework before entering the modules." : (nm.question || nm.subtitle)}
+                </div>
+                {!isFirstTime && nextMod.percent > 0 && (
+                  <div style={{ marginBottom: 16 }}><ProgressBar percent={nextMod.percent} accent={acc} height={6} /></div>
+                )}
+                <button
+                  onClick={function() { window.location.href = nm.href; }}
+                  style={{ padding: "10px 32px", background: isFirstTime ? colors.gold : acc, color: isFirstTime ? colors.navy : colors.white, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                  {isFirstTime ? "Begin" : nextMod.percent > 0 ? "Continue" : "Start"}
+                </button>
+              </div>
+            );
+          })()}
 
           {/* ─── ASSESSMENT HISTORY ─── */}
           {assessHist.length > 0 && (

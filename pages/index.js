@@ -185,6 +185,7 @@ const BOOKING_URL = 'https://link.createassistants.ai/widget/booking/oBN5QzfslWc
 export default function LandingPage() {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
+  const [openFaq, setOpenFaq] = useState(null);
 
   useEffect(() => {
     async function checkSession() {
@@ -247,13 +248,13 @@ export default function LandingPage() {
               The 5C Leadership Blueprint is an apostolic-prophetic framework that equips Kingdom leaders, entrepreneurs, and emerging voices to build with clarity, walk in identity, and lead with enduring impact — not just for a season, but for generations.
             </p>
             <div className="hero-actions">
-              <a href="/login" className="btn-primary">Access the Course</a>
+              <a href="/assessment" className="btn-primary">Take the Free Assessment</a>
               <a href={BOOKING_URL} className="btn-gold-outline" target="_blank" rel="noopener noreferrer">Book Discovery Call</a>
             </div>
             <div className="hero-assess-nudge">
               <div className="assess-nudge-line"></div>
-              <span className="assess-nudge-text">Not sure where to start?</span>
-              <a href="/assessment" className="assess-nudge-link">Discover your leadership profile in 10 minutes</a>
+              <span className="assess-nudge-text">Already have an account?</span>
+              <a href="/login" className="assess-nudge-link">Sign in to continue your journey</a>
             </div>
             <div className="hero-5c-row">
               {['Calling','Connection','Competency','Capacity','Convergence'].map(c => (
@@ -500,10 +501,13 @@ export default function LandingPage() {
                 {q:"Is this only for leaders in ministry?", a:"No. The 5C Blueprint was specifically designed for the full spectrum of Kingdom leadership — business owners, corporate executives, nonprofit founders, creatives, educators, and ministry leaders alike. If you operate with influence and you carry a Kingdom assignment, this framework is for you."},
                 {q:"What makes this different from other leadership programs?", a:"Most leadership programs are built on either academic theory or marketplace strategy. The 5C Blueprint is built on apostolic wisdom — it operates at the intersection of the supernatural and the strategic. The revelatory dimension is not an add-on; it's the engine. The result is a framework that transforms identity, not just skill-sets."},
                 {q:"What is the investment?", a:"Individual access to the full 5C Leadership Blueprint is $79.99 — all five modules plus the bonus Commissioning module, personalized AI summaries, pre-and-post diagnostics, and a downloadable blueprint document. The Introduction module is always free. We also offer a 7-day satisfaction guarantee — if the Blueprint is not what you expected, email us for a full refund, no questions asked."},
-              ].map(faq => (
-                <div key={faq.q} className="faq-item">
-                  <h4>{faq.q}</h4>
-                  <p>{faq.a}</p>
+              ].map((faq, fi) => (
+                <div key={faq.q} className="faq-item" style={{cursor:'pointer'}} onClick={() => setOpenFaq(openFaq === fi ? null : fi)}>
+                  <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                    <h4 style={{flex:1}}>{faq.q}</h4>
+                    <span style={{color:'#FDD20D', fontSize:'1.2rem', fontWeight:700, flexShrink:0, marginLeft:'1rem'}}>{openFaq === fi ? '−' : '+'}</span>
+                  </div>
+                  {openFaq === fi && <p style={{marginTop:'0.75rem'}}>{faq.a}</p>}
                 </div>
               ))}
             </div>
@@ -520,8 +524,8 @@ export default function LandingPage() {
               You didn&apos;t land here by accident. Something in you recognizes what&apos;s being offered — not just a program, but a process. Not just training, but transformation. The 5C Blueprint is the framework that will help you read what God has already written on your life and build accordingly.
             </p>
             <div className="cta-dual">
-              <a href="/assessment" className="btn-gold-outline">Take the Free Assessment</a>
-              <a href={BOOKING_URL} className="btn-primary" target="_blank" rel="noopener noreferrer">Book Your Discovery Call</a>
+              <a href="/assessment" className="btn-primary">Take the Free Assessment</a>
+              <a href={BOOKING_URL} className="btn-gold-outline" target="_blank" rel="noopener noreferrer">Book a Discovery Call</a>
             </div>
             <span className="cta-subtext">Start with the assessment. Begin with a conversation. Either way — you move forward.</span>
             <span className="cta-subtext" style={{marginTop:'0.5rem', fontSize:'0.75rem', opacity: 0.5}}>7-day satisfaction guarantee. If the Blueprint is not what you expected, email info@awakeningdestiny.global within 7 days for a full refund.</span>
