@@ -368,13 +368,6 @@ export default function Dashboard() {
                 </button>
                 <span style={{ fontSize: 12, color: colors.gray500 }}>Introduction module is free. Full access unlocks all 5 modules + bonus Commissioning module.</span>
               </div>
-              <div style={{ marginTop: 10 }}>
-                <span
-                  onClick={() => handleCheckout('cohort')}
-                  style={{ fontSize: 12, color: '#C8A951', cursor: 'pointer', textDecoration: 'underline' }}>
-                  Or join a cohort — $297
-                </span>
-              </div>
               <p style={{ fontSize: 11, color: colors.gray500, marginTop: 10 }}>
                 7-day satisfaction guarantee. If the Blueprint is not what you expected, email <a href="mailto:info@awakeningdestiny.global" style={{ color: colors.gold }}>info@awakeningdestiny.global</a> within 7 days for a full refund — no questions asked.
               </p>
