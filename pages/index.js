@@ -180,7 +180,6 @@ const css = `
   }
 `;
 
-const BOOKING_URL = 'https://link.createassistants.ai/widget/booking/oBN5QzfslWc8BLBaKQpH';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -230,7 +229,7 @@ export default function LandingPage() {
           <div className="nav-right">
             <a href="/assessment" className="nav-assess">Take the Assessment →</a>
             <a href="/login" className="nav-assess" style={{marginLeft: '0.5rem'}}>Login</a>
-            <a href={BOOKING_URL} className="nav-cta" target="_blank" rel="noopener noreferrer">Apply Now</a>
+            <a href="/login" className="nav-cta">Access the Course</a>
           </div>
         </nav>
 
@@ -248,8 +247,8 @@ export default function LandingPage() {
               The 5C Leadership Blueprint is an apostolic-prophetic framework that equips Kingdom leaders, entrepreneurs, and emerging voices to build with clarity, walk in identity, and lead with enduring impact — not just for a season, but for generations.
             </p>
             <div className="hero-actions">
-              <a href="/assessment" className="btn-primary">Take the Free Assessment</a>
-              <a href={BOOKING_URL} className="btn-gold-outline" target="_blank" rel="noopener noreferrer">Book Discovery Call</a>
+              <a href="/login" className="btn-primary">Access the Course</a>
+              <a href="/assessment" className="btn-gold-outline">Take the Free Assessment</a>
             </div>
             <div className="hero-assess-nudge">
               <div className="assess-nudge-line"></div>
@@ -524,10 +523,10 @@ export default function LandingPage() {
               You didn&apos;t land here by accident. Something in you recognizes what&apos;s being offered — not just a program, but a process. Not just training, but transformation. The 5C Blueprint is the framework that will help you read what God has already written on your life and build accordingly.
             </p>
             <div className="cta-dual">
-              <a href="/assessment" className="btn-primary">Take the Free Assessment</a>
-              <a href={BOOKING_URL} className="btn-gold-outline" target="_blank" rel="noopener noreferrer">Book a Discovery Call</a>
+              <a href="/login" className="btn-primary">Access the Course</a>
+              <a href="/assessment" className="btn-gold-outline">Take the Free Assessment</a>
             </div>
-            <span className="cta-subtext">Start with the assessment. Begin with a conversation. Either way — you move forward.</span>
+            <span className="cta-subtext">The Introduction module is free. Start building your blueprint today.</span>
             <span className="cta-subtext" style={{marginTop:'0.5rem', fontSize:'0.75rem', opacity: 0.5}}>7-day satisfaction guarantee. If the Blueprint is not what you expected, email info@awakeningdestiny.global within 7 days for a full refund.</span>
           </div>
         </section>
@@ -544,7 +543,7 @@ export default function LandingPage() {
                 <a href="/assessment">Assessment</a>
                 <a href="mailto:info@awakeningdestiny.global">Contact</a>
                 <a href="#pillars">The 5Cs</a>
-                <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">Apply</a>
+                <a href="/login">Access Course</a>
               </div>
             </div>
             <span className="footer-copy">© 2026 Awakening Destiny Global · 5cblueprint.awakeningdestiny.global · All Rights Reserved</span>
