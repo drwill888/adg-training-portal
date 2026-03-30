@@ -3,6 +3,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import FlameMark from "./FlameMark";
+import ReferralFooter from "./ReferralFooter";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
 import { downloadCertificate } from "../lib/certificate";
@@ -197,20 +198,33 @@ function SectionHead({ children, sub }) {
   );
 }
 
-function downloadBlueprint(title, commitments, summary) {
-  var html = '<html><head><meta charset="utf-8"/><style>body{font-family:Georgia,serif;color:#333;line-height:1.7;margin:40px;}h1{color:#021A35;font-size:26px;}h2{color:#C8A951;font-size:18px;border-bottom:2px solid #FDD20D;padding-bottom:4px;margin-top:28px;}.section{background:#FFF9E6;border-left:4px solid #C8A951;padding:16px;margin:20px 0;border-radius:4px;}p{margin:8px 0;}</style></head><body>';
+function buildBlueprintHtml(title, commitments, summary) {
+  var html = '<html><head><meta charset="utf-8"/><style>@page{margin:1in;}body{font-family:Georgia,serif;color:#333;line-height:1.7;margin:40px;}h1{color:#021A35;font-size:26px;}h2{color:#C8A951;font-size:18px;border-bottom:2px solid #FDD20D;padding-bottom:4px;margin-top:28px;}.section{background:#FFF9E6;border-left:4px solid #C8A951;padding:16px;margin:20px 0;border-radius:4px;}p{margin:8px 0;}</style></head><body>';
   html += '<h1>' + title + ' Blueprint</h1>';
   html += '<p><strong>5C Leadership Blueprint - Awakening Destiny Global</strong></p>';
   html += '<p style="color:#888;font-style:italic;">Generated ' + new Date().toLocaleDateString() + '</p>';
   if (summary) { html += '<div class="section"><h2>Leadership Analysis</h2><p>' + summary.replace(/\n/g, "<br/>") + '</p></div>'; }
   html += '<h2>Your Commitments</h2>';
   Object.entries(commitments).forEach(function(entry) { html += '<p><strong>' + entry[0].replace(/_/g, " ") + ':</strong> ' + (entry[1] || "(not completed)") + '</p>'; });
-  html += '<footer style="margin-top:48px;padding-top:16px;border-top:1px solid #ddd;font-size:11px;color:#aaa;"><p>© 2026 Awakening Destiny Global - awakeningdestiny.global</p></footer></body></html>';
+  html += '<footer style="margin-top:48px;padding-top:16px;border-top:1px solid #ddd;font-size:11px;color:#aaa;"><p>\u00a9 2026 Awakening Destiny Global - awakeningdestiny.global</p></footer></body></html>';
+  return html;
+}
+
+function downloadBlueprint(title, commitments, summary) {
+  var html = buildBlueprintHtml(title, commitments, summary);
   var blob = new Blob([html], { type: "application/msword" });
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
   a.href = url; a.download = title + "-Blueprint.doc"; a.click();
   URL.revokeObjectURL(url);
+}
+
+function downloadBlueprintPDF(title, commitments, summary) {
+  var html = buildBlueprintHtml(title, commitments, summary);
+  var win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  win.onload = function() { win.print(); };
 }
 
 export default function ModuleTemplate({ config }) {
@@ -260,6 +274,13 @@ export default function ModuleTemplate({ config }) {
   var rfS = useState({}); var reflections = rfS[0]; var setReflections = rfS[1];
   var ecS = useState(0); var enhanceCount = ecS[0]; var setEnhanceCount = ecS[1];
   var efS = useState(""); var enhanceFeedback = efS[0]; var setEnhanceFeedback = efS[1];
+  var t1S = useState(""); var testimony1 = t1S[0]; var setTestimony1 = t1S[1];
+  var t2S = useState(""); var testimony2 = t2S[0]; var setTestimony2 = t2S[1];
+  var t3S = useState(""); var testimony3 = t3S[0]; var setTestimony3 = t3S[1];
+  var tpS = useState(false); var testimonyPermission = tpS[0]; var setTestimonyPermission = tpS[1];
+  var tsS = useState(false); var testimonySaved = tsS[0]; var setTestimonySaved = tsS[1];
+  var fbS = useState(0); var feedbackRating = fbS[0]; var setFeedbackRating = fbS[1];
+  var fbSavedS = useState(false); var feedbackSaved = fbSavedS[0]; var setFeedbackSaved = fbSavedS[1];
   var reflectionsRef = useRef({});
   var topRef = useRef(null);
   var cur = STEPS[step];
@@ -377,6 +398,76 @@ export default function ModuleTemplate({ config }) {
     return function() { clearTimeout(t); };
   }, [resumeToast]);
 
+  // ─── TIME TRACKING — per step ─────────────────────────────────────
+  var stepTimerRef = useRef(null);
+  var stepSecondsRef = useRef(0);
+
+  useEffect(function() {
+    // Reset timer when step changes
+    stepSecondsRef.current = 0;
+
+    // Tick every second
+    stepTimerRef.current = setInterval(function() {
+      stepSecondsRef.current += 1;
+    }, 1000);
+
+    // Save to DB every 30 seconds
+    var saveInterval = setInterval(function() {
+      if (stepSecondsRef.current < 5) return; // don't save trivial time
+      async function saveTime() {
+        try {
+          var sr = await supabase.auth.getSession();
+          var ss = sr.data.session;
+          if (!ss || !ss.user) return;
+          var stepId = STEPS[step] ? STEPS[step].id : "step_" + step;
+          // Use RPC or upsert to increment
+          await supabase.rpc("increment_time_tracking", {
+            p_user_id: ss.user.id,
+            p_module_id: moduleNum,
+            p_step_id: stepId,
+            p_seconds: stepSecondsRef.current,
+          }).then(function() {
+            stepSecondsRef.current = 0;
+          }).catch(function() {
+            // Fallback: upsert with current value
+            supabase.from("time_tracking").upsert({
+              user_id: ss.user.id,
+              module_id: moduleNum,
+              step_id: stepId,
+              seconds_spent: stepSecondsRef.current,
+              updated_at: new Date().toISOString(),
+            }, { onConflict: "user_id,module_id,step_id" }).then(function() {
+              stepSecondsRef.current = 0;
+            });
+          });
+        } catch (e) { /* silent */ }
+      }
+      saveTime();
+    }, 30000);
+
+    return function() {
+      clearInterval(stepTimerRef.current);
+      clearInterval(saveInterval);
+      // Save remaining time on cleanup
+      if (stepSecondsRef.current > 2) {
+        var secs = stepSecondsRef.current;
+        stepSecondsRef.current = 0;
+        supabase.auth.getSession().then(function(sr) {
+          var ss = sr.data.session;
+          if (!ss || !ss.user) return;
+          var stepId = STEPS[step] ? STEPS[step].id : "step_" + step;
+          supabase.from("time_tracking").upsert({
+            user_id: ss.user.id,
+            module_id: moduleNum,
+            step_id: stepId,
+            seconds_spent: secs,
+            updated_at: new Date().toISOString(),
+          }, { onConflict: "user_id,module_id,step_id" });
+        });
+      }
+    };
+  }, [step, moduleNum]);
+
   if (!isFree && payLoading) {
     return (<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAF8" }}><p style={{ color: "#999", fontSize: 14 }}>Loading...</p></div>);
   }
@@ -427,7 +518,7 @@ export default function ModuleTemplate({ config }) {
       var shiftNote = hasPreScores ? " Where there is meaningful growth (positive shift), affirm the movement. Where there is little change or regression, gently invite deeper formation." : "";
       diagNote = "\n\nFormation Diagnostic Scores (Post-Teaching):\n" + catLines.join("\n") + "\nReference these scores specifically — acknowledge strengths and gently name areas needing most attention." + shiftNote;
     }
-    var prompt = "Write a personalized Leadership Blueprint Summary for this leader completing the " + title + " module of the 5C Leadership Blueprint.\n\nTarget length: 350–450 words. Write in natural paragraphs — no headers, no bullet points, no bold or markdown.\n\nSTRUCTURE (follow this flow, but let it read naturally — not like a template):\n\n1. REFLECT BACK — Open by naming something specific they wrote. Paraphrase a key phrase or idea from their actual responses that reveals something true about where they are. Make them feel genuinely heard and seen — not summarized.\n\n2. NAME THE PATTERN — Identify the central theme, tension, or formation edge you see across their responses. Is there a gap between their stated calling and their current confidence? A strength they are underusing? A recurring word or phrase that points to something deeper? Name it clearly and pastorally.\n\n3. DIAGNOSTIC INSIGHT — If scores are provided, speak directly to what the numbers reveal about their formation. Don't just list them — interpret them. What does a low score in a specific area tell you about what they most need? What does a high score tell you about where God has already been working?\n\n4. GROWTH EDGE — Name one to two specific areas where the greatest formation work remains. Frame these as invitations into deeper development, not failures. Use the language of formation, not deficiency.\n\n5. CALL FORWARD — End with a clear, prophetically grounded word that calls this leader into their assignment. Be specific about the " + title + " dimension. Give them something to carry with them — a conviction, a next step, a Kingdom perspective on who they are becoming.\n\nIMPORTANT:\n- Quote or paraphrase at least one specific thing they actually wrote.\n- Do NOT begin with a salutation, greeting, or 'Dear [name]'.\n- Do NOT be generic. If this summary could apply to any leader, rewrite it.\n- Strengthen without flattering. Challenge without shaming.\n- Sound like a seasoned apostolic-prophetic coach, not a performance review.\n\n" + aiPromptContext + diagNote + "\n\nTheir Responses and Commitments:\n" + commitStr + blankNote + "\n\nBegin immediately with substantive content.";
+    var prompt = "Write a personalized Leadership Blueprint Summary for this leader completing the " + title + " module of the 5C Leadership Blueprint.\n\nTarget length: 350–450 words. Write in natural paragraphs — no headers, no bullet points, no bold or markdown.\n\nSTRUCTURE (follow this flow, but let it read naturally — not like a template):\n\n1. REFLECT BACK — Open by naming something specific they wrote. Paraphrase a key phrase or idea from their actual responses that reveals something true about where they are. Make them feel genuinely heard and seen — not summarized.\n\n2. NAME THE PATTERN — Identify the central theme, tension, or formation edge you see across their responses. Is there a gap between their stated calling and their current confidence? A strength they are underusing? A recurring word or phrase that points to something deeper? Name it clearly and pastorally.\n\n3. 5C INTERPRETATION — Interpret their responses through the full 5C lens, not just this module. Even though they are working on " + title + ", show how what they've written reveals something about their position across all five dimensions:\n   - CALLING: What does this reveal about their sense of purpose and identity clarity?\n   - CONNECTION: What does this say about their relational architecture and spiritual covering?\n   - COMPETENCY: Where does their skill-to-assignment alignment stand?\n   - CAPACITY: Can they sustain what they are being called to build?\n   - CONVERGENCE: How close are they to operating in their sweet spot?\n   Name the 1-2 dimensions where you see the greatest tension or breakthrough potential, and briefly explain why.\n\n4. DIAGNOSTIC INSIGHT — If scores are provided, speak directly to what the numbers reveal about their formation. Don't just list them — interpret them. What does a low score in a specific area tell you about what they most need? What does a high score tell you about where God has already been working?\n\n5. GROWTH EDGE — Name one to two specific areas where the greatest formation work remains. Frame these as invitations into deeper development, not failures. Use the language of formation, not deficiency.\n\n6. CALL FORWARD — End with a clear, prophetically grounded word that calls this leader into their assignment. Be specific about the " + title + " dimension. Give them something to carry with them — a conviction, a next step, a Kingdom perspective on who they are becoming.\n\nIMPORTANT:\n- Quote or paraphrase at least one specific thing they actually wrote.\n- Do NOT begin with a salutation, greeting, or 'Dear [name]'.\n- Do NOT be generic. If this summary could apply to any leader, rewrite it.\n- Strengthen without flattering. Challenge without shaming.\n- Sound like a seasoned apostolic-prophetic coach, not a performance review.\n- When interpreting through the 5C lens, name specific contrasts and tensions (e.g., 'Your calling clarity is high but your capacity infrastructure cannot sustain it yet').\n- Surface breakthrough themes — moments where their responses reveal they are on the edge of a significant shift.\n\n" + aiPromptContext + diagNote + "\n\nTheir Responses and Commitments:\n" + commitStr + blankNote + "\n\nBegin immediately with substantive content.";
     fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt, systemPrompt: ADG_SYSTEM_PROMPT }) })
       .then(function(r) { return r.json(); })
       .then(function(d) { setAiSummary(d.response || ""); })
@@ -855,7 +946,10 @@ export default function ModuleTemplate({ config }) {
                   </div>
                   <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#222" }}>{para}</p>; })}</div>
                 </div>
-                <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#fff", marginTop: 12 }}>↓ Download Blueprint (.doc)</button>
+                <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+                  <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="flex-1 py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#fff" }}>↓ Download .docx</button>
+                  <button onClick={function() { downloadBlueprintPDF(title, commitments, aiSummary); }} className="flex-1 py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#fff" }}>↓ Save as PDF</button>
+                </div>
                 {enhanceCount < 3 && (
                   <div style={{ marginTop: 14, padding: "14px 16px", background: "#faf5ff", border: "1.5px solid #7c3aed33", borderRadius: 14 }}>
                     <p style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed", marginBottom: 6 }}>⚡ Go Deeper {enhanceCount > 0 ? "(" + (3 - enhanceCount) + " remaining)" : ""}</p>
@@ -876,7 +970,55 @@ export default function ModuleTemplate({ config }) {
             )}
 
             {moduleNum === 6 && aiSummary && (
-              <button onClick={handleCertificate} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#FFF9E6" }}>🎓 Download Completion Certificate</button>
+              <div style={{ marginTop: 12 }}>
+                {!testimonySaved ? (
+                  <div style={{ padding: 24, background: "#FAFAF8", borderRadius: 14, border: "1px solid #e5e7eb" }}>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 4 }}>Before Your Certificate</p>
+                    <p style={{ fontSize: 12, color: "#666", lineHeight: 1.6, marginBottom: 16 }}>Share your experience. Your testimony unlocks the certificate download.</p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
+                      <div>
+                        <label style={{ fontSize: 12, fontWeight: 600, color: NAVY, marginBottom: 4, display: "block" }}>What is the most significant thing God revealed to you through this process?</label>
+                        <textarea rows={3} value={testimony1} onChange={function(e) { setTestimony1(e.target.value); }} style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 13, resize: "none", boxSizing: "border-box", fontFamily: "'Outfit', sans-serif" }} placeholder="Be specific..." />
+                      </div>
+                      <div>
+                        <label style={{ fontSize: 12, fontWeight: 600, color: NAVY, marginBottom: 4, display: "block" }}>How has your understanding of your leadership assignment changed?</label>
+                        <textarea rows={3} value={testimony2} onChange={function(e) { setTestimony2(e.target.value); }} style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 13, resize: "none", boxSizing: "border-box", fontFamily: "'Outfit', sans-serif" }} placeholder="Describe the shift..." />
+                      </div>
+                      <div>
+                        <label style={{ fontSize: 12, fontWeight: 600, color: NAVY, marginBottom: 4, display: "block" }}>What one action step are you committing to as a result of this training?</label>
+                        <textarea rows={3} value={testimony3} onChange={function(e) { setTestimony3(e.target.value); }} style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 13, resize: "none", boxSizing: "border-box", fontFamily: "'Outfit', sans-serif" }} placeholder="Name a concrete step..." />
+                      </div>
+                    </div>
+                    <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, cursor: "pointer" }}>
+                      <input type="checkbox" checked={testimonyPermission} onChange={function(e) { setTestimonyPermission(e.target.checked); }} style={{ width: 16, height: 16, accentColor: GOLD }} />
+                      <span style={{ fontSize: 12, color: "#555" }}>I give permission for ADG to share my testimony (anonymously or with attribution)</span>
+                    </label>
+                    <button
+                      disabled={!testimony1.trim() || !testimony2.trim() || !testimony3.trim()}
+                      onClick={async function() {
+                        try {
+                          var sr = await supabase.auth.getSession();
+                          var ss = sr.data.session;
+                          if (!ss || !ss.user) return;
+                          await supabase.from("testimonies").upsert({
+                            user_id: ss.user.id,
+                            question_1: testimony1,
+                            question_2: testimony2,
+                            question_3: testimony3,
+                            permission_to_share: testimonyPermission,
+                            updated_at: new Date().toISOString(),
+                          }, { onConflict: "user_id" });
+                          setTestimonySaved(true);
+                        } catch (e) { console.error("Testimony save failed:", e); }
+                      }}
+                      style={{ width: "100%", padding: "12px 0", background: (!testimony1.trim() || !testimony2.trim() || !testimony3.trim()) ? "#ccc" : NAVY, color: (!testimony1.trim() || !testimony2.trim() || !testimony3.trim()) ? "#999" : GOLD, border: "none", borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: (!testimony1.trim() || !testimony2.trim() || !testimony3.trim()) ? "not-allowed" : "pointer", fontFamily: "'Outfit', sans-serif" }}>
+                      Submit Testimony & Unlock Certificate
+                    </button>
+                  </div>
+                ) : (
+                  <button onClick={handleCertificate} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "2px solid " + NAVY, color: NAVY, background: "#FFF9E6" }}>🎓 Download Completion Certificate</button>
+                )}
+              </div>
             )}
 
             {config.resources && config.resources.blogs && (
@@ -895,6 +1037,38 @@ export default function ModuleTemplate({ config }) {
                 {config.resources.links && config.resources.links.map(function(l, i) {
                   return (<a key={i} href={l.url} target="_blank" rel="noopener noreferrer" style={{ display: "block", marginTop: 10, fontSize: 13, color: "#0172BC" }}>{l.title} →</a>);
                 })}
+              </div>
+            )}
+
+            {/* Feedback Pulse — modules 2 (Connection), 4 (Capacity), 6 (Commissioning) */}
+            {[2, 4, 6].indexOf(moduleNum) !== -1 && (
+              <div style={{ padding: 20, background: "#FAFAF8", borderRadius: 12, border: "1px solid #e5e7eb", textAlign: "center" }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 4 }}>How was this module?</p>
+                <p style={{ fontSize: 11, color: "#888", marginBottom: 12 }}>Your feedback helps us improve the Blueprint.</p>
+                <div style={{ display: "flex", justifyContent: "center", gap: 6, marginBottom: 8 }}>
+                  {[1, 2, 3, 4, 5].map(function(star) {
+                    return (
+                      <button key={star} onClick={async function() {
+                        setFeedbackRating(star);
+                        try {
+                          var sr = await supabase.auth.getSession();
+                          var ss = sr.data.session;
+                          if (!ss || !ss.user) return;
+                          await supabase.from("feedback_ratings").upsert({
+                            user_id: ss.user.id,
+                            module_id: moduleNum,
+                            step_id: "summary",
+                            rating: star,
+                          }, { onConflict: "user_id,module_id,step_id" });
+                          setFeedbackSaved(true);
+                        } catch (e) { console.error("Feedback save failed:", e); }
+                      }} style={{ fontSize: 28, background: "none", border: "none", cursor: "pointer", opacity: star <= feedbackRating ? 1 : 0.3, transition: "opacity 0.15s, transform 0.15s", transform: star <= feedbackRating ? "scale(1.1)" : "scale(1)" }}>
+                        ★
+                      </button>
+                    );
+                  })}
+                </div>
+                {feedbackSaved && <p style={{ fontSize: 11, color: "#16a34a" }}>Thank you for your feedback!</p>}
               </div>
             )}
 
@@ -984,15 +1158,17 @@ export default function ModuleTemplate({ config }) {
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 pt-4 pb-2">
-        <div className="flex items-center gap-1 overflow-x-auto pb-1">
-          {STEPS.map(function(s, i) {
-            return (
-              <button key={s.id} onClick={function() { setStep(i); scrollTop(); }} className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all flex-shrink-0" style={{ background: i === step ? accent : i < step ? accentLight : "transparent", color: i === step ? NAVY : i < step ? accent : "#bbb", border: "1px solid " + (i <= step ? accent : "#e5e5e5") }}>
-                {i < step ? "✓ " : ""}{s.label}
-              </button>
-            );
-          })}
+      <div className="sticky z-40" style={{ top: 49, background: "rgba(250,250,248,0.95)", backdropFilter: "blur(8px)", borderBottom: "1px solid #f0f0f0" }}>
+        <div className="max-w-3xl mx-auto px-4 pt-3 pb-2">
+          <div className="flex items-center gap-1 overflow-x-auto pb-1">
+            {STEPS.map(function(s, i) {
+              return (
+                <button key={s.id} onClick={function() { setStep(i); scrollTop(); }} className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all flex-shrink-0" style={{ background: i === step ? accent : i < step ? accentLight : "transparent", color: i === step ? NAVY : i < step ? accent : "#bbb", border: "1px solid " + (i <= step ? accent : "#e5e5e5") }}>
+                  {i < step ? "✓ " : ""}{s.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -1018,6 +1194,8 @@ export default function ModuleTemplate({ config }) {
       {resumeToast && (
         <div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 9998, background: "#fff", color: "#021A35", borderLeft: "4px solid #C8A951", borderRadius: 8, padding: "12px 20px", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", fontSize: 13, fontFamily: "'Raleway', 'Outfit', sans-serif", whiteSpace: "nowrap", transition: "opacity 0.3s" }}>{resumeToast}</div>
       )}
+
+      <ReferralFooter moduleContext={title} />
 
       <div className="fixed bottom-0 left-0 right-0 border-t py-3 z-40" style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderColor: "#f0f0f0" }}>
         <div className="max-w-3xl mx-auto px-4 flex justify-between items-center">

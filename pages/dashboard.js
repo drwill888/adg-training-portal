@@ -324,6 +324,20 @@ export default function Dashboard() {
             </div>
           )}
 
+          {/* ─── START HERE CTA (shown at top for new users) ─── */}
+          {overallPercent === 0 && (
+            <div style={{ padding: 24, background: colors.navy, borderRadius: 12, textAlign: "center", marginBottom: 24 }}>
+              <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>START HERE</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Begin with the Introduction</div>
+              <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16 }}>Understand the framework before entering the modules.</div>
+              <button
+                onClick={function() { window.location.href = "/modules/introduction"; }}
+                style={{ padding: "10px 32px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                Begin
+              </button>
+            </div>
+          )}
+
           {/* ─── MARKETING / UNLOCK CTA ─── */}
           {!paid && !loading && (
             <div style={{ padding: isMobile ? 20 : 28, background: "linear-gradient(135deg, #021A35 0%, #0a2a4d 100%)", borderRadius: 14, marginBottom: 28, border: "1px solid rgba(200,169,81,0.2)" }}>
@@ -411,17 +425,19 @@ export default function Dashboard() {
             })}
           </div>
 
-          {/* ─── START HERE CTA ─── */}
-          <div style={{ padding: 24, background: colors.navy, borderRadius: 12, textAlign: "center" }}>
-            <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>START HERE</div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Begin with the Introduction</div>
-            <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16 }}>Understand the framework before entering the modules.</div>
-            <button
-              onClick={function() { window.location.href = "/modules/introduction"; }}
-              style={{ padding: "10px 32px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
-              Begin
-            </button>
-          </div>
+          {/* ─── START HERE CTA (bottom, shown only for returning users) ─── */}
+          {overallPercent > 0 && (
+            <div style={{ padding: 24, background: colors.navy, borderRadius: 12, textAlign: "center" }}>
+              <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>CONTINUE YOUR JOURNEY</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Pick up where you left off</div>
+              <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16 }}>Your progress is saved. Keep building your leadership blueprint.</div>
+              <button
+                onClick={function() { window.location.href = "/modules/introduction"; }}
+                style={{ padding: "10px 32px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                Continue
+              </button>
+            </div>
+          )}
 
         </div>
       </div>

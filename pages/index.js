@@ -174,6 +174,9 @@ const css = `
 
   @media (max-width: 768px) {
     #adg-5c .assess-inner { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+    #adg-5c .pain-grid { grid-template-columns: 1fr !important; }
+    #adg-5c .audience-grid { grid-template-columns: 1fr !important; }
+    #adg-5c .deliverables-grid { grid-template-columns: 1fr !important; }
     #adg-5c .leader-layout { grid-template-columns: 1fr !important; }
     #adg-5c .leader-photo-box { aspect-ratio: 1/1 !important; }
     #adg-5c .journey-step:not(:last-child)::after { display: none !important; }
@@ -472,10 +475,7 @@ export default function LandingPage() {
           <div className="container">
             <div className="leader-layout">
               <div className="leader-photo-box">
-                <div className="leader-photo-placeholder">
-                  [Photo of Will Meier]<br /><br />
-                  <span style={{fontSize:'0.7rem'}}>Replace with professional<br />headshot or ministry photo</span>
-                </div>
+                <img src="/images/leaders-for-life-cover.jpg" alt="Will Meier — Leaders for Life" style={{width:'100%', height:'100%', objectFit:'cover'}} />
               </div>
               <div className="leader-content">
                 <div className="section-badge orange">About Your Guide</div>
@@ -507,7 +507,7 @@ export default function LandingPage() {
                 {q:"What's the difference between Individual and Cohort?", a:"The Individual pathway gives you complete access to all modules at your own pace — ideal if your schedule is unpredictable or you prefer to move at the speed of your season. The Cohort pathway adds live coaching sessions, peer community, and real-time group engagement. Same Blueprint, different experience."},
                 {q:"Is this only for leaders in ministry?", a:"No. The 5C Blueprint was specifically designed for the full spectrum of Kingdom leadership — business owners, corporate executives, nonprofit founders, creatives, educators, and ministry leaders alike. If you operate with influence and you carry a Kingdom assignment, this framework is for you."},
                 {q:"What makes this different from other leadership programs?", a:"Most leadership programs are built on either academic theory or marketplace strategy. The 5C Blueprint is built on apostolic wisdom — it operates at the intersection of the supernatural and the strategic. The revelatory dimension is not an add-on; it's the engine. The result is a framework that transforms identity, not just skill-sets."},
-                {q:"What is the investment?", a:"Investment details are discussed personally during your discovery call. We want to understand your specific season, your goals, and your level of readiness before presenting the right enrollment path. This conversation protects your time and ensures the right fit for both of us."},
+                {q:"What is the investment?", a:"Individual access to the full 5C Blueprint is $79.99 — that includes all five modules, the bonus Commissioning module, personalized AI summaries, and your downloadable leadership blueprint. For leaders who want a guided cohort experience with live coaching and peer community, the investment is $297. Both pathways include a 7-day satisfaction guarantee."},
               ].map(faq => (
                 <div key={faq.q} className="faq-item">
                   <h4>{faq.q}</h4>

@@ -41,6 +41,18 @@ export default function AdminDashboard() {
   var assessments = assessmentsState[0];
   var setAssessments = assessmentsState[1];
 
+  var referralsState = useState([]);
+  var referrals = referralsState[0];
+  var setReferrals = referralsState[1];
+
+  var timeTrackState = useState([]);
+  var timeTrack = timeTrackState[0];
+  var setTimeTrack = timeTrackState[1];
+
+  var feedbackState = useState([]);
+  var feedbackRatings = feedbackState[0];
+  var setFeedbackRatings = feedbackState[1];
+
   var tabState = useState("overview");
   var tab = tabState[0];
   var setTab = tabState[1];
@@ -78,6 +90,18 @@ export default function AdminDashboard() {
       // assessments
       var assessResult = await supabase.from("assessments").select("*").order("taken_at", { ascending: false });
       if (assessResult.data) setAssessments(assessResult.data);
+
+      // referrals
+      var refResult = await supabase.from("referrals").select("*").order("created_at", { ascending: false });
+      if (refResult.data) setReferrals(refResult.data);
+
+      // time tracking
+      var timeResult = await supabase.from("time_tracking").select("*");
+      if (timeResult.data) setTimeTrack(timeResult.data);
+
+      // feedback ratings
+      var fbResult = await supabase.from("feedback_ratings").select("*").order("created_at", { ascending: false });
+      if (fbResult.data) setFeedbackRatings(fbResult.data);
     }
     loadData();
   }, [user]);
@@ -113,10 +137,55 @@ export default function AdminDashboard() {
   var totalUsers = profiles.length > 0 ? profiles.length : uniqueUserIds.length;
   var assessmentsTaken = assessments.length;
 
-  // Email lookup helper
+  // Lookup helpers
   function emailFor(userId) {
-    var p = profiles.find(function(p) { return p.id === userId; });
-    return p ? (p.email || p.full_name || userId.slice(0, 8) + "…") : userId.slice(0, 8) + "…";
+    var p = profiles.find(function(pr) { return pr.id === userId; });
+    return p ? (p.email || userId.slice(0, 8) + "…") : userId.slice(0, 8) + "…";
+  }
+
+  function nameFor(userId) {
+    var p = profiles.find(function(pr) { return pr.id === userId; });
+    return p && p.full_name ? p.full_name : "";
+  }
+
+  // Compute per-user overall progress %
+  function getUserOverallPercent(userId) {
+    var userProg = progress.filter(function(p) { return p.user_id === userId; });
+    var totalSteps = 0;
+    var completedSteps = 0;
+    [0, 1, 2, 3, 4, 5, 6].forEach(function(modId) {
+      var total = TOTAL_STEPS[modId] || 8;
+      totalSteps += total;
+      var row = userProg.find(function(p) { return p.module_id === modId; });
+      var done = row ? (row.current_step || 0) : 0;
+      completedSteps += done === 0 ? 0 : Math.min(done + 1, total);
+    });
+    return totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
+  }
+
+  // Get last active date for a user
+  function getLastActive(userId) {
+    var userProg = progress.filter(function(p) { return p.user_id === userId; });
+    if (userProg.length === 0) return null;
+    var latest = userProg.reduce(function(max, p) {
+      var d = p.updated_at ? new Date(p.updated_at).getTime() : 0;
+      return d > max ? d : max;
+    }, 0);
+    return latest > 0 ? new Date(latest) : null;
+  }
+
+  // Get total time spent for a user (from time_tracking table)
+  function getUserTotalTime(userId) {
+    return timeTrack.filter(function(t) { return t.user_id === userId; }).reduce(function(sum, t) { return sum + (t.seconds_spent || 0); }, 0);
+  }
+
+  function formatTime(seconds) {
+    if (seconds < 60) return seconds + "s";
+    var mins = Math.floor(seconds / 60);
+    if (mins < 60) return mins + "m";
+    var hrs = Math.floor(mins / 60);
+    var rem = mins % 60;
+    return hrs + "h " + rem + "m";
   }
 
   // Get completion data per user
@@ -219,7 +288,7 @@ export default function AdminDashboard() {
       {/* Tabs */}
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "8px 24px" }}>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          {["overview", "payments", "progress", "analytics"].map(function(t) {
+          {["overview", "payments", "progress", "referrals", "analytics"].map(function(t) {
             return (
               <button key={t} onClick={function() { setTab(t); }}
                 style={{
@@ -253,12 +322,22 @@ export default function AdminDashboard() {
             {uniqueUserIds.map(function(userId) {
               var userMods = getUserProgress(userId);
               var isPaid = payments.some(function(p) { return p.email === emailFor(userId) && p.status === "completed"; });
+              var userPct = getUserOverallPercent(userId);
+              var lastAct = getLastActive(userId);
+              var totalTime = getUserTotalTime(userId);
+              var uName = nameFor(userId);
               return (
                 <div key={userId} style={{ background: "#fff", borderRadius: 12, padding: "20px 24px", border: "1px solid #e5e7eb", marginBottom: 12 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
                     <div>
-                      <div style={{ fontSize: 14, fontWeight: 700, color: NAVY }}>{emailFor(userId)}</div>
+                      {uName && <div style={{ fontSize: 14, fontWeight: 700, color: NAVY }}>{uName}</div>}
+                      <div style={{ fontSize: uName ? 12 : 14, fontWeight: uName ? 400 : 700, color: uName ? "#555" : NAVY }}>{emailFor(userId)}</div>
                       <div style={{ fontSize: 12, color: isPaid ? "#16a34a" : "#888" }}>{isPaid ? "✓ Paid" : "Free tier"}</div>
+                    </div>
+                    <div style={{ textAlign: "right" }}>
+                      <div style={{ fontSize: 20, fontWeight: 700, color: userPct >= 80 ? "#16a34a" : userPct > 0 ? GOLD : "#ccc" }}>{userPct}%</div>
+                      <div style={{ fontSize: 11, color: "#888" }}>{lastAct ? "Active " + lastAct.toLocaleDateString() : "No activity"}</div>
+                      {totalTime > 0 && <div style={{ fontSize: 11, color: "#aaa" }}>{formatTime(totalTime)} total</div>}
                     </div>
                   </div>
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -356,9 +435,10 @@ export default function AdminDashboard() {
                   {progress.map(function(p, i) {
                     var hasCommit = p.commitments && Object.keys(p.commitments).length > 0;
                     var hasSummary = !!p.ai_summary;
+                    var pName = nameFor(p.user_id);
                     return (
                       <tr key={i} style={{ borderBottom: "1px solid #f0f0f0" }}>
-                        <td style={{ padding: "12px 16px", fontSize: 13, color: NAVY }}>{emailFor(p.user_id)}</td>
+                        <td style={{ padding: "12px 16px", fontSize: 13, color: NAVY }}>{pName ? (pName + " ") : ""}<span style={{ fontSize: 11, color: "#888" }}>{emailFor(p.user_id)}</span></td>
                         <td style={{ padding: "12px 16px", fontSize: 13, color: NAVY, fontWeight: 600 }}>{MODULE_NAMES[p.module_id] || "Module " + p.module_id}</td>
                         <td style={{ padding: "12px 16px", fontSize: 12, color: "#555" }}>{getStepLabel(p.current_step || 0)}</td>
                         <td style={{ padding: "12px 16px", fontSize: 12 }}>
@@ -374,6 +454,51 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+          </div>
+        )}
+
+        {/* Referrals Tab */}
+        {tab === "referrals" && (
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY }}>Referrals</h2>
+              <span style={{ fontSize: 13, color: "#888" }}>{referrals.length} total</span>
+            </div>
+            {referrals.length === 0 && (
+              <p style={{ color: "#888", fontSize: 14, padding: 24, textAlign: "center" }}>No referrals yet.</p>
+            )}
+            {referrals.length > 0 && (
+              <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
+                  <thead>
+                    <tr style={{ background: "#f9fafb" }}>
+                      <th style={{ padding: "12px 16px", fontSize: 12, fontWeight: 700, color: "#555", textAlign: "left", borderBottom: "1px solid #e5e7eb" }}>Referring Leader</th>
+                      <th style={{ padding: "12px 16px", fontSize: 12, fontWeight: 700, color: "#555", textAlign: "left", borderBottom: "1px solid #e5e7eb" }}>Referred</th>
+                      <th style={{ padding: "12px 16px", fontSize: 12, fontWeight: 700, color: "#555", textAlign: "left", borderBottom: "1px solid #e5e7eb" }}>Module</th>
+                      <th style={{ padding: "12px 16px", fontSize: 12, fontWeight: 700, color: "#555", textAlign: "left", borderBottom: "1px solid #e5e7eb" }}>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {referrals.map(function(r, i) {
+                      return (
+                        <tr key={i} style={{ borderBottom: "1px solid #f0f0f0" }}>
+                          <td style={{ padding: "12px 16px", fontSize: 13, color: NAVY }}>
+                            {r.referrer_name && <span style={{ fontWeight: 600 }}>{r.referrer_name} </span>}
+                            <span style={{ fontSize: 11, color: "#888" }}>{r.referrer_email}</span>
+                          </td>
+                          <td style={{ padding: "12px 16px", fontSize: 13, color: NAVY }}>
+                            {r.referred_name && <span style={{ fontWeight: 600 }}>{r.referred_name} </span>}
+                            <span style={{ fontSize: 11, color: "#888" }}>{r.referred_email}</span>
+                          </td>
+                          <td style={{ padding: "12px 16px", fontSize: 12, color: "#555" }}>{r.module_context || "—"}</td>
+                          <td style={{ padding: "12px 16px", fontSize: 12, color: "#888" }}>{r.created_at ? new Date(r.created_at).toLocaleDateString() : ""}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
 
