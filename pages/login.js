@@ -8,6 +8,8 @@ export default function LoginPage({ session }) {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [isSignUp, setIsSignUp] = useState(false)
   const [isForgot, setIsForgot] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -41,8 +43,30 @@ export default function LoginPage({ session }) {
     }
 
     if (isSignUp) {
-      const { data, error } = await supabase.auth.signUp({ email, password })
+      if (!firstName.trim()) { setError('First name is required'); setLoading(false); return }
+      var fullName = (firstName.trim() + ' ' + lastName.trim()).trim()
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName.trim(),
+            last_name: lastName.trim(),
+            full_name: fullName,
+          }
+        }
+      })
       if (error) { setError(error.message); setLoading(false); return }
+
+      // Save name to user_profiles
+      if (data?.user) {
+        await supabase.from('user_profiles').upsert({
+          id: data.user.id,
+          email: email,
+          full_name: fullName,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'id' }).catch(function() {})
+      }
 
       if (data?.session) {
         window.location.href = '/'
@@ -98,6 +122,22 @@ export default function LoginPage({ session }) {
               <p style={{ fontSize: 13, color: gray, marginBottom: 20, lineHeight: 1.5 }}>
                 Enter your email and we'll send you a link to reset your password.
               </p>
+            )}
+            {isSignUp && (
+              <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
+                <div style={{ flex: 1 }}>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: navy, marginBottom: 6 }}>First Name *</label>
+                  <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)}
+                    style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e6ed', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none' }}
+                    placeholder="First" />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: navy, marginBottom: 6 }}>Last Name</label>
+                  <input type="text" value={lastName} onChange={e => setLastName(e.target.value)}
+                    style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e6ed', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none' }}
+                    placeholder="Last" />
+                </div>
+              </div>
             )}
             <div style={{ marginBottom: 16 }}>
               <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: navy, marginBottom: 6 }}>Email</label>

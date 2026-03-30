@@ -158,6 +158,9 @@ export default function Dashboard() {
 
   // ─── LEARNER FIRST NAME ──────────────────────────────────────────
   const [firstName, setFirstName] = useState("");
+  const [needsName, setNeedsName] = useState(false);
+  const [nameInput, setNameInput] = useState("");
+  const [nameSaving, setNameSaving] = useState(false);
   useEffect(() => {
     async function loadName() {
       try {
@@ -170,17 +173,42 @@ export default function Dashboard() {
             setFirstName(meta.full_name.split(" ")[0]);
           } else {
             const { data } = await supabase
-              .from("profiles")
-              .select("first_name")
+              .from("user_profiles")
+              .select("full_name")
               .eq("id", session.user.id)
               .single();
-            if (data?.first_name) setFirstName(data.first_name);
+            if (data?.full_name) {
+              setFirstName(data.full_name.split(" ")[0]);
+            } else {
+              setNeedsName(true);
+            }
           }
         }
       } catch (e) { /* silent fallback */ }
     }
     loadName();
   }, []);
+
+  async function saveName() {
+    if (!nameInput.trim()) return;
+    setNameSaving(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return;
+      var fullName = nameInput.trim();
+      var fName = fullName.split(" ")[0];
+      await supabase.auth.updateUser({ data: { full_name: fullName, first_name: fName } });
+      await supabase.from("user_profiles").upsert({
+        id: session.user.id,
+        full_name: fullName,
+        email: session.user.email,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: "id" });
+      setFirstName(fName);
+      setNeedsName(false);
+    } catch (e) { console.error("Save name failed:", e); }
+    setNameSaving(false);
+  }
 
   // ─── ASSESSMENT HISTORY ──────────────────────────────────────────
   var assessHistState = useState([]);
@@ -277,6 +305,29 @@ export default function Dashboard() {
         </div>
 
         <div style={{ padding: isMobile ? "20px 16px" : "32px 40px", maxWidth: 960 }}>
+
+          {/* ─── NAME PROMPT (for users without a name) ─── */}
+          {needsName && (
+            <div style={{ marginBottom: 20, padding: "16px 20px", background: "#FFF9E6", borderRadius: 10, border: "1px solid " + colors.gold + "44" }}>
+              <p style={{ fontSize: 14, fontWeight: 700, color: colors.navy, margin: "0 0 8px" }}>What should we call you?</p>
+              <div style={{ display: "flex", gap: 8 }}>
+                <input
+                  type="text"
+                  value={nameInput}
+                  onChange={function(e) { setNameInput(e.target.value); }}
+                  onKeyDown={function(e) { if (e.key === "Enter") saveName(); }}
+                  placeholder="Your full name"
+                  style={{ flex: 1, padding: "9px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, outline: "none", fontFamily: "'Raleway', sans-serif" }}
+                />
+                <button
+                  onClick={saveName}
+                  disabled={nameSaving || !nameInput.trim()}
+                  style={{ padding: "9px 20px", background: colors.navy, color: colors.gold, border: "none", borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: nameSaving ? "not-allowed" : "pointer" }}>
+                  {nameSaving ? "Saving..." : "Save"}
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* ─── GREETING + PROGRESS ─── */}
           <h1 style={{ fontSize: 26, fontWeight: 700, color: colors.navy, margin: "0 0 4px" }}>{greeting}</h1>
