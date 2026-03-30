@@ -84,14 +84,14 @@ export default function LoginPage({ session }) {
         <meta name="twitter:title" content="Sign In | 5C Leadership Blueprint" />
         <meta name="twitter:description" content="Sign in to your 5C Leadership Blueprint account to continue your formation journey." />
       </Head>
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: colors.cream, fontFamily: fonts.body }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: colors.navy, fontFamily: fonts.body }}>
         <div style={{ width: '100%', maxWidth: 420, padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: 32 }}>
-            <h1 style={{ color: navy, fontSize: 24, fontWeight: 700, margin: '0 0 4px' }}>5C Leadership Blueprint</h1>
+            <h1 style={{ color: colors.cream, fontSize: 24, fontWeight: 700, margin: '0 0 4px' }}>5C Leadership Blueprint</h1>
             <p style={{ color: gold, fontSize: 13, margin: 0, fontStyle: 'italic' }}>Awakening Destiny Global</p>
           </div>
-          <div style={{ background: '#fff', borderRadius: 12, padding: 32, boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
-            <h2 style={{ color: navy, fontSize: 18, fontWeight: 700, margin: '0 0 24px' }}>
+          <div style={{ background: colors.navyLight, borderRadius: 12, padding: 32, border: '1px solid rgba(253,210,13,0.15)' }}>
+            <h2 style={{ color: colors.cream, fontSize: 18, fontWeight: 700, margin: '0 0 24px' }}>
               {isForgot ? 'Reset Password' : isSignUp ? 'Create Account' : 'Sign In'}
             </h2>
             {isForgot && (
@@ -100,23 +100,23 @@ export default function LoginPage({ session }) {
               </p>
             )}
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: navy, marginBottom: 6 }}>Email</label>
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: colors.cream, marginBottom: 6 }}>Email</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e6ed', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none' }}
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid rgba(253,210,13,0.2)', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none', background: colors.navyMid, color: colors.cream }}
                 placeholder="your@email.com" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
             </div>
             {!isForgot && (
               <div style={{ marginBottom: 24 }}>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: navy, marginBottom: 6 }}>Password</label>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: colors.cream, marginBottom: 6 }}>Password</label>
                 <input type="password" value={password} onChange={e => setPassword(e.target.value)}
-                  style={{ width: '100%', padding: '10px 12px', border: '1px solid #e2e6ed', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none' }}
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid rgba(253,210,13,0.2)', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none', background: colors.navyMid, color: colors.cream }}
                   placeholder="••••••••" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
               </div>
             )}
             {error && <p style={{ color: '#EE3124', fontSize: 13, marginBottom: 16 }}>{error}</p>}
             {message && <p style={{ color: '#0172BC', fontSize: 13, marginBottom: 16 }}>{message}</p>}
             <button onClick={handleSubmit} disabled={loading}
-              style={{ width: '100%', padding: '12px', background: navy, color: '#FDD20D', border: 'none', borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: loading ? 'default' : 'pointer', opacity: loading ? 0.7 : 1 }}>
+              style={{ width: '100%', padding: '12px', background: gold, color: navy, border: 'none', borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: loading ? 'default' : 'pointer', opacity: loading ? 0.7 : 1, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
               {loading ? 'Please wait...' : isForgot ? 'Send Reset Link' : isSignUp ? 'Create Account' : 'Sign In'}
             </button>
             {!isForgot && !isSignUp && (
@@ -127,7 +127,7 @@ export default function LoginPage({ session }) {
                 </span>
               </p>
             )}
-            <p style={{ textAlign: 'center', marginTop: 12, fontSize: 13, color: gray }}>
+            <p style={{ textAlign: 'center', marginTop: 12, fontSize: 13, color: colors.gray300 }}>
               {isForgot ? (
                 <span onClick={() => { setIsForgot(false); setError(''); setMessage('') }}
                   style={{ color: '#0172BC', cursor: 'pointer', fontWeight: 600 }}>

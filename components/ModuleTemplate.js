@@ -382,12 +382,12 @@ export default function ModuleTemplate({ config }) {
   }, [resumeToast]);
 
   if (!isFree && payLoading) {
-    return (<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAF8" }}><p style={{ color: "#999", fontSize: 14 }}>Loading...</p></div>);
+    return (<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#021A35" }}><p style={{ color: "#999", fontSize: 14 }}>Loading...</p></div>);
   }
 
   if (!isFree && !paid) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAF8", fontFamily: "'Outfit', sans-serif" }}>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#021A35", fontFamily: "'Outfit', sans-serif" }}>
   
         <div style={{ textAlign: "center", maxWidth: 440, padding: 40 }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
@@ -824,7 +824,7 @@ export default function ModuleTemplate({ config }) {
                   <span style={{ fontSize: 12, color: accent, fontWeight: 700 }}>{prayerOpen ? "Close ↑" : "Open ↓"}</span>
                 </button>
                 {prayerOpen && (
-                  <div style={{ padding: "20px 18px", background: "#FAFAF8", border: "1px solid " + accent + "44", borderTop: "none", borderRadius: "0 0 12px 12px" }}>
+                  <div style={{ padding: "20px 18px", background: "#021A35", border: "1px solid " + accent + "44", borderTop: "none", borderRadius: "0 0 12px 12px" }}>
                     <div style={{ marginBottom: 16 }}>
                       {activationPrayer.scriptures.map(function(s, i) {
                         return (
@@ -974,7 +974,7 @@ export default function ModuleTemplate({ config }) {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: "#FAFAF8", fontFamily: "'Outfit', sans-serif" }}>
+    <div className="min-h-screen" style={{ background: NAVY, fontFamily: fonts.body }}>
 
 
       <Modal open={showScriptures} onClose={function() { setShowScriptures(false); }}>
@@ -985,23 +985,23 @@ export default function ModuleTemplate({ config }) {
         <BookChapterContent chapter={bookChapter} />
       </Modal>
 
-      <div className="sticky top-0 z-50 border-b" style={{ background: "rgba(255,255,255,0.92)", backdropFilter: "blur(12px)", borderColor: "#f0f0f0" }}>
+      <div className="sticky top-0 z-50" style={{ background: "rgba(2,26,53,0.97)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(253,210,13,0.15)" }}>
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <a href="/dashboard" className="text-sm font-medium flex items-center gap-1.5 hover:opacity-70 transition-opacity" style={{ color: NAVY }}>← Dashboard</a>
+          <a href="/dashboard" className="text-sm font-medium flex items-center gap-1.5 hover:opacity-70 transition-opacity" style={{ color: GOLD }}>← Dashboard</a>
           <div className="text-center">
-            <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: NAVY }}>{moduleNum === 0 ? "Introduction" : moduleNum === 6 ? "Bonus Module" : "Module " + moduleNum}</p>
-            <p className="text-sm font-bold" style={{ color: NAVY }}>{title}</p>
+            <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: GOLD }}>{moduleNum === 0 ? "Introduction" : moduleNum === 6 ? "Bonus Module" : "Module " + moduleNum}</p>
+            <p className="text-sm font-bold" style={{ color: "#FDF8F0" }}>{title}</p>
           </div>
           <div style={{ width: 28, display: "flex", justifyContent: "flex-end" }}><FlameMark size={28} /></div>
         </div>
       </div>
 
-      <div className="sticky z-40" style={{ top: 52, background: "rgba(255,255,255,0.95)", backdropFilter: "blur(8px)", borderBottom: "1px solid #f0f0f0" }}>
+      <div className="sticky z-40" style={{ top: 52, background: "rgba(10,45,82,0.95)", backdropFilter: "blur(8px)", borderBottom: "1px solid rgba(253,210,13,0.1)" }}>
         <div className="max-w-3xl mx-auto px-4 py-2">
           <div className="flex items-center gap-1 overflow-x-auto pb-1" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
             {STEPS.map(function(s, i) {
               return (
-                <button key={s.id} onClick={function() { setStep(i); scrollTop(); }} className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all flex-shrink-0" style={{ background: i === step ? accent : i < step ? accentLight : "transparent", color: i === step ? NAVY : i < step ? accent : "#bbb", border: "1px solid " + (i <= step ? accent : "#e5e5e5") }}>
+                <button key={s.id} onClick={function() { setStep(i); scrollTop(); }} className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all flex-shrink-0" style={{ background: i === step ? GOLD : i < step ? "rgba(253,210,13,0.15)" : "transparent", color: i === step ? NAVY : i < step ? GOLD : "#6b7280", border: "1px solid " + (i <= step ? "rgba(253,210,13,0.4)" : "rgba(253,210,13,0.1)") }}>
                   {i < step ? "✓ " : ""}{s.label}
                 </button>
               );
@@ -1012,9 +1012,9 @@ export default function ModuleTemplate({ config }) {
 
       <div className="max-w-3xl mx-auto px-4 pb-36" ref={topRef}>
         <div className="mb-8">
-          <p className="text-xs uppercase tracking-widest font-semibold mb-1" style={{ color: accent }}>{cur.label}</p>
-          <h2 className="text-2xl sm:text-3xl font-bold" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif" }}>{title}{subtitle ? ": " + subtitle : ""}</h2>
-          {question && <p className="text-sm mt-1 italic" style={{ color: "#888" }}>Central Question: {question}</p>}
+          <p className="text-xs uppercase tracking-widest font-semibold mb-1" style={{ color: GOLD }}>{cur.label}</p>
+          <h2 className="text-2xl sm:text-3xl font-bold" style={{ color: "#FDF8F0", fontFamily: fonts.heading }}>{title}{subtitle ? ": " + subtitle : ""}</h2>
+          {question && <p className="text-sm mt-1 italic" style={{ color: "#9ca3af" }}>Central Question: {question}</p>}
         </div>
         {loadError && (
           <div style={{ background: "#fef2f2", border: "1px solid #fca5a5", borderRadius: 8, padding: "10px 16px", fontSize: 12, color: "#991b1b", marginBottom: 12 }}>
@@ -1033,10 +1033,10 @@ export default function ModuleTemplate({ config }) {
         <div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 9998, background: "#fff", color: NAVY, borderLeft: "4px solid " + GOLD, borderRadius: 8, padding: "12px 20px", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", fontSize: 13, fontFamily: fonts.body, whiteSpace: "nowrap", transition: "opacity 0.3s" }}>{resumeToast}</div>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 border-t py-3 z-40" style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderColor: "#f0f0f0" }}>
+      <div className="fixed bottom-0 left-0 right-0 py-3 z-40" style={{ background: "rgba(2,26,53,0.97)", backdropFilter: "blur(12px)", borderTop: "1px solid rgba(253,210,13,0.15)" }}>
         <div className="max-w-3xl mx-auto px-4 flex justify-between items-center">
-          <button onClick={function() { if (step > 0) { setStep(step - 1); scrollTop(); } }} disabled={step === 0} className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: NAVY, border: "1.5px solid " + NAVY }}>← Previous</button>
-          <span className="text-xs" style={{ color: "#bbb" }}>{step + 1} / {STEPS.length}</span>
+          <button onClick={function() { if (step > 0) { setStep(step - 1); scrollTop(); } }} disabled={step === 0} className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: GOLD, border: "1.5px solid rgba(253,210,13,0.4)" }}>← Previous</button>
+          <span className="text-xs" style={{ color: "#6b7280" }}>{step + 1} / {STEPS.length}</span>
           {step === STEPS.length - 1 ? (
             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
               <button onClick={async function() {
@@ -1048,7 +1048,7 @@ export default function ModuleTemplate({ config }) {
                   }
                 } catch(e) { console.error("Save before navigate failed:", e); }
                 window.location.href = "/dashboard";
-              }} style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13, fontWeight: 600, color: NAVY, border: "1.5px solid " + NAVY, background: "transparent", cursor: "pointer", whiteSpace: "nowrap" }}>Dashboard</button>
+              }} style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13, fontWeight: 600, color: GOLD, border: "1.5px solid rgba(253,210,13,0.4)", background: "transparent", cursor: "pointer", whiteSpace: "nowrap" }}>Dashboard</button>
               {moduleNum < 6 && (
                 <button onClick={async function() {
                   var nextUrl = ["/modules/introduction","/modules/calling","/modules/connection","/modules/competency","/modules/capacity","/modules/convergence","/modules/commissioning"][moduleNum + 1];
@@ -1060,14 +1060,14 @@ export default function ModuleTemplate({ config }) {
                     }
                   } catch(e) { console.error("Save before navigate failed:", e); }
                   window.location.href = nextUrl;
-                }} style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13, fontWeight: 700, background: NAVY, color: accentMid, border: "none", cursor: "pointer", whiteSpace: "nowrap" }}>Next Module →</button>
+                }} style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13, fontWeight: 700, background: GOLD, color: NAVY, border: "none", cursor: "pointer", whiteSpace: "nowrap" }}>Next Module →</button>
               )}
             </div>
           ) : (
-            <button onClick={function() { setStep(step + 1); scrollTop(); }} className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all" style={{ background: NAVY, color: accentMid }}>Next →</button>
+            <button onClick={function() { setStep(step + 1); scrollTop(); }} className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all" style={{ background: GOLD, color: NAVY }}>Next →</button>
           )}
         </div>
-        <p className="text-center text-xs mt-1.5" style={{ color: "#ccc" }}>© 2026 Awakening Destiny Global</p>
+        <p className="text-center text-xs mt-1.5" style={{ color: "#4a5568" }}>© 2026 Awakening Destiny Global</p>
       </div>
     </div>
   );
