@@ -290,6 +290,20 @@ export default function Dashboard() {
             <ProgressBar percent={overallPercent} accent={colors.gold} height={8} />
           </div>
 
+          {/* ─── START HERE (new users — Introduction not started) ─── */}
+          {!progress[0] && (
+            <div style={{ padding: 24, background: colors.navy, borderRadius: 12, textAlign: "center", marginBottom: 24 }}>
+              <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>START HERE</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Begin with the Introduction</div>
+              <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16 }}>Understand the framework before entering the modules.</div>
+              <button
+                onClick={function() { window.location.href = "/modules/introduction"; }}
+                style={{ padding: "10px 32px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                Begin
+              </button>
+            </div>
+          )}
+
           {/* ─── ASSESSMENT HISTORY ─── */}
           {assessHist.length > 0 && (
             <div style={{ marginBottom: 24, padding: "20px 24px", background: colors.white, borderRadius: 12, border: "1px solid " + colors.gray200 }}>
@@ -411,17 +425,6 @@ export default function Dashboard() {
             })}
           </div>
 
-          {/* ─── START HERE CTA ─── */}
-          <div style={{ padding: 24, background: colors.navy, borderRadius: 12, textAlign: "center" }}>
-            <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>START HERE</div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: colors.white, marginBottom: 4 }}>Begin with the Introduction</div>
-            <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16 }}>Understand the framework before entering the modules.</div>
-            <button
-              onClick={function() { window.location.href = "/modules/introduction"; }}
-              style={{ padding: "10px 32px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
-              Begin
-            </button>
-          </div>
 
         </div>
       </div>

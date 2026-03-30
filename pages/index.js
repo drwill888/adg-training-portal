@@ -141,10 +141,7 @@ const css = `
   #adg-5c .journey-step p { font-size: 0.88rem !important; line-height: 1.6 !important; color: rgba(253,248,240,0.65) !important; }
 
   #adg-5c #leader { padding: 7rem 2rem !important; background: #FDF8F0 !important; color: #021A35 !important; }
-  #adg-5c .leader-layout { display: grid !important; grid-template-columns: 1fr 1.4fr !important; gap: 5rem !important; align-items: center !important; }
-  #adg-5c .leader-photo-box { background: #021A35 !important; aspect-ratio: 3/4 !important; display: flex !important; align-items: center !important; justify-content: center !important; position: relative !important; overflow: hidden !important; }
-  #adg-5c .leader-photo-box::after { content: '' !important; position: absolute !important; bottom: 0 !important; left: 0 !important; right: 0 !important; height: 4px !important; background: #FDD20D !important; }
-  #adg-5c .leader-photo-placeholder { text-align: center !important; color: rgba(253,248,240,0.3) !important; font-size: 0.85rem !important; letter-spacing: 0.1em !important; }
+  #adg-5c .leader-layout { max-width: 720px !important; }
   #adg-5c .leader-content h2 { font-family: 'Cormorant Garamond', serif !important; font-size: clamp(2rem, 4vw, 3rem) !important; font-weight: 600 !important; line-height: 1.1 !important; color: #021A35 !important; margin-bottom: 0.5rem !important; }
   #adg-5c .leader-title { font-size: 0.78rem !important; letter-spacing: 0.18em !important; text-transform: uppercase !important; color: #F47722 !important; font-weight: 600 !important; margin-bottom: 1.5rem !important; display: block !important; }
   #adg-5c .leader-content p { font-size: 0.98rem !important; line-height: 1.8 !important; color: rgba(2,26,53,0.75) !important; margin-bottom: 1rem !important; }
@@ -174,8 +171,10 @@ const css = `
 
   @media (max-width: 768px) {
     #adg-5c .assess-inner { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
-    #adg-5c .leader-layout { grid-template-columns: 1fr !important; }
-    #adg-5c .leader-photo-box { aspect-ratio: 1/1 !important; }
+    #adg-5c .pain-grid { grid-template-columns: 1fr !important; }
+    #adg-5c .audience-grid { grid-template-columns: 1fr !important; }
+    #adg-5c .deliverables-grid { grid-template-columns: 1fr !important; }
+    #adg-5c .leader-layout { max-width: 100% !important; }
     #adg-5c .journey-step:not(:last-child)::after { display: none !important; }
     #adg-5c .pillar-item { grid-template-columns: 60px 1fr !important; }
   }
@@ -471,12 +470,6 @@ export default function LandingPage() {
         <section id="leader">
           <div className="container">
             <div className="leader-layout">
-              <div className="leader-photo-box">
-                <div className="leader-photo-placeholder">
-                  [Photo of Will Meier]<br /><br />
-                  <span style={{fontSize:'0.7rem'}}>Replace with professional<br />headshot or ministry photo</span>
-                </div>
-              </div>
               <div className="leader-content">
                 <div className="section-badge orange">About Your Guide</div>
                 <h2>Will Meier</h2>
@@ -507,7 +500,7 @@ export default function LandingPage() {
                 {q:"What's the difference between Individual and Cohort?", a:"The Individual pathway gives you complete access to all modules at your own pace — ideal if your schedule is unpredictable or you prefer to move at the speed of your season. The Cohort pathway adds live coaching sessions, peer community, and real-time group engagement. Same Blueprint, different experience."},
                 {q:"Is this only for leaders in ministry?", a:"No. The 5C Blueprint was specifically designed for the full spectrum of Kingdom leadership — business owners, corporate executives, nonprofit founders, creatives, educators, and ministry leaders alike. If you operate with influence and you carry a Kingdom assignment, this framework is for you."},
                 {q:"What makes this different from other leadership programs?", a:"Most leadership programs are built on either academic theory or marketplace strategy. The 5C Blueprint is built on apostolic wisdom — it operates at the intersection of the supernatural and the strategic. The revelatory dimension is not an add-on; it's the engine. The result is a framework that transforms identity, not just skill-sets."},
-                {q:"What is the investment?", a:"Investment details are discussed personally during your discovery call. We want to understand your specific season, your goals, and your level of readiness before presenting the right enrollment path. This conversation protects your time and ensures the right fit for both of us."},
+                {q:"What is the investment?", a:"Individual access to the full 5C Leadership Blueprint is $79.99 — all five modules plus the bonus Commissioning module, personalized AI summaries, pre-and-post diagnostics, and a downloadable blueprint document. For leaders who want live coaching, peer community, and group engagement, the Cohort pathway is $297. The Introduction module is always free. We also offer a 7-day satisfaction guarantee — if the Blueprint is not what you expected, email us for a full refund, no questions asked."},
               ].map(faq => (
                 <div key={faq.q} className="faq-item">
                   <h4>{faq.q}</h4>

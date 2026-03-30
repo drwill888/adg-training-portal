@@ -984,15 +984,17 @@ export default function ModuleTemplate({ config }) {
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 pt-4 pb-2">
-        <div className="flex items-center gap-1 overflow-x-auto pb-1">
-          {STEPS.map(function(s, i) {
-            return (
-              <button key={s.id} onClick={function() { setStep(i); scrollTop(); }} className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all flex-shrink-0" style={{ background: i === step ? accent : i < step ? accentLight : "transparent", color: i === step ? NAVY : i < step ? accent : "#bbb", border: "1px solid " + (i <= step ? accent : "#e5e5e5") }}>
-                {i < step ? "✓ " : ""}{s.label}
-              </button>
-            );
-          })}
+      <div className="sticky z-40" style={{ top: 52, background: "rgba(255,255,255,0.95)", backdropFilter: "blur(8px)", borderBottom: "1px solid #f0f0f0" }}>
+        <div className="max-w-3xl mx-auto px-4 py-2">
+          <div className="flex items-center gap-1 overflow-x-auto pb-1" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+            {STEPS.map(function(s, i) {
+              return (
+                <button key={s.id} onClick={function() { setStep(i); scrollTop(); }} className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all flex-shrink-0" style={{ background: i === step ? accent : i < step ? accentLight : "transparent", color: i === step ? NAVY : i < step ? accent : "#bbb", border: "1px solid " + (i <= step ? accent : "#e5e5e5") }}>
+                  {i < step ? "✓ " : ""}{s.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
