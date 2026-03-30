@@ -1,6 +1,7 @@
 // pages/auth/callback.js
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { colors, fonts } from '../../styles/tokens'
 
 export default function AuthCallback() {
   const [status, setStatus] = useState('Signing you in...')
@@ -54,19 +55,18 @@ export default function AuthCallback() {
   return (
     <div style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center',
-      justifyContent: 'center', background: '#F8F9FC',
-      fontFamily: "'Raleway', sans-serif",
+      justifyContent: 'center', background: colors.cream,
+      fontFamily: fonts.body,
     }}>
-      <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet" />
       <div style={{ textAlign: 'center' }}>
         <div style={{
-          width: 48, height: 48, border: '4px solid #e2e6ed',
-          borderTop: '4px solid #C8A951', borderRadius: '50%',
+          width: 48, height: 48, border: '4px solid ' + colors.gray200,
+          borderTop: '4px solid ' + colors.gold, borderRadius: '50%',
           margin: '0 auto 20px', animation: 'spin 1s linear infinite',
         }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
-        <p style={{ color: '#021A35', fontWeight: 600, fontSize: 16 }}>{status}</p>
-        <p style={{ color: '#6b7280', fontSize: 13, marginTop: 8 }}>Please wait...</p>
+        <p style={{ color: colors.navy, fontWeight: 600, fontSize: 16 }}>{status}</p>
+        <p style={{ color: colors.gray500, fontSize: 13, marginTop: 8 }}>Please wait...</p>
       </div>
     </div>
   )

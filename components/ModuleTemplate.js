@@ -7,9 +7,10 @@ import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
 import { downloadCertificate } from "../lib/certificate";
 import { ADG_SYSTEM_PROMPT } from "../lib/prompts";
+import { colors as t, fonts } from "../styles/tokens";
 
-var NAVY = "#021A35";
-var GOLD = "#FDD20D";
+var NAVY = t.navy;
+var GOLD = t.gold;
 
 var STEPS_DEFAULT = [
   { id: "activation", label: "Activation" },
@@ -198,7 +199,7 @@ function SectionHead({ children, sub }) {
 }
 
 function downloadBlueprint(title, commitments, summary) {
-  var html = '<html><head><meta charset="utf-8"/><style>body{font-family:Georgia,serif;color:#333;line-height:1.7;margin:40px;}h1{color:#021A35;font-size:26px;}h2{color:#C8A951;font-size:18px;border-bottom:2px solid #FDD20D;padding-bottom:4px;margin-top:28px;}.section{background:#FFF9E6;border-left:4px solid #C8A951;padding:16px;margin:20px 0;border-radius:4px;}p{margin:8px 0;}</style></head><body>';
+  var html = '<html><head><meta charset="utf-8"/><style>body{font-family:Georgia,serif;color:#333;line-height:1.7;margin:40px;}h1{color:#021A35;font-size:26px;}h2{color:#FDD20D;font-size:18px;border-bottom:2px solid #FDD20D;padding-bottom:4px;margin-top:28px;}.section{background:#FFF9E6;border-left:4px solid #FDD20D;padding:16px;margin:20px 0;border-radius:4px;}p{margin:8px 0;}</style></head><body>';
   html += '<h1>' + title + ' Blueprint</h1>';
   html += '<p><strong>5C Leadership Blueprint - Awakening Destiny Global</strong></p>';
   html += '<p style="color:#888;font-style:italic;">Generated ' + new Date().toLocaleDateString() + '</p>';
@@ -384,7 +385,7 @@ export default function ModuleTemplate({ config }) {
   if (!isFree && !paid) {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAF8", fontFamily: "'Outfit', sans-serif" }}>
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  
         <div style={{ textAlign: "center", maxWidth: 440, padding: 40 }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "2rem", marginBottom: 12 }}>This Module Requires Full Access</h1>
@@ -963,7 +964,7 @@ export default function ModuleTemplate({ config }) {
 
   return (
     <div className="min-h-screen" style={{ background: "#FAFAF8", fontFamily: "'Outfit', sans-serif" }}>
-      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
 
       <Modal open={showScriptures} onClose={function() { setShowScriptures(false); }}>
         <ScriptureContent scriptures={scriptures} />
@@ -1018,7 +1019,7 @@ export default function ModuleTemplate({ config }) {
       </div>
 
       {resumeToast && (
-        <div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 9998, background: "#fff", color: "#021A35", borderLeft: "4px solid #C8A951", borderRadius: 8, padding: "12px 20px", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", fontSize: 13, fontFamily: "'Raleway', 'Outfit', sans-serif", whiteSpace: "nowrap", transition: "opacity 0.3s" }}>{resumeToast}</div>
+        <div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 9998, background: "#fff", color: NAVY, borderLeft: "4px solid " + GOLD, borderRadius: 8, padding: "12px 20px", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", fontSize: 13, fontFamily: fonts.body, whiteSpace: "nowrap", transition: "opacity 0.3s" }}>{resumeToast}</div>
       )}
 
       <div className="fixed bottom-0 left-0 right-0 border-t py-3 z-40" style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(12px)", borderColor: "#f0f0f0" }}>

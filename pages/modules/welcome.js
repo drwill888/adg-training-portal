@@ -1,18 +1,19 @@
 // pages/welcome.js
 // Landing page for the 5C Leadership Blueprint
 import Head from "next/head";
+import { colors as tok } from "../../styles/tokens";
 
-var NAVY = "#021A35";
-var GOLD = "#C8A951";
-var GOLD_BRIGHT = "#FDD20D";
-var CREAM = "#FDF8F0";
+var NAVY = tok.navy;
+var GOLD = tok.gold;
+var GOLD_BRIGHT = tok.gold;
+var CREAM = tok.cream;
 
 var dimensions = [
-  { num: 1, title: "Calling", subtitle: "Potential (Purpose)", question: "Who was I designed to become?", color: "#C8A951" },
-  { num: 2, title: "Connection", subtitle: "Identity (Relationships)", question: "Whose am I?", color: "#00AEEF" },
-  { num: 3, title: "Competency", subtitle: "Excellence (Credibility)", question: "Can I carry what I'm called to build?", color: "#0172BC" },
-  { num: 4, title: "Capacity", subtitle: "Character (Sustainability)", question: "Can I sustain what I'm building?", color: "#F47722" },
-  { num: 5, title: "Convergence", subtitle: "Sweet Spot (Impact)", question: "Am I operating in my sweet spot?", color: "#EE3124" },
+  { num: 1, title: "Calling", subtitle: "Potential (Purpose)", question: "Who was I designed to become?", color: tok.gold },
+  { num: 2, title: "Connection", subtitle: "Identity (Relationships)", question: "Whose am I?", color: tok.skyBlue },
+  { num: 3, title: "Competency", subtitle: "Excellence (Credibility)", question: "Can I carry what I'm called to build?", color: tok.royalBlue },
+  { num: 4, title: "Capacity", subtitle: "Character (Sustainability)", question: "Can I sustain what I'm building?", color: tok.orange },
+  { num: 5, title: "Convergence", subtitle: "Sweet Spot (Impact)", question: "Am I operating in my sweet spot?", color: tok.red },
 ];
 
 function handleCheckout() {
@@ -30,7 +31,6 @@ export default function Welcome() {
         <meta name="description" content="A formation-based leadership development experience. Five dimensions. One integrated framework. From design to destiny." />
       </Head>
       <div style={{ fontFamily: "'Outfit', sans-serif", background: CREAM, minHeight: "100vh" }}>
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
         {/* ── Hero ── */}
         <div style={{ background: "linear-gradient(165deg, " + NAVY + " 0%, #0a2a4d 50%, #132f50 100%)", padding: "60px 24px 56px", textAlign: "center", position: "relative", overflow: "hidden" }}>

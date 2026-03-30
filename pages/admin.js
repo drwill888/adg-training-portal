@@ -2,17 +2,18 @@
 // Admin dashboard — locked to Will's email only
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
+import { colors as tok } from "../styles/tokens";
 
-var NAVY = "#021A35";
-var GOLD = "#C8A951";
-var GOLD_BRIGHT = "#FDD20D";
+var NAVY = tok.navy;
+var GOLD = tok.gold;
+var GOLD_BRIGHT = tok.gold;
 
 var MODULE_NAMES = ["Introduction", "Calling", "Connection", "Competency", "Capacity", "Convergence", "Commissioning"];
 var ADMIN_EMAIL = "meier.will@gmail.com";
 
 var TOTAL_STEPS = { 0: 9, 1: 11, 2: 11, 3: 11, 4: 11, 5: 11, 6: 8 };
 
-var ACCENT_COLORS = ["#C8A951", "#00AEEF", "#0172BC", "#F47722", "#00AEEF", "#EE3124", "#C8A951"];
+var ACCENT_COLORS = [tok.gold, tok.skyBlue, tok.royalBlue, tok.orange, tok.skyBlue, tok.red, tok.gold];
 
 var DIMENSIONS = ["calling", "connection", "competency", "capacity", "convergence"];
 
@@ -178,8 +179,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#FAFAF8", fontFamily: "'Outfit', sans-serif" }}>
-      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <div style={{ minHeight: "100vh", background: tok.cream, fontFamily: "'Outfit', sans-serif" }}>
 
       {/* Header */}
       <div style={{ background: NAVY, padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>

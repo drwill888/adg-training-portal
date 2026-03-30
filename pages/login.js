@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { colors, fonts } from '../styles/tokens'
 
 export default function LoginPage({ session }) {
   const router = useRouter()
@@ -67,7 +68,7 @@ export default function LoginPage({ session }) {
     }
   }
 
-  const navy = '#021A35', gold = '#C8A951', gray = '#6b7280'
+  const navy = colors.navy, gold = colors.gold, gray = colors.gray500
 
   return (
     <>
@@ -83,8 +84,7 @@ export default function LoginPage({ session }) {
         <meta name="twitter:title" content="Sign In | 5C Leadership Blueprint" />
         <meta name="twitter:description" content="Sign in to your 5C Leadership Blueprint account to continue your formation journey." />
       </Head>
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F8F9FC', fontFamily: "'Raleway', sans-serif" }}>
-        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet" />
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: colors.cream, fontFamily: fonts.body }}>
         <div style={{ width: '100%', maxWidth: 420, padding: '0 20px' }}>
           <div style={{ textAlign: 'center', marginBottom: 32 }}>
             <h1 style={{ color: navy, fontSize: 24, fontWeight: 700, margin: '0 0 4px' }}>5C Leadership Blueprint</h1>

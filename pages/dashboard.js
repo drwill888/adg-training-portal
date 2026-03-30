@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
+import { colors, fonts, radii, shadows, moduleAccents } from "../styles/tokens";
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
@@ -19,13 +20,7 @@ function useIsMobile(breakpoint = 768) {
   return isMobile;
 }
 
-const colors = {
-  navy: "#021A35", navyLight: "#0a2a4d", navyMid: "#132f50",
-  skyBlue: "#00AEEF", royalBlue: "#0172BC", orange: "#F47722",
-  gold: "#C8A951", white: "#FFFFFF", offWhite: "#F8F9FC",
-  gray200: "#e2e6ed", gray300: "#c8cdd6", gray500: "#6b7280",
-  cream: "#FDF8F0",
-};
+// Colors now imported from styles/tokens.js
 
 const modules = [
   { id: 0, title: "Introduction", subtitle: "Course Foundation", icon: "◈", href: "/modules/introduction", free: true, timeEstimate: "~30 min" },
@@ -37,7 +32,7 @@ const modules = [
   { id: 6, title: "Commissioning", subtitle: "Bonus Module", icon: "◉", href: "/modules/commissioning", bonus: true, timeEstimate: "~45 min" },
 ];
 
-const accents = [colors.gold, colors.skyBlue, colors.royalBlue, colors.orange, colors.skyBlue, "#EE3124", colors.gold];
+const accents = moduleAccents;
 
 const TOTAL_STEPS = { 0: 7, 1: 8, 2: 8, 3: 8, 4: 8, 5: 8, 6: 8 };
 
@@ -250,9 +245,8 @@ export default function Dashboard() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Dashboard | 5C Leadership Blueprint" />
         <meta name="twitter:description" content="Track your leadership formation journey across all five dimensions of the Blueprint." />
-        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet" />
       </Head>
-      <div style={{ display: "flex", minHeight: "100vh", fontFamily: "'Raleway','Segoe UI',sans-serif", background: colors.offWhite }}>
+      <div style={{ display: "flex", minHeight: "100vh", fontFamily: fonts.body, background: colors.cream }}>
 
       <Sidebar
         currentPage={page}
@@ -326,7 +320,7 @@ export default function Dashboard() {
                       {dims.map(function(d) {
                         var s = scores[d] || 0;
                         return (
-                          <div key={d} style={{ fontSize: 10, padding: "2px 8px", borderRadius: 4, background: colors.offWhite, border: "1px solid " + colors.gray200, color: colors.gray500 }}>
+                          <div key={d} style={{ fontSize: 10, padding: "2px 8px", borderRadius: 4, background: colors.gray100, border: "1px solid " + colors.gray200, color: colors.gray500 }}>
                             {d.charAt(0).toUpperCase() + d.slice(1)}: <span style={{ fontWeight: 700, color: colors.navy }}>{s}</span>
                           </div>
                         );
@@ -340,9 +334,9 @@ export default function Dashboard() {
 
           {/* ─── MARKETING / UNLOCK CTA ─── */}
           {!paid && !loading && (
-            <div style={{ padding: isMobile ? 20 : 28, background: "linear-gradient(135deg, #021A35 0%, #0a2a4d 100%)", borderRadius: 14, marginBottom: 28, border: "1px solid rgba(200,169,81,0.2)" }}>
+            <div style={{ padding: isMobile ? 20 : 28, background: "linear-gradient(135deg, #021A35 0%, #0a2a4d 100%)", borderRadius: 14, marginBottom: 28, border: "1px solid rgba(253,210,13,0.2)" }}>
               <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.12em", fontWeight: 700, marginBottom: 10 }}>THE 5C LEADERSHIP BLUEPRINT</div>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 700, color: colors.white, lineHeight: 1.35, marginBottom: 12 }}>
+              <div style={{ fontFamily: fonts.heading, fontSize: 22, fontWeight: 700, color: colors.white, lineHeight: 1.35, marginBottom: 12 }}>
                 Most leaders are overcommitted and underaligned. This training changes that.
               </div>
               <p style={{ fontSize: 13, color: colors.gray300, lineHeight: 1.7, margin: "0 0 10px" }}>
@@ -354,7 +348,7 @@ export default function Dashboard() {
               <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 20 }}>
                 {["Calling — Who you are", "Connection — Whose you are", "Competency — What you carry", "Capacity — What you sustain", "Convergence — Where it all aligns"].map(function(item, i) {
                   return (
-                    <div key={i} style={{ fontSize: 12, padding: "5px 12px", background: "rgba(200,169,81,0.12)", border: "1px solid rgba(200,169,81,0.25)", borderRadius: 6, color: colors.gold, fontWeight: 500 }}>
+                    <div key={i} style={{ fontSize: 12, padding: "5px 12px", background: "rgba(253,210,13,0.12)", border: "1px solid rgba(253,210,13,0.25)", borderRadius: 6, color: colors.gold, fontWeight: 500 }}>
                       {item}
                     </div>
                   );
@@ -411,7 +405,7 @@ export default function Dashboard() {
                     </div>
                   )}
                   {m.question && (
-                    <div style={{ fontSize: 13, color: locked ? colors.gray500 : "#0172BC", fontStyle: "italic", borderTop: "1px solid " + colors.gray200, paddingTop: 10 }}>{m.question}</div>
+                    <div style={{ fontSize: 13, color: locked ? colors.gray500 : colors.royalBlue, fontStyle: "italic", borderTop: "1px solid " + colors.gray200, paddingTop: 10 }}>{m.question}</div>
                   )}
                 </div>
               );

@@ -2,21 +2,22 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { supabase } from '../lib/supabase';
+import { colors as t, fonts } from '../styles/tokens';
 
 // ════════════════════════════════════════
-// BRAND COLORS
+// BRAND COLORS (mapped from shared tokens)
 // ════════════════════════════════════════
 const colors = {
-  navy: '#021A35',
-  navyLight: '#0a2d52',
-  gold: '#FDD20D',
-  goldDim: 'rgba(253,210,13,0.12)',
-  goldLine: 'rgba(253,210,13,0.35)',
-  blue: '#0172BC',
-  orange: '#F47722',
-  red: '#EE3124',
-  cream: '#FDF8F0',
-  gray: 'rgba(253,248,240,0.55)',
+  navy: t.navy,
+  navyLight: t.navyLight,
+  gold: t.gold,
+  goldDim: t.goldDim,
+  goldLine: t.goldLine,
+  blue: t.royalBlue,
+  orange: t.orange,
+  red: t.red,
+  cream: t.cream,
+  gray: t.creamTranslucent,
   green: '#4ade80',
 };
 
@@ -264,10 +265,9 @@ export default function Assessment() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Leadership Diagnostic | 5C Leadership Blueprint" />
         <meta name="twitter:description" content="Take the 25-question diagnostic assessment to identify your leadership strengths and growth edges across all five dimensions." />
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
 
-      <div style={{ minHeight: '100vh', background: colors.navy, color: colors.cream, fontFamily: "'Outfit', sans-serif", overflowX: 'hidden' }}>
+      <div style={{ minHeight: '100vh', background: colors.navy, color: colors.cream, fontFamily: fonts.body, overflowX: 'hidden' }}>
 
         {/* ─── NAV ─── */}
         <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, padding: '1rem 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(2,26,53,0.95)', backdropFilter: 'blur(12px)', borderBottom: `1px solid ${colors.goldLine}` }}>

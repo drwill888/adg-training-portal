@@ -1,14 +1,15 @@
 // components/TrainingChat.js
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
+import { colors as tok } from "../styles/tokens";
 
 const BRAND = {
-  navy: "#021A35",
-  gold: "#FDD20D",
-  blue: "#0172BC",
-  orange: "#F47722",
-  red: "#EE3124",
-  cream: "#FDF8F0",
+  navy: tok.navy,
+  gold: tok.gold,
+  blue: tok.royalBlue,
+  orange: tok.orange,
+  red: tok.red,
+  cream: tok.cream,
 };
 
 const MODULES = [
@@ -122,7 +123,6 @@ export default function TrainingChat({ defaultModule }) {
   return (
     <>
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
         @keyframes pulse {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.3; }

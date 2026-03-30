@@ -217,7 +217,6 @@ export default function LandingPage() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="5C Leadership Blueprint | Awakening Destiny Global" />
         <meta name="twitter:description" content="A leadership formation experience built on five integrated dimensions — Calling, Connection, Competency, Capacity, and Convergence. Designed for Kingdom entrepreneurs, pastors, and emerging leaders." />
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
 
       <style dangerouslySetInnerHTML={{ __html: css }} />
