@@ -88,7 +88,7 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
 
 function ProgressBar({ percent, accent, height }) {
   return (
-    <div style={{ width: "100%", height: height || 6, background: colors.gray200, borderRadius: 4, overflow: "hidden" }}>
+    <div style={{ width: "100%", height: height || 6, background: colors.navyMid, borderRadius: 4, overflow: "hidden" }}>
       <div style={{ width: percent + "%", height: "100%", background: accent || colors.gold, borderRadius: 4, transition: "width 0.4s ease" }} />
     </div>
   );
@@ -246,7 +246,7 @@ export default function Dashboard() {
         <meta name="twitter:title" content="Dashboard | 5C Leadership Blueprint" />
         <meta name="twitter:description" content="Track your leadership formation journey across all five dimensions of the Blueprint." />
       </Head>
-      <div style={{ display: "flex", minHeight: "100vh", fontFamily: fonts.body, background: colors.cream }}>
+      <div style={{ display: "flex", minHeight: "100vh", fontFamily: fonts.body, background: colors.navy }}>
 
       <Sidebar
         currentPage={page}
@@ -259,26 +259,26 @@ export default function Dashboard() {
       <div style={{ flex: 1, minHeight: "100vh", overflowY: "auto" }}>
 
         {/* ─── TOPBAR ─── */}
-        <div style={{ padding: isMobile ? "10px 16px" : "12px 40px", borderBottom: "1px solid " + colors.gray200, background: colors.white, display: "flex", alignItems: "center", gap: 12, position: "sticky", top: 0, zIndex: 30 }}>
+        <div style={{ padding: isMobile ? "10px 16px" : "12px 40px", borderBottom: "1px solid " + colors.navyMid, background: colors.navyLight, display: "flex", alignItems: "center", gap: 12, position: "sticky", top: 0, zIndex: 30 }}>
           {isMobile && (
             <button onClick={function() { setSidebarOpen(function(s) { return !s; }); }} style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", flexDirection: "column", gap: 5 }}>
-              <div style={{ width: 22, height: 2, background: colors.navy, borderRadius: 2 }} />
-              <div style={{ width: 22, height: 2, background: colors.navy, borderRadius: 2 }} />
-              <div style={{ width: 22, height: 2, background: colors.navy, borderRadius: 2 }} />
+              <div style={{ width: 22, height: 2, background: colors.gold, borderRadius: 2 }} />
+              <div style={{ width: 22, height: 2, background: colors.gold, borderRadius: 2 }} />
+              <div style={{ width: 22, height: 2, background: colors.gold, borderRadius: 2 }} />
             </button>
           )}
-          <div style={{ fontSize: 13, color: colors.gray500 }}>Dashboard</div>
+          <div style={{ fontSize: 13, color: colors.gray300 }}>Dashboard</div>
         </div>
 
         <div style={{ padding: isMobile ? "20px 16px" : "32px 40px", maxWidth: 960 }}>
 
           {/* ─── GREETING + PROGRESS ─── */}
-          <h1 style={{ fontSize: 26, fontWeight: 700, color: colors.navy, margin: "0 0 4px" }}>{greeting}</h1>
-          <p style={{ fontSize: 14, color: colors.gray500, margin: "0 0 20px", fontStyle: "italic" }}>Your leadership formation journey — from design to destiny.</p>
+          <h1 style={{ fontFamily: fonts.heading, fontSize: 28, fontWeight: 700, color: colors.cream, margin: "0 0 4px" }}>{greeting}</h1>
+          <p style={{ fontSize: 14, color: colors.gray300, margin: "0 0 20px", fontStyle: "italic" }}>Your leadership formation journey — from design to destiny.</p>
 
-          <div style={{ marginBottom: 28, padding: "16px 20px", background: colors.white, borderRadius: 10, border: "1px solid " + colors.gray200 }}>
+          <div style={{ marginBottom: 28, padding: "16px 20px", background: colors.navyLight, borderRadius: 8, border: "1px solid " + colors.navyMid }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: colors.navy }}>Overall Progress</span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: colors.cream }}>Overall Progress</span>
               <span style={{ fontSize: 13, fontWeight: 700, color: colors.gold }}>{overallPercent}%</span>
             </div>
             <ProgressBar percent={overallPercent} accent={colors.gold} height={8} />
@@ -303,20 +303,20 @@ export default function Dashboard() {
             var nm = nextMod.mod;
             var acc = accents[nextMod.index];
             return (
-              <div style={{ padding: 24, background: isFirstTime ? colors.navy : colors.white, borderRadius: 12, marginBottom: 24, border: isFirstTime ? "none" : "2px solid " + acc, textAlign: isFirstTime ? "center" : "left" }}>
-                <div style={{ fontSize: 11, color: isFirstTime ? colors.gold : acc, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>{isFirstTime ? "START HERE" : "CONTINUE"}</div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: isFirstTime ? colors.white : colors.navy, marginBottom: 4 }}>
+              <div style={{ padding: 24, background: colors.navyLight, borderRadius: 8, marginBottom: 24, border: "1px solid rgba(253,210,13,0.25)", textAlign: isFirstTime ? "center" : "left" }}>
+                <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>{isFirstTime ? "START HERE" : "CONTINUE"}</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: colors.cream, marginBottom: 4, fontFamily: fonts.heading }}>
                   {isFirstTime ? "Begin with the Introduction" : nm.title + (nextMod.percent > 0 ? " — " + nextMod.percent + "% complete" : "")}
                 </div>
-                <div style={{ fontSize: 13, color: isFirstTime ? colors.gray300 : colors.gray500, marginBottom: 16 }}>
+                <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16 }}>
                   {isFirstTime ? "Understand the framework before entering the modules." : (nm.question || nm.subtitle)}
                 </div>
                 {!isFirstTime && nextMod.percent > 0 && (
-                  <div style={{ marginBottom: 16 }}><ProgressBar percent={nextMod.percent} accent={acc} height={6} /></div>
+                  <div style={{ marginBottom: 16 }}><ProgressBar percent={nextMod.percent} accent={colors.gold} height={6} /></div>
                 )}
                 <button
                   onClick={function() { window.location.href = nm.href; }}
-                  style={{ padding: "10px 32px", background: isFirstTime ? colors.gold : acc, color: isFirstTime ? colors.navy : colors.white, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                  style={{ padding: "10px 32px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", letterSpacing: "0.05em", textTransform: "uppercase" }}>
                   {isFirstTime ? "Begin" : nextMod.percent > 0 ? "Continue" : "Start"}
                 </button>
               </div>
@@ -325,10 +325,10 @@ export default function Dashboard() {
 
           {/* ─── ASSESSMENT HISTORY ─── */}
           {assessHist.length > 0 && (
-            <div style={{ marginBottom: 24, padding: "20px 24px", background: colors.white, borderRadius: 12, border: "1px solid " + colors.gray200 }}>
+            <div style={{ marginBottom: 24, padding: "20px 24px", background: colors.navyLight, borderRadius: 8, border: "1px solid " + colors.navyMid }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: colors.navy }}>Assessment History</span>
-                <a href="/assessment" style={{ fontSize: 12, color: colors.royalBlue, textDecoration: "none" }}>Retake →</a>
+                <span style={{ fontSize: 14, fontWeight: 700, color: colors.cream }}>Assessment History</span>
+                <a href="/assessment" style={{ fontSize: 12, color: colors.gold, textDecoration: "none" }}>Retake →</a>
               </div>
               {assessHist.map(function(a, i) {
                 var pct = Math.round((a.total_score / (a.max_possible || 125)) * 100);
@@ -336,17 +336,17 @@ export default function Dashboard() {
                 var dims = ["calling", "connection", "competency", "capacity", "convergence"];
                 var scores = a.dimension_scores || {};
                 return (
-                  <div key={a.id} style={{ marginBottom: i < assessHist.length - 1 ? 12 : 0, paddingBottom: i < assessHist.length - 1 ? 12 : 0, borderBottom: i < assessHist.length - 1 ? "1px solid " + colors.gray200 : "none" }}>
+                  <div key={a.id} style={{ marginBottom: i < assessHist.length - 1 ? 12 : 0, paddingBottom: i < assessHist.length - 1 ? 12 : 0, borderBottom: i < assessHist.length - 1 ? "1px solid " + colors.navyMid : "none" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                      <span style={{ fontSize: 12, color: colors.gray500 }}>{date}</span>
-                      <span style={{ fontSize: 13, fontWeight: 700, color: colors.navy }}>{a.total_score}/125 <span style={{ fontSize: 11, color: colors.gold, fontWeight: 600 }}>({pct}%)</span></span>
+                      <span style={{ fontSize: 12, color: colors.gray300 }}>{date}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: colors.cream }}>{a.total_score}/125 <span style={{ fontSize: 11, color: colors.gold, fontWeight: 600 }}>({pct}%)</span></span>
                     </div>
                     <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                       {dims.map(function(d) {
                         var s = scores[d] || 0;
                         return (
-                          <div key={d} style={{ fontSize: 10, padding: "2px 8px", borderRadius: 4, background: colors.gray100, border: "1px solid " + colors.gray200, color: colors.gray500 }}>
-                            {d.charAt(0).toUpperCase() + d.slice(1)}: <span style={{ fontWeight: 700, color: colors.navy }}>{s}</span>
+                          <div key={d} style={{ fontSize: 10, padding: "2px 8px", borderRadius: 4, background: colors.navyMid, border: "1px solid rgba(253,210,13,0.15)", color: colors.gray300 }}>
+                            {d.charAt(0).toUpperCase() + d.slice(1)}: <span style={{ fontWeight: 700, color: colors.gold }}>{s}</span>
                           </div>
                         );
                       })}
@@ -403,34 +403,34 @@ export default function Dashboard() {
               return (
                 <div key={m.id}
                   onClick={function() { if (!locked) window.location.href = m.href; }}
-                  style={{ background: colors.white, borderRadius: 12, padding: 20, border: "1px solid " + colors.gray200, borderTop: "3px solid " + (locked ? colors.gray300 : accents[i]), cursor: locked ? "default" : "pointer", opacity: locked ? 0.6 : 1, position: "relative", transition: "box-shadow 0.2s" }}
-                  onMouseEnter={function(e) { if (!locked) e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)"; }}
-                  onMouseLeave={function(e) { if (!locked) e.currentTarget.style.boxShadow = "none"; }}>
+                  style={{ background: colors.navyLight, borderRadius: 8, padding: 20, border: "1px solid " + colors.navyMid, borderLeft: "3px solid " + (locked ? colors.navyMid : colors.gold), cursor: locked ? "default" : "pointer", opacity: locked ? 0.5 : 1, position: "relative", transition: "all 0.2s" }}
+                  onMouseEnter={function(e) { if (!locked) { e.currentTarget.style.background = colors.navyMid; e.currentTarget.style.borderLeftColor = colors.gold; } }}
+                  onMouseLeave={function(e) { if (!locked) { e.currentTarget.style.background = colors.navyLight; } }}>
                   {locked && (
-                    <div style={{ position: "absolute", top: 12, right: 12, fontSize: 14 }}>🔒</div>
+                    <div style={{ position: "absolute", top: 12, right: 12, fontSize: 11, color: colors.gray500, fontWeight: 600, letterSpacing: "0.08em" }}>LOCKED</div>
                   )}
                   {m.bonus && !locked && (
                     <div style={{ position: "absolute", top: 12, right: 12, fontSize: 10, fontWeight: 700, background: colors.gold, color: colors.navy, padding: "2px 8px", borderRadius: 4, letterSpacing: "0.08em" }}>BONUS</div>
                   )}
                   <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
-                    <div style={{ width: 40, height: 40, borderRadius: 10, background: (locked ? colors.gray300 : accents[i]) + "22", border: "2px solid " + (locked ? colors.gray300 : accents[i]), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, color: locked ? colors.gray300 : accents[i], flexShrink: 0 }}>{m.icon}</div>
+                    <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(253,210,13,0.1)", border: "1px solid rgba(253,210,13,0.25)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, fontWeight: 700, color: colors.gold, flexShrink: 0 }}>{m.id === 0 ? "—" : m.id === 6 ? "+" : m.id}</div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 15, fontWeight: 700, color: colors.navy }}>{m.title}</div>
-                      <div style={{ fontSize: 12, color: colors.gray500, fontStyle: "italic" }}>{m.subtitle}</div>
-                      <div style={{ fontSize: 11, color: colors.gray500, marginTop: 2 }}>🕐 {m.timeEstimate}</div>
+                      <div style={{ fontSize: 15, fontWeight: 700, color: colors.cream }}>{m.title}</div>
+                      <div style={{ fontSize: 12, color: colors.gray300, fontStyle: "italic" }}>{m.subtitle}</div>
+                      <div style={{ fontSize: 11, color: colors.gray500, marginTop: 2 }}>{m.timeEstimate}</div>
                     </div>
                   </div>
                   {!locked && (
                     <div style={{ marginBottom: 8 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                        <span style={{ fontSize: 11, color: colors.gray500 }}>{modPercent === 100 ? "Complete" : modPercent > 0 ? "In progress" : "Not started"}</span>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: accents[i] }}>{modPercent}%</span>
+                        <span style={{ fontSize: 11, color: colors.gray300 }}>{modPercent === 100 ? "Complete" : modPercent > 0 ? "In progress" : "Not started"}</span>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: colors.gold }}>{modPercent}%</span>
                       </div>
-                      <ProgressBar percent={modPercent} accent={accents[i]} height={4} />
+                      <ProgressBar percent={modPercent} accent={colors.gold} height={4} />
                     </div>
                   )}
                   {m.question && (
-                    <div style={{ fontSize: 13, color: locked ? colors.gray500 : colors.royalBlue, fontStyle: "italic", borderTop: "1px solid " + colors.gray200, paddingTop: 10 }}>{m.question}</div>
+                    <div style={{ fontSize: 13, color: colors.gold, fontStyle: "italic", fontFamily: fonts.heading, borderTop: "1px solid " + colors.navyMid, paddingTop: 10 }}>{m.question}</div>
                   )}
                 </div>
               );
