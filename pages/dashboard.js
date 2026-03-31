@@ -9,6 +9,7 @@ import { supabase } from "../lib/supabase";
 import { colors, fonts, radii, shadows, moduleAccents } from "../styles/tokens";
 import { LockIcon, DashboardIcon } from "../components/Icons";
 import Button from "../components/ui/Button";
+import Card from "../components/ui/Card";
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
@@ -278,13 +279,13 @@ export default function Dashboard() {
           <h1 style={{ fontFamily: fonts.heading, fontSize: 28, fontWeight: 700, color: colors.cream, margin: "0 0 4px" }}>{greeting}</h1>
           <p style={{ fontSize: 14, color: colors.gray300, margin: "0 0 20px", fontStyle: "italic" }}>Your leadership formation journey — from design to destiny.</p>
 
-          <div style={{ marginBottom: 28, padding: "16px 20px", background: colors.navyLight, borderRadius: 8, border: "1px solid " + colors.navyMid }}>
+          <Card style={{ marginBottom: 28 }} padding="16px 20px">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
               <span style={{ fontSize: 13, fontWeight: 600, color: colors.cream }}>Overall Progress</span>
               <span style={{ fontSize: 13, fontWeight: 700, color: colors.gold }}>{overallPercent}%</span>
             </div>
             <ProgressBar percent={overallPercent} accent={colors.gold} height={8} />
-          </div>
+          </Card>
 
           {/* ─── START HERE / CONTINUE (contextual next-up card) ─── */}
           {(function() {
@@ -305,7 +306,7 @@ export default function Dashboard() {
             var nm = nextMod.mod;
             var acc = accents[nextMod.index];
             return (
-              <div style={{ padding: 24, background: colors.navyLight, borderRadius: 8, marginBottom: 24, border: "1px solid rgba(253,210,13,0.25)", textAlign: isFirstTime ? "center" : "left" }}>
+              <Card variant="highlight" style={{ marginBottom: 24, textAlign: isFirstTime ? "center" : "left" }} padding={24}>
                 <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>{isFirstTime ? "START HERE" : "CONTINUE"}</div>
                 <div style={{ fontSize: 16, fontWeight: 700, color: colors.cream, marginBottom: 4, fontFamily: fonts.heading }}>
                   {isFirstTime ? "Begin with the Introduction" : nm.title + (nextMod.percent > 0 ? " — " + nextMod.percent + "% complete" : "")}
