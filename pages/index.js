@@ -472,7 +472,7 @@ export default function LandingPage() {
               <div className="leader-content">
                 <div className="section-badge orange">About Your Guide</div>
                 <h2>Will Meier</h2>
-                <div className="leader-title">Apostle · Prophet · Business Consultant · Coach · Speaker</div>
+                <div className="leader-title">Kingdom Strategist · Leadership Architect · Business Consultant · Coach · Speaker</div>
                 <p>Will Meier is the founder of Awakening Destiny Global — a Kingdom leadership development organization with one clear mandate: restore, align, and deploy. His assignment is not to build programs — it&apos;s to build people, who build nations.</p>
                 <p>Operating with apostolic and prophetic grace, Will brings a rare integration of revelatory insight and strategic precision. His engineering background formed the systematic framework that undergirds the 5C Blueprint — not as an academic exercise, but as a battle-tested architecture for Kingdom leaders in every sphere of influence.</p>
                 <p>He has served Kingdom entrepreneurs, intercessors, pastors, and executive leaders across nations — equipping them with the Word, spiritual gifts, prophetic insight, and the business acumen to build enterprises that endure beyond a single generation.</p>
