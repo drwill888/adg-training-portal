@@ -639,7 +639,7 @@ export default function ModuleTemplate({ config }) {
             <SectionHead sub={exemplar.subtitle}>{exemplar.title}</SectionHead>
             <p className="text-sm leading-relaxed" style={{ color: "#FDF8F0" }}>{exemplar.intro}</p>
             {exemplar.intro2 && <p className="text-sm leading-relaxed" style={{ color: "#FDF8F0" }}>{exemplar.intro2}</p>}
-            <div className="p-5 rounded-xl" style={{ background: accentLight, border: "1px solid " + accent + "44" }}>
+            <div className="p-5 rounded-xl" style={{ background: "rgba(10,45,82,0.5)", border: "1px solid " + accent + "44" }}>
               <p className="text-sm font-bold mb-3 uppercase tracking-wide" style={{ color: GOLD }}>What this teaches us:</p>
               <ul className="space-y-2.5">
                 {exemplar.lessons.map(function(l, i) {
@@ -679,7 +679,7 @@ export default function ModuleTemplate({ config }) {
                 </div>
               );
             })}
-            <div className="p-4 rounded-xl" style={{ background: accentLight }}>
+            <div className="p-4 rounded-xl" style={{ background: "rgba(10,45,82,0.5)" }}>
               <p className="text-sm font-semibold mb-2" style={{ color: "#FDF8F0" }}>Which stage are you in right now?</p>
               <Reflect inline prompt="Name the stage and describe the specific evidence that supports your answer." onAutoSave={makeAutoSave("stages_current")} initialValue={reflections["stages_current"] || ""} />
             </div>
@@ -787,7 +787,7 @@ export default function ModuleTemplate({ config }) {
               })}
             </div>
             {revisitTriggers && revisitTriggers.length > 0 && (
-              <div className="p-5 rounded-xl" style={{ background: accentLight }}>
+              <div className="p-5 rounded-xl" style={{ background: "rgba(10,45,82,0.5)" }}>
                 <h4 className="font-bold mb-3" style={{ color: "#FDF8F0", fontFamily: fonts.heading }}>{title} is a Living Discipline</h4>
                 <p className="text-sm mb-3 leading-relaxed" style={{ color: "#FDF8F0" }}>What you write today is not a one-time exercise. Return to it regularly as your season deepens.</p>
                 <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: GOLD }}>Revisit when:</p>
@@ -856,7 +856,7 @@ export default function ModuleTemplate({ config }) {
             )}
             {loading && (
               <div className="text-center py-12">
-                <div className="w-10 h-10 border-4 rounded-full animate-spin mx-auto mb-4" style={{ borderColor: accentLight, borderTopColor: accent }} />
+                <div className="w-10 h-10 border-4 rounded-full animate-spin mx-auto mb-4" style={{ borderColor: "rgba(253,210,13,0.15)", borderTopColor: GOLD }} />
                 <p className="text-sm" style={{ color: "#6b7280" }}>Generating your personalized summary...</p>
               </div>
             )}
