@@ -155,7 +155,7 @@ export default function TrainingChat({ defaultModule }) {
           justifyContent: "center",
           boxShadow: "0 4px 20px rgba(2, 26, 53, 0.3)",
           zIndex: 9999,
-          transition: "transform 0.2s, box-shadow 0.2s",
+          transition: "transform 300ms ease, box-shadow 300ms ease",
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = "scale(1.08)";

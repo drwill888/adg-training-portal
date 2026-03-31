@@ -343,7 +343,7 @@ export default function Assessment() {
                   <span style={{ fontSize: '0.85rem', fontWeight: 700, color: colors.gold }}>{progressPct}%</span>
                 </div>
                 <div style={{ height: 3, background: 'rgba(253,210,13,0.15)', width: '100%' }}>
-                  <div style={{ height: '100%', background: colors.gold, width: `${progressPct}%`, transition: 'width 0.4s ease' }} />
+                  <div style={{ height: '100%', background: colors.gold, width: `${progressPct}%`, transition: 'width 300ms ease' }} />
                 </div>
               </div>
 
@@ -365,7 +365,7 @@ export default function Assessment() {
                     const qNum = di * 5 + qi + 1;
                     const selected = answers[key];
                     return (
-                      <div key={key} style={{ marginBottom: '1.5rem', padding: '1.5rem', background: 'rgba(253,210,13,0.04)', border: `1px solid ${selected ? 'rgba(253,210,13,0.3)' : 'rgba(253,210,13,0.12)'}`, transition: 'border-color 0.2s' }}>
+                      <div key={key} style={{ marginBottom: '1.5rem', padding: '1.5rem', background: 'rgba(253,210,13,0.04)', border: `1px solid ${selected ? 'rgba(253,210,13,0.3)' : 'rgba(253,210,13,0.12)'}`, transition: 'border-color 300ms ease' }}>
                         <span style={{ fontSize: '0.68rem', color: colors.gold, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700, display: 'block', marginBottom: '0.5rem' }}>
                           Question {qNum} of 25
                         </span>
@@ -382,7 +382,7 @@ export default function Assessment() {
                                 border: `1px solid ${selected === n ? colors.gold : 'rgba(253,210,13,0.2)'}`,
                                 color: selected === n ? colors.navy : colors.gray,
                                 fontFamily: fonts.heading, fontSize: '1.2rem', fontWeight: 700,
-                                cursor: 'pointer', transition: 'all 0.15s',
+                                cursor: 'pointer', transition: 'all 150ms ease',
                               }}
                             >
                               {n}

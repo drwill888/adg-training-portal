@@ -157,11 +157,11 @@ export default function Dashboard() {
             setFirstName(meta.full_name.split(" ")[0]);
           } else {
             const { data } = await supabase
-              .from("profiles")
-              .select("first_name")
+              .from("user_profiles")
+              .select("full_name")
               .eq("id", session.user.id)
               .single();
-            if (data?.first_name) setFirstName(data.first_name);
+            if (data?.full_name) setFirstName(data.full_name.split(" ")[0]);
           }
         }
       } catch (e) { /* silent fallback */ }
