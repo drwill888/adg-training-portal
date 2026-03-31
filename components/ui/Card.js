@@ -8,7 +8,7 @@ var base = {
   background: colors.navyLight,
   borderRadius: 8,
   border: "1px solid " + colors.navyMid,
-  transition: "all 0.2s",
+  transition: "all 300ms ease",
 };
 
 var variants = {

@@ -86,3 +86,10 @@ export const shadows = {
   cardHover: "0 4px 16px rgba(0,0,0,0.08)",
   modal: "0 24px 64px rgba(0,0,0,0.3)",
 };
+
+// ─── MOTION ────────────────────────────────────────────────
+export const motion = {
+  fast: "150ms ease",
+  normal: "300ms ease",
+  slow: "500ms ease",
+};

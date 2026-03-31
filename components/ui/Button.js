@@ -11,7 +11,7 @@ var base = {
   border: "none",
   borderRadius: 8,
   cursor: "pointer",
-  transition: "all 0.2s",
+  transition: "all 300ms ease",
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",

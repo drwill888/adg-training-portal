@@ -57,7 +57,7 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
       {isMobile && open && (
         <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 49 }} />
       )}
-      <div style={{ width: 260, minHeight: "100vh", background: colors.navy, flexShrink: 0, display: "flex", flexDirection: "column", ...(isMobile ? { position: "fixed", top: 0, left: 0, zIndex: 50, height: "100vh", overflowY: "auto", transform: open ? "translateX(0)" : "translateX(-100%)", transition: "transform 0.3s ease" } : {}) }}>
+      <div style={{ width: 260, minHeight: "100vh", background: colors.navy, flexShrink: 0, display: "flex", flexDirection: "column", ...(isMobile ? { position: "fixed", top: 0, left: 0, zIndex: 50, height: "100vh", overflowY: "auto", transform: open ? "translateX(0)" : "translateX(-100%)", transition: "transform 300ms ease" } : {}) }}>
         <div style={{ padding: "24px 16px 16px", borderBottom: "1px solid " + colors.navyMid, textAlign: "center" }}>
           <div style={{ fontSize: 14, color: colors.white, fontWeight: 700, marginBottom: 4 }}>5C Leadership Blueprint</div>
           <div style={{ fontSize: 11, color: colors.gold, fontStyle: "italic" }}>Awakening Destiny Global</div>
@@ -72,7 +72,7 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
                   if (item.href) { window.location.href = item.href; }
                   else { setCurrentPage(item.key); if (isMobile) onClose(); }
                 }}
-                style={{ padding: "10px 20px", cursor: item.locked ? "default" : "pointer", display: "flex", alignItems: "center", gap: 10, background: act ? colors.navyLight : "transparent", borderLeft: act ? "3px solid " + colors.gold : "3px solid transparent", opacity: item.locked ? 0.4 : 1, transition: "all 0.2s" }}
+                style={{ padding: "10px 20px", cursor: item.locked ? "default" : "pointer", display: "flex", alignItems: "center", gap: 10, background: act ? colors.navyLight : "transparent", borderLeft: act ? "3px solid " + colors.gold : "3px solid transparent", opacity: item.locked ? 0.4 : 1, transition: "all 300ms ease" }}
                 onMouseEnter={function(e) { if (!act && !item.locked) e.currentTarget.style.background = colors.navyLight; }}
                 onMouseLeave={function(e) { if (!act && !item.locked) e.currentTarget.style.background = "transparent"; }}>
                 <span style={{ fontSize: 14, width: 22, textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", color: act ? colors.gold : colors.gray300 }}>{item.locked ? <LockIcon size={14} color={colors.gray500} /> : item.isDash ? <DashboardIcon size={14} color={act ? colors.gold : colors.gray300} /> : <span style={{ fontWeight: 700, fontSize: 12 }}>{item.icon}</span>}</span>
@@ -92,7 +92,7 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
 function ProgressBar({ percent, accent, height }) {
   return (
     <div style={{ width: "100%", height: height || 6, background: colors.navyMid, borderRadius: 4, overflow: "hidden" }}>
-      <div style={{ width: percent + "%", height: "100%", background: accent || colors.gold, borderRadius: 4, transition: "width 0.4s ease" }} />
+      <div style={{ width: percent + "%", height: "100%", background: accent || colors.gold, borderRadius: 4, transition: "width 300ms ease" }} />
     </div>
   );
 }
@@ -402,7 +402,7 @@ export default function Dashboard() {
               return (
                 <div key={m.id}
                   onClick={function() { if (!locked) window.location.href = m.href; }}
-                  style={{ background: colors.navyLight, borderRadius: 8, padding: 20, border: "1px solid " + colors.navyMid, borderLeft: "3px solid " + (locked ? colors.navyMid : colors.gold), cursor: locked ? "default" : "pointer", opacity: locked ? 0.5 : 1, position: "relative", transition: "all 0.2s" }}
+                  style={{ background: colors.navyLight, borderRadius: 8, padding: 20, border: "1px solid " + colors.navyMid, borderLeft: "3px solid " + (locked ? colors.navyMid : colors.gold), cursor: locked ? "default" : "pointer", opacity: locked ? 0.5 : 1, position: "relative", transition: "all 300ms ease" }}
                   onMouseEnter={function(e) { if (!locked) { e.currentTarget.style.background = colors.navyMid; e.currentTarget.style.borderLeftColor = colors.gold; } }}
                   onMouseLeave={function(e) { if (!locked) { e.currentTarget.style.background = colors.navyLight; } }}>
                   {locked && (

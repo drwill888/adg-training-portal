@@ -92,10 +92,10 @@ function ScoreButtons({ itemNum, scores, setScores, accent }) {
     <div style={{ display: "flex", gap: 4, alignItems: "center", flexShrink: 0, flexWrap: "wrap" }}>
       {[1, 2, 3, 4, 5].map(function(score) {
         return (
-          <button key={score} onClick={function() { setScores(function(p) { var n = Object.assign({}, p); n[itemNum] = score; return n; }); }} style={{ width: 32, height: 32, borderRadius: 6, fontSize: 13, fontWeight: "bold", border: "none", cursor: "pointer", transition: "all 0.15s", background: scores[itemNum] === score ? GOLD : "rgba(253,210,13,0.1)", color: scores[itemNum] === score ? NAVY : "#9ca3af" }}>{score}</button>
+          <button key={score} onClick={function() { setScores(function(p) { var n = Object.assign({}, p); n[itemNum] = score; return n; }); }} style={{ width: 32, height: 32, borderRadius: 6, fontSize: 13, fontWeight: "bold", border: "none", cursor: "pointer", transition: "all 150ms ease", background: scores[itemNum] === score ? GOLD : "rgba(253,210,13,0.1)", color: scores[itemNum] === score ? NAVY : "#9ca3af" }}>{score}</button>
         );
       })}
-      <button onClick={function() { setScores(function(p) { var n = Object.assign({}, p); n[itemNum] = "na"; return n; }); }} style={{ height: 32, padding: "0 7px", borderRadius: 6, fontSize: 11, fontWeight: "bold", cursor: "pointer", transition: "all 0.15s", background: scores[itemNum] === "na" ? "#6b7280" : "transparent", color: scores[itemNum] === "na" ? "#fff" : "#6b7280", border: "1px dashed rgba(253,210,13,0.2)" }}>N/A</button>
+      <button onClick={function() { setScores(function(p) { var n = Object.assign({}, p); n[itemNum] = "na"; return n; }); }} style={{ height: 32, padding: "0 7px", borderRadius: 6, fontSize: 11, fontWeight: "bold", cursor: "pointer", transition: "all 150ms ease", background: scores[itemNum] === "na" ? "#6b7280" : "transparent", color: scores[itemNum] === "na" ? "#fff" : "#6b7280", border: "1px dashed rgba(253,210,13,0.2)" }}>N/A</button>
     </div>
   );
 }
@@ -743,14 +743,14 @@ export default function ModuleTemplate({ config }) {
                             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
                               <span style={{ fontSize: 10, color: "#6b7280", width: 72, flexShrink: 0 }}>Pre-Teaching</span>
                               <div style={{ flex: 1, height: 6, background: "#1e3a5f", borderRadius: 3, overflow: "hidden" }}>
-                                <div style={{ height: "100%", width: c.prePct + "%", background: "#3b5c85", borderRadius: 3, transition: "width 0.6s ease" }} />
+                                <div style={{ height: "100%", width: c.prePct + "%", background: "#3b5c85", borderRadius: 3, transition: "width 500ms ease" }} />
                               </div>
                               <span style={{ fontSize: 10, color: "#6b7280", width: 28, textAlign: "right" }}>{c.preTotal}</span>
                             </div>
                             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                               <span style={{ fontSize: 10, color: "#6b7280", width: 72, flexShrink: 0 }}>Post-Teaching</span>
                               <div style={{ flex: 1, height: 6, background: "#1e3a5f", borderRadius: 3, overflow: "hidden" }}>
-                                <div style={{ height: "100%", width: c.postPct + "%", background: c.barColor, borderRadius: 3, transition: "width 0.6s ease" }} />
+                                <div style={{ height: "100%", width: c.postPct + "%", background: c.barColor, borderRadius: 3, transition: "width 500ms ease" }} />
                               </div>
                               <span style={{ fontSize: 10, color: "#6b7280", width: 28, textAlign: "right" }}>{c.postTotal}</span>
                             </div>
@@ -758,7 +758,7 @@ export default function ModuleTemplate({ config }) {
                         )}
                         {!hasPreForCompare && (
                           <div style={{ height: 8, background: "#1e3a5f", borderRadius: 4, overflow: "hidden" }}>
-                            <div style={{ height: "100%", width: c.postPct + "%", background: c.barColor, borderRadius: 4, transition: "width 0.6s ease" }} />
+                            <div style={{ height: "100%", width: c.postPct + "%", background: c.barColor, borderRadius: 4, transition: "width 500ms ease" }} />
                           </div>
                         )}
                       </div>
@@ -957,7 +957,7 @@ export default function ModuleTemplate({ config }) {
                           <span style={{ fontSize: 12, fontWeight: 700, color: c.barColor }}>{c.label} — {c.total}/{c.max}</span>
                         </div>
                         <div style={{ height: 8, background: "#1e3a5f", borderRadius: 4, overflow: "hidden" }}>
-                          <div style={{ height: "100%", width: c.pct + "%", background: c.barColor, borderRadius: 4, transition: "width 0.6s ease" }} />
+                          <div style={{ height: "100%", width: c.pct + "%", background: c.barColor, borderRadius: 4, transition: "width 500ms ease" }} />
                         </div>
                       </div>
                     );
@@ -1032,7 +1032,7 @@ export default function ModuleTemplate({ config }) {
       </div>
 
       {resumeToast && (
-        <div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 9998, background: "#0a2d52", color: "#FDF8F0", borderLeft: "4px solid " + GOLD, borderRadius: 8, padding: "12px 20px", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", fontSize: 13, fontFamily: fonts.body, whiteSpace: "nowrap", transition: "opacity 0.3s" }}>{resumeToast}</div>
+        <div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 9998, background: "#0a2d52", color: "#FDF8F0", borderLeft: "4px solid " + GOLD, borderRadius: 8, padding: "12px 20px", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", fontSize: 13, fontFamily: fonts.body, whiteSpace: "nowrap", transition: "opacity 300ms ease" }}>{resumeToast}</div>
       )}
 
       <div className="fixed bottom-0 left-0 right-0 py-3 z-40" style={{ background: "rgba(2,26,53,0.97)", backdropFilter: "blur(12px)", borderTop: "1px solid rgba(253,210,13,0.15)" }}>
