@@ -867,7 +867,7 @@ export default function ModuleTemplate({ config }) {
                     <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: GOLD, color: NAVY, fontSize: 14, fontWeight: 700 }}>5C</div>
                     <p className="font-bold" style={{ color: "#FDF8F0", fontFamily: fonts.heading, fontSize: 17 }}>Your {title} Blueprint</p>
                   </div>
-                  <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#222" }}>{para}</p>; })}</div>
+                  <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#FDF8F0" }}>{para}</p>; })}</div>
                 </div>
                 <Button variant="outline" size="full" onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} style={{ marginTop: 12 }}>Download Blueprint (.docx)</Button>
                 {enhanceCount < 3 && (
@@ -907,7 +907,7 @@ export default function ModuleTemplate({ config }) {
                   })}
                 </div>
                 {config.resources.links && config.resources.links.map(function(l, i) {
-                  return (<a key={i} href={l.url} target="_blank" rel="noopener noreferrer" style={{ display: "block", marginTop: 10, fontSize: 13, color: "#0172BC" }}>{l.title} →</a>);
+                  return (<a key={i} href={l.url} target="_blank" rel="noopener noreferrer" style={{ display: "block", marginTop: 10, fontSize: 13, color: GOLD }}>{l.title} →</a>);
                 })}
               </div>
             )}

@@ -30,7 +30,7 @@ export default function Welcome() {
         <title>5C Leadership Blueprint | Awakening Destiny Global</title>
         <meta name="description" content="A formation-based leadership development experience. Five dimensions. One integrated framework. From design to destiny." />
       </Head>
-      <div style={{ fontFamily: "'Outfit', sans-serif", background: CREAM, minHeight: "100vh" }}>
+      <div style={{ fontFamily: "'Outfit', sans-serif", background: NAVY, minHeight: "100vh" }}>
 
         {/* ── Hero ── */}
         <div style={{ background: "linear-gradient(165deg, " + NAVY + " 0%, #0a2a4d 50%, #132f50 100%)", padding: "60px 24px 56px", textAlign: "center", position: "relative", overflow: "hidden" }}>
@@ -49,7 +49,7 @@ export default function Welcome() {
             </p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
               <button onClick={function() { window.location.href = "/modules/introduction"; }}
-                style={{ padding: "14px 36px", background: GOLD, color: NAVY, border: "none", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}>
+                style={{ padding: "14px 36px", background: GOLD, color: "#FDF8F0", border: "none", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}>
                 Start Free Introduction
               </button>
               <button onClick={handleCheckout}
@@ -63,8 +63,8 @@ export default function Welcome() {
         {/* ── What This Is ── */}
         <div style={{ maxWidth: 720, margin: "0 auto", padding: "64px 24px 48px" }}>
           <p style={{ fontSize: 12, letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 600, color: GOLD, marginBottom: 8 }}>The Framework</p>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.8rem", fontWeight: 700, color: NAVY, marginBottom: 16 }}>This Is Not a Course. It Is Formation.</h2>
-          <p style={{ fontSize: 15, color: "#555", lineHeight: 1.8, marginBottom: 24 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.8rem", fontWeight: 700, color: "#FDF8F0", marginBottom: 16 }}>This Is Not a Course. It Is Formation.</h2>
+          <p style={{ fontSize: 15, color: "#9ca3af", lineHeight: 1.8, marginBottom: 24 }}>
             Most leadership programs add information to an unchanged life. The 5C Blueprint renovates the interior world. Five interconnected dimensions — each building on the one before — moving you from fragmented growth to integrated impact. The depth of your transformation depends entirely on the honesty you bring.
           </p>
           <div style={{ background: NAVY, borderRadius: 12, padding: "20px 24px", display: "flex", alignItems: "center", gap: 16 }}>
@@ -79,19 +79,19 @@ export default function Welcome() {
         {/* ── The Five Dimensions ── */}
         <div style={{ maxWidth: 720, margin: "0 auto", padding: "0 24px 64px" }}>
           <p style={{ fontSize: 12, letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 600, color: GOLD, marginBottom: 8 }}>Five Dimensions</p>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.8rem", fontWeight: 700, color: NAVY, marginBottom: 24 }}>The Architecture of a Formed Leader</h2>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.8rem", fontWeight: 700, color: "#FDF8F0", marginBottom: 24 }}>The Architecture of a Formed Leader</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {dimensions.map(function(d) {
               return (
-                <div key={d.num} style={{ background: "#fff", borderRadius: 12, padding: "20px 24px", borderLeft: "4px solid " + d.color, boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+                <div key={d.num} style={{ background: "#0a2d52", borderRadius: 12, padding: "20px 24px", borderLeft: "4px solid " + d.color, boxShadow: "none" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
                     <div style={{ width: 32, height: 32, borderRadius: 8, background: d.color + "18", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: d.color }}>{d.num}</div>
                     <div>
-                      <div style={{ fontSize: 15, fontWeight: 700, color: NAVY }}>{d.title}</div>
-                      <div style={{ fontSize: 12, color: "#888", fontStyle: "italic" }}>{d.subtitle}</div>
+                      <div style={{ fontSize: 15, fontWeight: 700, color: "#FDF8F0" }}>{d.title}</div>
+                      <div style={{ fontSize: 12, color: "#6b7280", fontStyle: "italic" }}>{d.subtitle}</div>
                     </div>
                   </div>
-                  <p style={{ fontSize: 14, color: "#0172BC", fontStyle: "italic" }}>{d.question}</p>
+                  <p style={{ fontSize: 14, color: GOLD_BRIGHT, fontStyle: "italic" }}>{d.question}</p>
                 </div>
               );
             })}
@@ -99,10 +99,10 @@ export default function Welcome() {
         </div>
 
         {/* ── What You Get ── */}
-        <div style={{ background: "#fff", padding: "64px 24px" }}>
+        <div style={{ background: "#0a2d52", padding: "64px 24px" }}>
           <div style={{ maxWidth: 720, margin: "0 auto" }}>
             <p style={{ fontSize: 12, letterSpacing: "0.15em", textTransform: "uppercase", fontWeight: 600, color: GOLD, marginBottom: 8 }}>What Is Included</p>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.8rem", fontWeight: 700, color: NAVY, marginBottom: 24 }}>The Full Formation Experience</h2>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.8rem", fontWeight: 700, color: "#FDF8F0", marginBottom: 24 }}>The Full Formation Experience</h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
               {[
                 { num: "01", title: "Free Introduction", desc: "Assess your readiness and establish your formation posture before entering the modules." },
@@ -113,10 +113,10 @@ export default function Welcome() {
                 { num: "06", title: "Save & Resume", desc: "Your progress is saved automatically. Leave and return anytime without losing your work." },
               ].map(function(item, i) {
                 return (
-                  <div key={i} style={{ padding: "20px", borderRadius: 12, border: "1px solid #e5e7eb" }}>
+                  <div key={i} style={{ padding: "20px", borderRadius: 12, border: "1px solid rgba(253,210,13,0.1)" }}>
                     <div style={{ fontSize: 14, fontWeight: 700, color: GOLD_BRIGHT, fontFamily: "'Cormorant Garamond', serif", marginBottom: 8 }}>{item.num}</div>
-                    <div style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 4 }}>{item.title}</div>
-                    <div style={{ fontSize: 13, color: "#666", lineHeight: 1.6 }}>{item.desc}</div>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: "#FDF8F0", marginBottom: 4 }}>{item.title}</div>
+                    <div style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.6 }}>{item.desc}</div>
                   </div>
                 );
               })}
@@ -136,8 +136,8 @@ export default function Welcome() {
         {/* ── CTA ── */}
         <div style={{ padding: "32px 24px 64px", textAlign: "center" }}>
           <div style={{ maxWidth: 520, margin: "0 auto" }}>
-            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.6rem", fontWeight: 700, color: NAVY, marginBottom: 8 }}>Ready to Begin?</p>
-            <p style={{ fontSize: 14, color: "#666", lineHeight: 1.7, marginBottom: 24 }}>
+            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.6rem", fontWeight: 700, color: "#FDF8F0", marginBottom: 8 }}>Ready to Begin?</p>
+            <p style={{ fontSize: 14, color: "#9ca3af", lineHeight: 1.7, marginBottom: 24 }}>
               Start with the free Introduction to assess your readiness. When you are ready for the full formation experience, unlock all five modules from the training dashboard.
             </p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
@@ -146,7 +146,7 @@ export default function Welcome() {
                 Start Free Introduction
               </button>
               <button onClick={function() { window.location.href = "/"; }}
-                style={{ padding: "14px 36px", background: GOLD, color: NAVY, border: "none", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>
+                style={{ padding: "14px 36px", background: GOLD, color: "#FDF8F0", border: "none", borderRadius: 10, fontSize: 15, fontWeight: 700, cursor: "pointer" }}>
                 Enter Training Dashboard
               </button>
             </div>
