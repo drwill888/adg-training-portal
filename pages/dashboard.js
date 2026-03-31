@@ -320,7 +320,7 @@ export default function Dashboard() {
                 <Button onClick={function() { window.location.href = nm.href; }}>
                   {isFirstTime ? "Begin" : nextMod.percent > 0 ? "Continue" : "Start"}
                 </Button>
-              </div>
+              </Card>
             );
           })()}
 
