@@ -248,6 +248,7 @@ export default function LandingPage() {
             </p>
             <div className="hero-actions">
               <a href="/login" className="btn-primary">Access the Course</a>
+              <a href="/assessment" className="btn-gold-outline">Take the Free Assessment</a>
             </div>
             <div className="hero-assess-nudge">
               <div className="assess-nudge-line"></div>
@@ -449,7 +450,7 @@ export default function LandingPage() {
             <div className="journey-steps">
               {[
                 {num:'01', title:'Take the Assessment', body:"Start with the free 5C Leadership Assessment to get your profile — your strongest dimension, your gap, and your next step."},
-                {num:'02', title:'Apply & Align', body:"A brief discovery call to confirm fit, clarify your current season, and open the blueprint process with intentionality — not transactions."},
+                {num:'02', title:'Apply & Align', body:"Sign up, take the assessment, and begin the Introduction module. Clarify your current season and enter the blueprint process with intentionality — not transactions."},
                 {num:'03', title:'Build Through the 5Cs', body:"Move through each module — sequentially and intentionally. Individual pace or live cohort. Each C unlocks the next."},
                 {num:'04', title:'Integrate & Apply', body:"Coaching sessions translate learning into real strategy — your business, your leadership structure, your Kingdom enterprise taking shape."},
                 {num:'05', title:'Commission & Deploy', body:"Complete the blueprint. Receive your Certificate of Commissioning. Step into your assignment with clarity and authority."},
@@ -523,6 +524,7 @@ export default function LandingPage() {
             </p>
             <div className="cta-dual">
               <a href="/login" className="btn-primary">Access the Course</a>
+              <a href="/assessment" className="btn-gold-outline">Take the Free Assessment</a>
             </div>
             <span className="cta-subtext">The Introduction module is free. Start building your blueprint today.</span>
             <span className="cta-subtext" style={{marginTop:'0.5rem', fontSize:'0.75rem', opacity: 0.5}}>7-day satisfaction guarantee. If the Blueprint is not what you expected, email info@awakeningdestiny.global within 7 days for a full refund.</span>
