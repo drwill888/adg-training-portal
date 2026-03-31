@@ -248,7 +248,6 @@ export default function LandingPage() {
             </p>
             <div className="hero-actions">
               <a href="/login" className="btn-primary">Access the Course</a>
-              <a href="/assessment" className="btn-gold-outline">Take the Free Assessment</a>
             </div>
             <div className="hero-assess-nudge">
               <div className="assess-nudge-line"></div>
@@ -524,7 +523,6 @@ export default function LandingPage() {
             </p>
             <div className="cta-dual">
               <a href="/login" className="btn-primary">Access the Course</a>
-              <a href="/assessment" className="btn-gold-outline">Take the Free Assessment</a>
             </div>
             <span className="cta-subtext">The Introduction module is free. Start building your blueprint today.</span>
             <span className="cta-subtext" style={{marginTop:'0.5rem', fontSize:'0.75rem', opacity: 0.5}}>7-day satisfaction guarantee. If the Blueprint is not what you expected, email info@awakeningdestiny.global within 7 days for a full refund.</span>

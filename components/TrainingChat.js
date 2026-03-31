@@ -144,18 +144,25 @@ export default function TrainingChat({ defaultModule }) {
           position: "fixed",
           bottom: "24px",
           right: "24px",
-          width: "60px",
-          height: "60px",
-          borderRadius: "50%",
+          height: "44px",
+          paddingLeft: isOpen ? "12px" : "14px",
+          paddingRight: isOpen ? "12px" : "18px",
+          borderRadius: "22px",
           backgroundColor: BRAND.gold,
-          border: `3px solid ${BRAND.navy}`,
+          border: "none",
           cursor: "pointer",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          gap: "8px",
           boxShadow: "0 4px 20px rgba(2, 26, 53, 0.3)",
           zIndex: 9999,
           transition: "transform 300ms ease, box-shadow 300ms ease",
+          fontFamily: tokFonts.body,
+          fontSize: "13px",
+          fontWeight: 700,
+          color: BRAND.navy,
+          letterSpacing: "0.03em",
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = "scale(1.08)";
@@ -167,14 +174,17 @@ export default function TrainingChat({ defaultModule }) {
         }}
       >
         {isOpen ? (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={BRAND.navy} strokeWidth="2.5" strokeLinecap="round">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BRAND.navy} strokeWidth="2.5" strokeLinecap="round">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         ) : (
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={BRAND.navy} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-          </svg>
+          <>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BRAND.navy} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            <span>C-Help</span>
+          </>
         )}
       </button>
 
