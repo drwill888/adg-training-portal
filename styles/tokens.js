@@ -71,6 +71,18 @@ export const spacing = {
   xxl: 48,
 };
 
+// ─── TYPOGRAPHY SCALE ──────────────────────────────────────
+export const fontSize = {
+  xs: 11,
+  sm: 13,
+  base: 14,
+  md: 16,
+  lg: 20,
+  xl: 26,
+  "2xl": 32,
+  "3xl": "clamp(2rem, 5vw, 3rem)",
+};
+
 // ─── BORDER RADIUS ─────────────────────────────────────────
 export const radii = {
   sm: 4,    // progress bars, tags, small elements

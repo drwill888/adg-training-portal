@@ -326,7 +326,7 @@ export default function Dashboard() {
 
           {/* ─── ASSESSMENT HISTORY ─── */}
           {assessHist.length > 0 && (
-            <div style={{ marginBottom: 24, padding: "20px 24px", background: colors.navyLight, borderRadius: 8, border: "1px solid " + colors.navyMid }}>
+            <Card style={{ marginBottom: 24 }} padding="20px 24px">
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
                 <span style={{ fontSize: 14, fontWeight: 700, color: colors.cream }}>Assessment History</span>
                 <a href="/assessment" style={{ fontSize: 12, color: colors.gold, textDecoration: "none" }}>Retake →</a>
@@ -355,12 +355,12 @@ export default function Dashboard() {
                   </div>
                 );
               })}
-            </div>
+            </Card>
           )}
 
           {/* ─── MARKETING / UNLOCK CTA ─── */}
           {!paid && !loading && (
-            <div style={{ padding: isMobile ? 20 : 28, background: "linear-gradient(135deg, #021A35 0%, #0a2a4d 100%)", borderRadius: 14, marginBottom: 28, border: "1px solid rgba(253,210,13,0.2)" }}>
+            <Card variant="highlight" style={{ marginBottom: 28, background: "linear-gradient(135deg, #021A35 0%, #0a2a4d 100%)" }} padding={isMobile ? 20 : 28}>
               <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.12em", fontWeight: 700, marginBottom: 10 }}>THE 5C LEADERSHIP BLUEPRINT</div>
               <div style={{ fontFamily: fonts.heading, fontSize: 22, fontWeight: 700, color: colors.white, lineHeight: 1.35, marginBottom: 12 }}>
                 Most leaders are overcommitted and underaligned. This training changes that.
@@ -389,7 +389,7 @@ export default function Dashboard() {
               <p style={{ fontSize: 11, color: colors.gray500, marginTop: 10 }}>
                 7-day satisfaction guarantee. If the Blueprint is not what you expected, email <a href="mailto:info@awakeningdestiny.global" style={{ color: colors.gold }}>info@awakeningdestiny.global</a> within 7 days for a full refund — no questions asked.
               </p>
-            </div>
+            </Card>
           )}
 
           {/* ─── MODULE GRID ─── */}
@@ -400,11 +400,10 @@ export default function Dashboard() {
               var stepsTotal = TOTAL_STEPS[m.id] || 8;
               var modPercent = stepsDone === 0 ? 0 : Math.min(Math.round(((stepsDone + 1) / stepsTotal) * 100), 100);
               return (
-                <div key={m.id}
-                  onClick={function() { if (!locked) window.location.href = m.href; }}
-                  style={{ background: colors.navyLight, borderRadius: 8, padding: 20, border: "1px solid " + colors.navyMid, borderLeft: "3px solid " + (locked ? colors.navyMid : colors.gold), cursor: locked ? "default" : "pointer", opacity: locked ? 0.5 : 1, position: "relative", transition: "all 300ms ease" }}
-                  onMouseEnter={function(e) { if (!locked) { e.currentTarget.style.background = colors.navyMid; e.currentTarget.style.borderLeftColor = colors.gold; } }}
-                  onMouseLeave={function(e) { if (!locked) { e.currentTarget.style.background = colors.navyLight; } }}>
+                <Card key={m.id}
+                  variant={locked ? "default" : "accent"}
+                  onClick={locked ? undefined : function() { window.location.href = m.href; }}
+                  style={{ opacity: locked ? 0.5 : 1, position: "relative" }}>
                   {locked && (
                     <div style={{ position: "absolute", top: 12, right: 12, fontSize: 11, color: colors.gray500, fontWeight: 600, letterSpacing: "0.08em" }}>LOCKED</div>
                   )}
@@ -431,7 +430,7 @@ export default function Dashboard() {
                   {m.question && (
                     <div style={{ fontSize: 13, color: colors.gold, fontStyle: "italic", fontFamily: fonts.heading, borderTop: "1px solid " + colors.navyMid, paddingTop: 10 }}>{m.question}</div>
                   )}
-                </div>
+                </Card>
               );
             })}
           </div>

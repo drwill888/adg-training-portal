@@ -12,8 +12,8 @@ const css = `
   #adg-5c *:not(script):not(style) { font-family: 'Outfit', sans-serif !important; }
 
   #adg-5c {
-    background: #021A35 !important;
-    color: #FDF8F0 !important;
+    background: var(--navy) !important;
+    color: var(--cream) !important;
     overflow-x: hidden !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -31,130 +31,130 @@ const css = `
     --gold-line: rgba(253,210,13,0.35);
   }
 
-  #adg-5c .section-title { font-family: 'Cormorant Garamond', serif !important; font-size: clamp(2.2rem, 5vw, 3.8rem) !important; font-weight: 600 !important; line-height: 1.1 !important; color: #FDF8F0 !important; }
-  #adg-5c .section-title em { color: #FDD20D !important; font-style: italic !important; }
+  #adg-5c .section-title { font-family: 'Cormorant Garamond', serif !important; font-size: clamp(2.2rem, 5vw, 3.8rem) !important; font-weight: 600 !important; line-height: 1.1 !important; color: var(--cream) !important; }
+  #adg-5c .section-title em { color: var(--gold) !important; font-style: italic !important; }
   #adg-5c .body-text { font-size: 1.05rem !important; line-height: 1.8 !important; color: rgba(253,248,240,0.8) !important; }
-  #adg-5c .gold-line { width: 48px !important; height: 2px !important; background: #FDD20D !important; margin: 1.2rem 0 !important; display: block !important; }
+  #adg-5c .gold-line { width: 48px !important; height: 2px !important; background: var(--gold) !important; margin: 1.2rem 0 !important; display: block !important; }
   #adg-5c .gold-line.center { margin: 1.2rem auto !important; }
   #adg-5c .container { max-width: 1140px !important; margin: 0 auto !important; padding: 0 2rem !important; }
   #adg-5c .gold-divider { height: 1px !important; background: linear-gradient(90deg, transparent, rgba(253,210,13,0.35), transparent) !important; display: block !important; }
 
-  #adg-5c .section-badge { display: inline-block !important; background: rgba(253,210,13,0.12) !important; border: 1px solid rgba(253,210,13,0.35) !important; color: #FDD20D !important; font-size: 0.65rem !important; letter-spacing: 0.25em !important; text-transform: uppercase !important; padding: 0.3rem 0.8rem !important; margin-bottom: 1.25rem !important; font-weight: 600 !important; }
-  #adg-5c .section-badge.dark { background: rgba(2,26,53,0.08) !important; border-color: rgba(2,26,53,0.2) !important; color: #0172BC !important; }
-  #adg-5c .section-badge.red { background: rgba(238,49,36,0.08) !important; border-color: rgba(238,49,36,0.2) !important; color: #EE3124 !important; }
-  #adg-5c .section-badge.orange { background: rgba(244,119,34,0.08) !important; border-color: rgba(244,119,34,0.2) !important; color: #F47722 !important; }
+  #adg-5c .section-badge { display: inline-block !important; background: rgba(253,210,13,0.12) !important; border: 1px solid rgba(253,210,13,0.35) !important; color: var(--gold) !important; font-size: 0.65rem !important; letter-spacing: 0.25em !important; text-transform: uppercase !important; padding: 0.3rem 0.8rem !important; margin-bottom: 1.25rem !important; font-weight: 600 !important; }
+  #adg-5c .section-badge.dark { background: rgba(2,26,53,0.08) !important; border-color: rgba(2,26,53,0.2) !important; color: var(--blue) !important; }
+  #adg-5c .section-badge.red { background: rgba(238,49,36,0.08) !important; border-color: rgba(238,49,36,0.2) !important; color: var(--red) !important; }
+  #adg-5c .section-badge.orange { background: rgba(244,119,34,0.08) !important; border-color: rgba(244,119,34,0.2) !important; color: var(--orange) !important; }
 
-  #adg-5c .btn-primary { background: #FDD20D !important; color: #021A35 !important; font-family: 'Outfit', sans-serif !important; font-size: 0.85rem !important; font-weight: 700 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; padding: 1rem 2.2rem !important; border: none !important; cursor: pointer !important; text-decoration: none !important; display: inline-block !important; transition: transform 0.2s, box-shadow 0.2s !important; border-radius: 0 !important; }
-  #adg-5c .btn-primary:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 30px rgba(253,210,13,0.3) !important; background: #FDD20D !important; color: #021A35 !important; }
-  #adg-5c .btn-gold-outline { background: transparent !important; color: #FDD20D !important; font-family: 'Outfit', sans-serif !important; font-size: 0.85rem !important; font-weight: 700 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; padding: 1rem 2.2rem !important; border: 1px solid #FDD20D !important; cursor: pointer !important; text-decoration: none !important; display: inline-block !important; border-radius: 0 !important; }
-  #adg-5c .btn-gold-outline:hover { background: #FDD20D !important; color: #021A35 !important; }
+  #adg-5c .btn-primary { background: var(--gold) !important; color: var(--navy) !important; font-family: 'Outfit', sans-serif !important; font-size: 0.85rem !important; font-weight: 700 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; padding: 1rem 2.2rem !important; border: none !important; cursor: pointer !important; text-decoration: none !important; display: inline-block !important; transition: transform 0.2s, box-shadow 0.2s !important; border-radius: 0 !important; }
+  #adg-5c .btn-primary:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 30px rgba(253,210,13,0.3) !important; background: var(--gold) !important; color: var(--navy) !important; }
+  #adg-5c .btn-gold-outline { background: transparent !important; color: var(--gold) !important; font-family: 'Outfit', sans-serif !important; font-size: 0.85rem !important; font-weight: 700 !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; padding: 1rem 2.2rem !important; border: 1px solid var(--gold) !important; cursor: pointer !important; text-decoration: none !important; display: inline-block !important; border-radius: 0 !important; }
+  #adg-5c .btn-gold-outline:hover { background: var(--gold) !important; color: var(--navy) !important; }
 
   #adg-5c nav { position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; z-index: 99999 !important; padding: 1.25rem 2rem !important; display: flex !important; align-items: center !important; justify-content: space-between !important; background: rgba(2,26,53,0.97) !important; backdrop-filter: blur(12px) !important; border-bottom: 1px solid rgba(253,210,13,0.35) !important; border-top: none !important; border-left: none !important; border-right: none !important; margin: 0 !important; }
-  #adg-5c .nav-logo { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; font-weight: 600 !important; color: #FDF8F0 !important; text-decoration: none !important; }
-  #adg-5c .nav-logo span { color: #FDD20D !important; }
+  #adg-5c .nav-logo { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; font-weight: 600 !important; color: var(--cream) !important; text-decoration: none !important; }
+  #adg-5c .nav-logo span { color: var(--gold) !important; }
   #adg-5c .nav-right { display: flex !important; align-items: center !important; gap: 1rem !important; }
-  #adg-5c .nav-assess { font-size: 0.75rem !important; color: #FDD20D !important; text-decoration: none !important; letter-spacing: 0.08em !important; font-weight: 600 !important; }
-  #adg-5c .nav-cta { background: #FDD20D !important; color: #021A35 !important; font-family: 'Outfit', sans-serif !important; font-size: 0.8rem !important; font-weight: 700 !important; letter-spacing: 0.08em !important; text-transform: uppercase !important; padding: 0.6rem 1.4rem !important; border: none !important; cursor: pointer !important; text-decoration: none !important; display: inline-block !important; border-radius: 0 !important; }
+  #adg-5c .nav-assess { font-size: 0.75rem !important; color: var(--gold) !important; text-decoration: none !important; letter-spacing: 0.08em !important; font-weight: 600 !important; }
+  #adg-5c .nav-cta { background: var(--gold) !important; color: var(--navy) !important; font-family: 'Outfit', sans-serif !important; font-size: 0.8rem !important; font-weight: 700 !important; letter-spacing: 0.08em !important; text-transform: uppercase !important; padding: 0.6rem 1.4rem !important; border: none !important; cursor: pointer !important; text-decoration: none !important; display: inline-block !important; border-radius: 0 !important; }
 
-  #adg-5c #hero { min-height: 100vh !important; display: flex !important; align-items: center !important; position: relative !important; overflow: hidden !important; padding: 8rem 2rem 5rem !important; background: #021A35 !important; }
+  #adg-5c #hero { min-height: 100vh !important; display: flex !important; align-items: center !important; position: relative !important; overflow: hidden !important; padding: 8rem 2rem 5rem !important; background: var(--navy) !important; }
   #adg-5c .hero-bg { position: absolute !important; inset: 0 !important; background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(1,114,188,0.12) 0%, transparent 70%), radial-gradient(ellipse 60% 80% at 10% 80%, rgba(253,210,13,0.06) 0%, transparent 60%), #021A35 !important; }
   #adg-5c .hero-grid { position: absolute !important; inset: 0 !important; background-image: linear-gradient(rgba(253,210,13,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(253,210,13,0.04) 1px, transparent 1px) !important; background-size: 60px 60px !important; }
   #adg-5c .hero-content { position: relative !important; z-index: 2 !important; max-width: 780px !important; }
-  #adg-5c .hero-eyebrow { display: inline-flex !important; align-items: center !important; gap: 0.75rem !important; background: rgba(253,210,13,0.12) !important; border: 1px solid rgba(253,210,13,0.35) !important; padding: 0.4rem 1rem !important; margin-bottom: 2rem !important; font-size: 0.7rem !important; font-weight: 600 !important; letter-spacing: 0.25em !important; text-transform: uppercase !important; color: #FDD20D !important; }
-  #adg-5c .hero-title { font-family: 'Cormorant Garamond', serif !important; font-size: clamp(3rem, 7vw, 5.5rem) !important; font-weight: 700 !important; line-height: 1.0 !important; margin-bottom: 1.5rem !important; color: #FDF8F0 !important; }
-  #adg-5c .hero-title .accent { color: #FDD20D !important; display: block !important; font-style: italic !important; }
+  #adg-5c .hero-eyebrow { display: inline-flex !important; align-items: center !important; gap: 0.75rem !important; background: rgba(253,210,13,0.12) !important; border: 1px solid rgba(253,210,13,0.35) !important; padding: 0.4rem 1rem !important; margin-bottom: 2rem !important; font-size: 0.7rem !important; font-weight: 600 !important; letter-spacing: 0.25em !important; text-transform: uppercase !important; color: var(--gold) !important; }
+  #adg-5c .hero-title { font-family: 'Cormorant Garamond', serif !important; font-size: clamp(3rem, 7vw, 5.5rem) !important; font-weight: 700 !important; line-height: 1.0 !important; margin-bottom: 1.5rem !important; color: var(--cream) !important; }
+  #adg-5c .hero-title .accent { color: var(--gold) !important; display: block !important; font-style: italic !important; }
   #adg-5c .hero-subtitle { font-size: 1.15rem !important; line-height: 1.75 !important; color: rgba(253,248,240,0.78) !important; max-width: 600px !important; margin-bottom: 2.5rem !important; }
   #adg-5c .hero-actions { display: flex !important; gap: 1rem !important; flex-wrap: wrap !important; margin-bottom: 2rem !important; }
   #adg-5c .hero-assess-nudge { display: flex !important; align-items: center !important; gap: 0.75rem !important; margin-bottom: 3rem !important; }
   #adg-5c .assess-nudge-line { height: 1px !important; width: 32px !important; background: rgba(253,210,13,0.35) !important; }
   #adg-5c .assess-nudge-text { font-size: 0.78rem !important; color: rgba(253,248,240,0.45) !important; letter-spacing: 0.05em !important; }
-  #adg-5c .assess-nudge-link { font-size: 0.78rem !important; color: #FDD20D !important; font-weight: 600 !important; text-decoration: none !important; letter-spacing: 0.05em !important; border-bottom: 1px solid rgba(253,210,13,0.3) !important; }
+  #adg-5c .assess-nudge-link { font-size: 0.78rem !important; color: var(--gold) !important; font-weight: 600 !important; text-decoration: none !important; letter-spacing: 0.05em !important; border-bottom: 1px solid rgba(253,210,13,0.3) !important; }
   #adg-5c .hero-5c-row { display: flex !important; gap: 1.5rem !important; flex-wrap: wrap !important; }
-  #adg-5c .hero-c { display: flex !important; align-items: center !important; gap: 0.5rem !important; opacity: 0.55 !important; font-size: 0.8rem !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; font-weight: 500 !important; color: #FDF8F0 !important; }
-  #adg-5c .hero-c-dot { width: 6px !important; height: 6px !important; border-radius: 50% !important; background: #FDD20D !important; flex-shrink: 0 !important; }
-  #adg-5c .hero-scroll { position: absolute !important; bottom: 2.5rem !important; left: 50% !important; transform: translateX(-50%) !important; display: flex !important; flex-direction: column !important; align-items: center !important; gap: 0.5rem !important; font-size: 0.7rem !important; letter-spacing: 0.2em !important; text-transform: uppercase !important; opacity: 0.4 !important; color: #FDF8F0 !important; }
-  #adg-5c .scroll-line { width: 1px !important; height: 40px !important; background: #FDF8F0 !important; animation: adgScrollPulse 2s infinite !important; }
+  #adg-5c .hero-c { display: flex !important; align-items: center !important; gap: 0.5rem !important; opacity: 0.55 !important; font-size: 0.8rem !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; font-weight: 500 !important; color: var(--cream) !important; }
+  #adg-5c .hero-c-dot { width: 6px !important; height: 6px !important; border-radius: 50% !important; background: var(--gold) !important; flex-shrink: 0 !important; }
+  #adg-5c .hero-scroll { position: absolute !important; bottom: 2.5rem !important; left: 50% !important; transform: translateX(-50%) !important; display: flex !important; flex-direction: column !important; align-items: center !important; gap: 0.5rem !important; font-size: 0.7rem !important; letter-spacing: 0.2em !important; text-transform: uppercase !important; opacity: 0.4 !important; color: var(--cream) !important; }
+  #adg-5c .scroll-line { width: 1px !important; height: 40px !important; background: var(--cream) !important; animation: adgScrollPulse 2s infinite !important; }
   @keyframes adgScrollPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
 
-  #adg-5c #assess-teaser { padding: 5rem 2rem !important; background: #0a2d52 !important; position: relative !important; overflow: hidden !important; }
+  #adg-5c #assess-teaser { padding: 5rem 2rem !important; background: var(--navy-light) !important; position: relative !important; overflow: hidden !important; }
   #adg-5c #assess-teaser::before { content: '' !important; position: absolute !important; inset: 0 !important; background: radial-gradient(ellipse 70% 100% at 50% 50%, rgba(253,210,13,0.05) 0%, transparent 70%) !important; }
   #adg-5c .assess-inner { position: relative !important; z-index: 2 !important; display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 4rem !important; align-items: center !important; }
   #adg-5c .assess-right { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 1rem !important; }
   #adg-5c .assess-score-card { padding: 1.25rem !important; border: 1px solid rgba(253,210,13,0.35) !important; background: rgba(253,210,13,0.12) !important; text-align: center !important; }
-  #adg-5c .assess-score-card .dim-label { font-size: 0.65rem !important; letter-spacing: 0.2em !important; text-transform: uppercase !important; color: #FDD20D !important; font-weight: 700 !important; margin-bottom: 0.4rem !important; display: block !important; }
+  #adg-5c .assess-score-card .dim-label { font-size: 0.65rem !important; letter-spacing: 0.2em !important; text-transform: uppercase !important; color: var(--gold) !important; font-weight: 700 !important; margin-bottom: 0.4rem !important; display: block !important; }
   #adg-5c .assess-score-card .dim-bar-track { height: 3px !important; background: rgba(253,210,13,0.15) !important; margin-bottom: 0.4rem !important; }
-  #adg-5c .assess-score-card .dim-bar-fill { height: 100% !important; background: #FDD20D !important; display: block !important; }
+  #adg-5c .assess-score-card .dim-bar-fill { height: 100% !important; background: var(--gold) !important; display: block !important; }
   #adg-5c .assess-score-card .dim-status { font-size: 0.7rem !important; color: rgba(253,248,240,0.55) !important; display: block !important; }
-  #adg-5c .assess-output { margin-top: 1.5rem !important; padding: 1.25rem !important; border-left: 3px solid #FDD20D !important; background: rgba(253,210,13,0.05) !important; }
-  #adg-5c .assess-output p { font-family: 'Cormorant Garamond', serif !important; font-size: 1.1rem !important; font-style: italic !important; line-height: 1.7 !important; color: #FDF8F0 !important; margin-bottom: 0.5rem !important; }
+  #adg-5c .assess-output { margin-top: 1.5rem !important; padding: 1.25rem !important; border-left: 3px solid var(--gold) !important; background: rgba(253,210,13,0.05) !important; }
+  #adg-5c .assess-output p { font-family: 'Cormorant Garamond', serif !important; font-size: 1.1rem !important; font-style: italic !important; line-height: 1.7 !important; color: var(--cream) !important; margin-bottom: 0.5rem !important; }
   #adg-5c .assess-output .output-sub { font-size: 0.75rem !important; color: rgba(253,248,240,0.45) !important; font-style: normal !important; }
 
-  #adg-5c #problem { padding: 7rem 2rem !important; background: #FDF8F0 !important; color: #021A35 !important; }
-  #adg-5c #problem .section-title { color: #021A35 !important; }
+  #adg-5c #problem { padding: 7rem 2rem !important; background: var(--cream) !important; color: var(--navy) !important; }
+  #adg-5c #problem .section-title { color: var(--navy) !important; }
   #adg-5c #problem .body-text { color: rgba(2,26,53,0.75) !important; }
   #adg-5c .pain-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; margin-top: 3rem !important; }
-  #adg-5c .pain-card { border-left: 3px solid #021A35 !important; padding: 1.5rem !important; background: rgba(2,26,53,0.04) !important; }
-  #adg-5c .pain-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.25rem !important; font-weight: 600 !important; color: #021A35 !important; margin-bottom: 0.5rem !important; }
+  #adg-5c .pain-card { border-left: 3px solid var(--navy) !important; padding: 1.5rem !important; background: rgba(2,26,53,0.04) !important; }
+  #adg-5c .pain-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.25rem !important; font-weight: 600 !important; color: var(--navy) !important; margin-bottom: 0.5rem !important; }
   #adg-5c .pain-card p { font-size: 0.95rem !important; line-height: 1.7 !important; color: rgba(2,26,53,0.7) !important; }
 
-  #adg-5c #solution { padding: 7rem 2rem !important; background: #021A35 !important; text-align: center !important; position: relative !important; overflow: hidden !important; }
+  #adg-5c #solution { padding: 7rem 2rem !important; background: var(--navy) !important; text-align: center !important; position: relative !important; overflow: hidden !important; }
   #adg-5c #solution::before { content: '5C' !important; position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%,-50%) !important; font-family: 'Cormorant Garamond', serif !important; font-size: 28rem !important; font-weight: 700 !important; color: rgba(253,210,13,0.03) !important; pointer-events: none !important; white-space: nowrap !important; }
   #adg-5c .solution-inner { position: relative !important; z-index: 2 !important; }
   #adg-5c .solution-description { max-width: 680px !important; margin: 0 auto 2.5rem !important; }
 
-  #adg-5c #pillars { padding: 7rem 2rem !important; background: #0a2d52 !important; }
+  #adg-5c #pillars { padding: 7rem 2rem !important; background: var(--navy-light) !important; }
   #adg-5c .pillars-intro { text-align: center !important; max-width: 640px !important; margin: 0 auto 4rem !important; }
   #adg-5c .pillar-item { display: grid !important; grid-template-columns: 80px 1fr !important; border-bottom: 1px solid rgba(253,210,13,0.15) !important; padding: 2.5rem 0 !important; gap: 2rem !important; align-items: start !important; background: transparent !important; }
-  #adg-5c .pillar-num { font-family: 'Cormorant Garamond', serif !important; font-size: 4rem !important; font-weight: 700 !important; color: #FDD20D !important; line-height: 1 !important; opacity: 0.9 !important; }
-  #adg-5c .pillar-body h3 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.9rem !important; font-weight: 600 !important; color: #FDF8F0 !important; margin-bottom: 0.3rem !important; }
-  #adg-5c .pillar-body .pillar-sub { font-size: 0.75rem !important; letter-spacing: 0.2em !important; text-transform: uppercase !important; color: #FDD20D !important; font-weight: 600 !important; margin-bottom: 0.9rem !important; display: block !important; }
+  #adg-5c .pillar-num { font-family: 'Cormorant Garamond', serif !important; font-size: 4rem !important; font-weight: 700 !important; color: var(--gold) !important; line-height: 1 !important; opacity: 0.9 !important; }
+  #adg-5c .pillar-body h3 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.9rem !important; font-weight: 600 !important; color: var(--cream) !important; margin-bottom: 0.3rem !important; }
+  #adg-5c .pillar-body .pillar-sub { font-size: 0.75rem !important; letter-spacing: 0.2em !important; text-transform: uppercase !important; color: var(--gold) !important; font-weight: 600 !important; margin-bottom: 0.9rem !important; display: block !important; }
   #adg-5c .pillar-body p { font-size: 0.98rem !important; line-height: 1.75 !important; color: rgba(253,248,240,0.72) !important; max-width: 640px !important; }
   #adg-5c .pillar-outcomes { display: flex !important; flex-wrap: wrap !important; gap: 0.5rem !important; margin-top: 1rem !important; }
   #adg-5c .pillar-tag { font-size: 0.72rem !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; border: 1px solid rgba(253,210,13,0.3) !important; color: rgba(253,210,13,0.7) !important; padding: 0.25rem 0.7rem !important; background: transparent !important; }
 
-  #adg-5c #who { padding: 7rem 2rem !important; background: #FDF8F0 !important; color: #021A35 !important; }
-  #adg-5c #who .section-title { color: #021A35 !important; }
+  #adg-5c #who { padding: 7rem 2rem !important; background: var(--cream) !important; color: var(--navy) !important; }
+  #adg-5c #who .section-title { color: var(--navy) !important; }
   #adg-5c .audience-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; margin-top: 3rem !important; }
-  #adg-5c .audience-card { background: #021A35 !important; color: #FDF8F0 !important; padding: 2rem 1.5rem !important; border-bottom: 3px solid #FDD20D !important; border-top: none !important; border-left: none !important; border-right: none !important; }
+  #adg-5c .audience-card { background: var(--navy) !important; color: var(--cream) !important; padding: 2rem 1.5rem !important; border-bottom: 3px solid var(--gold) !important; border-top: none !important; border-left: none !important; border-right: none !important; }
   #adg-5c .audience-card .icon { font-size: 1.8rem !important; margin-bottom: 1rem !important; display: block !important; }
-  #adg-5c .audience-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.3rem !important; font-weight: 600 !important; margin-bottom: 0.5rem !important; color: #FDD20D !important; }
+  #adg-5c .audience-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.3rem !important; font-weight: 600 !important; margin-bottom: 0.5rem !important; color: var(--gold) !important; }
   #adg-5c .audience-card p { font-size: 0.9rem !important; line-height: 1.65 !important; color: rgba(253,248,240,0.72) !important; }
   #adg-5c .not-for { margin-top: 3rem !important; padding: 2rem !important; border: 1px solid rgba(2,26,53,0.15) !important; background: rgba(2,26,53,0.04) !important; }
-  #adg-5c .not-for h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; color: #021A35 !important; margin-bottom: 0.75rem !important; }
+  #adg-5c .not-for h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; color: var(--navy) !important; margin-bottom: 0.75rem !important; }
   #adg-5c .not-for p { font-size: 0.95rem !important; line-height: 1.7 !important; color: rgba(2,26,53,0.65) !important; }
 
-  #adg-5c #deliverables { padding: 7rem 2rem !important; background: #021A35 !important; }
+  #adg-5c #deliverables { padding: 7rem 2rem !important; background: var(--navy) !important; }
   #adg-5c .deliverables-intro { max-width: 620px !important; margin-bottom: 4rem !important; }
   #adg-5c .deliverables-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
   #adg-5c .deliverable-card { background: rgba(253,210,13,0.05) !important; border: 1px solid rgba(253,210,13,0.2) !important; padding: 2rem !important; }
   #adg-5c .deliverable-card .d-icon { width: 44px !important; height: 44px !important; background: rgba(253,210,13,0.12) !important; border: 1px solid rgba(253,210,13,0.35) !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.2rem !important; margin-bottom: 1.2rem !important; }
-  #adg-5c .deliverable-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.3rem !important; font-weight: 600 !important; color: #FDD20D !important; margin-bottom: 0.5rem !important; }
+  #adg-5c .deliverable-card h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.3rem !important; font-weight: 600 !important; color: var(--gold) !important; margin-bottom: 0.5rem !important; }
   #adg-5c .deliverable-card p { font-size: 0.92rem !important; line-height: 1.7 !important; color: rgba(253,248,240,0.7) !important; }
 
-  #adg-5c #journey { padding: 7rem 2rem !important; background: #0a2d52 !important; }
+  #adg-5c #journey { padding: 7rem 2rem !important; background: var(--navy-light) !important; }
   #adg-5c .journey-intro { text-align: center !important; max-width: 600px !important; margin: 0 auto 4rem !important; }
   #adg-5c .journey-steps { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important; gap: 0 !important; }
   #adg-5c .journey-step { padding: 2rem !important; position: relative !important; background: transparent !important; }
-  #adg-5c .journey-step:not(:last-child)::after { content: '→' !important; position: absolute !important; right: -0.5rem !important; top: 50% !important; transform: translateY(-50%) !important; color: #FDD20D !important; font-size: 1.5rem !important; opacity: 0.4 !important; }
-  #adg-5c .step-num { font-family: 'Cormorant Garamond', serif !important; font-size: 3rem !important; font-weight: 700 !important; color: #FDD20D !important; line-height: 1 !important; margin-bottom: 0.75rem !important; display: block !important; }
-  #adg-5c .journey-step h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; font-weight: 600 !important; color: #FDF8F0 !important; margin-bottom: 0.4rem !important; }
+  #adg-5c .journey-step:not(:last-child)::after { content: '→' !important; position: absolute !important; right: -0.5rem !important; top: 50% !important; transform: translateY(-50%) !important; color: var(--gold) !important; font-size: 1.5rem !important; opacity: 0.4 !important; }
+  #adg-5c .step-num { font-family: 'Cormorant Garamond', serif !important; font-size: 3rem !important; font-weight: 700 !important; color: var(--gold) !important; line-height: 1 !important; margin-bottom: 0.75rem !important; display: block !important; }
+  #adg-5c .journey-step h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; font-weight: 600 !important; color: var(--cream) !important; margin-bottom: 0.4rem !important; }
   #adg-5c .journey-step p { font-size: 0.88rem !important; line-height: 1.6 !important; color: rgba(253,248,240,0.65) !important; }
 
-  #adg-5c #leader { padding: 7rem 2rem !important; background: #FDF8F0 !important; color: #021A35 !important; }
+  #adg-5c #leader { padding: 7rem 2rem !important; background: var(--cream) !important; color: var(--navy) !important; }
   #adg-5c .leader-layout { max-width: 720px !important; }
-  #adg-5c .leader-content h2 { font-family: 'Cormorant Garamond', serif !important; font-size: clamp(2rem, 4vw, 3rem) !important; font-weight: 600 !important; line-height: 1.1 !important; color: #021A35 !important; margin-bottom: 0.5rem !important; }
-  #adg-5c .leader-title { font-size: 0.78rem !important; letter-spacing: 0.18em !important; text-transform: uppercase !important; color: #F47722 !important; font-weight: 600 !important; margin-bottom: 1.5rem !important; display: block !important; }
+  #adg-5c .leader-content h2 { font-family: 'Cormorant Garamond', serif !important; font-size: clamp(2rem, 4vw, 3rem) !important; font-weight: 600 !important; line-height: 1.1 !important; color: var(--navy) !important; margin-bottom: 0.5rem !important; }
+  #adg-5c .leader-title { font-size: 0.78rem !important; letter-spacing: 0.18em !important; text-transform: uppercase !important; color: var(--orange) !important; font-weight: 600 !important; margin-bottom: 1.5rem !important; display: block !important; }
   #adg-5c .leader-content p { font-size: 0.98rem !important; line-height: 1.8 !important; color: rgba(2,26,53,0.75) !important; margin-bottom: 1rem !important; }
   #adg-5c .leader-credentials { display: flex !important; flex-wrap: wrap !important; gap: 0.5rem !important; margin-top: 1.5rem !important; }
   #adg-5c .cred-tag { font-size: 0.72rem !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; border: 1px solid rgba(2,26,53,0.25) !important; color: rgba(2,26,53,0.6) !important; padding: 0.3rem 0.75rem !important; background: transparent !important; }
 
-  #adg-5c #faq { padding: 7rem 2rem !important; background: #0a2d52 !important; }
+  #adg-5c #faq { padding: 7rem 2rem !important; background: var(--navy-light) !important; }
   #adg-5c .faq-list { max-width: 740px !important; margin-top: 3rem !important; }
   #adg-5c .faq-item { border-bottom: 1px solid rgba(253,210,13,0.15) !important; padding: 1.75rem 0 !important; border-top: none !important; border-left: none !important; border-right: none !important; background: transparent !important; }
-  #adg-5c .faq-item h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; font-weight: 600 !important; color: #FDF8F0 !important; margin-bottom: 0.75rem !important; }
+  #adg-5c .faq-item h4 { font-family: 'Cormorant Garamond', serif !important; font-size: 1.2rem !important; font-weight: 600 !important; color: var(--cream) !important; margin-bottom: 0.75rem !important; }
   #adg-5c .faq-item p { font-size: 0.95rem !important; line-height: 1.75 !important; color: rgba(253,248,240,0.68) !important; }
 
-  #adg-5c #cta-close { padding: 8rem 2rem !important; background: #021A35 !important; text-align: center !important; position: relative !important; overflow: hidden !important; }
+  #adg-5c #cta-close { padding: 8rem 2rem !important; background: var(--navy) !important; text-align: center !important; position: relative !important; overflow: hidden !important; }
   #adg-5c #cta-close::before { content: '' !important; position: absolute !important; inset: 0 !important; background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(253,210,13,0.07) 0%, transparent 70%) !important; }
   #adg-5c .cta-inner { position: relative !important; z-index: 2 !important; max-width: 680px !important; margin: 0 auto !important; }
   #adg-5c .cta-dual { display: flex !important; gap: 1rem !important; justify-content: center !important; flex-wrap: wrap !important; }
@@ -163,10 +163,10 @@ const css = `
   #adg-5c footer { background: #010f1f !important; padding: 3rem 2rem !important; border-top: 1px solid rgba(253,210,13,0.35) !important; }
   #adg-5c .footer-inner { display: flex !important; align-items: center !important; justify-content: space-between !important; flex-wrap: wrap !important; gap: 1rem !important; }
   #adg-5c .footer-brand { font-family: 'Cormorant Garamond', serif !important; font-size: 1.1rem !important; font-weight: 600 !important; color: rgba(253,248,240,0.6) !important; }
-  #adg-5c .footer-brand span { color: #FDD20D !important; }
+  #adg-5c .footer-brand span { color: var(--gold) !important; }
   #adg-5c .footer-links { display: flex !important; gap: 2rem !important; flex-wrap: wrap !important; }
   #adg-5c .footer-links a { font-size: 0.8rem !important; color: rgba(253,248,240,0.4) !important; text-decoration: none !important; letter-spacing: 0.08em !important; }
-  #adg-5c .footer-links a:hover { color: #FDD20D !important; }
+  #adg-5c .footer-links a:hover { color: var(--gold) !important; }
   #adg-5c .footer-copy { font-size: 0.78rem !important; color: rgba(253,248,240,0.3) !important; text-align: center !important; margin-top: 2rem !important; display: block !important; }
 
   @media (max-width: 768px) {
