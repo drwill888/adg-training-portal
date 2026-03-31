@@ -141,7 +141,10 @@ const css = `
   #adg-5c .journey-step p { font-size: 0.88rem !important; line-height: 1.6 !important; color: rgba(253,248,240,0.65) !important; }
 
   #adg-5c #leader { padding: 7rem 2rem !important; background: var(--cream) !important; color: var(--navy) !important; }
-  #adg-5c .leader-layout { max-width: 720px !important; }
+  #adg-5c .leader-layout { display: grid !important; grid-template-columns: 1fr 1.4fr !important; gap: 4rem !important; align-items: center !important; max-width: 960px !important; }
+  #adg-5c .leader-photo { border-radius: 8px !important; overflow: hidden !important; position: relative !important; }
+  #adg-5c .leader-photo img { width: 100% !important; height: auto !important; display: block !important; }
+  #adg-5c .leader-photo::after { content: '' !important; position: absolute !important; bottom: 0 !important; left: 0 !important; right: 0 !important; height: 4px !important; background: var(--gold) !important; }
   #adg-5c .leader-content h2 { font-family: 'Cormorant Garamond', serif !important; font-size: clamp(2rem, 4vw, 3rem) !important; font-weight: 600 !important; line-height: 1.1 !important; color: var(--navy) !important; margin-bottom: 0.5rem !important; }
   #adg-5c .leader-title { font-size: 0.78rem !important; letter-spacing: 0.18em !important; text-transform: uppercase !important; color: var(--orange) !important; font-weight: 600 !important; margin-bottom: 1.5rem !important; display: block !important; }
   #adg-5c .leader-content p { font-size: 0.98rem !important; line-height: 1.8 !important; color: rgba(2,26,53,0.75) !important; margin-bottom: 1rem !important; }
@@ -174,7 +177,8 @@ const css = `
     #adg-5c .pain-grid { grid-template-columns: 1fr !important; }
     #adg-5c .audience-grid { grid-template-columns: 1fr !important; }
     #adg-5c .deliverables-grid { grid-template-columns: 1fr !important; }
-    #adg-5c .leader-layout { max-width: 100% !important; }
+    #adg-5c .leader-layout { grid-template-columns: 1fr !important; max-width: 100% !important; }
+    #adg-5c .leader-photo { max-width: 320px !important; margin: 0 auto !important; }
     #adg-5c .journey-step:not(:last-child)::after { display: none !important; }
     #adg-5c .pillar-item { grid-template-columns: 60px 1fr !important; }
   }
@@ -469,6 +473,9 @@ export default function LandingPage() {
         <section id="leader">
           <div className="container">
             <div className="leader-layout">
+              <div className="leader-photo">
+                <img src="/images/will-meier.jpg" alt="Will Meier — Founder, Awakening Destiny Global" />
+              </div>
               <div className="leader-content">
                 <div className="section-badge orange">About Your Guide</div>
                 <h2>Will Meier</h2>
