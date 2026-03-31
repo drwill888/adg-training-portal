@@ -8,6 +8,7 @@ import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
 import { colors, fonts, radii, shadows, moduleAccents } from "../styles/tokens";
 import { LockIcon, DashboardIcon } from "../components/Icons";
+import Button from "../components/ui/Button";
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
@@ -315,11 +316,9 @@ export default function Dashboard() {
                 {!isFirstTime && nextMod.percent > 0 && (
                   <div style={{ marginBottom: 16 }}><ProgressBar percent={nextMod.percent} accent={colors.gold} height={6} /></div>
                 )}
-                <button
-                  onClick={function() { window.location.href = nm.href; }}
-                  style={{ padding: "10px 32px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                <Button onClick={function() { window.location.href = nm.href; }}>
                   {isFirstTime ? "Begin" : nextMod.percent > 0 ? "Continue" : "Start"}
-                </button>
+                </Button>
               </div>
             );
           })()}
@@ -381,11 +380,9 @@ export default function Dashboard() {
                 })}
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-                <button
-                  onClick={() => handleCheckout('individual')}
-                  style={{ padding: "12px 36px", background: colors.gold, color: colors.navy, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
+                <Button onClick={() => handleCheckout('individual')} style={{ whiteSpace: "nowrap" }}>
                   Unlock Full Access — $79.99
-                </button>
+                </Button>
                 <span style={{ fontSize: 12, color: colors.gray500 }}>Introduction module is free. Full access unlocks all 5 modules + bonus Commissioning module.</span>
               </div>
               <p style={{ fontSize: 11, color: colors.gray500, marginTop: 10 }}>

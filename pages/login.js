@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { colors, fonts } from '../styles/tokens'
+import Button from '../components/ui/Button'
 
 export default function LoginPage({ session }) {
   const router = useRouter()
@@ -115,10 +116,9 @@ export default function LoginPage({ session }) {
             )}
             {error && <p style={{ color: '#EE3124', fontSize: 13, marginBottom: 16 }}>{error}</p>}
             {message && <p style={{ color: '#0172BC', fontSize: 13, marginBottom: 16 }}>{message}</p>}
-            <button onClick={handleSubmit} disabled={loading}
-              style={{ width: '100%', padding: '12px', background: gold, color: navy, border: 'none', borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: loading ? 'default' : 'pointer', opacity: loading ? 0.7 : 1, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+            <Button onClick={handleSubmit} disabled={loading} size="full">
               {loading ? 'Please wait...' : isForgot ? 'Send Reset Link' : isSignUp ? 'Create Account' : 'Sign In'}
-            </button>
+            </Button>
             {!isForgot && !isSignUp && (
               <p style={{ textAlign: 'center', marginTop: 12, fontSize: 13 }}>
                 <span onClick={() => { setIsForgot(true); setError(''); setMessage('') }}

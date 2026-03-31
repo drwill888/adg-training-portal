@@ -9,6 +9,7 @@ import { downloadCertificate } from "../lib/certificate";
 import { ADG_SYSTEM_PROMPT } from "../lib/prompts";
 import { colors as t, fonts } from "../styles/tokens";
 import { BookIcon, PrayerIcon, CertificateIcon, CheckIcon, StarIcon, WarningIcon } from "./Icons";
+import Button from "./ui/Button";
 
 var NAVY = t.navy;
 var GOLD = t.gold;
@@ -42,7 +43,7 @@ function Modal({ open, onClose, children }) {
       <div style={{ position: "relative", width: "90%", maxWidth: 640, maxHeight: "85vh", overflowY: "auto", background: "#0a2d52", borderRadius: 16, padding: "32px 28px", boxShadow: "0 24px 64px rgba(0,0,0,0.5)", border: "1px solid rgba(253,210,13,0.15)" }}>
         <button onClick={onClose} style={{ position: "absolute", top: 12, right: 16, background: "none", border: "none", fontSize: 24, cursor: "pointer", color: "#6b7280" }}>×</button>
         {children}
-        <button onClick={onClose} style={{ display: "block", width: "100%", marginTop: 24, padding: "12px 0", background: NAVY, color: GOLD, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", textAlign: "center" }}>Close Window</button>
+        <Button variant="outline" size="full" onClick={onClose} style={{ marginTop: 24 }}>Close Window</Button>
       </div>
     </div>
   );
@@ -394,7 +395,7 @@ export default function ModuleTemplate({ config }) {
           <div style={{ fontSize: 11, color: GOLD, letterSpacing: "0.15em", fontWeight: 700, marginBottom: 16 }}>LOCKED</div>
           <h1 style={{ fontFamily: fonts.heading, color: "#FDF8F0", fontSize: "2rem", marginBottom: 12 }}>This Module Requires Full Access</h1>
           <p style={{ color: "#9ca3af", fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>Unlock all five modules of the 5C Leadership Blueprint to continue your formation journey.</p>
-          <button onClick={function() { fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pathway: 'individual' }) }).then(function(r) { return r.json(); }).then(function(d) { if (d.url) window.location.href = d.url; }).catch(function() { alert('Something went wrong.'); }); }} style={{ padding: "12px 32px", background: GOLD, color: NAVY, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", marginBottom: 12 }}>Unlock — $79.99</button>
+          <Button onClick={function() { fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pathway: 'individual' }) }).then(function(r) { return r.json(); }).then(function(d) { if (d.url) window.location.href = d.url; }).catch(function() { alert('Something went wrong.'); }); }} style={{ marginBottom: 12 }}>Unlock — $79.99</Button>
           <br /><a href="/dashboard" style={{ color: "#9ca3af", fontSize: 13 }}>← Back to Dashboard</a>
         </div>
       </div>
@@ -847,7 +848,7 @@ export default function ModuleTemplate({ config }) {
             )}
             {!aiSummary && !loading && (
               <div>
-                <button onClick={generateSummary} className="w-full py-4 rounded-2xl font-bold text-base transition-all" style={{ background: NAVY, color: accentMid }}>Generate My Personalized Summary →</button>
+                <Button onClick={generateSummary} size="full">Generate My Personalized Summary</Button>
                 {summaryError && (
                   <p style={{ fontSize: 12, color: "#f87171", marginTop: 8 }}>Summary unavailable right now — your responses are saved and you can continue.</p>
                 )}
@@ -868,7 +869,7 @@ export default function ModuleTemplate({ config }) {
                   </div>
                   <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#222" }}>{para}</p>; })}</div>
                 </div>
-                <button onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "1px solid rgba(253,210,13,0.3)", color: GOLD, background: "transparent", marginTop: 12 }}>↓ Download Blueprint (.docx)</button>
+                <Button variant="outline" size="full" onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} style={{ marginTop: 12 }}>Download Blueprint (.docx)</Button>
                 {enhanceCount < 3 && (
                   <div style={{ marginTop: 14, padding: "14px 16px", background: "rgba(253,210,13,0.06)", border: "1px solid rgba(253,210,13,0.2)", borderRadius: 14 }}>
                     <p style={{ fontSize: 12, fontWeight: 700, color: GOLD, marginBottom: 6 }}>Go Deeper {enhanceCount > 0 ? "(" + (3 - enhanceCount) + " remaining)" : ""}</p>
@@ -879,7 +880,7 @@ export default function ModuleTemplate({ config }) {
                       rows={2}
                       style={{ width: "100%", fontSize: 12, padding: "8px 10px", borderRadius: 8, border: "1px solid rgba(253,210,13,0.2)", background: "rgba(10,45,82,0.6)", color: "#FDF8F0", resize: "none", outline: "none", boxSizing: "border-box", marginBottom: 8 }}
                     />
-                    <button onClick={enhanceSummary} className="w-full py-2 rounded-xl font-bold text-sm" style={{ background: GOLD, color: NAVY }}>Revise My Summary →</button>
+                    <Button onClick={enhanceSummary} size="full">Revise My Summary</Button>
                   </div>
                 )}
                 {enhanceCount >= 3 && (
@@ -889,7 +890,7 @@ export default function ModuleTemplate({ config }) {
             )}
 
             {moduleNum === 6 && aiSummary && (
-              <button onClick={handleCertificate} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all flex items-center justify-center gap-2" style={{ border: "1px solid rgba(253,210,13,0.3)", color: GOLD, background: "transparent" }}><CertificateIcon size={16} color={GOLD} /> Download Completion Certificate</button>
+              <Button variant="outline" size="full" onClick={handleCertificate}><CertificateIcon size={16} color={GOLD} /> Download Completion Certificate</Button>
             )}
 
             {config.resources && config.resources.blogs && (
@@ -912,7 +913,7 @@ export default function ModuleTemplate({ config }) {
             )}
 
             {scriptures && (
-              <button onClick={function() { setShowScriptures(true); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all flex items-center justify-center gap-2" style={{ border: "1px solid rgba(253,210,13,0.3)", color: GOLD, background: "transparent" }}><BookIcon size={16} color={GOLD} /> Scriptures for Further Study</button>
+              <Button variant="outline" size="full" onClick={function() { setShowScriptures(true); }}><BookIcon size={16} color={GOLD} /> Scriptures for Further Study</Button>
             )}
           </div>
         );
@@ -1036,11 +1037,11 @@ export default function ModuleTemplate({ config }) {
 
       <div className="fixed bottom-0 left-0 right-0 py-3 z-40" style={{ background: "rgba(2,26,53,0.97)", backdropFilter: "blur(12px)", borderTop: "1px solid rgba(253,210,13,0.15)" }}>
         <div className="max-w-3xl mx-auto px-4 flex justify-between items-center">
-          <button onClick={function() { if (step > 0) { setStep(step - 1); scrollTop(); } }} disabled={step === 0} className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30" style={{ color: GOLD, border: "1.5px solid rgba(253,210,13,0.4)" }}>← Previous</button>
+          <Button variant="outline" onClick={function() { if (step > 0) { setStep(step - 1); scrollTop(); } }} disabled={step === 0}>Previous</Button>
           <span className="text-xs" style={{ color: "#6b7280" }}>{step + 1} / {STEPS.length}</span>
           {step === STEPS.length - 1 ? (
             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              <button onClick={async function() {
+              <Button variant="outline" onClick={async function() {
                 try {
                   var sr = await supabase.auth.getSession();
                   var ss = sr.data.session;
@@ -1049,9 +1050,9 @@ export default function ModuleTemplate({ config }) {
                   }
                 } catch(e) { console.error("Save before navigate failed:", e); }
                 window.location.href = "/dashboard";
-              }} style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13, fontWeight: 600, color: GOLD, border: "1.5px solid rgba(253,210,13,0.4)", background: "transparent", cursor: "pointer", whiteSpace: "nowrap" }}>Dashboard</button>
+              }}>Dashboard</Button>
               {moduleNum < 6 && (
-                <button onClick={async function() {
+                <Button onClick={async function() {
                   var nextUrl = ["/modules/introduction","/modules/calling","/modules/connection","/modules/competency","/modules/capacity","/modules/convergence","/modules/commissioning"][moduleNum + 1];
                   try {
                     var sr = await supabase.auth.getSession();
@@ -1061,11 +1062,11 @@ export default function ModuleTemplate({ config }) {
                     }
                   } catch(e) { console.error("Save before navigate failed:", e); }
                   window.location.href = nextUrl;
-                }} style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13, fontWeight: 700, background: GOLD, color: NAVY, border: "none", cursor: "pointer", whiteSpace: "nowrap" }}>Next Module →</button>
+                }}>Next Module</Button>
               )}
             </div>
           ) : (
-            <button onClick={function() { setStep(step + 1); scrollTop(); }} className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all" style={{ background: GOLD, color: NAVY }}>Next →</button>
+            <Button onClick={function() { setStep(step + 1); scrollTop(); }}>Next</Button>
           )}
         </div>
         <p className="text-center text-xs mt-1.5" style={{ color: "#4a5568" }}>© 2026 Awakening Destiny Global</p>

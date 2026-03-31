@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { colors, fonts } from '../styles/tokens';
+import Button from '../components/ui/Button';
 
 export default function Success() {
   const router = useRouter();
@@ -31,24 +32,9 @@ export default function Success() {
         <p style={{ color: '#c8cdd6', fontSize: '1.1rem', lineHeight: '1.6' }}>
           Your payment was successful. You now have full access to all five modules of the 5C Leadership Blueprint.
         </p>
-        <button
-          onClick={() => router.push('/dashboard')}
-          style={{
-            marginTop: '24px',
-            padding: '12px 32px',
-            backgroundColor: colors.gold,
-            color: colors.navy,
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '1rem',
-            fontWeight: '600',
-            cursor: 'pointer',
-            letterSpacing: '0.05em',
-            textTransform: 'uppercase',
-          }}
-        >
+        <Button onClick={() => router.push('/dashboard')} style={{ marginTop: 24 }}>
           Go to Dashboard
-        </button>
+        </Button>
       </div>
     </div>
   );
