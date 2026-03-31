@@ -68,7 +68,7 @@ export default function Welcome() {
             Most leadership programs add information to an unchanged life. The 5C Blueprint renovates the interior world. Five interconnected dimensions — each building on the one before — moving you from fragmented growth to integrated impact. The depth of your transformation depends entirely on the honesty you bring.
           </p>
           <div style={{ background: NAVY, borderRadius: 12, padding: "20px 24px", display: "flex", alignItems: "center", gap: 16 }}>
-            <span style={{ fontSize: 28 }}>✦</span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: GOLD_BRIGHT, letterSpacing: "0.1em" }}>5C</span>
             <div>
               <p style={{ fontSize: 13, fontWeight: 600, color: GOLD_BRIGHT }}>Includes Personalized Leadership Blueprint</p>
               <p style={{ fontSize: 12, color: "#c8cdd6" }}>Each module generates a personalized leadership analysis based on your responses — direct, apostolic, and actionable.</p>
@@ -105,16 +105,16 @@ export default function Welcome() {
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.8rem", fontWeight: 700, color: NAVY, marginBottom: 24 }}>The Full Formation Experience</h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
               {[
-                { icon: "◈", title: "Free Introduction", desc: "Assess your readiness and establish your formation posture before entering the modules." },
-                { icon: "✦", title: "5 Leadership Modules", desc: "Calling, Connection, Competency, Capacity, and Convergence — each with teaching, diagnostics, and commitments." },
-                { icon: "🎯", title: "Personalized Blueprints", desc: "Personalized leadership analysis generated from your responses at the end of each module." },
-                { icon: "📄", title: "Downloadable Reports", desc: "Export your blueprint as a document to revisit, share with mentors, and track growth." },
-                { icon: "📖", title: "Scripture Study Banks", desc: "Curated scripture collections for deeper meditation on each leadership dimension." },
-                { icon: "↺", title: "Save & Resume", desc: "Your progress is saved automatically. Leave and return anytime without losing your work." },
+                { num: "01", title: "Free Introduction", desc: "Assess your readiness and establish your formation posture before entering the modules." },
+                { num: "02", title: "5 Leadership Modules", desc: "Calling, Connection, Competency, Capacity, and Convergence — each with teaching, diagnostics, and commitments." },
+                { num: "03", title: "Personalized Blueprints", desc: "Personalized leadership analysis generated from your responses at the end of each module." },
+                { num: "04", title: "Downloadable Reports", desc: "Export your blueprint as a document to revisit, share with mentors, and track growth." },
+                { num: "05", title: "Scripture Study Banks", desc: "Curated scripture collections for deeper meditation on each leadership dimension." },
+                { num: "06", title: "Save & Resume", desc: "Your progress is saved automatically. Leave and return anytime without losing your work." },
               ].map(function(item, i) {
                 return (
                   <div key={i} style={{ padding: "20px", borderRadius: 12, border: "1px solid #e5e7eb" }}>
-                    <div style={{ fontSize: 24, marginBottom: 8 }}>{item.icon}</div>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: GOLD_BRIGHT, fontFamily: "'Cormorant Garamond', serif", marginBottom: 8 }}>{item.num}</div>
                     <div style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 4 }}>{item.title}</div>
                     <div style={{ fontSize: 13, color: "#666", lineHeight: 1.6 }}>{item.desc}</div>
                   </div>

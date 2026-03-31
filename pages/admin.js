@@ -258,7 +258,7 @@ export default function AdminDashboard() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
                     <div>
                       <div style={{ fontSize: 14, fontWeight: 700, color: NAVY }}>{emailFor(userId)}</div>
-                      <div style={{ fontSize: 12, color: isPaid ? "#16a34a" : "#888" }}>{isPaid ? "✓ Paid" : "Free tier"}</div>
+                      <div style={{ fontSize: 12, color: isPaid ? "#16a34a" : "#888" }}>{isPaid ? "Paid" : "Free tier"}</div>
                     </div>
                   </div>
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -274,7 +274,7 @@ export default function AdminDashboard() {
                           color: completed ? "#16a34a" : inProgress ? "#92400e" : "#9ca3af",
                           border: "1px solid " + (completed ? "#bbf7d0" : inProgress ? "#fde68a" : "#e5e7eb"),
                         }}>
-                          {name}{inProgress ? " (" + getStepLabel(stepNum) + ")" : completed ? " ✓" : ""}
+                          {name}{inProgress ? " (" + getStepLabel(stepNum) + ")" : completed ? " (done)" : ""}
                         </div>
                       );
                     })}
@@ -362,10 +362,10 @@ export default function AdminDashboard() {
                         <td style={{ padding: "12px 16px", fontSize: 13, color: NAVY, fontWeight: 600 }}>{MODULE_NAMES[p.module_id] || "Module " + p.module_id}</td>
                         <td style={{ padding: "12px 16px", fontSize: 12, color: "#555" }}>{getStepLabel(p.current_step || 0)}</td>
                         <td style={{ padding: "12px 16px", fontSize: 12 }}>
-                          <span style={{ color: hasCommit ? "#16a34a" : "#9ca3af" }}>{hasCommit ? "✓ Yes" : "—"}</span>
+                          <span style={{ color: hasCommit ? "#16a34a" : "#9ca3af" }}>{hasCommit ? "Yes" : "—"}</span>
                         </td>
                         <td style={{ padding: "12px 16px", fontSize: 12 }}>
-                          <span style={{ color: hasSummary ? "#16a34a" : "#9ca3af" }}>{hasSummary ? "✓ Generated" : "—"}</span>
+                          <span style={{ color: hasSummary ? "#16a34a" : "#9ca3af" }}>{hasSummary ? "Generated" : "—"}</span>
                         </td>
                         <td style={{ padding: "12px 16px", fontSize: 12, color: "#888" }}>{p.updated_at ? new Date(p.updated_at).toLocaleString() : ""}</td>
                       </tr>

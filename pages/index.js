@@ -387,15 +387,15 @@ export default function LandingPage() {
             <div className="gold-line" style={{background:'#EE3124'}}></div>
             <div className="audience-grid">
               {[
-                {icon:'⚡', title:'Kingdom Entrepreneurs', body:"Business builders who want enterprise that reflects the Kingdom — profitable, purposeful, and Spirit-led from the boardroom to the balance sheet."},
-                {icon:'🔥', title:'Emerging Leaders', body:"Called ones in transition — moving from potential into purpose, from the preparation room into the deployment room."},
-                {icon:'👑', title:'Pastors & Apostolic Leaders', body:"Shepherds and builders who need a framework that integrates spiritual governance with organizational effectiveness."},
-                {icon:'🌐', title:'Prophetic Voices', body:"Those who carry prophetic grace and need the structural wisdom to steward their gift with both accuracy and accountability."},
-                {icon:'🏗', title:'Executive Leaders', body:"High-capacity leaders at the peak of influence who sense that something deeper — something Kingdom — is being required of them now."},
-                {icon:'🙏', title:'Intercessors & Prayer Leaders', body:"Those who operate in intercession and need to understand how their gift is a leadership gift — one that shapes strategy, not just atmosphere."},
+                {num:'01', title:'Kingdom Entrepreneurs', body:"Business builders who want enterprise that reflects the Kingdom — profitable, purposeful, and Spirit-led from the boardroom to the balance sheet."},
+                {num:'02', title:'Emerging Leaders', body:"Called ones in transition — moving from potential into purpose, from the preparation room into the deployment room."},
+                {num:'03', title:'Pastors & Apostolic Leaders', body:"Shepherds and builders who need a framework that integrates spiritual governance with organizational effectiveness."},
+                {num:'04', title:'Prophetic Voices', body:"Those who carry prophetic grace and need the structural wisdom to steward their gift with both accuracy and accountability."},
+                {num:'05', title:'Executive Leaders', body:"High-capacity leaders at the peak of influence who sense that something deeper — something Kingdom — is being required of them now."},
+                {num:'06', title:'Intercessors & Prayer Leaders', body:"Those who operate in intercession and need to understand how their gift is a leadership gift — one that shapes strategy, not just atmosphere."},
               ].map(card => (
                 <div key={card.title} className="audience-card">
-                  <div className="icon">{card.icon}</div>
+                  <div className="icon" style={{fontFamily:"'Cormorant Garamond', serif", fontWeight:700, opacity:0.6}}>{card.num}</div>
                   <h4>{card.title}</h4>
                   <p>{card.body}</p>
                 </div>
@@ -419,18 +419,18 @@ export default function LandingPage() {
             </div>
             <div className="deliverables-grid">
               {[
-                {icon:'📖', title:'5C Curriculum Modules', body:"Seven structured modules — Introduction, one for each of the 5 Dimensions, and a Commissioning — each building sequentially on the last with revelatory teaching, biblical foundations, and strategic frameworks."},
-                {icon:'💬', title:'Interactive Reflection Questions', body:"Each module includes guided reflection questions designed to draw out what's already in you — surfacing clarity, confronting blind spots, and anchoring revelation to real application."},
-                {icon:'✍️', title:'Personalized Summaries', body:"At the close of each module, receive a personalized leadership summary tailored to your responses — a written declaration of where you are and where you're going."},
-                {icon:'🧠', title:'AI Leadership Assistant', body:"Your built-in guide throughout the Blueprint. Ask questions, go deeper on content, process what you're learning — available to you at every step of the journey."},
-                {icon:'🙏', title:'Prayer & Activation Support', body:"Every dimension includes targeted prayers and prophetic activations — so when you're stuck, unsure, or need a breakthrough, you have a Kingdom-anchored way forward built right into the experience."},
-                {icon:'📖', title:'Reference Blogs & Scripture Study', body:"Each module connects to curated blog content and Scripture references for those who want to go deeper — anchoring the teaching in the Word and extending the revelation beyond the module."},
-                {icon:'🎙', title:'Podcast Training Series', body:"Access to the 5C Blueprint podcast — episodes that expand on each module with prophetic teaching, interviews, and leadership activation content to reinforce what you're building."},
-                {icon:'📜', title:'Certificate of Commissioning', body:"Upon completing all five dimensions, receive a formal Certificate of Commissioning — a tangible marker of the work done, the ground covered, and the assignment ahead."},
-                {icon:'🛤', title:'Individual or Cohort', body:"Choose your path — move through the Blueprint at your own pace with full module access, or join a live cohort with peer community, group coaching, and real-time apostolic leadership input. One Blueprint. Two ways to build."},
+                {num:'01', title:'5C Curriculum Modules', body:"Seven structured modules — Introduction, one for each of the 5 Dimensions, and a Commissioning — each building sequentially on the last with revelatory teaching, biblical foundations, and strategic frameworks."},
+                {num:'02', title:'Interactive Reflection Questions', body:"Each module includes guided reflection questions designed to draw out what's already in you — surfacing clarity, confronting blind spots, and anchoring revelation to real application."},
+                {num:'03', title:'Personalized Summaries', body:"At the close of each module, receive a personalized leadership summary tailored to your responses — a written declaration of where you are and where you're going."},
+                {num:'04', title:'AI Leadership Assistant', body:"Your built-in guide throughout the Blueprint. Ask questions, go deeper on content, process what you're learning — available to you at every step of the journey."},
+                {num:'05', title:'Prayer & Activation Support', body:"Every dimension includes targeted prayers and prophetic activations — so when you're stuck, unsure, or need a breakthrough, you have a Kingdom-anchored way forward built right into the experience."},
+                {num:'06', title:'Reference Blogs & Scripture Study', body:"Each module connects to curated blog content and Scripture references for those who want to go deeper — anchoring the teaching in the Word and extending the revelation beyond the module."},
+                {num:'07', title:'Podcast Training Series', body:"Access to the 5C Blueprint podcast — episodes that expand on each module with prophetic teaching, interviews, and leadership activation content to reinforce what you're building."},
+                {num:'08', title:'Certificate of Commissioning', body:"Upon completing all five dimensions, receive a formal Certificate of Commissioning — a tangible marker of the work done, the ground covered, and the assignment ahead."},
+                {num:'09', title:'Individual or Cohort', body:"Choose your path — move through the Blueprint at your own pace with full module access, or join a live cohort with peer community, group coaching, and real-time apostolic leadership input. One Blueprint. Two ways to build."},
               ].map(card => (
                 <div key={card.title} className="deliverable-card">
-                  <div className="d-icon">{card.icon}</div>
+                  <div className="d-icon" style={{fontFamily:"'Cormorant Garamond', serif", fontWeight:700, fontSize:'1rem'}}>{card.num}</div>
                   <h4>{card.title}</h4>
                   <p>{card.body}</p>
                 </div>

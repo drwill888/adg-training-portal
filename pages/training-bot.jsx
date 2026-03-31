@@ -123,7 +123,7 @@ export default function TrainingBotPage() {
 
       if (res.ok) {
         setIngestMessage(
-          `✓ "${title}" loaded into ${ingestModule} module. ${data.chunksCreated} chunks created.`
+          `"${title}" loaded into ${ingestModule} module. ${data.chunksCreated} chunks created.`
         );
         setTitle("");
         setTrainingText("");
@@ -625,7 +625,7 @@ export default function TrainingBotPage() {
                   style={{
                     marginTop: "12px",
                     fontSize: "14px",
-                    color: ingestMessage.startsWith("✓") ? "#16a34a" : BRAND.red,
+                    color: ingestMessage.includes("loaded") ? "#16a34a" : BRAND.red,
                     fontWeight: 500,
                   }}
                 >

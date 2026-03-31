@@ -420,7 +420,7 @@ export default function Assessment() {
           ══════════════════════════════ */}
           {screen === 'gate' && (
             <div style={{ maxWidth: 560, margin: '0 auto', textAlign: 'center' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1.5rem' }}>✦</div>
+              <div style={{ fontSize: 11, color: colors.gold, letterSpacing: '0.15em', fontWeight: 700, marginBottom: '1.5rem' }}>YOUR RESULTS</div>
               <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700, lineHeight: 1.1, marginBottom: '1rem' }}>
                 Your Results Are <em style={{ color: colors.gold }}>Ready</em>
               </h2>
@@ -483,14 +483,14 @@ export default function Assessment() {
               {/* Email Confirmation */}
               {emailSent && (
                 <div style={{ padding: '1rem', background: 'rgba(74,222,128,0.08)', border: '1px solid rgba(74,222,128,0.2)', marginBottom: '2rem', fontSize: '0.85rem', color: colors.green, textAlign: 'center' }}>
-                  ✓ Your full results have been sent to {userData.email}
+                  Your full results have been sent to {userData.email}
                 </div>
               )}
 
               {/* Saved Confirmation */}
               {resultSaved && (
                 <div style={{ fontSize: 12, color: '#16a34a', marginTop: 8, textAlign: 'center' }}>
-                  ✓ Your results have been saved to your profile.
+                  Your results have been saved to your profile.
                 </div>
               )}
 
