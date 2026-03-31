@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
 import { colors, fonts, radii, shadows, moduleAccents } from "../styles/tokens";
+import { LockIcon, DashboardIcon } from "../components/Icons";
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
@@ -23,13 +24,13 @@ function useIsMobile(breakpoint = 768) {
 // Colors now imported from styles/tokens.js
 
 const modules = [
-  { id: 0, title: "Introduction", subtitle: "Course Foundation", icon: "◈", href: "/modules/introduction", free: true, timeEstimate: "~30 min" },
-  { id: 1, title: "Calling", subtitle: "Potential (Purpose)", question: "Who was I designed to become?", icon: "①", href: "/modules/calling", timeEstimate: "~60 min" },
-  { id: 2, title: "Connection", subtitle: "Identity (Relationships)", question: "Whose am I?", icon: "②", href: "/modules/connection", timeEstimate: "~60 min" },
-  { id: 3, title: "Competency", subtitle: "Excellence (Credibility)", question: "Can I carry what I'm called to build?", icon: "③", href: "/modules/competency", timeEstimate: "~60 min" },
-  { id: 4, title: "Capacity", subtitle: "Character (Sustainability)", question: "Can I sustain what I'm building?", icon: "④", href: "/modules/capacity", timeEstimate: "~60 min" },
-  { id: 5, title: "Convergence", subtitle: "Sweet Spot (Impact)", question: "Am I operating in my sweet spot?", icon: "⑤", href: "/modules/convergence", timeEstimate: "~60 min" },
-  { id: 6, title: "Commissioning", subtitle: "Bonus Module", icon: "◉", href: "/modules/commissioning", bonus: true, timeEstimate: "~45 min" },
+  { id: 0, title: "Introduction", subtitle: "Course Foundation", icon: "—", href: "/modules/introduction", free: true, timeEstimate: "~30 min" },
+  { id: 1, title: "Calling", subtitle: "Potential (Purpose)", question: "Who was I designed to become?", icon: "1", href: "/modules/calling", timeEstimate: "~60 min" },
+  { id: 2, title: "Connection", subtitle: "Identity (Relationships)", question: "Whose am I?", icon: "2", href: "/modules/connection", timeEstimate: "~60 min" },
+  { id: 3, title: "Competency", subtitle: "Excellence (Credibility)", question: "Can I carry what I'm called to build?", icon: "3", href: "/modules/competency", timeEstimate: "~60 min" },
+  { id: 4, title: "Capacity", subtitle: "Character (Sustainability)", question: "Can I sustain what I'm building?", icon: "4", href: "/modules/capacity", timeEstimate: "~60 min" },
+  { id: 5, title: "Convergence", subtitle: "Sweet Spot (Impact)", question: "Am I operating in my sweet spot?", icon: "5", href: "/modules/convergence", timeEstimate: "~60 min" },
+  { id: 6, title: "Commissioning", subtitle: "Bonus Module", icon: "+", href: "/modules/commissioning", bonus: true, timeEstimate: "~45 min" },
 ];
 
 const accents = moduleAccents;
@@ -39,7 +40,7 @@ const TOTAL_STEPS = { 0: 7, 1: 8, 2: 8, 3: 8, 4: 8, 5: 8, 6: 8 };
 function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
   const isMobile = useIsMobile();
   const navItems = [
-    { key: "dashboard", label: "Dashboard", icon: "⬡" },
+    { key: "dashboard", label: "Dashboard", icon: null, isDash: true },
     ...modules.map(m => ({
       key: "mod-" + m.id,
       label: m.id === 0 ? "Introduction" : m.id === 6 ? "Commissioning" : m.id + ". " + m.title,
@@ -72,7 +73,7 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
                 style={{ padding: "10px 20px", cursor: item.locked ? "default" : "pointer", display: "flex", alignItems: "center", gap: 10, background: act ? colors.navyLight : "transparent", borderLeft: act ? "3px solid " + colors.gold : "3px solid transparent", opacity: item.locked ? 0.4 : 1, transition: "all 0.2s" }}
                 onMouseEnter={function(e) { if (!act && !item.locked) e.currentTarget.style.background = colors.navyLight; }}
                 onMouseLeave={function(e) { if (!act && !item.locked) e.currentTarget.style.background = "transparent"; }}>
-                <span style={{ fontSize: 14, width: 22, textAlign: "center", color: act ? colors.skyBlue : colors.gray300 }}>{item.locked ? "🔒" : item.icon}</span>
+                <span style={{ fontSize: 14, width: 22, textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", color: act ? colors.gold : colors.gray300 }}>{item.locked ? <LockIcon size={14} color={colors.gray500} /> : item.isDash ? <DashboardIcon size={14} color={act ? colors.gold : colors.gray300} /> : <span style={{ fontWeight: 700, fontSize: 12 }}>{item.icon}</span>}</span>
                 <span style={{ fontSize: 13, fontWeight: act ? 600 : 400, color: act ? colors.white : colors.gray300 }}>{item.label}</span>
               </div>
             );

@@ -8,6 +8,7 @@ import { supabase } from "../lib/supabase";
 import { downloadCertificate } from "../lib/certificate";
 import { ADG_SYSTEM_PROMPT } from "../lib/prompts";
 import { colors as t, fonts } from "../styles/tokens";
+import { BookIcon, PrayerIcon, CertificateIcon, CheckIcon, StarIcon, WarningIcon } from "./Icons";
 
 var NAVY = t.navy;
 var GOLD = t.gold;
@@ -390,8 +391,8 @@ export default function ModuleTemplate({ config }) {
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#021A35", fontFamily: "'Outfit', sans-serif" }}>
   
         <div style={{ textAlign: "center", maxWidth: 440, padding: 40 }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "2rem", marginBottom: 12 }}>This Module Requires Full Access</h1>
+          <div style={{ fontSize: 11, color: GOLD, letterSpacing: "0.15em", fontWeight: 700, marginBottom: 16 }}>LOCKED</div>
+          <h1 style={{ fontFamily: fonts.heading, color: "#FDF8F0", fontSize: "2rem", marginBottom: 12 }}>This Module Requires Full Access</h1>
           <p style={{ color: "#9ca3af", fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>Unlock all five modules of the 5C Leadership Blueprint to continue your formation journey.</p>
           <button onClick={function() { fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pathway: 'individual' }) }).then(function(r) { return r.json(); }).then(function(d) { if (d.url) window.location.href = d.url; }).catch(function() { alert('Something went wrong.'); }); }} style={{ padding: "12px 32px", background: GOLD, color: NAVY, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer", marginBottom: 12 }}>Unlock — $79.99</button>
           <br /><a href="/dashboard" style={{ color: "#9ca3af", fontSize: 13 }}>← Back to Dashboard</a>
@@ -523,7 +524,7 @@ export default function ModuleTemplate({ config }) {
             <SectionHead sub="Set aside distractions. You are entering formational territory.">Welcome to {title}</SectionHead>
             {bookChapter && (
               <button onClick={function() { setShowBookChapter(true); }} style={{ width: "100%", padding: "16px 20px", background: NAVY, borderRadius: 12, border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
-                <span style={{ fontSize: 24 }}>📖</span>
+                <BookIcon size={22} color={GOLD} />
                 <div style={{ textAlign: "left" }}>
                   <div style={{ fontSize: 13, fontWeight: 700, color: GOLD }}>From the Book: Leaders for Life</div>
                   <div style={{ fontSize: 12, color: "#c8cdd6" }}>{bookChapter.title} — Tap to read</div>
@@ -606,14 +607,14 @@ export default function ModuleTemplate({ config }) {
                     <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0" style={{ background: NAVY, color: accentMid }}>{idx + 1}</div>
                     <div style={{ flex: 1 }}>
                       {isAdd && <p className="text-xs uppercase tracking-widest font-semibold" style={{ color: accentMid, marginBottom: 2 }}>Addendum Principle</p>}
-                      <h4 className="font-bold text-lg" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif", margin: 0 }}>{p.title}</h4>
+                      <h4 className="font-bold text-lg" style={{ color: "#FDF8F0", fontFamily: fonts.heading, margin: 0 }}>{p.title}</h4>
                       {p.ref && <p className="text-xs mt-0.5" style={{ color: "#6b7280", margin: 0 }}>{p.ref}</p>}
                     </div>
                     <span style={{ fontSize: 14, color: accent, fontWeight: 700, flexShrink: 0 }}>{isOpen ? "−" : "+"}</span>
                   </button>
                   {isOpen && (
                     <div style={{ padding: "0 20px 20px" }}>
-                      {p.scripture && <p className="text-sm italic mb-4" style={{ color: NAVY, borderLeft: "2px solid " + accent, paddingLeft: 12 }}>{p.scripture}</p>}
+                      {p.scripture && <p className="text-sm italic mb-4" style={{ color: GOLD, borderLeft: "2px solid " + GOLD, paddingLeft: 12 }}>{p.scripture}</p>}
                       <div className="space-y-3 mb-4">
                         {p.paragraphs.map(function(para, i) { return <p key={i} className="text-sm leading-relaxed" style={{ color: "#FDF8F0" }}>{para}</p>; })}
                       </div>
@@ -641,7 +642,7 @@ export default function ModuleTemplate({ config }) {
               <p className="text-sm font-bold mb-3 uppercase tracking-wide" style={{ color: GOLD }}>What this teaches us:</p>
               <ul className="space-y-2.5">
                 {exemplar.lessons.map(function(l, i) {
-                  return (<li key={i} className="flex gap-3 text-sm"><span className="mt-0.5 flex-shrink-0 font-bold" style={{ color: accent }}>✦</span><span style={{ color: "#FDF8F0" }}>{l}</span></li>);
+                  return (<li key={i} className="flex gap-3 text-sm"><span className="mt-0.5 flex-shrink-0"><StarIcon size={10} color={GOLD} /></span><span style={{ color: "#FDF8F0" }}>{l}</span></li>);
                 })}
               </ul>
             </div>
@@ -667,7 +668,7 @@ export default function ModuleTemplate({ config }) {
             {stages.map(function(s, i) {
               return (
                 <div key={i} className="p-5 rounded-xl" style={{ background: "rgba(10,45,82,0.6)", border: "1px solid rgba(253,210,13,0.1)", borderLeft: "4px solid " + accent }}>
-                  <h4 className="font-bold mb-2" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif", fontSize: 17 }}>{s.title}</h4>
+                  <h4 className="font-bold mb-2" style={{ color: "#FDF8F0", fontFamily: fonts.heading, fontSize: 17 }}>{s.title}</h4>
                   <p className="text-sm leading-relaxed" style={{ color: "#c8cdd6" }}>{s.description}</p>
                   {s.markers && (
                     <ul className="mt-3 space-y-1.5">
@@ -815,7 +816,7 @@ export default function ModuleTemplate({ config }) {
                   onClick={function() { setPrayerOpen(function(o) { return !o; }); }}
                   style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 18px", background: "transparent", border: "1px solid " + accent + "66", borderRadius: 12, cursor: "pointer", textAlign: "left" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <span style={{ fontSize: 18 }}>🙏</span>
+                    <PrayerIcon size={18} color={GOLD} />
                     <div>
                       <p style={{ fontSize: 13, fontWeight: 700, color: "#FDF8F0", margin: 0 }}>Activation Prayer — {activationPrayer.theme}</p>
                       <p style={{ fontSize: 11, color: "#9ca3af", margin: 0 }}>{activationPrayer.context}</p>
@@ -829,7 +830,7 @@ export default function ModuleTemplate({ config }) {
                       {activationPrayer.scriptures.map(function(s, i) {
                         return (
                           <div key={i} style={{ padding: "10px 14px", borderLeft: "3px solid " + accent, marginBottom: 8, background: "rgba(10,45,82,0.6)", borderRadius: "0 8px 8px 0" }}>
-                            <p style={{ fontSize: 12, fontWeight: 700, color: NAVY, margin: "0 0 2px" }}>{s.ref}</p>
+                            <p style={{ fontSize: 12, fontWeight: 700, color: GOLD, margin: "0 0 2px" }}>{s.ref}</p>
                             <p style={{ fontSize: 12, color: "#9ca3af", margin: 0, fontStyle: "italic" }}>{s.text}</p>
                           </div>
                         );
@@ -848,7 +849,7 @@ export default function ModuleTemplate({ config }) {
               <div>
                 <button onClick={generateSummary} className="w-full py-4 rounded-2xl font-bold text-base transition-all" style={{ background: NAVY, color: accentMid }}>Generate My Personalized Summary →</button>
                 {summaryError && (
-                  <p style={{ fontSize: 12, color: "#991b1b", marginTop: 8 }}>⚠ Summary unavailable right now — your responses are saved and you can continue.</p>
+                  <p style={{ fontSize: 12, color: "#f87171", marginTop: 8 }}>Summary unavailable right now — your responses are saved and you can continue.</p>
                 )}
               </div>
             )}
@@ -860,10 +861,10 @@ export default function ModuleTemplate({ config }) {
             )}
             {aiSummary && (
               <div>
-                <div className="p-6 rounded-2xl" style={{ border: "2px solid " + accent, background: accentLight }}>
+                <div className="p-6 rounded-2xl" style={{ border: "1px solid rgba(253,210,13,0.2)", background: "rgba(10,45,82,0.5)" }}>
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: NAVY, color: accentMid, fontSize: 14 }}>✦</div>
-                    <p className="font-bold" style={{ color: NAVY, fontFamily: "'Cormorant Garamond', serif", fontSize: 17 }}>Your {title} Blueprint</p>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: GOLD, color: NAVY, fontSize: 14, fontWeight: 700 }}>5C</div>
+                    <p className="font-bold" style={{ color: "#FDF8F0", fontFamily: fonts.heading, fontSize: 17 }}>Your {title} Blueprint</p>
                   </div>
                   <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#222" }}>{para}</p>; })}</div>
                 </div>
@@ -888,7 +889,7 @@ export default function ModuleTemplate({ config }) {
             )}
 
             {moduleNum === 6 && aiSummary && (
-              <button onClick={handleCertificate} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "1px solid rgba(253,210,13,0.3)", color: GOLD, background: "transparent" }}>Download Completion Certificate</button>
+              <button onClick={handleCertificate} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all flex items-center justify-center gap-2" style={{ border: "1px solid rgba(253,210,13,0.3)", color: GOLD, background: "transparent" }}><CertificateIcon size={16} color={GOLD} /> Download Completion Certificate</button>
             )}
 
             {config.resources && config.resources.blogs && (
@@ -911,7 +912,7 @@ export default function ModuleTemplate({ config }) {
             )}
 
             {scriptures && (
-              <button onClick={function() { setShowScriptures(true); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all" style={{ border: "1px solid rgba(253,210,13,0.3)", color: GOLD, background: "transparent" }}>Scriptures for Further Study</button>
+              <button onClick={function() { setShowScriptures(true); }} className="w-full py-3 rounded-2xl font-semibold text-sm transition-all flex items-center justify-center gap-2" style={{ border: "1px solid rgba(253,210,13,0.3)", color: GOLD, background: "transparent" }}><BookIcon size={16} color={GOLD} /> Scriptures for Further Study</button>
             )}
           </div>
         );
@@ -1002,7 +1003,7 @@ export default function ModuleTemplate({ config }) {
             {STEPS.map(function(s, i) {
               return (
                 <button key={s.id} onClick={function() { setStep(i); scrollTop(); }} className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all flex-shrink-0" style={{ background: i === step ? GOLD : i < step ? "rgba(253,210,13,0.15)" : "transparent", color: i === step ? NAVY : i < step ? GOLD : "#6b7280", border: "1px solid " + (i <= step ? "rgba(253,210,13,0.4)" : "rgba(253,210,13,0.1)") }}>
-                  {i < step ? "✓ " : ""}{s.label}
+                  {i < step ? <><CheckIcon size={10} color={GOLD} />{" "}</> : null}{s.label}
                 </button>
               );
             })}

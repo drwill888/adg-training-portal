@@ -93,12 +93,12 @@ export default function AdminDashboard() {
 
   if (!user || user.email !== ADMIN_EMAIL) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAFAF8", fontFamily: "'Outfit', sans-serif" }}>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: NAVY, fontFamily: "'Outfit', sans-serif" }}>
         <div style={{ textAlign: "center", padding: 40 }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", color: NAVY, fontSize: "1.8rem", marginBottom: 12 }}>Admin Access Only</h1>
-          <p style={{ color: "#666", fontSize: 14, marginBottom: 24 }}>You must be logged in as the administrator to view this page.</p>
-          <a href="/" style={{ color: "#0172BC", fontSize: 14 }}>← Back to Dashboard</a>
+          <div style={{ fontSize: 11, color: GOLD_BRIGHT, letterSpacing: "0.15em", fontWeight: 700, marginBottom: 16 }}>RESTRICTED</div>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", color: "#FDF8F0", fontSize: "1.8rem", marginBottom: 12 }}>Admin Access Only</h1>
+          <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 24 }}>You must be logged in as the administrator to view this page.</p>
+          <a href="/dashboard" style={{ color: GOLD_BRIGHT, fontSize: 14 }}>← Back to Dashboard</a>
         </div>
       </div>
     );
