@@ -271,7 +271,7 @@ export default function Assessment() {
 
         {/* ─── NAV ─── */}
         <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, padding: '1rem 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(2,26,53,0.95)', backdropFilter: 'blur(12px)', borderBottom: `1px solid ${colors.goldLine}` }}>
-          <a href="/" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.1rem', fontWeight: 600, color: colors.cream, textDecoration: 'none' }}>
+          <a href="/" style={{ fontFamily: fonts.heading, fontSize: '1.1rem', fontWeight: 600, color: colors.cream, textDecoration: 'none' }}>
             5C <span style={{ color: colors.gold }}>Blueprint</span>
           </a>
           <a href="/" style={{ fontSize: '0.78rem', color: colors.gray, textDecoration: 'none', letterSpacing: '0.08em' }}>← Back to Site</a>
@@ -286,7 +286,7 @@ export default function Assessment() {
           {screen === 'intro' && (
             <div>
               <div style={badgeStyle}>5C Leadership Assessment</div>
-              <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2.4rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1.05, marginBottom: '1.25rem' }}>
+              <h1 style={{ fontFamily: fonts.heading, fontSize: 'clamp(2.4rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1.05, marginBottom: '1.25rem' }}>
                 Discover Where You Stand<br />
                 <em style={{ color: colors.gold }}>and Where You&apos;re Built to Go</em>
               </h1>
@@ -308,7 +308,7 @@ export default function Assessment() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '0.75rem', marginBottom: '2rem' }}>
                 {DIMENSIONS.map(dim => (
                   <div key={dim.id} style={{ padding: '0.75rem 0.5rem', textAlign: 'center', background: colors.goldDim, border: `1px solid ${colors.goldLine}` }}>
-                    <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.4rem', fontWeight: 700, color: colors.cream, marginBottom: '0.25rem' }}>{dim.num}</div>
+                    <div style={{ fontFamily: fonts.heading, fontSize: '1.4rem', fontWeight: 700, color: colors.cream, marginBottom: '0.25rem' }}>{dim.num}</div>
                     <div style={{ fontSize: '0.72rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: colors.gold, fontWeight: 600 }}>{dim.name}</div>
                   </div>
                 ))}
@@ -320,7 +320,7 @@ export default function Assessment() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
                   {[['1','Strongly Disagree'],['2','Disagree'],['3','Neutral'],['4','Agree'],['5','Strongly Agree']].map(([num, label]) => (
                     <div key={num} style={{ textAlign: 'center', fontSize: '0.75rem', color: colors.cream }}>
-                      <span style={{ display: 'block', fontFamily: "'Cormorant Garamond', serif", fontSize: '1.4rem', fontWeight: 700, color: colors.gold }}>{num}</span>
+                      <span style={{ display: 'block', fontFamily: fonts.heading, fontSize: '1.4rem', fontWeight: 700, color: colors.gold }}>{num}</span>
                       {label}
                     </div>
                   ))}
@@ -352,9 +352,9 @@ export default function Assessment() {
                 <div key={dim.id} style={{ marginBottom: '3rem' }}>
                   {/* Dimension Header */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: `1px solid ${colors.goldLine}` }}>
-                    <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '3rem', fontWeight: 700, color: colors.gold, lineHeight: 1, opacity: 0.8 }}>{dim.num}</div>
+                    <div style={{ fontFamily: fonts.heading, fontSize: '3rem', fontWeight: 700, color: colors.gold, lineHeight: 1, opacity: 0.8 }}>{dim.num}</div>
                     <div>
-                      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', fontWeight: 600, color: colors.cream, lineHeight: 1 }}>{dim.name}</div>
+                      <div style={{ fontFamily: fonts.heading, fontSize: '1.8rem', fontWeight: 600, color: colors.cream, lineHeight: 1 }}>{dim.name}</div>
                       <div style={{ fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: colors.gold, fontWeight: 600, marginTop: '0.2rem' }}>{dim.sub}</div>
                     </div>
                   </div>
@@ -381,7 +381,7 @@ export default function Assessment() {
                                 background: selected === n ? colors.gold : 'transparent',
                                 border: `1px solid ${selected === n ? colors.gold : 'rgba(253,210,13,0.2)'}`,
                                 color: selected === n ? colors.navy : colors.gray,
-                                fontFamily: "'Cormorant Garamond', serif", fontSize: '1.2rem', fontWeight: 700,
+                                fontFamily: fonts.heading, fontSize: '1.2rem', fontWeight: 700,
                                 cursor: 'pointer', transition: 'all 0.15s',
                               }}
                             >
@@ -421,7 +421,7 @@ export default function Assessment() {
           {screen === 'gate' && (
             <div style={{ maxWidth: 560, margin: '0 auto', textAlign: 'center' }}>
               <div style={{ fontSize: 11, color: colors.gold, letterSpacing: '0.15em', fontWeight: 700, marginBottom: '1.5rem' }}>YOUR RESULTS</div>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700, lineHeight: 1.1, marginBottom: '1rem' }}>
+              <h2 style={{ fontFamily: fonts.heading, fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700, lineHeight: 1.1, marginBottom: '1rem' }}>
                 Your Results Are <em style={{ color: colors.gold }}>Ready</em>
               </h2>
               <p style={{ fontSize: '0.98rem', lineHeight: 1.75, color: colors.gray, marginBottom: '2.5rem' }}>
@@ -443,7 +443,7 @@ export default function Assessment() {
                       placeholder={field.placeholder}
                       value={userData[field.id]}
                       onChange={e => setUserData(prev => ({ ...prev, [field.id]: e.target.value }))}
-                      style={{ width: '100%', padding: '0.9rem 1rem', background: 'rgba(253,210,13,0.05)', border: `1px solid rgba(253,210,13,0.25)`, color: colors.cream, fontFamily: "'Outfit', sans-serif", fontSize: '0.95rem', outline: 'none' }}
+                      style={{ width: '100%', padding: '0.9rem 1rem', background: 'rgba(253,210,13,0.05)', border: `1px solid rgba(253,210,13,0.25)`, color: colors.cream, fontFamily: fonts.body, fontSize: '0.95rem', outline: 'none' }}
                     />
                   </div>
                 ))}
@@ -472,7 +472,7 @@ export default function Assessment() {
               {/* Header */}
               <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                 <div style={badgeStyle}>Your 5C Leadership Profile</div>
-                <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 700, lineHeight: 1.1, marginBottom: '0.75rem' }}>
+                <h2 style={{ fontFamily: fonts.heading, fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 700, lineHeight: 1.1, marginBottom: '0.75rem' }}>
                   Here Is Where You <em style={{ color: colors.gold }}>Stand</em>
                 </h2>
                 <p style={{ fontSize: '1.1rem', color: colors.gray }}>
@@ -489,7 +489,7 @@ export default function Assessment() {
 
               {/* Saved Confirmation */}
               {resultSaved && (
-                <div style={{ fontSize: 12, color: '#16a34a', marginTop: 8, textAlign: 'center' }}>
+                <div style={{ fontSize: 12, color: t.success, marginTop: 8, textAlign: 'center' }}>
                   Your results have been saved to your profile.
                 </div>
               )}
@@ -497,7 +497,7 @@ export default function Assessment() {
               {/* Overall Status */}
               <div style={{ padding: '2rem', textAlign: 'center', marginBottom: '2.5rem', border: `1px solid ${colors.goldLine}`, background: colors.goldDim }}>
                 <div style={{ fontSize: '0.68rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: colors.gold, fontWeight: 700, marginBottom: '0.5rem' }}>Overall Readiness Status</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', fontWeight: 700, color: colors.cream }}>{getOverallStatus(results.totalScore)}</div>
+                <div style={{ fontFamily: fonts.heading, fontSize: '1.8rem', fontWeight: 700, color: colors.cream }}>{getOverallStatus(results.totalScore)}</div>
                 <div style={{ fontSize: '0.9rem', color: colors.gray, marginTop: '0.25rem' }}>Total Score: {results.totalScore} / 125</div>
               </div>
 
@@ -510,7 +510,7 @@ export default function Assessment() {
                   return (
                     <div key={dim.id} style={{ padding: '1.25rem 1.5rem', border: `1px solid rgba(253,210,13,0.15)`, background: 'rgba(253,210,13,0.03)' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.2rem', fontWeight: 600, color: colors.cream }}>{dim.name}</div>
+                        <div style={{ fontFamily: fonts.heading, fontSize: '1.2rem', fontWeight: 600, color: colors.cream }}>{dim.name}</div>
                         <div style={{ fontSize: '0.68rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 700, padding: '0.2rem 0.6rem', color: st.color, border: `1px solid ${st.color}44`, background: `${st.color}11` }}>{st.label}</div>
                       </div>
                       <div style={{ height: 4, background: 'rgba(253,210,13,0.12)', width: '100%', marginBottom: '0.4rem' }}>
@@ -527,7 +527,7 @@ export default function Assessment() {
 
               {/* Insight Block */}
               <div style={{ padding: '2rem', borderLeft: `3px solid ${colors.gold}`, background: 'rgba(253,210,13,0.05)', marginBottom: '2.5rem' }}>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.5rem', fontWeight: 600, color: colors.cream, marginBottom: '1.25rem' }}>Your Blueprint Insight</h3>
+                <h3 style={{ fontFamily: fonts.heading, fontSize: '1.5rem', fontWeight: 600, color: colors.cream, marginBottom: '1.25rem' }}>Your Blueprint Insight</h3>
                 {[
                   { label: 'You Are Strongest In', value: `${results.strongest.name} — ${results.strongest.sub}`, italic: false },
                   { label: 'Your Greatest Gap', value: `${results.gap.name} — ${results.gap.sub}`, italic: false },
@@ -542,7 +542,7 @@ export default function Assessment() {
 
               {/* CTA */}
               <div style={{ padding: '2.5rem', textAlign: 'center', background: `linear-gradient(135deg, ${colors.navyLight} 0%, ${colors.navy} 100%)`, border: `1px solid ${colors.goldLine}` }}>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', fontWeight: 700, color: colors.cream, marginBottom: '0.75rem' }}>The Blueprint Is Built for This Moment</h3>
+                <h3 style={{ fontFamily: fonts.heading, fontSize: '1.8rem', fontWeight: 700, color: colors.cream, marginBottom: '0.75rem' }}>The Blueprint Is Built for This Moment</h3>
                 <p style={{ fontSize: '0.95rem', lineHeight: 1.75, color: colors.gray, marginBottom: '1.75rem', maxWidth: 480, margin: '0 auto 1.75rem' }}>
                   Your results reveal exactly what the 5C Blueprint is designed to address. The gap you&apos;re carrying is not a deficiency — it&apos;s an invitation. The next step is a conversation.
                 </p>
@@ -591,7 +591,7 @@ const badgeStyle = {
 const btnPrimary = {
   background: '#FDD20D',
   color: '#021A35',
-  fontFamily: "'Outfit', sans-serif",
+  fontFamily: fonts.body,
   fontSize: '0.85rem',
   fontWeight: 700,
   letterSpacing: '0.1em',

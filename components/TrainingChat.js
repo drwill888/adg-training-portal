@@ -1,7 +1,7 @@
 // components/TrainingChat.js
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
-import { colors as tok } from "../styles/tokens";
+import { colors as tok, fonts as tokFonts } from "../styles/tokens";
 
 const BRAND = {
   navy: tok.navy,
@@ -147,7 +147,7 @@ export default function TrainingChat({ defaultModule }) {
           width: "60px",
           height: "60px",
           borderRadius: "50%",
-          backgroundColor: "#00AEEF",
+          backgroundColor: BRAND.gold,
           border: `3px solid ${BRAND.navy}`,
           cursor: "pointer",
           display: "flex",
@@ -167,12 +167,12 @@ export default function TrainingChat({ defaultModule }) {
         }}
       >
         {isOpen ? (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={BRAND.navy} strokeWidth="2.5" strokeLinecap="round">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         ) : (
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={BRAND.navy} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
           </svg>
         )}
@@ -222,7 +222,7 @@ export default function TrainingChat({ defaultModule }) {
             <div style={{ flex: 1 }}>
               <h2
                 style={{
-                  fontFamily: "'Cormorant Garamond', serif",
+                  fontFamily: tokFonts.heading,
                   color: BRAND.gold,
                   fontSize: "16px",
                   fontWeight: 700,
@@ -273,7 +273,7 @@ export default function TrainingChat({ defaultModule }) {
               flex: 1,
               overflowY: "auto",
               padding: "16px",
-              backgroundColor: BRAND.cream,
+              backgroundColor: "#0a2d52",
             }}
           >
             {messages.length === 0 && (
@@ -281,15 +281,15 @@ export default function TrainingChat({ defaultModule }) {
                 style={{
                   textAlign: "center",
                   padding: "40px 16px",
-                  color: BRAND.navy + "60",
+                  color: "rgba(253,248,240,0.4)",
                 }}
               >
                 <p
                   style={{
-                    fontFamily: "'Cormorant Garamond', serif",
+                    fontFamily: tokFonts.heading,
                     fontSize: "18px",
                     fontWeight: 600,
-                    color: BRAND.navy,
+                    color: BRAND.gold,
                     marginBottom: "6px",
                   }}
                 >
@@ -320,8 +320,8 @@ export default function TrainingChat({ defaultModule }) {
                     borderRadius: msg.role === "user"
                       ? "12px 12px 2px 12px"
                       : "12px 12px 12px 2px",
-                    backgroundColor: msg.role === "user" ? BRAND.navy : "white",
-                    color: msg.role === "user" ? "white" : BRAND.navy,
+                    backgroundColor: msg.role === "user" ? BRAND.gold : "rgba(2,26,53,0.8)",
+                    color: msg.role === "user" ? BRAND.navy : "#FDF8F0",
                     fontSize: "13px",
                     lineHeight: 1.6,
                     whiteSpace: "pre-wrap",
@@ -360,7 +360,7 @@ export default function TrainingChat({ defaultModule }) {
                         key={j}
                         style={{
                           fontSize: "11px",
-                          color: BRAND.navy + "BB",
+                          color: "rgba(253,248,240,0.7)",
                           marginBottom: "2px",
                           paddingLeft: "6px",
                           borderLeft: `2px solid ${BRAND.gold}`,
@@ -374,7 +374,7 @@ export default function TrainingChat({ defaultModule }) {
                         {src.sectionTitle && (
                           <span> — {src.sectionTitle}</span>
                         )}
-                        <span style={{ color: BRAND.navy + "70" }}>
+                        <span style={{ color: "rgba(253,248,240,0.4)" }}>
                           {" "}({(src.similarity * 100).toFixed(0)}%)
                         </span>
                       </div>
@@ -390,7 +390,7 @@ export default function TrainingChat({ defaultModule }) {
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
-                  color: BRAND.navy + "70",
+                  color: "rgba(253,248,240,0.4)",
                   fontSize: "12px",
                   padding: "6px 0",
                 }}
@@ -416,8 +416,8 @@ export default function TrainingChat({ defaultModule }) {
           <div
             style={{
               padding: "12px",
-              backgroundColor: "white",
-              borderTop: `1px solid ${BRAND.navy}10`,
+              backgroundColor: BRAND.navy,
+              borderTop: "1px solid rgba(253,210,13,0.1)",
               display: "flex",
               gap: "8px",
               flexShrink: 0,
@@ -434,7 +434,9 @@ export default function TrainingChat({ defaultModule }) {
                 flex: 1,
                 padding: "10px 12px",
                 borderRadius: "10px",
-                border: `1px solid ${BRAND.navy}18`,
+                border: "1px solid rgba(253,210,13,0.2)",
+                backgroundColor: "#0a2d52",
+                color: "#FDF8F0",
                 fontSize: "13px",
                 resize: "none",
                 outline: "none",
@@ -449,8 +451,8 @@ export default function TrainingChat({ defaultModule }) {
                 padding: "10px 16px",
                 borderRadius: "10px",
                 border: "none",
-                backgroundColor: loading ? "#00AEEF80" : "#00AEEF",
-                color: "white",
+                backgroundColor: loading ? "rgba(253,210,13,0.5)" : BRAND.gold,
+                color: BRAND.navy,
                 fontWeight: 700,
                 fontSize: "13px",
                 cursor: loading ? "not-allowed" : "pointer",

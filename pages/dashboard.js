@@ -7,21 +7,10 @@ import { useRouter } from "next/router";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
 import { colors, fonts, radii, shadows, moduleAccents } from "../styles/tokens";
+import { useIsMobile } from "../lib/useBreakpoint";
 import { LockIcon, DashboardIcon } from "../components/Icons";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
-
-function useIsMobile(breakpoint = 768) {
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth < breakpoint : false
-  );
-  useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < breakpoint);
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
-  }, [breakpoint]);
-  return isMobile;
-}
 
 // Colors now imported from styles/tokens.js
 

@@ -10,6 +10,7 @@ import { ADG_SYSTEM_PROMPT } from "../lib/prompts";
 import { colors as t, fonts } from "../styles/tokens";
 import { BookIcon, PrayerIcon, CertificateIcon, CheckIcon, StarIcon, WarningIcon } from "./Icons";
 import Button from "./ui/Button";
+import Card from "./ui/Card";
 
 var NAVY = t.navy;
 var GOLD = t.gold;
@@ -532,7 +533,7 @@ export default function ModuleTemplate({ config }) {
                 </div>
               </button>
             )}
-            <div className="p-6 rounded-2xl" style={{ background: NAVY, color: "#fff" }}>
+            <Card style={{ color: "#FDF8F0" }}>
               {question && (
                 <div>
                   <p className="text-xs uppercase tracking-widest mb-2 font-semibold" style={{ color: accent }}>The Central Question</p>
@@ -540,7 +541,7 @@ export default function ModuleTemplate({ config }) {
                 </div>
               )}
               <p className="text-sm leading-relaxed" style={{ color: "#c8cdd6" }}>{activationText}</p>
-            </div>
+            </Card>
             <div>
               <SectionHead sub="Take three minutes in silence. Write the first honest answer that surfaces.">Activation Prompts</SectionHead>
               {activationPrompts.map(function(p, i) { return <Reflect key={i} prompt={p} onAutoSave={makeAutoSave("activation_" + i)} initialValue={reflections["activation_" + i] || ""} />; })}
@@ -639,19 +640,19 @@ export default function ModuleTemplate({ config }) {
             <SectionHead sub={exemplar.subtitle}>{exemplar.title}</SectionHead>
             <p className="text-sm leading-relaxed" style={{ color: "#FDF8F0" }}>{exemplar.intro}</p>
             {exemplar.intro2 && <p className="text-sm leading-relaxed" style={{ color: "#FDF8F0" }}>{exemplar.intro2}</p>}
-            <div className="p-5 rounded-xl" style={{ background: "rgba(10,45,82,0.5)", border: "1px solid " + accent + "44" }}>
+            <Card style={{ border: "1px solid " + accent + "44" }}>
               <p className="text-sm font-bold mb-3 uppercase tracking-wide" style={{ color: GOLD }}>What this teaches us:</p>
               <ul className="space-y-2.5">
                 {exemplar.lessons.map(function(l, i) {
                   return (<li key={i} className="flex gap-3 text-sm"><span className="mt-0.5 flex-shrink-0"><StarIcon size={10} color={GOLD} /></span><span style={{ color: "#FDF8F0" }}>{l}</span></li>);
                 })}
               </ul>
-            </div>
+            </Card>
             {exemplar.pattern && (
-              <div className="p-4 rounded-xl text-center" style={{ background: NAVY }}>
+              <Card style={{ textAlign: "center" }}>
                 <p className="text-xs uppercase tracking-widest mb-2 font-semibold" style={{ color: accent }}>Pattern</p>
                 <p className="text-sm font-semibold italic" style={{ color: "#fff", fontFamily: "'Cormorant Garamond', serif" }}>{exemplar.pattern}</p>
-              </div>
+              </Card>
             )}
             {exemplar.questions && exemplar.questions.length > 0 && (
               <div>
@@ -668,7 +669,7 @@ export default function ModuleTemplate({ config }) {
             <SectionHead sub="These stages are recognizable across every leader's journey. You are in one right now.">Stages of {title} Development</SectionHead>
             {stages.map(function(s, i) {
               return (
-                <div key={i} className="p-5 rounded-xl" style={{ background: "rgba(10,45,82,0.6)", border: "1px solid rgba(253,210,13,0.1)", borderLeft: "4px solid " + accent }}>
+                <Card key={i} variant="accent" style={{ borderLeft: "4px solid " + accent }}>
                   <h4 className="font-bold mb-2" style={{ color: "#FDF8F0", fontFamily: fonts.heading, fontSize: 17 }}>{s.title}</h4>
                   <p className="text-sm leading-relaxed" style={{ color: "#c8cdd6" }}>{s.description}</p>
                   {s.markers && (
@@ -676,13 +677,13 @@ export default function ModuleTemplate({ config }) {
                       {s.markers.map(function(m, j) { return <li key={j} className="flex gap-2 text-xs" style={{ color: "#9ca3af" }}><span style={{ color: accent }}>·</span> {m}</li>; })}
                     </ul>
                   )}
-                </div>
+                </Card>
               );
             })}
-            <div className="p-4 rounded-xl" style={{ background: "rgba(10,45,82,0.5)" }}>
+            <Card>
               <p className="text-sm font-semibold mb-2" style={{ color: "#FDF8F0" }}>Which stage are you in right now?</p>
               <Reflect inline prompt="Name the stage and describe the specific evidence that supports your answer." onAutoSave={makeAutoSave("stages_current")} initialValue={reflections["stages_current"] || ""} />
-            </div>
+            </Card>
           </div>
         );
 
@@ -787,7 +788,7 @@ export default function ModuleTemplate({ config }) {
               })}
             </div>
             {revisitTriggers && revisitTriggers.length > 0 && (
-              <div className="p-5 rounded-xl" style={{ background: "rgba(10,45,82,0.5)" }}>
+              <Card>
                 <h4 className="font-bold mb-3" style={{ color: "#FDF8F0", fontFamily: fonts.heading }}>{title} is a Living Discipline</h4>
                 <p className="text-sm mb-3 leading-relaxed" style={{ color: "#FDF8F0" }}>What you write today is not a one-time exercise. Return to it regularly as your season deepens.</p>
                 <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: GOLD }}>Revisit when:</p>
@@ -796,7 +797,7 @@ export default function ModuleTemplate({ config }) {
                     return (<li key={i} className="flex items-start gap-3 text-sm"><span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: accentMid }} /><span style={{ color: "#c8cdd6" }}>{t}</span></li>);
                   })}
                 </ul>
-              </div>
+              </Card>
             )}
             {applicationQuestions && applicationQuestions.length > 0 && (
               <div>
@@ -862,13 +863,13 @@ export default function ModuleTemplate({ config }) {
             )}
             {aiSummary && (
               <div>
-                <div className="p-6 rounded-2xl" style={{ border: "1px solid rgba(253,210,13,0.2)", background: "rgba(10,45,82,0.5)" }}>
+                <Card variant="highlight">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: GOLD, color: NAVY, fontSize: 14, fontWeight: 700 }}>5C</div>
                     <p className="font-bold" style={{ color: "#FDF8F0", fontFamily: fonts.heading, fontSize: 17 }}>Your {title} Blueprint</p>
                   </div>
                   <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#FDF8F0" }}>{para}</p>; })}</div>
-                </div>
+                </Card>
                 <Button variant="outline" size="full" onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} style={{ marginTop: 12 }}>Download Blueprint (.docx)</Button>
                 {enhanceCount < 3 && (
                   <div style={{ marginTop: 14, padding: "14px 16px", background: "rgba(253,210,13,0.06)", border: "1px solid rgba(253,210,13,0.2)", borderRadius: 14 }}>

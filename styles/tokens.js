@@ -105,3 +105,13 @@ export const motion = {
   normal: "300ms ease",
   slow: "500ms ease",
 };
+
+// ─── BREAKPOINTS ───────────────────────────────────────────
+export const breakpoints = {
+  mobile: 768,   // below this = mobile
+  tablet: 1024,  // below this = tablet
+};
+
+// Helper hook — import in any page/component
+// Usage: const isMobile = useBreakpoint();
+// Usage: const isTablet = useBreakpoint(breakpoints.tablet);
