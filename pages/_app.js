@@ -1,4 +1,5 @@
 // pages/_app.js
+import '../styles/globals.css'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { supabase } from '../lib/supabase'
@@ -13,6 +14,10 @@ const publicPages = [
   '/called-to-carry',
   '/called-to-carry/assessment',
   '/called-to-carry/assessment/start',
+    // Cohort public pages
+  '/cohort',
+  '/cohort/apply',
+  '/cohort/thank-you',
 ]
 
 // Prefixes that are always public (covers /called-to-carry/assessment/results/[id])
