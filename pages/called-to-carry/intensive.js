@@ -1,0 +1,1 @@
+export default function IntensivePage() { return null; }

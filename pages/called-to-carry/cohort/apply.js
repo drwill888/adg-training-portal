@@ -1,0 +1,1 @@
+export default function CohortApply() { return null; }
