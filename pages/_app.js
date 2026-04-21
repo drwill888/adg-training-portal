@@ -7,7 +7,16 @@ import '../styles/globals.css'
 import TrainingChat from '../components/TrainingChat'
 
 // Pages that don't require authentication
-const publicPages = ['/login', '/auth/callback', '/auth/reset-password', '/', '/assessment']
+const publicPages = [
+  '/login', '/auth/callback', '/auth/reset-password', '/', '/assessment',
+  // Called to Carry public funnel — no auth required
+  '/called-to-carry',
+  '/called-to-carry/assessment',
+  '/called-to-carry/assessment/start',
+]
+
+// Prefixes that are always public (covers /called-to-carry/assessment/results/[id])
+const publicPrefixes = ['/called-to-carry/assessment/results']
 
 export default function App({ Component, pageProps }) {
   const router = useRouter()
@@ -35,7 +44,8 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     if (loading) return
 
-    const isPublicPage = publicPages.includes(router.pathname)
+    const isPublicPage = publicPages.includes(router.pathname) ||
+      publicPrefixes.some(p => router.pathname.startsWith(p))
 
     if (!session && !isPublicPage) {
       // No session + protected page = go to login
@@ -68,7 +78,8 @@ export default function App({ Component, pageProps }) {
   }
 
   // If on a protected page with no session, show nothing while redirecting
-  const isPublicPage = publicPages.includes(router.pathname)
+  const isPublicPage = publicPages.includes(router.pathname) ||
+    publicPrefixes.some(p => router.pathname.startsWith(p))
   if (!session && !isPublicPage) {
     return null
   }
