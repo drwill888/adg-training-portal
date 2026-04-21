@@ -125,9 +125,13 @@ export default function AssessmentStart() {
         return;
       }
 
-      // Clear sessionStorage, go to results
+      // Clear sessionStorage, go to results.
+      // On the subdomain (calledtocarry.*), router.asPath starts with /assessment/...
+      // On the preview URL directly, it starts with /called-to-carry/assessment/...
+      // We detect and adjust so both work correctly.
       sessionStorage.removeItem('ctc_lead');
-      router.push(`/assessment/results/${data.submissionId}`);
+      const ctcBase = router.asPath.startsWith('/called-to-carry') ? '/called-to-carry' : '';
+      router.push(`${ctcBase}/assessment/results/${data.submissionId}`);
     } catch {
       setError('Network error. Please check your connection and try again.');
       setSubmitting(false);
