@@ -47,18 +47,18 @@ const FOR_WHOM = [
 const FAQS = [
   {
     q: 'When does the cohort begin?',
-    a: 'The next cohort opens enrollment quarterly. Once you apply and are confirmed, you'll receive your start date and onboarding materials.',
+    a: "The next cohort opens enrollment quarterly. Once you apply and are confirmed, you'll receive your start date and onboarding materials.",
   },
   {
     q: 'Is this only for experienced leaders?',
     a: 'No. This is for any Kingdom leader at any stage who senses a burden they were built to carry. Emerging and executive leaders both find formation here.',
   },
   {
-    q: 'What's the time commitment?',
+    q: "What's the time commitment?",
     a: 'Plan for 2–3 hours per week — one live session and independent portal work. The depth is real; the pace is sustainable.',
   },
   {
-    q: 'What if I've already completed the Called to Carry Assessment?',
+    q: "What if I've already completed the Called to Carry Assessment?",
     a: 'Even better. Your assessment results become the foundation of your personalized debrief in week one.',
   },
   {
