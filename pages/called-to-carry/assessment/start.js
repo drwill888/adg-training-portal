@@ -21,7 +21,8 @@ export default function AssessmentStart() {
   useEffect(() => {
     const raw = sessionStorage.getItem('ctc_lead');
     if (!raw) {
-      router.replace('/assessment');
+      const ctcBase = router.asPath.startsWith('/called-to-carry') ? '/called-to-carry' : '';
+      router.replace(`${ctcBase}/assessment`);
       return;
     }
     setLead(JSON.parse(raw));

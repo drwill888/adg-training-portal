@@ -31,7 +31,8 @@ export default function AssessmentLanding() {
       email: form.email.toLowerCase().trim(),
     }));
 
-    router.push('/assessment/start');
+    const ctcBase = router.asPath.startsWith('/called-to-carry') ? '/called-to-carry' : '';
+    router.push(`${ctcBase}/assessment/start`);
   }
 
   return (
