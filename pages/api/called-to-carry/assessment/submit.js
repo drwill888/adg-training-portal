@@ -130,7 +130,21 @@ export default async function handler(req, res) {
     // Non-fatal — we can backfill sequences manually if needed
   }
 
-  // ── Log rate limit entry ──────────────────────────────────────────────────
+  // ── Send welcome email immediately ─────────────────────────────────────────
+  try {
+    const { Resend } = await import('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+      from: process.env.RESEND_FROM_EMAIL,
+      to: email.toLowerCase().trim(),
+      subject: 'Your Called to Carry Assessment Results',
+      html: '<p>Hi ' + firstName + ',</p><p>Your archetype is <strong>' + archetype + '</strong>.</p><p><a href="https://calledtocarry.awakeningdestiny.global/assessment/results/' + submissionId + '">View Your Full Results</a></p><p>— Will Meier<br>Awakening Destiny Global</p>',
+    });
+  } catch (emailErr) {
+    console.error('welcome email error:', emailErr.message);
+  }
+
+    // ── Log rate limit entry ──────────────────────────────────────────────────
   await supabase.from('assessment_rate_limits').insert({ ip_hash: ipHash });
 
   return res.status(200).json({ submissionId, archetype });
