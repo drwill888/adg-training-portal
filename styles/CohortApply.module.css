@@ -1,0 +1,237 @@
+/* ─── COHORTAPPLY.MODULE.CSS ─────────────────────────────────────────────── */
+
+.page {
+  background: #021A35;
+  color: #FDF8F0;
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  padding-bottom: 6rem;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem clamp(1.25rem, 5vw, 3rem);
+  border-bottom: 1px solid rgba(200, 169, 81, 0.15);
+  position: sticky;
+  top: 0;
+  background: rgba(2, 26, 53, 0.9);
+  backdrop-filter: blur(12px);
+  z-index: 10;
+}
+
+.navBack {
+  font-size: 0.85rem;
+  color: rgba(253, 248, 240, 0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.navBack:hover {
+  color: #C8A951;
+}
+
+.navTitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #C8A951;
+}
+
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 4rem clamp(1.25rem, 5vw, 3rem) 0;
+}
+
+.header {
+  margin-bottom: 3.5rem;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #C8A951;
+  margin-bottom: 0.75rem;
+}
+
+.heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  color: #FDF8F0;
+  margin: 0 0 1rem;
+}
+
+.sub {
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgba(253, 248, 240, 0.7);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── FORM ── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.fieldset {
+  border: 1px solid rgba(200, 169, 81, 0.15);
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.legend {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #C8A951;
+  letter-spacing: 0.04em;
+  padding: 0 0.5rem;
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 540px) {
+  .row2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(253, 248, 240, 0.6);
+}
+
+.input,
+.select,
+.textarea {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(200, 169, 81, 0.2);
+  color: #FDF8F0;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  padding: 0.85rem 1rem;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  border-radius: 0;
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(253, 248, 240, 0.3);
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: #C8A951;
+  background: rgba(200, 169, 81, 0.06);
+}
+
+.select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C8A951' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.select option {
+  background: #021A35;
+  color: #FDF8F0;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* ── CHECKBOX ── */
+.checkboxLabel {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: rgba(253, 248, 240, 0.7);
+  line-height: 1.65;
+  cursor: pointer;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  accent-color: #C8A951;
+  cursor: pointer;
+}
+
+/* ── ERROR ── */
+.error {
+  background: rgba(238, 49, 36, 0.12);
+  border: 1px solid rgba(238, 49, 36, 0.4);
+  color: #f87c74;
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+}
+
+/* ── SUBMIT ── */
+.submitBtn {
+  background: #C8A951;
+  color: #021A35;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  border: none;
+  padding: 1.15rem 2.5rem;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #E3C97A;
+  transform: translateY(-1px);
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.disclaimer {
+  font-size: 0.78rem;
+  color: rgba(253, 248, 240, 0.4);
+  margin: 0;
+}
