@@ -1,4 +1,19 @@
-* {
+:root {
+  --navy: #021A35;
+  --navy-mid: #042850;
+  --royal: #0172BC;
+  --sky: #00AEEF;
+  --gold: #C8A951;
+  --gold-light: #E3C97A;
+  --gold-dim: #8a7035;
+  --orange: #F47722;
+  --cream: #FDF8F0;
+  --cream-dim: #f0e9df;
+  --white: #ffffff;
+  --text-light: rgba(255, 255, 255, 0.82);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --gap: clamp(1rem, 4vw, 2rem);
+}* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
