@@ -54,11 +54,11 @@ const FAQS = [
     a: 'No. This is for any Kingdom leader at any stage who senses a burden they were built to carry. Emerging and executive leaders both find formation here.',
   },
   {
-    q: 'What's the time commitment?',
+    q: "What's the time commitment?",
     a: 'Plan for 2–3 hours per week — one live session and independent portal work. The depth is real; the pace is sustainable.',
   },
   {
-    q: 'What if I've already completed the Called to Carry Assessment?',
+    q: "What if I've already completed the Called to Carry Assessment?",
     a: 'Even better. Your assessment results become the foundation of your personalized debrief in week one.',
   },
   {
