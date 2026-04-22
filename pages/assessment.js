@@ -164,7 +164,7 @@ export default function Assessment() {
 
   // ─── HANDLE RATING ───
   function selectRating(key, val) {
-    setAnswers(prev => ({ ...prev, [key]: val }));
+  setAnswers(prev => ({ ...prev, [key]: val }));
   }
 
   // ─── CALCULATE SCORES ───
@@ -173,7 +173,7 @@ export default function Assessment() {
     DIMENSIONS.forEach(dim => {
       let total = 0;
       dim.questions.forEach((_, qi) => {
-        total += answers[`${dim.id}-${qi}`] || 0;
+        total += answers[`${dim.id}-${qi}`] === 'N/A' ? 0 : (answers[`${dim.id}-${qi}`] || 0);
       });
       scores[dim.id] = total;
     });
@@ -371,7 +371,7 @@ export default function Assessment() {
                         </span>
                         <div style={{ fontSize: '1rem', lineHeight: 1.7, color: colors.cream, marginBottom: '1.25rem' }}>{q}</div>
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
-                          {[1,2,3,4,5].map(n => (
+                          {[1,2,3,4,5,'N/A'].map(n => (
                             <button
                               key={n}
                               onClick={() => selectRating(key, n)}
