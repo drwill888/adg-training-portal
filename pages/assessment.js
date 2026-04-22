@@ -554,11 +554,17 @@ export default function Assessment() {
                 >
             Apply for the Blueprint
                 </a>
-                <p style={{ fontSize: '0.78rem', color: 'rgba(253,248,240,0.35)', marginTop: '1rem' }}>Limited to 10 seats. Will reviews every application personally.</p>
+   <p style={{ fontSize: '0.78rem', color: 'rgba(253,248,240,0.35)', marginTop: '1rem' }}>Limited to 10 seats. Will reviews every application personally.</p>
                 <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(253,210,13,0.15)' }}>
                   <p style={{ fontSize: '0.85rem', color: 'rgba(253,248,240,0.6)', marginBottom: '1rem' }}>Want to go at your own pace? Start the Self-Paced Journey.</p>
                   <a href="/self-paced" style={{ ...btnPrimary, display: 'inline-block', textDecoration: 'none', background: 'transparent', border: '1px solid #FDD20D', color: '#FDD20D' }}>
                     Start the Journey →
+                  </a>
+                </div>
+                <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(253,210,13,0.15)' }}>
+                  <p style={{ fontSize: '0.85rem', color: 'rgba(253,248,240,0.6)', marginBottom: '1rem' }}>Already enrolled? Jump straight into your portal.</p>
+                  <a href="/dashboard" style={{ ...btnPrimary, display: 'inline-block', textDecoration: 'none', background: 'transparent', border: '1px solid rgba(253,210,13,0.4)', color: 'rgba(253,210,13,0.6)' }}>
+                    Access Your Portal →
                   </a>
                 </div>
               </div>
