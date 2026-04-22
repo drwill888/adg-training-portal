@@ -18,6 +18,9 @@ const publicPages = [
   '/cohort/thank-you',
   '/self-paced',
   '/self-paced/thank-you',
+  '/blueprint',
+  '/blueprint/apply',
+  '/blueprint/thank-you',
 ]
 
 // Prefixes that are always public (covers /called-to-carry/assessment/results/[id])
