@@ -7,7 +7,7 @@ const INCLUDED_ITEMS = [
   {
     icon: '✦',
     title: 'Live Cohort Sessions',
-    desc: '8 live group calls over 10 weeks — deep formation, not surface-level content.',
+    desc: '8 live group calls over 8 weeks — deep formation, not surface-level content.',
   },
   {
     icon: '✦',
@@ -21,8 +21,8 @@ const INCLUDED_ITEMS = [
   },
   {
     icon: '✦',
-    title: 'Founder Community Access',
-    desc: 'Private community of vetted Kingdom entrepreneurs building alongside you.',
+    title: 'Covenant Community Access',
+    desc: 'Private community of vetted Kingdom leaders building alongside you.',
   },
   {
     icon: '✦',
@@ -39,11 +39,11 @@ const INCLUDED_ITEMS = [
 const FOR_WHOM = [
   "Entrepreneurs who know they're called but feel scattered in their assignment",
   'Leaders building Kingdom enterprise with integrity and long-term vision',
-  'Prophetic voices ready to connect their gift to sustainable structure',
+  "Prophetic voices ready to connect their gift to sustainable structure",
   'Pastors and ministry leaders transitioning into marketplace influence',
   'Emerging leaders who have the anointing and need the formation',
 ];
- 
+
 const FAQS = [
   {
     q: 'When does the cohort begin?',
@@ -66,10 +66,16 @@ const FAQS = [
     a: 'Because cohort seats are limited and confirmed in advance, all purchases are final. We encourage you to complete the assessment and read this page carefully before applying.',
   },
 ];
- 
-export default function CohortPage() {
+
+export default function CohortPage({ cohortOpen }) {
   const [openFaq, setOpenFaq] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // Waitlist state
+  const [waitlistEmail, setWaitlistEmail] = useState('');
+  const [waitlistFirstName, setWaitlistFirstName] = useState('');
+  const [waitlistStatus, setWaitlistStatus] = useState('idle'); // idle | loading | success | error
+  const [waitlistError, setWaitlistError] = useState('');
 
   const handleCheckout = async () => {
     setLoading(true);
@@ -82,12 +88,31 @@ export default function CohortPage() {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        console.error('No checkout URL returned', data);
         setLoading(false);
       }
     } catch (err) {
       console.error('Checkout error:', err);
       setLoading(false);
+    }
+  };
+
+  const handleWaitlist = async (e) => {
+    e.preventDefault();
+    setWaitlistStatus('loading');
+    setWaitlistError('');
+
+    try {
+      const res = await fetch('/api/cohort/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: waitlistEmail, firstName: waitlistFirstName }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to join waitlist.');
+      setWaitlistStatus('success');
+    } catch (err) {
+      setWaitlistStatus('error');
+      setWaitlistError(err.message);
     }
   };
 
@@ -97,7 +122,7 @@ export default function CohortPage() {
         <title>Called to Carry Cohort — Called to Carry</title>
         <meta
           name="description"
-          content="10 weeks of live formation, prophetic business coaching, and Kingdom leadership development for entrepreneurs built to carry more."
+          content="8 weeks of live formation, prophetic business coaching, and Kingdom leadership development for leaders built to carry more."
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -122,25 +147,46 @@ export default function CohortPage() {
         <section className={styles.hero}>
           <div className={styles.heroGrain} aria-hidden="true" />
           <div className={styles.heroInner}>
-            <p className={styles.heroPretitle}>Called to Carry Cohort · Limited Enrollment</p>
+            {!cohortOpen && (
+              <div className={styles.closedBadge}>
+                ✦ Cohort Currently Full — Join the Waitlist Below
+              </div>
+            )}
+            <p className={styles.heroPretitle}>
+              Called to Carry Cohort · {cohortOpen ? 'Limited Enrollment' : 'Next Cohort Coming Soon'}
+            </p>
             <h1 className={styles.heroHeadline}>
               You Were Not Built to<br />
               <em>Carry This Alone.</em>
             </h1>
             <p className={styles.heroSub}>
-              Ten weeks of live formation, prophetic insight, and strategic coaching
+              Eight weeks of live formation, prophetic insight, and strategic coaching
               for Kingdom leaders who know their assignment — and are ready to build it.
             </p>
-            <div className={styles.heroCtas}>
-              <Link href="/cohort/apply" className={styles.btnPrimary}>
-                Apply for the Cohort
-              </Link>
-              <a href="#what-is-this" className={styles.btnGhost}>
-                Learn More
-              </a>
-            </div>
+            {cohortOpen ? (
+              <div className={styles.heroCtas}>
+                <Link href="/cohort/apply" className={styles.btnPrimary}>
+                  Apply for the Cohort
+                </Link>
+                <a href="#what-is-this" className={styles.btnGhost}>
+                  Learn More
+                </a>
+              </div>
+            ) : (
+              <div className={styles.heroCtas}>
+                <a href="#waitlist" className={styles.btnPrimary}>
+                  Join the Waitlist
+                </a>
+                <Link href="/self-paced" className={styles.btnGhost}>
+                  Start Self-Paced — $67
+                </Link>
+              </div>
+            )}
             <p className={styles.heroNote}>
-              Not sure if you're ready? <Link href="/assessment" className={styles.inlineLink}>Take the Called to Carry Assessment first →</Link>
+              Not sure if you're ready?{' '}
+              <Link href="/assessment" className={styles.inlineLink}>
+                Take the Called to Carry Assessment first →
+              </Link>
             </p>
           </div>
           <div className={styles.heroScroll} aria-hidden="true">
@@ -167,8 +213,8 @@ export default function CohortPage() {
                   That weight is not a problem to fix — it's an assignment to steward.
                 </p>
                 <p>
-                  The Called to Carry Cohort is built for Kingdom leaders who are ready to stop managing
-                  their calling in isolation and start building it with clarity, covenant
+                  The Called to Carry Cohort is built for Kingdom leaders who are ready to stop
+                  managing their calling in isolation and start building it with clarity, covenant
                   community, and the kind of formation that actually changes you.
                 </p>
               </div>
@@ -208,7 +254,7 @@ export default function CohortPage() {
           <div className={styles.container}>
             <p className={styles.eyebrow}>What You Receive</p>
             <h2 className={styles.sectionHeading}>
-              Formation built for<br />Kingdom founders.
+              Formation built for<br />Kingdom leaders.
             </h2>
             <div className={styles.includedGrid}>
               {INCLUDED_ITEMS.map((item, i) => (
@@ -222,39 +268,102 @@ export default function CohortPage() {
           </div>
         </section>
 
-        {/* ── PRICING ── */}
-        <section className={styles.pricing} id="pricing">
+        {/* ── PRICING / WAITLIST ── */}
+        <section className={styles.pricing} id={cohortOpen ? 'pricing' : 'waitlist'}>
           <div className={styles.container}>
             <div className={styles.pricingCard}>
               <div className={styles.pricingGrain} aria-hidden="true" />
-              <p className={styles.eyebrowLight}>Called to Carry Cohort Investment</p>
-              <h2 className={styles.pricingHeadline}>
-                One Decision.<br />Ten Weeks of Transformation.
-              </h2>
-              <div className={styles.pricingAmount}>
-                <span className={styles.pricingCurrency}>$</span>
-                <span className={styles.pricingNumber}>497</span>
-                <span className={styles.pricingPer}>/ cohort</span>
-              </div>
-              <p className={styles.pricingCaption}>
-                One-time investment. Full 10-week cohort. All inclusions listed above.
-                Limited seats per cohort to protect depth of community.
-              </p>
-              <div className={styles.pricingActions}>
-                <Link href="/cohort/apply" className={styles.btnPrimaryLarge}>
-                  Apply Now — Secure Your Seat
-                </Link>
-                <button
-                  className={styles.btnGhostLarge}
-                  onClick={handleCheckout}
-                  disabled={loading}
-                >
-                  {loading ? 'Redirecting...' : 'Skip to Checkout'}
-                </button>
-              </div>
-              <p className={styles.pricingDisclaimer}>
-                Seats are confirmed upon application review. Payment is collected at confirmation.
-              </p>
+
+              {cohortOpen ? (
+                <>
+                  <p className={styles.eyebrowLight}>Called to Carry Cohort Investment</p>
+                  <h2 className={styles.pricingHeadline}>
+                    One Decision.<br />Eight Weeks of Transformation.
+                  </h2>
+                  <div className={styles.pricingAmount}>
+                    <span className={styles.pricingCurrency}>$</span>
+                    <span className={styles.pricingNumber}>497</span>
+                    <span className={styles.pricingPer}>/ cohort</span>
+                  </div>
+                  <p className={styles.pricingCaption}>
+                    One-time investment. Full 8-week cohort. All inclusions listed above.
+                    Limited seats per cohort to protect depth of community.
+                  </p>
+                  <div className={styles.pricingActions}>
+                    <Link href="/cohort/apply" className={styles.btnPrimaryLarge}>
+                      Apply Now — Secure Your Seat
+                    </Link>
+                    <button
+                      className={styles.btnGhostLarge}
+                      onClick={handleCheckout}
+                      disabled={loading}
+                    >
+                      {loading ? 'Redirecting...' : 'Skip to Checkout'}
+                    </button>
+                  </div>
+                  <p className={styles.pricingDisclaimer}>
+                    Seats are confirmed upon application review. Payment is collected at confirmation.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className={styles.eyebrowLight}>Called to Carry Cohort</p>
+                  <h2 className={styles.pricingHeadline}>
+                    This Cohort Is Full.<br />The Next One Is Coming.
+                  </h2>
+                  <p className={styles.pricingCaption}>
+                    Join the waitlist and be the first to know when enrollment opens.
+                    Waitlist members get early access and first right of refusal on seats.
+                  </p>
+
+                  {waitlistStatus === 'success' ? (
+                    <div className={styles.waitlistSuccess}>
+                      <p>✦ You're on the list. We'll be in touch when the next cohort opens.</p>
+                      <p style={{ marginTop: '1rem', fontSize: '0.875rem' }}>
+                        In the meantime —{' '}
+                        <Link href="/self-paced" className={styles.pricingLink}>
+                          start the Self-Paced Journey for $67 →
+                        </Link>
+                      </p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleWaitlist} className={styles.waitlistForm}>
+                      <input
+                        type="text"
+                        placeholder="First name"
+                        value={waitlistFirstName}
+                        onChange={e => setWaitlistFirstName(e.target.value)}
+                        className={styles.waitlistInput}
+                      />
+                      <input
+                        type="email"
+                        required
+                        placeholder="Your email address"
+                        value={waitlistEmail}
+                        onChange={e => setWaitlistEmail(e.target.value)}
+                        className={styles.waitlistInput}
+                      />
+                      {waitlistError && (
+                        <p className={styles.waitlistError}>{waitlistError}</p>
+                      )}
+                      <button
+                        type="submit"
+                        disabled={waitlistStatus === 'loading'}
+                        className={styles.btnPrimaryLarge}
+                      >
+                        {waitlistStatus === 'loading' ? 'Joining...' : 'Join the Waitlist'}
+                      </button>
+                    </form>
+                  )}
+
+                  <p className={styles.pricingDisclaimer}>
+                    Want formation now?{' '}
+                    <Link href="/self-paced" className={styles.pricingLink}>
+                      Start the Self-Paced Journey for $67 →
+                    </Link>
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </section>
@@ -282,8 +391,8 @@ export default function CohortPage() {
                   equipping leaders to discover, develop, and deploy their God-given assignment.
                 </p>
                 <p>
-                  The Called to Carry Cohort is an extension of that assignment. Every session carries
-                  the weight of a ministry built to restore, unify, and release.
+                  The Called to Carry Cohort is an extension of that assignment. Every session
+                  carries the weight of a ministry built to restore, unify, and release.
                 </p>
               </div>
             </div>
@@ -322,17 +431,35 @@ export default function CohortPage() {
         <section className={styles.finalCta}>
           <div className={styles.finalGrain} aria-hidden="true" />
           <div className={styles.container}>
-            <h2 className={styles.finalHeadline}>
-              The burden you carry<br />
-              <em>was given to you on purpose.</em>
-            </h2>
-            <p className={styles.finalSub}>
-              Don't let another season pass in isolation. The cohort is designed for
-              leaders who are ready — not perfect, not finished, but willing.
-            </p>
-            <Link href="/cohort/apply" className={styles.btnPrimaryLarge}>
-              Apply for the Called to Carry Cohort
-            </Link>
+            {cohortOpen ? (
+              <>
+                <h2 className={styles.finalHeadline}>
+                  The burden you carry<br />
+                  <em>was given to you on purpose.</em>
+                </h2>
+                <p className={styles.finalSub}>
+                  Don't let another season pass in isolation. The cohort is designed for
+                  leaders who are ready — not perfect, not finished, but willing.
+                </p>
+                <Link href="/cohort/apply" className={styles.btnPrimaryLarge}>
+                  Apply for the Called to Carry Cohort
+                </Link>
+              </>
+            ) : (
+              <>
+                <h2 className={styles.finalHeadline}>
+                  Formation doesn't wait<br />
+                  <em>for the next cohort.</em>
+                </h2>
+                <p className={styles.finalSub}>
+                  The Self-Paced Journey is available now. Six modules, three months,
+                  your schedule. Start building clarity today.
+                </p>
+                <Link href="/self-paced" className={styles.btnPrimaryLarge}>
+                  Start the Self-Paced Journey — $67
+                </Link>
+              </>
+            )}
           </div>
         </section>
 
@@ -350,4 +477,10 @@ export default function CohortPage() {
       </div>
     </>
   );
+}
+
+// ── SERVER SIDE PROPS — reads COHORT_OPEN env var ──────────────────────────
+export async function getServerSideProps() {
+  const cohortOpen = process.env.COHORT_OPEN !== 'false';
+  return { props: { cohortOpen } };
 }
