@@ -547,18 +547,18 @@ export default function Assessment() {
                   Your results reveal exactly what the 5C Blueprint is designed to address. The gap you&apos;re carrying is not a deficiency — it&apos;s an invitation. The next step is a conversation.
                 </p>
                 <a
-                  href="https://link.createassistants.ai/widget/booking/oBN5QzfslWc8BLBaKQpH"
+                  href="/blueprint/apply"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ ...btnPrimary, display: 'inline-block', textDecoration: 'none' }}
                 >
-                  Book Your Discovery Call
+            Apply for the Blueprint
                 </a>
-                <p style={{ fontSize: '0.78rem', color: 'rgba(253,248,240,0.35)', marginTop: '1rem' }}>No pressure. No obligation. Just clarity about your next right step.</p>
+                <p style={{ fontSize: '0.78rem', color: 'rgba(253,248,240,0.35)', marginTop: '1rem' }}>Limited to 10 seats. Will reviews every application personally.</p>
                 <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(253,210,13,0.15)' }}>
-                  <p style={{ fontSize: '0.85rem', color: 'rgba(253,248,240,0.6)', marginBottom: '1rem' }}>Already enrolled? Jump straight into the course.</p>
-                  <a href="/login" style={{ ...btnPrimary, display: 'inline-block', textDecoration: 'none', background: 'transparent', border: '1px solid #FDD20D', color: '#FDD20D' }}>
-                    Access the Course →
+                  <p style={{ fontSize: '0.85rem', color: 'rgba(253,248,240,0.6)', marginBottom: '1rem' }}>Want to go at your own pace? Start the Self-Paced Journey.</p>
+                  <a href="/self-paced" style={{ ...btnPrimary, display: 'inline-block', textDecoration: 'none', background: 'transparent', border: '1px solid #FDD20D', color: '#FDD20D' }}>
+                    Start the Journey →
                   </a>
                 </div>
               </div>
