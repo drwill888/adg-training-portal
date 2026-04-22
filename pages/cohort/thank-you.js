@@ -1,9 +1,3 @@
-// pages/cohort/thank-you.js
-// Handles two entry points:
-//   ?applied=true   — after application form submission
-//   ?session_id=... — after successful Stripe checkout
-//   (no params)     — generic fallback
-
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -20,7 +14,6 @@ export default function CohortThankYou() {
   }, []);
 
   const isPurchase = !!session_id;
-  const isApplication = !!applied;
 
   return (
     <>
@@ -38,7 +31,6 @@ export default function CohortThankYou() {
 
       <div className={styles.page}>
         <div className={styles.grain} aria-hidden="true" />
-
         <main className={`${styles.main} ${mounted ? styles.visible : ''}`}>
           <div className={styles.mark}>✦</div>
 
@@ -50,13 +42,17 @@ export default function CohortThankYou() {
                 <em>Welcome to the cohort.</em>
               </h1>
               <p className={styles.body}>
-                Your investment is confirmed. You'll receive an email within 24 hours with
-                your onboarding details, cohort start date, and access to the 5C Leadership
-                Blueprint portal.
+                Your investment is confirmed. Check your email — a welcome message with your
+                portal access link is on its way right now.
               </p>
               <p className={styles.body}>
                 You made the decision. Now show up fully. This is your season.
               </p>
+              <div className={styles.actions}>
+                <Link href="/dashboard" className={styles.btnPrimary}>
+                  Access Your Portal
+                </Link>
+              </div>
             </>
           ) : (
             <>
@@ -73,19 +69,16 @@ export default function CohortThankYou() {
                 In the meantime, stay in the Word. Stay in prayer. What you carry was placed
                 there on purpose — and this cohort is designed to help you build with it.
               </p>
+              <div className={styles.actions}>
+                <Link href="/" className={styles.btnPrimary}>
+                  Return to Called to Carry
+                </Link>
+                <Link href="/cohort" className={styles.btnGhost}>
+                  Review the Cohort Page
+                </Link>
+              </div>
             </>
           )}
-
-          <div className={styles.actions}>
-            <Link href="/" className={styles.btnPrimary}>
-              Return to Called to Carry
-            </Link>
-            {!isPurchase && (
-              <Link href="/cohort" className={styles.btnGhost}>
-                Review the Cohort Page
-              </Link>
-            )}
-          </div>
 
           <blockquote className={styles.scripture}>
             "For we are God's handiwork, created in Christ Jesus to do good works,
