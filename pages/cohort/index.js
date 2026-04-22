@@ -37,7 +37,7 @@ const INCLUDED_ITEMS = [
 ];
 
 const FOR_WHOM = [
-  "Entrepreneurs who know they're called but feel scattered in their assignment",
+  'Entrepreneurs who know they're called but feel scattered in their assignment',
   'Leaders building Kingdom enterprise with integrity and long-term vision',
   'Prophetic voices ready to connect their gift to sustainable structure',
   'Pastors and ministry leaders transitioning into marketplace influence',
@@ -47,18 +47,18 @@ const FOR_WHOM = [
 const FAQS = [
   {
     q: 'When does the cohort begin?',
-    a: "The next cohort opens enrollment quarterly. Once you apply and are confirmed, you'll receive your start date and onboarding materials.",
+    a: 'The next cohort opens enrollment quarterly. Once you apply and are confirmed, you'll receive your start date and onboarding materials.',
   },
   {
     q: 'Is this only for experienced leaders?',
     a: 'No. This is for any Kingdom leader at any stage who senses a burden they were built to carry. Emerging and executive leaders both find formation here.',
   },
   {
-    q: "What's the time commitment?",
+    q: 'What's the time commitment?',
     a: 'Plan for 2–3 hours per week — one live session and independent portal work. The depth is real; the pace is sustainable.',
   },
   {
-    q: "What if I've already completed the Called to Carry Assessment?",
+    q: 'What if I've already completed the Called to Carry Assessment?',
     a: 'Even better. Your assessment results become the foundation of your personalized debrief in week one.',
   },
   {
@@ -94,7 +94,7 @@ export default function CohortPage() {
   return (
     <>
       <Head>
-        <title>Founder Cohort — Called to Carry</title>
+        <title>Called to Carry Cohort — Called to Carry</title>
         <meta
           name="description"
           content="10 weeks of live formation, prophetic business coaching, and Kingdom leadership development for entrepreneurs built to carry more."
@@ -122,7 +122,7 @@ export default function CohortPage() {
         <section className={styles.hero}>
           <div className={styles.heroGrain} aria-hidden="true" />
           <div className={styles.heroInner}>
-            <p className={styles.heroPretitle}>Founder Cohort · Limited Enrollment</p>
+            <p className={styles.heroPretitle}>Called to Carry Cohort · Limited Enrollment</p>
             <h1 className={styles.heroHeadline}>
               You Were Not Built to<br />
               <em>Carry This Alone.</em>
@@ -167,7 +167,7 @@ export default function CohortPage() {
                   That weight is not a problem to fix — it's an assignment to steward.
                 </p>
                 <p>
-                  The Founder Cohort is built for Kingdom leaders who are ready to stop managing
+                  The Called to Carry Cohort is built for Kingdom leaders who are ready to stop managing
                   their calling in isolation and start building it with clarity, covenant
                   community, and the kind of formation that actually changes you.
                 </p>
@@ -227,7 +227,7 @@ export default function CohortPage() {
           <div className={styles.container}>
             <div className={styles.pricingCard}>
               <div className={styles.pricingGrain} aria-hidden="true" />
-              <p className={styles.eyebrowLight}>Founder Cohort Investment</p>
+              <p className={styles.eyebrowLight}>Called to Carry Cohort Investment</p>
               <h2 className={styles.pricingHeadline}>
                 One Decision.<br />Ten Weeks of Transformation.
               </h2>
@@ -282,7 +282,7 @@ export default function CohortPage() {
                   equipping leaders to discover, develop, and deploy their God-given assignment.
                 </p>
                 <p>
-                  The Founder Cohort is an extension of that assignment. Every session carries
+                  The Called to Carry Cohort is an extension of that assignment. Every session carries
                   the weight of a ministry built to restore, unify, and release.
                 </p>
               </div>
@@ -331,7 +331,7 @@ export default function CohortPage() {
               leaders who are ready — not perfect, not finished, but willing.
             </p>
             <Link href="/cohort/apply" className={styles.btnPrimaryLarge}>
-              Apply for the Founder Cohort
+              Apply for the Called to Carry Cohort
             </Link>
           </div>
         </section>

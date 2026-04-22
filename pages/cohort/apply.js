@@ -1,5 +1,5 @@
 // pages/cohort/apply.js
-// Application form for the Called to Carry Founder Cohort.
+// Application form for the Called to Carry Called to Carry Cohort.
 // On submit: saves to Supabase `cohort_applications` table + triggers Resend confirmation email.
 
 import Head from 'next/head';
@@ -74,10 +74,10 @@ export default function CohortApply() {
   return (
     <>
       <Head>
-        <title>Apply — Founder Cohort · Called to Carry</title>
+        <title>Apply — Called to Carry Cohort · Called to Carry</title>
         <meta
           name="description"
-          content="Apply for the Called to Carry Founder Cohort. Limited seats. Kingdom leaders only."
+          content="Apply for the Called to Carry Called to Carry Cohort. Limited seats. Kingdom leaders only."
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -92,12 +92,12 @@ export default function CohortApply() {
           <Link href="/cohort" className={styles.navBack}>
             ← Back to Cohort
           </Link>
-          <span className={styles.navTitle}>Founder Cohort Application</span>
+          <span className={styles.navTitle}>Called to Carry Cohort Application</span>
         </nav>
 
         <main className={styles.main}>
           <div className={styles.header}>
-            <p className={styles.eyebrow}>Limited Enrollment · Founder Cohort</p>
+            <p className={styles.eyebrow}>Limited Enrollment · Called to Carry Cohort</p>
             <h1 className={styles.heading}>Tell Us About Yourself</h1>
             <p className={styles.sub}>
               Every seat in this cohort is intentional. This brief application helps us confirm

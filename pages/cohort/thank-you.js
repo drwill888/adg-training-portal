@@ -1,3 +1,8 @@
+// pages/cohort/thank-you.js
+// Handles two entry points:
+//   ?applied=true   — after application form submission
+//   ?session_id=... — after successful Stripe checkout (payment confirmed)
+
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -31,12 +36,13 @@ export default function CohortThankYou() {
 
       <div className={styles.page}>
         <div className={styles.grain} aria-hidden="true" />
+
         <main className={`${styles.main} ${mounted ? styles.visible : ''}`}>
           <div className={styles.mark}>✦</div>
 
           {isPurchase ? (
             <>
-              <p className={styles.eyebrow}>Payment Confirmed · Founder Cohort</p>
+              <p className={styles.eyebrow}>Payment Confirmed · Called to Carry Cohort</p>
               <h1 className={styles.heading}>
                 You're in.<br />
                 <em>Welcome to the cohort.</em>
@@ -56,7 +62,7 @@ export default function CohortThankYou() {
             </>
           ) : (
             <>
-              <p className={styles.eyebrow}>Application Received · Founder Cohort</p>
+              <p className={styles.eyebrow}>Application Received · Called to Carry Cohort</p>
               <h1 className={styles.heading}>
                 It's in our hands now.<br />
                 <em>Stay ready.</em>

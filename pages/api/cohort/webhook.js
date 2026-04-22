@@ -60,7 +60,7 @@ export default async function handler(req, res) {
     const session = event.data.object;
 
     // Only process cohort purchases
-    if (session.metadata?.product !== 'founder-cohort') {
+    if (session.metadata?.product !== 'called-to-carry-cohort') {
       return res.status(200).json({ received: true });
     }
 
@@ -158,11 +158,11 @@ export default async function handler(req, res) {
       await resend.emails.send({
         from: process.env.RESEND_FROM_EMAIL || 'Will @ ADG <will@awakeningdestiny.global>',
         to: email,
-        subject: 'You\'re in — Welcome to the Founder Cohort',
+        subject: 'You\'re in — Welcome to the Called to Carry Cohort',
         html: `
           <div style="background:#021A35;color:#FDF8F0;font-family:'Georgia',serif;max-width:600px;margin:0 auto;padding:3rem 2rem;">
             <p style="font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:#C8A951;margin:0 0 1.5rem;">
-              Called to Carry · Founder Cohort
+              Called to Carry · Called to Carry Cohort
             </p>
             <h1 style="font-size:2rem;font-weight:400;line-height:1.2;color:#FDF8F0;margin:0 0 1.5rem;">
               You're in. Welcome to the cohort.
