@@ -47,7 +47,7 @@ const FOR_WHOM = [
 const FAQS = [
   {
     q: 'When does the cohort begin?',
-    a: 'The next cohort opens enrollment quarterly. Once you apply and are confirmed, you'll receive your start date and onboarding materials.',
+    a: "The next cohort opens enrollment quarterly. Once you apply and are confirmed, you'll receive your start date and onboarding materials.",
   },
   {
     q: 'Is this only for experienced leaders?',
