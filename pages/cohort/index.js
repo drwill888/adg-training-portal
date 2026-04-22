@@ -37,13 +37,13 @@ const INCLUDED_ITEMS = [
 ];
 
 const FOR_WHOM = [
-  'Entrepreneurs who know they're called but feel scattered in their assignment',
+  "Entrepreneurs who know they're called but feel scattered in their assignment",
   'Leaders building Kingdom enterprise with integrity and long-term vision',
   'Prophetic voices ready to connect their gift to sustainable structure',
   'Pastors and ministry leaders transitioning into marketplace influence',
   'Emerging leaders who have the anointing and need the formation',
 ];
-
+ 
 const FAQS = [
   {
     q: 'When does the cohort begin?',
@@ -66,7 +66,7 @@ const FAQS = [
     a: 'Because cohort seats are limited and confirmed in advance, all purchases are final. We encourage you to complete the assessment and read this page carefully before applying.',
   },
 ];
-
+ 
 export default function CohortPage() {
   const [openFaq, setOpenFaq] = useState(null);
   const [loading, setLoading] = useState(false);
