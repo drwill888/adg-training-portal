@@ -10,14 +10,14 @@ import TrainingChat from '../components/TrainingChat'
 // Pages that don't require authentication
 const publicPages = [
   '/login', '/auth/callback', '/auth/reset-password', '/', '/assessment',
-  // Called to Carry public funnel — no auth required
   '/called-to-carry',
   '/called-to-carry/assessment',
   '/called-to-carry/assessment/start',
-    // Cohort public pages
   '/cohort',
   '/cohort/apply',
   '/cohort/thank-you',
+  '/self-paced',
+  '/self-paced/thank-you',
 ]
 
 // Prefixes that are always public (covers /called-to-carry/assessment/results/[id])
