@@ -16,10 +16,10 @@ const anthropic = new Anthropic({
   apiKey: process.env.CLAUDE_API_KEY || process.env.ANTHROPIC_API_KEY,
 });
 
-// Model configs — tune here if you want different models per tier
+// Model configs — Opus for full (Blueprint + Cohort), Sonnet for light (Self-Paced)
 const MODEL_CONFIG = {
   full: {
-    model: 'claude-sonnet-4-5',
+    model: 'claude-opus-4-7',
     max_tokens: 3000,
   },
   light: {
@@ -102,8 +102,11 @@ export default async function handler(req, res) {
     // Compute rough cost estimate for logging (pricing is approximate)
     const inputTokens = completion.usage?.input_tokens || 0;
     const outputTokens = completion.usage?.output_tokens || 0;
-    // Sonnet 4.5 pricing: $3/M input, $15/M output (approximate)
-    const costUsd = (inputTokens * 3 / 1_000_000) + (outputTokens * 15 / 1_000_000);
+    // Full uses Opus 4.7, Light uses Sonnet 4.5
+    const isOpus = modelConfig.model.includes('opus');
+    const inputRate = isOpus ? 15 : 3;     // $/M input tokens
+    const outputRate = isOpus ? 75 : 15;   // $/M output tokens
+    const costUsd = (inputTokens * inputRate / 1_000_000) + (outputTokens * outputRate / 1_000_000);
 
     // Save to DB — upsert on user_id
     const { data: saved, error: dbError } = await supabase
