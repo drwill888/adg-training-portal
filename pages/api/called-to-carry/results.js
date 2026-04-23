@@ -12,7 +12,7 @@ import {
   getArchetype,
   getOfficeLabels,
   getOverlayDisplay,
-} from '../../lib/archetypes';
+} from '../../../lib/archetypes';
 import styles from '../../styles/Results.module.css';
 
 export default function ResultsPage() {
