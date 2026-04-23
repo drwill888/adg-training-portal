@@ -64,7 +64,8 @@
 /* ── HERO ── */
 .hero {
   position: relative;
-  min-height: auto;
+  min-height: unset;
+  padding: 5rem 1.5rem 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
