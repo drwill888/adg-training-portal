@@ -234,7 +234,7 @@ export default function AssessmentPage() {
       }
 
       // Redirect to results page with archetype
-      router.push(`/called-to-carry/results?archetype=${result.archetypeId}`);
+      router.push(`/called-to-carry/assessment/results/${data.submissionId}`);
     } catch (err) {
       setError(err.message);
       setLoading(false);
