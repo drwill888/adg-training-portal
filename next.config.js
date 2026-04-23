@@ -7,17 +7,18 @@ const nextConfig = {
   // Excludes /api/, /_next/, /_vercel/, /favicon.ico so API routes and Next
   // internals pass through untouched. See called-to-carry-build-plan.md § Phase 1.3.
   async rewrites() {
-  return {
-    beforeFiles: [
-      {
-        has: [{ type: 'host', value: 'calledtocarry.awakeningdestiny.global' }],
-        source: "/:path((?!api/|_next/|_vercel/|favicon\\.ico|self-paced|blueprint|login|dashboard|modules|auth|success|admin).*)",
-        destination: "/called-to-carry/:path",
-      },
-    ],
-    afterFiles: [],
-    fallback: [],
-  };
-},
+    return {
+      beforeFiles: [
+        {
+          has: [{ type: 'host', value: 'calledtocarry.awakeningdestiny.global' }],
+          source: "/:path((?!api/|_next/|_vercel/|favicon\\.ico|self-paced|blueprint|login|dashboard|modules|auth|success|admin).*)",
+          destination: "/called-to-carry/:path",
+        },
+      ],
+      afterFiles: [],
+      fallback: [],
+    };
+  },
+};                        // ← this was missing
 
 module.exports = nextConfig;
