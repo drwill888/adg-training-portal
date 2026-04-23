@@ -1,0 +1,262 @@
+/* styles/Assessment.module.css — drop into your styles folder */
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #021A35 0%, #0a2545 50%, #021A35 100%);
+  color: #FDF8F0;
+  font-family: 'Outfit', -apple-system, sans-serif;
+  padding: 2rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #C8A951;
+  font-weight: 600;
+  margin: 0 0 1.5rem;
+}
+
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: #FDF8F0;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: rgba(253, 248, 240, 0.78);
+  line-height: 1.65;
+  margin: 0 0 2rem;
+  max-width: 540px;
+}
+
+/* ── LANDING ─────────────────────────────────────────────────────────── */
+.landingInner {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.landingInner .subtitle {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2.5rem;
+  text-align: left;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.benefits li {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: rgba(253, 248, 240, 0.7);
+  padding: 0.6rem 0 0.6rem 1.5rem;
+  position: relative;
+  border-bottom: 1px solid rgba(200, 169, 81, 0.1);
+}
+
+.benefits li:last-child { border-bottom: none; }
+
+.benefits li::before {
+  content: '✦';
+  color: #C8A951;
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+}
+
+/* ── QUESTION ────────────────────────────────────────────────────────── */
+.questionInner {
+  max-width: 720px;
+  width: 100%;
+}
+
+.progressBar {
+  height: 3px;
+  background: rgba(200, 169, 81, 0.15);
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: #C8A951;
+  transition: width 0.4s ease;
+}
+
+.progressText {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(253, 248, 240, 0.5);
+  margin: 0 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.trackBadge {
+  background: rgba(200, 169, 81, 0.15);
+  border: 1px solid rgba(200, 169, 81, 0.3);
+  color: #C8A951;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.questionText {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+  font-weight: 400;
+  line-height: 1.35;
+  color: #FDF8F0;
+  margin: 0 0 2.5rem;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.optionButton {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(200, 169, 81, 0.2);
+  color: #FDF8F0;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 300;
+  padding: 1.1rem 1.4rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  line-height: 1.5;
+}
+
+.optionButton:hover {
+  background: rgba(200, 169, 81, 0.08);
+  border-color: rgba(200, 169, 81, 0.5);
+  transform: translateX(4px);
+}
+
+.optionLabel {
+  background: rgba(200, 169, 81, 0.2);
+  color: #C8A951;
+  font-weight: 700;
+  font-size: 0.85rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.optionText {
+  flex: 1;
+}
+
+.btnBack {
+  background: none;
+  border: none;
+  color: rgba(253, 248, 240, 0.5);
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  transition: color 0.2s;
+}
+
+.btnBack:hover { color: #C8A951; }
+
+/* ── GATE ────────────────────────────────────────────────────────────── */
+.gateInner {
+  max-width: 540px;
+  width: 100%;
+  text-align: center;
+}
+
+.gateInner .subtitle {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gateForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(200, 169, 81, 0.25);
+  color: #FDF8F0;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.95rem 1.1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input::placeholder { color: rgba(253, 248, 240, 0.35); }
+.input:focus { border-color: #C8A951; }
+
+.error {
+  font-size: 0.85rem;
+  color: #f87c74;
+  margin: 0;
+}
+
+.privacyNote {
+  font-size: 0.78rem;
+  color: rgba(253, 248, 240, 0.4);
+  margin: 0.5rem 0 0;
+}
+
+/* ── BUTTONS ─────────────────────────────────────────────────────────── */
+.btnPrimary {
+  background: #C8A951;
+  color: #021A35;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: #d4b863;
+  transform: translateY(-1px);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

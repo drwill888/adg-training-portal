@@ -1,0 +1,79 @@
+diff --git a/components/ModuleTemplate.js b/components/ModuleTemplate.js
+index 0a35301..dda2bc5 100644
+--- a/components/ModuleTemplate.js
++++ b/components/ModuleTemplate.js
+@@ -83,12 +83,34 @@ function BookChapterContent({ chapter }) {
+   );
+ }
+ 
+-function PauseTextarea({ prompt }) {
++function PauseTextarea({ prompt, onAutoSave }) {
+   var s = useState("");
++  var indS = useState(null); var saveInd = indS[0]; var setSaveInd = indS[1];
++  var timerRef = useRef(null);
++  function handleChange(e) {
++    var val = e.target.value;
++    s[1](val);
++    if (!onAutoSave) return;
++    clearTimeout(timerRef.current);
++    timerRef.current = setTimeout(function() {
++      setSaveInd("saving");
++      onAutoSave(val, function(err) {
++        if (err) {
++          setSaveInd("error");
++        } else {
++          setSaveInd("saved");
++          setTimeout(function() { setSaveInd(null); }, 2000);
++        }
++      });
++    }, 500);
++  }
++  var indColor = saveInd === "saving" ? "#999" : saveInd === "saved" ? "#16a34a" : saveInd === "error" ? "#dc2626" : "transparent";
++  var indText = saveInd === "saving" ? "Saving…" : saveInd === "saved" ? "✓ Saved" : saveInd === "error" ? "Not saved" : "";
+   return (
+     <div className="mb-4">
+       {prompt && <p className="text-sm mb-2" style={{ color: "#333" }}>{prompt}</p>}
+-      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 80 }} rows={3} placeholder="Write your response here..." value={s[0]} onChange={function(e) { s[1](e.target.value); }} />
++      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 80 }} rows={3} placeholder="Write your response here..." value={s[0]} onChange={handleChange} />
++      <p style={{ fontSize: 11, color: indColor, marginTop: 4, height: 16 }}>{indText}</p>
+     </div>
+   );
+ }
+@@ -131,12 +153,34 @@ function DiagnosticSection({ diagnostic, scores, setScores, accent, label }) {
+   );
+ }
+ 
+-function Reflect({ prompt }) {
++function Reflect({ prompt, onAutoSave }) {
+   var s = useState("");
++  var indS = useState(null); var saveInd = indS[0]; var setSaveInd = indS[1];
++  var timerRef = useRef(null);
++  function handleChange(e) {
++    var val = e.target.value;
++    s[1](val);
++    if (!onAutoSave) return;
++    clearTimeout(timerRef.current);
++    timerRef.current = setTimeout(function() {
++      setSaveInd("saving");
++      onAutoSave(val, function(err) {
++        if (err) {
++          setSaveInd("error");
++        } else {
++          setSaveInd("saved");
++          setTimeout(function() { setSaveInd(null); }, 2000);
++        }
++      });
++    }, 500);
++  }
++  var indColor = saveInd === "saving" ? "#999" : saveInd === "saved" ? "#16a34a" : saveInd === "error" ? "#dc2626" : "transparent";
++  var indText = saveInd === "saving" ? "Saving…" : saveInd === "saved" ? "✓ Saved" : saveInd === "error" ? "Not saved" : "";
+   return (
+     <div className="mb-5 p-4 rounded-xl" style={{ background: "#f9fafb", border: "1px solid #e5e7eb" }}>
+       <p className="text-sm font-semibold mb-3" style={{ color: NAVY }}>{prompt}</p>
+-      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 90 }} rows={4} placeholder="Write your honest reflection here..." value={s[0]} onChange={function(e) { s[1](e.target.value); }} />
++      <textarea className="w-full rounded-lg p-3 text-sm leading-relaxed resize-none focus:outline-none" style={{ border: "1px solid #ddd", background: "#fff", minHeight: 90 }} rows={4} placeholder="Write your honest reflection here..." value={s[0]} onChange={handleChange} />
++      <p style={{ fontSize: 11, color: indColor, marginTop: 4, height: 16 }}>{indText}</p>
+     </div>
+   );
+ }
+v
