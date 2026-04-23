@@ -1,6 +1,4 @@
 // pages/api/called-to-carry/submit-archetype.js
-// Saves Called to Carry assessment results
-
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 
@@ -22,8 +20,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing required fields.' });
   }
 
-  // Save to Supabase
-  const { error: dbError } = await supabase
+  // Save to Supabase — return id so frontend can redirect to /assessment/results/[id]
+  const { data, error: dbError } = await supabase
     .from('called_to_carry_submissions')
     .upsert([{
       email,
@@ -33,14 +31,19 @@ export default async function handler(req, res) {
       archetype_id: archetypeId,
       office_scores: officeScores,
       overlay_scores: overlayScores,
-      label_preference: 'functional', // default — user can change on results page
-      created_at: new Date().toISOString(),
-    }], { onConflict: 'email' });
+      label_preference: 'functional',
+      updated_at: new Date().toISOString(),
+    }], { onConflict: 'email' })
+    .select('id')
+    .single();
 
   if (dbError) {
     console.error('DB error:', dbError);
     return res.status(500).json({ error: 'Failed to save results.' });
   }
+
+  const submissionId = data.id;
+  const resultsUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/called-to-carry/assessment/results/${submissionId}`;
 
   // Send results email
   try {
@@ -65,7 +68,7 @@ export default async function handler(req, res) {
             carry your assignment. Read your full archetype profile and choose
             your preferred office label on your results page.
           </p>
-          <a href="${process.env.NEXT_PUBLIC_SITE_URL}/called-to-carry/results?archetype=${archetypeId}"
+          <a href="${resultsUrl}"
              style="display:inline-block;background:#C8A951;color:#021A35;font-family:sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;padding:0.9rem 2rem;margin:1rem 0;">
             View Your Full Archetype →
           </a>
@@ -82,7 +85,7 @@ export default async function handler(req, res) {
     // Don't fail the request if email fails
   }
 
-  return res.status(200).json({ success: true, archetypeId });
+  return res.status(200).json({ success: true, archetypeId, submissionId });
 }
 
 function capitalize(s) {
