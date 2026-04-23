@@ -60,8 +60,8 @@ export default async function handler(req, res) {
         quantity: 1,
       }],
       metadata: { application_id: app.id, type: 'called_to_carry_cohort' },
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cohort/thank-you?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/cohort/apply`,
+      success_url: `https://calledtocarry.awakeningdestiny.global/cohort/thank-you?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://calledtocarry.awakeningdestiny.global/cohort/apply`,
     });
 
     // Update application with Stripe session ID
