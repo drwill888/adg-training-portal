@@ -10,7 +10,7 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
-          source: '/:path((?!api/|_next/|_vercel/|favicon\\.ico).*)',
+          source: "/:path((?!api/|_next/|_vercel/|favicon\\.ico|self-paced|blueprint|login|dashboard|modules|auth|success|admin).*)"
           has: [{ type: 'host', value: 'calledtocarry.awakeningdestiny.global' }],
           destination: '/called-to-carry/:path',
         },
