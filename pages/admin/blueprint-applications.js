@@ -19,15 +19,14 @@ export default function BlueprintApplications() {
 
   useEffect(() => { fetchApps(); }, [filter]);
 
-  async function fetchApps() {
+async function fetchApps() {
     setLoading(true);
-    const q = supabase.from('blueprint_applications').select('*').order('created_at', { ascending: false });
-    if (filter !== 'all') q.eq('status', filter);
-    const { data } = await q;
-    setApps(data || []);
+    const res = await fetch(`/api/admin/get-blueprint-applications?status=${filter}`);
+    const data = await res.json();
+    setApps(data.applications || []);
     setLoading(false);
   }
-
+  
   async function handleAction(id, action) {
     setProcessing(id);
     const res = await fetch('/api/admin/approve-blueprint', {
