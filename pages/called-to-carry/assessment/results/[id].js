@@ -1,7 +1,6 @@
 // pages/called-to-carry/assessment/results/[id].js
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { ARCHETYPES } from '../../../../lib/called-to-carry/archetypes';
 
@@ -64,11 +63,6 @@ export async function getServerSideProps({ params }) {
 export default function AssessmentResults({ submission }) {
   const archetype = ARCHETYPES[submission.archetype];
 
-  // Label picker state — initialized from DB
-  const initialLabel = submission.customLabel || OFFICE_DISPLAY[submission.office];
-  const [selectedLabel, setSelectedLabel] = useState(initialLabel);
-  const [saving, setSaving] = useState(false);
-
   if (!archetype) {
     return (
       <div style={styles.page}>
@@ -79,45 +73,17 @@ export default function AssessmentResults({ submission }) {
     );
   }
 
-  const officeDefault = OFFICE_DISPLAY[submission.office];
+  const officeName = OFFICE_DISPLAY[submission.office];
   const overlayName = OVERLAY_DISPLAY[submission.overlay];
+  const displayName = `The ${officeName} ${overlayName}`;
   const firstName = submission.firstName;
   const greeting = firstName ? `${firstName}, you are` : 'You are';
-
-  // Build dropdown options: office default + 5 fivefold labels
-  const labelOptions = [officeDefault, ...(archetype.officeLabels || [])];
-
-  async function handleLabelChange(e) {
-    const newLabel = e.target.value;
-    setSelectedLabel(newLabel);
-    setSaving(true);
-
-    // If they picked the office default, preference is 'functional'; otherwise 'custom' with the chosen word
-    const isDefault = newLabel === officeDefault;
-    const payload = {
-      email: submission.email,
-      label_preference: isDefault ? 'functional' : 'custom',
-      custom_label: isDefault ? null : newLabel,
-    };
-
-    try {
-      await fetch('/api/called-to-carry/save-label-preference', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-    } catch (err) {
-      console.error('Failed to save label preference:', err);
-    } finally {
-      setSaving(false);
-    }
-  }
 
   return (
     <div style={styles.page}>
       <Head>
-        <title>The {selectedLabel} {overlayName} — Called to Carry Results</title>
-        <meta name="description" content={`Your Called to Carry archetype: The ${selectedLabel} ${overlayName}.`} />
+        <title>{displayName} — Called to Carry Results</title>
+        <meta name="description" content={`Your Called to Carry archetype: ${displayName}.`} />
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
       </Head>
 
@@ -125,35 +91,18 @@ export default function AssessmentResults({ submission }) {
         <div style={styles.header}>
           <p style={styles.eyebrow}>Called to Carry · Your Result</p>
           <p style={styles.greeting}>{greeting}</p>
-          <h1 style={styles.archetypeName}>The {selectedLabel} {overlayName}</h1>
+          <h1 style={styles.archetypeName}>{displayName}</h1>
           <p style={styles.subtitle}>{archetype.subtitle}</p>
         </div>
 
-        {/* Label picker */}
-        <div style={styles.labelPicker}>
-          <label htmlFor="label-select" style={styles.labelPickerLabel}>
-            Prefer a different term? Choose how you self-identify:
-          </label>
-          <select
-            id="label-select"
-            value={selectedLabel}
-            onChange={handleLabelChange}
-            disabled={saving}
-            style={styles.labelSelect}
-          >
-            {labelOptions.map(opt => (
-              <option key={opt} value={opt}>{opt}</option>
-            ))}
-          </select>
-          {saving && <span style={styles.savingIndicator}>Saving…</span>}
-        </div>
-
+        {/* Who You Are — intro narrative */}
         <div style={styles.body}>
           {archetype.whoYouAre && archetype.whoYouAre.map((para, i) => (
             <p key={`who-${i}`} style={styles.para}>{para}</p>
           ))}
         </div>
 
+        {/* Your Assignment */}
         {archetype.assignment && (
           <section style={styles.section}>
             <h2 style={styles.sectionHeading}>Your Assignment</h2>
@@ -161,6 +110,7 @@ export default function AssessmentResults({ submission }) {
           </section>
         )}
 
+        {/* Your Strength */}
         {archetype.strength && (
           <section style={styles.section}>
             <h2 style={styles.sectionHeading}>Your Strength</h2>
@@ -168,6 +118,7 @@ export default function AssessmentResults({ submission }) {
           </section>
         )}
 
+        {/* Your Temptation */}
         {archetype.temptation && (
           <section style={styles.section}>
             <h2 style={styles.sectionHeading}>Your Temptation</h2>
@@ -175,6 +126,7 @@ export default function AssessmentResults({ submission }) {
           </section>
         )}
 
+        {/* Your Scripture — pull-quote */}
         {archetype.scripture && (
           <section style={styles.scriptureSection}>
             <p style={styles.scriptureText}>&ldquo;{archetype.scripture}&rdquo;</p>
@@ -184,6 +136,7 @@ export default function AssessmentResults({ submission }) {
           </section>
         )}
 
+        {/* CTA */}
         <div style={styles.ctaSection}>
           <Link href={archetype.cta.primary.href} style={styles.ctaBtn}>
             {archetype.cta.primary.label}
@@ -193,6 +146,7 @@ export default function AssessmentResults({ submission }) {
           )}
         </div>
 
+        {/* Score breakdown */}
         <div style={styles.scores}>
           <p style={styles.scoresLabel}>Score breakdown</p>
           <div style={styles.scoreGrid}>
@@ -217,15 +171,11 @@ export default function AssessmentResults({ submission }) {
 const styles = {
   page: { background: '#021A35', minHeight: '100vh', color: '#FDF8F0', fontFamily: "'Georgia', serif" },
   main: { maxWidth: '680px', margin: '0 auto', padding: '4rem 1.5rem 6rem' },
-  header: { textAlign: 'center', marginBottom: '2rem' },
+  header: { textAlign: 'center', marginBottom: '3rem' },
   eyebrow: { color: '#C8A951', letterSpacing: '0.12em', fontSize: '0.78rem', textTransform: 'uppercase', fontFamily: "'Outfit', sans-serif", marginBottom: '1.5rem' },
   greeting: { fontFamily: "'Outfit', sans-serif", fontSize: '1rem', opacity: 0.7, marginBottom: '0.4rem' },
   archetypeName: { fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(2rem, 6vw, 3.5rem)', fontWeight: 400, lineHeight: 1.1, marginBottom: '1rem' },
   subtitle: { fontSize: '1.05rem', lineHeight: 1.6, opacity: 0.75, fontStyle: 'italic', maxWidth: '480px', margin: '0 auto' },
-  labelPicker: { textAlign: 'center', marginBottom: '3rem', padding: '1.5rem 1.25rem', background: 'rgba(200,169,81,0.06)', border: '1px solid rgba(200,169,81,0.18)', borderRadius: '6px' },
-  labelPickerLabel: { display: 'block', fontFamily: "'Outfit', sans-serif", fontSize: '0.82rem', opacity: 0.8, marginBottom: '0.75rem' },
-  labelSelect: { fontFamily: "'Outfit', sans-serif", fontSize: '0.95rem', padding: '0.55rem 1rem', background: '#021A35', color: '#FDF8F0', border: '1px solid rgba(200,169,81,0.4)', borderRadius: '4px', minWidth: '200px', cursor: 'pointer' },
-  savingIndicator: { marginLeft: '0.75rem', fontFamily: "'Outfit', sans-serif", fontSize: '0.78rem', color: '#C8A951', opacity: 0.8 },
   body: { marginBottom: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2.5rem' },
   section: { marginBottom: '2.25rem' },
   sectionHeading: { fontFamily: "'Outfit', sans-serif", fontSize: '0.78rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#C8A951', fontWeight: 600, marginBottom: '0.85rem' },
