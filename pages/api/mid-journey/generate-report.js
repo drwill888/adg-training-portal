@@ -13,7 +13,7 @@ const supabase = createClient(
 );
 
 const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+  apiKey: process.env.CLAUDE_API_KEY || process.env.ANTHROPIC_API_KEY,
 });
 
 // Model configs — tune here if you want different models per tier
