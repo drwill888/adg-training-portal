@@ -1,7 +1,13 @@
 // pages/mid-journey-report.js
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 const OFFICE_DISPLAY = {
   apostolic: 'Apostolic', prophetic: 'Prophetic', evangelistic: 'Evangelistic',
@@ -12,77 +18,50 @@ const OVERLAY_DISPLAY = {
   covenant_keeper: 'Covenant Keeper', equipper: 'Equipper',
 };
 
-export async function getServerSideProps({ req }) {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY
-  );
+export default function MidJourneyReportPage() {
+  const [state, setState] = useState({ loading: true, report: null, userId: null });
 
-  // Get auth token from cookie
-  const cookies = req.headers.cookie || '';
-  const tokenMatch = cookies.match(/sb-[^=]+-auth-token=([^;]+)/);
-  
-  let userId = null;
-  let userEmail = null;
+  useEffect(() => {
+    (async () => {
+      // Get the session token from Supabase client-side auth
+      const { data: { session } } = await supabase.auth.getSession();
 
-  if (tokenMatch) {
-    try {
-      const decoded = decodeURIComponent(tokenMatch[1]);
-      const tokenData = JSON.parse(decoded);
-      userId = tokenData?.user?.id || tokenData?.[0]?.user?.id;
-      userEmail = tokenData?.user?.email || tokenData?.[0]?.user?.email;
-    } catch (e) {}
+      if (!session?.access_token) {
+        window.location.href = '/login?redirect=/mid-journey-report';
+        return;
+      }
+
+      // Call our API with the token
+      const res = await fetch('/api/mid-journey/get-report', {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+
+      if (!res.ok) {
+        window.location.href = '/login?redirect=/mid-journey-report';
+        return;
+      }
+
+      const { report, userId } = await res.json();
+      setState({ loading: false, report, userId });
+    })();
+  }, []);
+
+  function handleDownload() {
+    if (!state.userId) return;
+    window.location.href = `/api/mid-journey/download-docx?userId=${state.userId}`;
   }
 
-  // Also try getting user from Supabase auth header
-  if (!userId) {
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-      const { data: { user } } = await supabase.auth.getUser(authHeader.replace('Bearer ', ''));
-      userId = user?.id;
-      userEmail = user?.email;
-    }
+  if (state.loading) {
+    return (
+      <div style={styles.page}>
+        <main style={styles.main}>
+          <p style={styles.loading}>Loading your report…</p>
+        </main>
+      </div>
+    );
   }
 
-  if (!userId && !userEmail) {
-    return { redirect: { destination: '/login?redirect=/mid-journey-report', permanent: false } };
-  }
-
-  // Try by user_id first, then email fallback
-  let report = null;
-  if (userId) {
-    const { data } = await supabase
-      .from('mid_journey_reports')
-      .select('*')
-      .eq('user_id', userId)
-      .maybeSingle();
-    report = data;
-  }
-  if (!report && userEmail) {
-    const { data } = await supabase
-      .from('mid_journey_reports')
-      .select('*')
-      .eq('email', userEmail)
-      .maybeSingle();
-    report = data;
-  }
-
-  return {
-    props: {
-      report: report ? JSON.parse(JSON.stringify(report)) : null,
-      userId: userId || null,
-      userEmail: userEmail || null,
-    },
-  };
-}
-
-export default function MidJourneyReportPage({ report, userId }) {
-  async function handleDownload() {
-    if (!userId) return;
-    window.location.href = `/api/mid-journey/download-docx?userId=${userId}`;
-  }
-
-  if (!report) {
+  if (!state.report) {
     return (
       <div style={styles.page}>
         <Head><title>Mid-Journey Blueprint — Awakening Destiny</title></Head>
@@ -98,8 +77,8 @@ export default function MidJourneyReportPage({ report, userId }) {
     );
   }
 
-  const officeName = OFFICE_DISPLAY[report.archetype_office] || report.archetype_office;
-  const overlayName = OVERLAY_DISPLAY[report.archetype_overlay] || report.archetype_overlay;
+  const officeName = OFFICE_DISPLAY[state.report.archetype_office] || state.report.archetype_office;
+  const overlayName = OVERLAY_DISPLAY[state.report.archetype_overlay] || state.report.archetype_overlay;
   const archetypeDisplay = `The ${officeName} ${overlayName}`;
 
   return (
@@ -115,15 +94,19 @@ export default function MidJourneyReportPage({ report, userId }) {
           <p style={styles.subtitle}>Generated at the Capacity threshold — your formation diagnostic across Calling, Connection, Competency, and Capacity.</p>
         </div>
         <div style={styles.actionRow}>
-          <button onClick={handleDownload} style={styles.downloadBtn}>Download as Word Document</button>
+          <button onClick={handleDownload} style={styles.downloadBtn}>
+            Download as Word Document
+          </button>
           <Link href="/dashboard" style={styles.backLink}>← Dashboard</Link>
         </div>
         <article style={styles.article}>
-          {renderMarkdown(report.content)}
+          {renderMarkdown(state.report.content)}
         </article>
         <div style={styles.footer}>
           <p style={styles.footerNote}>
-            Generated {new Date(report.generated_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · Awakening Destiny Global
+            Generated {new Date(state.report.generated_at).toLocaleDateString('en-US', {
+              month: 'long', day: 'numeric', year: 'numeric'
+            })} · Awakening Destiny Global
           </p>
         </div>
       </main>
@@ -150,6 +133,7 @@ function renderMarkdown(text) {
 const styles = {
   page: { background: '#021A35', minHeight: '100vh', color: '#FDF8F0', fontFamily: "'Outfit', sans-serif" },
   main: { maxWidth: '720px', margin: '0 auto', padding: '4rem 1.5rem 6rem' },
+  loading: { textAlign: 'center', opacity: 0.6, padding: '4rem 0', fontFamily: "'Outfit', sans-serif" },
   header: { textAlign: 'center', marginBottom: '2rem' },
   eyebrow: { color: '#C8A951', letterSpacing: '0.14em', fontSize: '0.78rem', textTransform: 'uppercase', marginBottom: '1.5rem', fontWeight: 500 },
   title: { fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(2.2rem, 6vw, 3.6rem)', fontWeight: 400, lineHeight: 1.1, marginBottom: '1rem' },
