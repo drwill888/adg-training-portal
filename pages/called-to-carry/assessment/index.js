@@ -206,41 +206,40 @@ export default function AssessmentPage() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError('');
 
-    try {
-      const result = calculateArchetype(answers);
+  try {
+    const result = calculateArchetype(answers);
 
-      const res = await fetch('/api/called-to-carry/submit-archetype', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName: gateData.firstName,
-          email: gateData.email,
-          office: result.office,
-          overlay: result.overlay,
-          archetypeId: result.archetypeId,
-          officeScores: result.officeScores,
-          overlayScores: result.overlayScores,
-        }),
-      });
+    const res = await fetch('/api/called-to-carry/submit-archetype', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        firstName: gateData.firstName,
+        email: gateData.email,
+        office: result.office,
+        overlay: result.overlay,
+        archetypeId: result.archetypeId,
+        officeScores: result.officeScores,
+        overlayScores: result.overlayScores,
+      }),
+    });
 
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Submission failed.');
-      }
+    const data = await res.json();
 
-      // Redirect to results page with archetype
-      router.push(`/called-to-carry/assessment/results/${data.submissionId}`);
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
+    if (!res.ok) {
+      throw new Error(data.error || 'Submission failed.');
     }
-  };
 
+    router.push(`/called-to-carry/assessment/results/${data.submissionId}`);
+  } catch (err) {
+    setError(err.message);
+    setLoading(false);
+  }
+};
   // ── VIEW: LANDING ──────────────────────────────────────────────────────
   if (!started) {
     return (
