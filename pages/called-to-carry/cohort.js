@@ -174,7 +174,5 @@ export default function CohortPage({ cohortOpen }) {
 }
 
 export async function getServerSideProps() {
-  const val = (process.env.CALLED_TO_CARRY_COHORT_OPEN || '').toLowerCase().trim();
-  const cohortOpen = val === 'true' || val === '1' || val === 'yes';
-  return { props: { cohortOpen } };
+  return { props: { cohortOpen: true } };
 }
