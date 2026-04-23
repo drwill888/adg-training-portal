@@ -13,7 +13,6 @@ import {
   getOfficeLabels,
   getOverlayDisplay,
 } from '../../../lib/archetypes';
-import styles from '../../styles/Results.module.css';
 
 export default function ResultsPage() {
   const router = useRouter();
