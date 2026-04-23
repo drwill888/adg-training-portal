@@ -1,8 +1,25 @@
 // pages/called-to-carry/assessment/results/[id].js
 import Head from 'next/head';
 import Link from 'next/link';
+import { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { ARCHETYPES } from '../../../../lib/called-to-carry/archetypes';
+
+const OFFICE_DISPLAY = {
+  apostolic: 'Apostolic',
+  prophetic: 'Prophetic',
+  evangelistic: 'Evangelistic',
+  pastoral: 'Pastoral',
+  teaching: 'Teaching',
+};
+
+const OVERLAY_DISPLAY = {
+  builder: 'Builder',
+  burden_bearer: 'Burden Bearer',
+  reformer: 'Reformer',
+  covenant_keeper: 'Covenant Keeper',
+  equipper: 'Equipper',
+};
 
 export async function getServerSideProps({ params }) {
   const { id } = params;
@@ -18,7 +35,7 @@ export async function getServerSideProps({ params }) {
 
   const { data, error } = await supabase
     .from('called_to_carry_submissions')
-    .select('id, first_name, office, overlay, archetype_id, office_scores, overlay_scores, label_preference, custom_label, created_at')
+    .select('id, email, first_name, office, overlay, archetype_id, office_scores, overlay_scores, label_preference, custom_label, created_at')
     .eq('id', id)
     .single();
 
@@ -30,13 +47,14 @@ export async function getServerSideProps({ params }) {
     props: {
       submission: {
         id: data.id,
+        email: data.email,
         firstName: data.first_name || null,
         archetype: data.archetype_id,
         office: data.office,
         overlay: data.overlay,
         scores: { ...data.office_scores, ...data.overlay_scores },
-        labelPreference: data.label_preference,
-        customLabel: data.custom_label,
+        labelPreference: data.label_preference || 'functional',
+        customLabel: data.custom_label || null,
         completedAt: data.created_at,
       },
     },
@@ -45,6 +63,11 @@ export async function getServerSideProps({ params }) {
 
 export default function AssessmentResults({ submission }) {
   const archetype = ARCHETYPES[submission.archetype];
+
+  // Label picker state — initialized from DB
+  const initialLabel = submission.customLabel || OFFICE_DISPLAY[submission.office];
+  const [selectedLabel, setSelectedLabel] = useState(initialLabel);
+  const [saving, setSaving] = useState(false);
 
   if (!archetype) {
     return (
@@ -56,14 +79,45 @@ export default function AssessmentResults({ submission }) {
     );
   }
 
+  const officeDefault = OFFICE_DISPLAY[submission.office];
+  const overlayName = OVERLAY_DISPLAY[submission.overlay];
   const firstName = submission.firstName;
   const greeting = firstName ? `${firstName}, you are` : 'You are';
+
+  // Build dropdown options: office default + 5 fivefold labels
+  const labelOptions = [officeDefault, ...(archetype.officeLabels || [])];
+
+  async function handleLabelChange(e) {
+    const newLabel = e.target.value;
+    setSelectedLabel(newLabel);
+    setSaving(true);
+
+    // If they picked the office default, preference is 'functional'; otherwise 'custom' with the chosen word
+    const isDefault = newLabel === officeDefault;
+    const payload = {
+      email: submission.email,
+      label_preference: isDefault ? 'functional' : 'custom',
+      custom_label: isDefault ? null : newLabel,
+    };
+
+    try {
+      await fetch('/api/called-to-carry/save-label-preference', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.error('Failed to save label preference:', err);
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
     <div style={styles.page}>
       <Head>
-        <title>{archetype.name} — Called to Carry Results</title>
-        <meta name="description" content={`Your Called to Carry archetype: ${archetype.name}. ${archetype.subtitle}`} />
+        <title>The {selectedLabel} {overlayName} — Called to Carry Results</title>
+        <meta name="description" content={`Your Called to Carry archetype: The ${selectedLabel} ${overlayName}.`} />
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
       </Head>
 
@@ -71,27 +125,64 @@ export default function AssessmentResults({ submission }) {
         <div style={styles.header}>
           <p style={styles.eyebrow}>Called to Carry · Your Result</p>
           <p style={styles.greeting}>{greeting}</p>
-          <h1 style={styles.archetypeName}>{archetype.name.replace(/_/g, ' ')}</h1>
+          <h1 style={styles.archetypeName}>The {selectedLabel} {overlayName}</h1>
           <p style={styles.subtitle}>{archetype.subtitle}</p>
         </div>
 
+        {/* Label picker */}
+        <div style={styles.labelPicker}>
+          <label htmlFor="label-select" style={styles.labelPickerLabel}>
+            Prefer a different term? Choose how you self-identify:
+          </label>
+          <select
+            id="label-select"
+            value={selectedLabel}
+            onChange={handleLabelChange}
+            disabled={saving}
+            style={styles.labelSelect}
+          >
+            {labelOptions.map(opt => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+          {saving && <span style={styles.savingIndicator}>Saving…</span>}
+        </div>
+
         <div style={styles.body}>
-          {archetype.body.map((para, i) => (
-            <p key={i} style={styles.para}>{para}</p>
+          {archetype.whoYouAre && archetype.whoYouAre.map((para, i) => (
+            <p key={`who-${i}`} style={styles.para}>{para}</p>
           ))}
         </div>
 
-        <div style={styles.nextStepsCard}>
-          <p style={styles.cardLabel}>Your Next Steps</p>
-          <ul style={styles.nextStepsList}>
-            {archetype.nextSteps.map((step, i) => (
-              <li key={i} style={styles.nextStepItem}>
-                <span style={styles.stepDot}>→</span>
-                <span>{step}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {archetype.assignment && (
+          <section style={styles.section}>
+            <h2 style={styles.sectionHeading}>Your Assignment</h2>
+            <p style={styles.para}>{archetype.assignment}</p>
+          </section>
+        )}
+
+        {archetype.strength && (
+          <section style={styles.section}>
+            <h2 style={styles.sectionHeading}>Your Strength</h2>
+            <p style={styles.para}>{archetype.strength}</p>
+          </section>
+        )}
+
+        {archetype.temptation && (
+          <section style={styles.section}>
+            <h2 style={styles.sectionHeading}>Your Temptation</h2>
+            <p style={styles.para}>{archetype.temptation}</p>
+          </section>
+        )}
+
+        {archetype.scripture && (
+          <section style={styles.scriptureSection}>
+            <p style={styles.scriptureText}>&ldquo;{archetype.scripture}&rdquo;</p>
+            {archetype.scriptureRef && (
+              <p style={styles.scriptureRef}>— {archetype.scriptureRef}</p>
+            )}
+          </section>
+        )}
 
         <div style={styles.ctaSection}>
           <Link href={archetype.cta.primary.href} style={styles.ctaBtn}>
@@ -126,21 +217,25 @@ export default function AssessmentResults({ submission }) {
 const styles = {
   page: { background: '#021A35', minHeight: '100vh', color: '#FDF8F0', fontFamily: "'Georgia', serif" },
   main: { maxWidth: '680px', margin: '0 auto', padding: '4rem 1.5rem 6rem' },
-  header: { textAlign: 'center', marginBottom: '3rem' },
+  header: { textAlign: 'center', marginBottom: '2rem' },
   eyebrow: { color: '#C8A951', letterSpacing: '0.12em', fontSize: '0.78rem', textTransform: 'uppercase', fontFamily: "'Outfit', sans-serif", marginBottom: '1.5rem' },
   greeting: { fontFamily: "'Outfit', sans-serif", fontSize: '1rem', opacity: 0.7, marginBottom: '0.4rem' },
-  archetypeName: { fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(2rem, 6vw, 3.5rem)', fontWeight: 400, lineHeight: 1.1, marginBottom: '1rem', textTransform: 'capitalize' },
-  subtitle: { fontSize: '1.1rem', lineHeight: 1.6, opacity: 0.8, fontStyle: 'italic', maxWidth: '480px', margin: '0 auto' },
-  body: { marginBottom: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2.5rem' },
+  archetypeName: { fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(2rem, 6vw, 3.5rem)', fontWeight: 400, lineHeight: 1.1, marginBottom: '1rem' },
+  subtitle: { fontSize: '1.05rem', lineHeight: 1.6, opacity: 0.75, fontStyle: 'italic', maxWidth: '480px', margin: '0 auto' },
+  labelPicker: { textAlign: 'center', marginBottom: '3rem', padding: '1.5rem 1.25rem', background: 'rgba(200,169,81,0.06)', border: '1px solid rgba(200,169,81,0.18)', borderRadius: '6px' },
+  labelPickerLabel: { display: 'block', fontFamily: "'Outfit', sans-serif", fontSize: '0.82rem', opacity: 0.8, marginBottom: '0.75rem' },
+  labelSelect: { fontFamily: "'Outfit', sans-serif", fontSize: '0.95rem', padding: '0.55rem 1rem', background: '#021A35', color: '#FDF8F0', border: '1px solid rgba(200,169,81,0.4)', borderRadius: '4px', minWidth: '200px', cursor: 'pointer' },
+  savingIndicator: { marginLeft: '0.75rem', fontFamily: "'Outfit', sans-serif", fontSize: '0.78rem', color: '#C8A951', opacity: 0.8 },
+  body: { marginBottom: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2.5rem' },
+  section: { marginBottom: '2.25rem' },
+  sectionHeading: { fontFamily: "'Outfit', sans-serif", fontSize: '0.78rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#C8A951', fontWeight: 600, marginBottom: '0.85rem' },
   para: { fontSize: '1.05rem', lineHeight: 1.8, marginBottom: '1.25rem', opacity: 0.9 },
-  nextStepsCard: { background: 'rgba(200,169,81,0.08)', border: '1px solid rgba(200,169,81,0.2)', borderRadius: '8px', padding: '2rem', marginBottom: '2.5rem' },
-  cardLabel: { color: '#C8A951', fontFamily: "'Outfit', sans-serif", fontSize: '0.78rem', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.25rem' },
-  nextStepsList: { listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.9rem' },
-  nextStepItem: { display: 'flex', gap: '0.75rem', fontFamily: "'Outfit', sans-serif", fontSize: '0.95rem', lineHeight: 1.55, alignItems: 'flex-start' },
-  stepDot: { color: '#C8A951', flexShrink: 0 },
+  scriptureSection: { marginBottom: '3rem', padding: '2rem 1.5rem', borderLeft: '2px solid #C8A951', background: 'rgba(200,169,81,0.05)' },
+  scriptureText: { fontSize: '1.1rem', lineHeight: 1.7, fontStyle: 'italic', marginBottom: '0.75rem', opacity: 0.92 },
+  scriptureRef: { fontFamily: "'Outfit', sans-serif", fontSize: '0.85rem', color: '#C8A951', letterSpacing: '0.05em' },
   ctaSection: { textAlign: 'center', marginBottom: '3rem', padding: '2.5rem 0', borderTop: '1px solid rgba(255,255,255,0.1)', borderBottom: '1px solid rgba(255,255,255,0.1)' },
   ctaBtn: { display: 'inline-block', background: '#C8A951', color: '#021A35', borderRadius: '4px', fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: '1rem', padding: '0.9rem 2.2rem', textDecoration: 'none', marginBottom: '1rem' },
-  ctaNote: { fontFamily: "'Outfit', sans-serif", fontSize: '0.8rem', opacity: 0.5, marginTop: '0.75rem' },
+  ctaNote: { fontFamily: "'Outfit', sans-serif", fontSize: '0.85rem', opacity: 0.6, marginTop: '1rem', lineHeight: 1.6, maxWidth: '500px', margin: '1rem auto 0' },
   scores: { marginBottom: '2rem', opacity: 0.45 },
   scoresLabel: { fontFamily: "'Outfit', sans-serif", fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' },
   scoreGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.4rem 2rem' },
