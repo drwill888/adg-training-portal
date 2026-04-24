@@ -1,6 +1,4 @@
 // pages/dashboard.js
-// Renamed from pages/index.js — dashboard now lives at /dashboard
-
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -27,16 +25,18 @@ const TOTAL_STEPS = { 0: 7, 1: 8, 2: 8, 3: 8, 4: 8, 5: 8, 6: 8 };
 
 function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
   const isMobile = useIsMobile();
+
+  // Nav order: Dashboard → Introduction → 1-4 → Mid-Journey → 5 → Commissioning → Final Blueprint
   const navItems = [
     { key: "dashboard", label: "Dashboard", icon: null, isDash: true },
-    ...modules.map(m => ({
-      key: "mod-" + m.id,
-      label: m.id === 0 ? "Introduction" : m.id === 6 ? "Commissioning" : m.id + ". " + m.title,
-      icon: m.icon,
-      href: m.href,
-      locked: !m.free && !paid,
-    })),
+    { key: "mod-0", label: "Introduction", icon: "—", href: "/modules/introduction", locked: false },
+    { key: "mod-1", label: "1. Calling", icon: "1", href: "/modules/calling", locked: !paid },
+    { key: "mod-2", label: "2. Connection", icon: "2", href: "/modules/connection", locked: !paid },
+    { key: "mod-3", label: "3. Competency", icon: "3", href: "/modules/competency", locked: !paid },
+    { key: "mod-4", label: "4. Capacity", icon: "4", href: "/modules/capacity", locked: !paid },
     { key: "mid-journey", label: "Mid-Journey Blueprint", icon: "◈", href: "/mid-journey-report", locked: !paid },
+    { key: "mod-5", label: "5. Convergence", icon: "5", href: "/modules/convergence", locked: !paid },
+    { key: "mod-6", label: "Commissioning", icon: "+", href: "/modules/commissioning", locked: !paid },
     { key: "final-blueprint", label: "Final Blueprint", icon: "★", href: "/final-blueprint", locked: !paid },
   ];
 
@@ -63,7 +63,9 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
                 style={{ padding: "10px 20px", cursor: item.locked ? "default" : "pointer", display: "flex", alignItems: "center", gap: 10, background: act ? colors.navyLight : "transparent", borderLeft: act ? "3px solid " + colors.gold : "3px solid transparent", opacity: item.locked ? 0.4 : 1, transition: "all 300ms ease" }}
                 onMouseEnter={function(e) { if (!act && !item.locked) e.currentTarget.style.background = colors.navyLight; }}
                 onMouseLeave={function(e) { if (!act && !item.locked) e.currentTarget.style.background = "transparent"; }}>
-                <span style={{ fontSize: 14, width: 22, textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", color: act ? colors.gold : colors.gray300 }}>{item.locked ? <LockIcon size={14} color={colors.gray500} /> : item.isDash ? <DashboardIcon size={14} color={act ? colors.gold : colors.gray300} /> : <span style={{ fontWeight: 700, fontSize: 12 }}>{item.icon}</span>}</span>
+                <span style={{ fontSize: 14, width: 22, textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", color: act ? colors.gold : colors.gray300 }}>
+                  {item.locked ? <LockIcon size={14} color={colors.gray500} /> : item.isDash ? <DashboardIcon size={14} color={act ? colors.gold : colors.gray300} /> : <span style={{ fontWeight: 700, fontSize: 12 }}>{item.icon}</span>}
+                </span>
                 <span style={{ fontSize: 13, fontWeight: act ? 600 : 400, color: act ? colors.white : colors.gray300 }}>{item.label}</span>
               </div>
             );
@@ -104,6 +106,42 @@ async function handleCheckout(pathway) {
     console.error('Checkout error:', err);
     alert('Something went wrong: ' + err.message);
   }
+}
+
+// Report milestone card — same grid size as module cards
+function ReportCard({ type, unlocked, href }) {
+  const isMidJourney = type === 'mid-journey';
+  const label = isMidJourney ? 'MID-JOURNEY BLUEPRINT' : 'FINAL BLUEPRINT';
+  const icon = isMidJourney ? '◈' : '★';
+  const title = isMidJourney ? 'Formation Diagnostic' : 'Complete Formation Record';
+  const subtitle = isMidJourney ? 'Prophetic-strategic formation report' : 'Your full 5C capstone document';
+  const readyText = isMidJourney ? 'Your personalized report is ready.' : 'Your capstone document is ready.';
+  const lockedText = isMidJourney ? 'Unlocks after Capacity.' : 'Unlocks after Commissioning.';
+
+  return (
+    <Card
+      variant={unlocked ? "accent" : "default"}
+      onClick={unlocked ? function() { window.location.href = href; } : undefined}
+      style={{ opacity: unlocked ? 1 : 0.5, position: "relative", borderLeft: unlocked ? "3px solid " + colors.gold : undefined }}
+    >
+      {!unlocked && (
+        <div style={{ position: "absolute", top: 12, right: 12, fontSize: 11, color: colors.gray500, fontWeight: 600, letterSpacing: "0.08em" }}>LOCKED</div>
+      )}
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
+        <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(253,210,13,0.15)", border: "1px solid rgba(253,210,13,0.35)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, color: colors.gold, flexShrink: 0 }}>{icon}</div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 10, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 2 }}>{label}</div>
+          <div style={{ fontSize: 15, fontWeight: 700, color: colors.cream }}>{title}</div>
+          <div style={{ fontSize: 12, color: colors.gray300, fontStyle: "italic" }}>{subtitle}</div>
+        </div>
+      </div>
+      <div style={{ borderTop: "1px solid " + colors.navyMid, paddingTop: 10 }}>
+        <div style={{ fontSize: 13, color: unlocked ? colors.gold : colors.gray500, fontStyle: "italic", fontFamily: fonts.heading }}>
+          {unlocked ? readyText : lockedText}
+        </div>
+      </div>
+    </Card>
+  );
 }
 
 export default function Dashboard() {
@@ -209,6 +247,26 @@ export default function Dashboard() {
   var overallPercent = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
   var greeting = firstName ? ("Welcome back, " + firstName) : "Welcome";
 
+  var midJourneyUnlocked = paid && (progress[4] || 0) >= 7;
+  var finalBlueprintUnlocked = paid && (progress[6] || 0) >= 7;
+
+  // Build interleaved grid items:
+  // Introduction → Calling → Connection → Competency → Capacity
+  // → Mid-Journey Report card
+  // → Convergence → Commissioning
+  // → Final Blueprint card
+  var gridItems = [
+    { type: 'module', data: modules[0] }, // Introduction
+    { type: 'module', data: modules[1] }, // Calling
+    { type: 'module', data: modules[2] }, // Connection
+    { type: 'module', data: modules[3] }, // Competency
+    { type: 'module', data: modules[4] }, // Capacity
+    { type: 'report', reportType: 'mid-journey', unlocked: midJourneyUnlocked, href: '/mid-journey-report' },
+    { type: 'module', data: modules[5] }, // Convergence
+    { type: 'module', data: modules[6] }, // Commissioning
+    { type: 'report', reportType: 'final-blueprint', unlocked: finalBlueprintUnlocked, href: '/final-blueprint' },
+  ];
+
   return (
     <>
       <Head>
@@ -296,38 +354,6 @@ export default function Dashboard() {
               );
             })()}
 
-            {/* ─── MID-JOURNEY BLUEPRINT CARD ─── */}
-            {paid && (progress[4] || 0) >= 7 && (
-              <Card style={{ marginBottom: 24, borderLeft: "3px solid " + colors.gold }} padding="20px 24px">
-                <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>MID-JOURNEY BLUEPRINT</div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: colors.cream, marginBottom: 8, fontFamily: fonts.heading }}>
-                  Your Formation Diagnostic is Ready
-                </div>
-                <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16, lineHeight: 1.6 }}>
-                  You've completed Capacity. Your personalized prophetic-strategic formation report has been generated.
-                </div>
-                <Button onClick={function() { window.location.href = '/mid-journey-report'; }}>
-                  View My Mid-Journey Blueprint →
-                </Button>
-              </Card>
-            )}
-
-            {/* ─── FINAL BLUEPRINT CARD ─── */}
-            {paid && (progress[6] || 0) >= 7 && (
-              <Card style={{ marginBottom: 24, borderLeft: "3px solid " + colors.gold }} padding="20px 24px">
-                <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>FINAL BLUEPRINT</div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: colors.cream, marginBottom: 8, fontFamily: fonts.heading }}>
-                  Your Complete Formation Record is Ready
-                </div>
-                <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16, lineHeight: 1.6 }}>
-                  You have completed the full 5C Blueprint journey. Your capstone document has been generated.
-                </div>
-                <Button onClick={function() { window.location.href = '/final-blueprint'; }}>
-                  View My Final Blueprint →
-                </Button>
-              </Card>
-            )}
-
             {/* ─── ASSESSMENT HISTORY ─── */}
             {assessHist.length > 0 && (
               <Card style={{ marginBottom: 24 }} padding="20px 24px">
@@ -396,9 +422,24 @@ export default function Dashboard() {
               </Card>
             )}
 
-            {/* ─── MODULE GRID ─── */}
+            {/* ─── MODULE + REPORT GRID ─── */}
             <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 16, marginBottom: 24 }}>
-              {modules.map(function(m, i) {
+              {gridItems.map(function(item, idx) {
+
+                // Report milestone card
+                if (item.type === 'report') {
+                  return (
+                    <ReportCard
+                      key={item.reportType}
+                      type={item.reportType}
+                      unlocked={item.unlocked}
+                      href={item.href}
+                    />
+                  );
+                }
+
+                // Module card
+                var m = item.data;
                 var locked = !m.free && !paid;
                 var stepsDone = progress[m.id] || 0;
                 var stepsTotal = TOTAL_STEPS[m.id] || 8;
