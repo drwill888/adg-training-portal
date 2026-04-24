@@ -1,6 +1,8 @@
 // pages/api/mid-journey/download-docx.js
+import fs from 'fs';
+import path from 'path';
 import { createClient } from '@supabase/supabase-js';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, PageBreak } from 'docx';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, PageBreak, ImageRun } from 'docx';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -46,12 +48,41 @@ export default async function handler(req, res) {
       month: 'long', day: 'numeric', year: 'numeric'
     });
 
+    // Load ADG logo
+    let logoBuffer = null;
+    try {
+      const logoPath = path.join(process.cwd(), 'public', 'images', 'adg-logo.png');
+      logoBuffer = fs.readFileSync(logoPath);
+    } catch (e) {
+      console.warn('ADG logo not found, skipping:', e.message);
+    }
+
     const children = [];
 
+    // Title page — logo
+    if (logoBuffer) {
+      children.push(
+        new Paragraph({
+          alignment: AlignmentType.CENTER,
+          spacing: { before: 1800, after: 400 },
+          children: [
+            new ImageRun({
+              data: logoBuffer,
+              transformation: { width: 280, height: 84 },
+              type: 'png',
+            }),
+          ],
+        })
+      );
+    } else {
+      children.push(new Paragraph({ spacing: { before: 2400, after: 400 } }));
+    }
+
+    // Title page — text
     children.push(
       new Paragraph({
         alignment: AlignmentType.CENTER,
-        spacing: { before: 2400, after: 200 },
+        spacing: { before: 200, after: 200 },
         children: [new TextRun({ text: 'MID-JOURNEY BLUEPRINT', font: FONTS.ui, size: 20, color: COLORS.gold, bold: true, characterSpacing: 40 })],
       }),
       new Paragraph({
@@ -76,6 +107,7 @@ export default async function handler(req, res) {
       new Paragraph({ children: [new PageBreak()] }),
     );
 
+    // Parse content
     const blocks = report.content.trim().split(/\n\n+/);
     for (const block of blocks) {
       if (block.startsWith('## ')) {
@@ -103,6 +135,7 @@ export default async function handler(req, res) {
       }
     }
 
+    // Footer
     children.push(
       new Paragraph({ spacing: { before: 800 }, children: [new TextRun({ text: '', size: 2 })] }),
       new Paragraph({
