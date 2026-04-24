@@ -1,5 +1,4 @@
 // pages/final-blueprint.js
-// v2
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -19,16 +18,23 @@ export default function FinalBlueprintPage() {
 
   useEffect(() => {
     (async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) { window.location.href = '/login?redirect=/final-blueprint'; return; }
-
-      const res = await fetch('/api/final-blueprint/get-report', {
-        headers: { Authorization: `Bearer ${session.access_token}` },
-      });
-      if (!res.ok) { window.location.href = '/login?redirect=/final-blueprint'; return; }
-
-      const { report, userId } = await res.json();
-      setState({ loading: false, report, userId });
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.user?.id) {
+          window.location.href = '/login?redirect=/final-blueprint';
+          return;
+        }
+        const userId = session.user.id;
+        const res = await fetch(`/api/final-blueprint/get-report?userId=${userId}`);
+        if (!res.ok) {
+          setState({ loading: false, report: null, userId });
+          return;
+        }
+        const { report } = await res.json();
+        setState({ loading: false, report: report || null, userId });
+      } catch (e) {
+        setState({ loading: false, report: null, userId: null });
+      }
     })();
   }, []);
 
@@ -40,7 +46,9 @@ export default function FinalBlueprintPage() {
   if (state.loading) {
     return (
       <div style={styles.page}>
-        <main style={styles.main}><p style={styles.loading}>Loading your Final Blueprint…</p></main>
+        <main style={styles.main}>
+          <p style={styles.loading}>Loading your Final Blueprint…</p>
+        </main>
       </div>
     );
   }
