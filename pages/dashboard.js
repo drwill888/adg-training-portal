@@ -37,6 +37,7 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
       locked: !m.free && !paid,
     })),
     { key: "mid-journey", label: "Mid-Journey Blueprint", icon: "◈", href: "/mid-journey-report", locked: !paid },
+    { key: "final-blueprint", label: "Final Blueprint", icon: "★", href: "/final-blueprint", locked: !paid },
   ];
 
   return (
@@ -307,6 +308,22 @@ export default function Dashboard() {
                 </div>
                 <Button onClick={function() { window.location.href = '/mid-journey-report'; }}>
                   View My Mid-Journey Blueprint →
+                </Button>
+              </Card>
+            )}
+
+            {/* ─── FINAL BLUEPRINT CARD ─── */}
+            {paid && (progress[6] || 0) >= 7 && (
+              <Card style={{ marginBottom: 24, borderLeft: "3px solid " + colors.gold }} padding="20px 24px">
+                <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>FINAL BLUEPRINT</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: colors.cream, marginBottom: 8, fontFamily: fonts.heading }}>
+                  Your Complete Formation Record is Ready
+                </div>
+                <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16, lineHeight: 1.6 }}>
+                  You have completed the full 5C Blueprint journey. Your capstone document has been generated.
+                </div>
+                <Button onClick={function() { window.location.href = '/final-blueprint'; }}>
+                  View My Final Blueprint →
                 </Button>
               </Card>
             )}
