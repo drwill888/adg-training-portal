@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { supabase } from '../lib/supabase';
-);
 
 const OFFICE_DISPLAY = {
   apostolic: 'Apostolic', prophetic: 'Prophetic', evangelistic: 'Evangelistic',
