@@ -1,7 +1,6 @@
 // pages/final-blueprint.js
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 import { supabase } from '../lib/supabase';
 
 const OFFICE_DISPLAY = {
@@ -11,6 +10,21 @@ const OFFICE_DISPLAY = {
 const OVERLAY_DISPLAY = {
   builder: 'Builder', burden_bearer: 'Burden Bearer', reformer: 'Reformer',
   covenant_keeper: 'Covenant Keeper', equipper: 'Equipper',
+};
+
+const backButtonStyle = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '8px',
+  padding: '10px 20px',
+  backgroundColor: '#FDD20D',
+  color: '#021A35',
+  fontFamily: 'Outfit, sans-serif',
+  fontWeight: '700',
+  fontSize: '15px',
+  borderRadius: '6px',
+  textDecoration: 'none',
+  letterSpacing: '0.02em',
 };
 
 export default function FinalBlueprintPage() {
@@ -63,7 +77,11 @@ export default function FinalBlueprintPage() {
           <p style={styles.lockedBody}>
             Your Final Blueprint becomes available after you complete the Commissioning module. Once complete, your full formation capstone document will be generated here automatically.
           </p>
-          <Link href="/dashboard" style={styles.ctaBtn}>Back to Dashboard</Link>
+          <div style={{ textAlign: 'center' }}>
+            <a href="/dashboard" style={backButtonStyle}>
+              ← Back to Dashboard
+            </a>
+          </div>
         </main>
       </div>
     );
@@ -87,7 +105,9 @@ export default function FinalBlueprintPage() {
         </div>
         <div style={styles.actionRow}>
           <button onClick={handleDownload} style={styles.downloadBtn}>Download as Word Document</button>
-          <Link href="/dashboard" style={styles.backLink}>← Dashboard</Link>
+          <a href="/dashboard" style={backButtonStyle}>
+            ← Back to Dashboard
+          </a>
         </div>
         <article style={styles.article}>
           {renderMarkdown(state.report.content)}
@@ -128,7 +148,6 @@ const styles = {
   subtitle: { fontSize: '1rem', lineHeight: 1.6, opacity: 0.7, fontStyle: 'italic', maxWidth: '520px', margin: '0 auto' },
   actionRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)' },
   downloadBtn: { background: '#C8A951', color: '#021A35', border: 'none', borderRadius: '4px', padding: '0.8rem 1.6rem', fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: '0.9rem', cursor: 'pointer' },
-  backLink: { color: '#C8A951', textDecoration: 'none', fontSize: '0.9rem', opacity: 0.7 },
   article: { fontFamily: 'Georgia, serif' },
   h2: { fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(1.4rem, 3.5vw, 1.9rem)', fontWeight: 400, color: '#C8A951', marginTop: '2.5rem', marginBottom: '1rem', borderBottom: '1px solid rgba(200,169,81,0.2)', paddingBottom: '0.5rem' },
   para: { fontSize: '1.05rem', lineHeight: 1.8, marginBottom: '1.25rem', opacity: 0.92 },
@@ -137,5 +156,4 @@ const styles = {
   footerNote: { fontSize: '0.78rem', opacity: 0.45, letterSpacing: '0.05em' },
   lockedTitle: { fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '2.5rem', fontWeight: 400, textAlign: 'center', marginBottom: '1.5rem' },
   lockedBody: { fontSize: '1.05rem', lineHeight: 1.7, textAlign: 'center', opacity: 0.8, maxWidth: '480px', margin: '1rem auto 2.5rem' },
-  ctaBtn: { display: 'block', background: '#C8A951', color: '#021A35', textDecoration: 'none', padding: '0.85rem 2rem', borderRadius: '4px', fontWeight: 600, textAlign: 'center', maxWidth: '200px', margin: '0 auto' },
 };
