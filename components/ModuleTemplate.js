@@ -412,8 +412,36 @@ export default function ModuleTemplate({ config }) {
       } catch(e) {}
     }
     triggerReport();
+}, [step, moduleNum, resumeLoaded]);
+
+  // ─── FINAL BLUEPRINT AUTO-TRIGGER ────────────────────────────────
+  var fbTriggeredRef = useRef(false);
+  useEffect(function() {
+    if (!resumeLoaded) return;
+    if (moduleNum !== 6) return;
+    if (step !== STEPS.length - 1) return;
+    if (fbTriggeredRef.current) return;
+    fbTriggeredRef.current = true;
+    async function triggerFinalBlueprint() {
+      try {
+        var sr = await supabase.auth.getSession();
+        var ss = sr.data.session;
+        if (!ss || !ss.user) return;
+        fetch('/api/final-blueprint/trigger-report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: ss.user.id,
+            email: ss.user.email,
+            moduleId: moduleNum,
+            stepNumber: step,
+          }),
+        }).catch(function(e) { console.error('Final blueprint trigger failed:', e); });
+      } catch(e) {}
+    }
+    triggerFinalBlueprint();
   }, [step, moduleNum, resumeLoaded]);
-  
+
   if (!isFree && payLoading) {
     return (<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#021A35" }}><p style={{ color: "#6b7280", fontSize: 14 }}>Loading...</p></div>);
   }
@@ -544,7 +572,7 @@ export default function ModuleTemplate({ config }) {
       certName = email.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, function(c) { return c.toUpperCase(); });
     }
 
-    downloadCertificate(certName || "Leader");
+    await downloadCertificate(certName || "Leader");
   };
 
   var renderStep = function() {
