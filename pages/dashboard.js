@@ -12,8 +12,6 @@ import { LockIcon, DashboardIcon } from "../components/Icons";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 
-// Colors now imported from styles/tokens.js
-
 const modules = [
   { id: 0, title: "Introduction", subtitle: "Course Foundation", icon: "—", href: "/modules/introduction", free: true, timeEstimate: "~30 min" },
   { id: 1, title: "Calling", subtitle: "Potential (Purpose)", question: "Who was I designed to become?", icon: "1", href: "/modules/calling", timeEstimate: "~60 min" },
@@ -25,7 +23,6 @@ const modules = [
 ];
 
 const accents = moduleAccents;
-
 const TOTAL_STEPS = { 0: 7, 1: 8, 2: 8, 3: 8, 4: 8, 5: 8, 6: 8 };
 
 function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
@@ -39,6 +36,7 @@ function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
       href: m.href,
       locked: !m.free && !paid,
     })),
+    { key: "mid-journey", label: "Mid-Journey Blueprint", icon: "◈", href: "/mid-journey-report", locked: !paid },
   ];
 
   return (
@@ -86,7 +84,6 @@ function ProgressBar({ percent, accent, height }) {
   );
 }
 
-// ─── CHECKOUT — success redirects to /dashboard ───────────────────
 async function handleCheckout(pathway) {
   try {
     const { data: { session } } = await supabase.auth.getSession();
@@ -115,22 +112,16 @@ export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { paid, loading } = usePaymentStatus();
 
-  // ─── AUTH GUARD — redirect to login if not authenticated ─────────
   useEffect(() => {
     async function checkAuth() {
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-          router.push('/login');
-        }
-      } catch (e) {
-        router.push('/login');
-      }
+        if (!session) { router.push('/login'); }
+      } catch (e) { router.push('/login'); }
     }
     checkAuth();
   }, []);
 
-  // ─── VERIFY PAYMENT on return from Stripe ────────────────────────
   useEffect(() => {
     const session_id = router.query.session_id;
     if (!session_id) return;
@@ -138,12 +129,9 @@ export default function Dashboard() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ session_id }),
-    }).then(() => {
-      window.location.href = '/dashboard';
-    }).catch(() => {});
+    }).then(() => { window.location.href = '/dashboard'; }).catch(() => {});
   }, [router.query.session_id]);
 
-  // ─── LEARNER FIRST NAME ──────────────────────────────────────────
   const [firstName, setFirstName] = useState("");
   useEffect(() => {
     async function loadName() {
@@ -164,12 +152,11 @@ export default function Dashboard() {
             if (data?.full_name) setFirstName(data.full_name.split(" ")[0]);
           }
         }
-      } catch (e) { /* silent fallback */ }
+      } catch (e) { }
     }
     loadName();
   }, []);
 
-  // ─── ASSESSMENT HISTORY ──────────────────────────────────────────
   var assessHistState = useState([]);
   var assessHist = assessHistState[0];
   var setAssessHist = assessHistState[1];
@@ -185,12 +172,11 @@ export default function Dashboard() {
           .order("taken_at", { ascending: false })
           .limit(5);
         if (aResult.data) setAssessHist(aResult.data);
-      } catch (e) { /* silent fallback */ }
+      } catch (e) { }
     }
     loadAssessHistory();
   }, []);
 
-  // ─── MODULE PROGRESS ─────────────────────────────────────────────
   const [progress, setProgress] = useState({});
   useEffect(() => {
     async function loadProgress() {
@@ -206,12 +192,11 @@ export default function Dashboard() {
           data.forEach(function(row) { map[row.module_id] = row.current_step; });
           setProgress(map);
         }
-      } catch (e) { /* silent fallback */ }
+      } catch (e) { }
     }
     loadProgress();
   }, []);
 
-  // ─── OVERALL PROGRESS ────────────────────────────────────────────
   var totalSteps = 0;
   var completedSteps = 0;
   modules.forEach(function(m) {
@@ -221,7 +206,6 @@ export default function Dashboard() {
     completedSteps += done === 0 ? 0 : Math.min(done + 1, total);
   });
   var overallPercent = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
-
   var greeting = firstName ? ("Welcome back, " + firstName) : "Welcome";
 
   return (
@@ -240,194 +224,207 @@ export default function Dashboard() {
       </Head>
       <div style={{ display: "flex", minHeight: "100vh", fontFamily: fonts.body, background: colors.navy }}>
 
-      <Sidebar
-        currentPage={page}
-        setCurrentPage={setPage}
-        open={sidebarOpen}
-        onClose={function() { setSidebarOpen(false); }}
-        paid={paid}
-      />
+        <Sidebar
+          currentPage={page}
+          setCurrentPage={setPage}
+          open={sidebarOpen}
+          onClose={function() { setSidebarOpen(false); }}
+          paid={paid}
+        />
 
-      <div style={{ flex: 1, minHeight: "100vh", overflowY: "auto" }}>
+        <div style={{ flex: 1, minHeight: "100vh", overflowY: "auto" }}>
 
-        {/* ─── TOPBAR ─── */}
-        <div style={{ padding: isMobile ? "10px 16px" : "12px 40px", borderBottom: "1px solid " + colors.navyMid, background: colors.navyLight, display: "flex", alignItems: "center", gap: 12, position: "sticky", top: 0, zIndex: 30 }}>
-          {isMobile && (
-            <button onClick={function() { setSidebarOpen(function(s) { return !s; }); }} style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", flexDirection: "column", gap: 5 }}>
-              <div style={{ width: 22, height: 2, background: colors.gold, borderRadius: 2 }} />
-              <div style={{ width: 22, height: 2, background: colors.gold, borderRadius: 2 }} />
-              <div style={{ width: 22, height: 2, background: colors.gold, borderRadius: 2 }} />
-            </button>
-          )}
-          <div style={{ fontSize: 13, color: colors.gray300 }}>Dashboard</div>
-        </div>
+          {/* ─── TOPBAR ─── */}
+          <div style={{ padding: isMobile ? "10px 16px" : "12px 40px", borderBottom: "1px solid " + colors.navyMid, background: colors.navyLight, display: "flex", alignItems: "center", gap: 12, position: "sticky", top: 0, zIndex: 30 }}>
+            {isMobile && (
+              <button onClick={function() { setSidebarOpen(function(s) { return !s; }); }} style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", flexDirection: "column", gap: 5 }}>
+                <div style={{ width: 22, height: 2, background: colors.gold, borderRadius: 2 }} />
+                <div style={{ width: 22, height: 2, background: colors.gold, borderRadius: 2 }} />
+                <div style={{ width: 22, height: 2, background: colors.gold, borderRadius: 2 }} />
+              </button>
+            )}
+            <div style={{ fontSize: 13, color: colors.gray300 }}>Dashboard</div>
+          </div>
 
-        <div style={{ padding: isMobile ? "20px 16px" : "32px 40px", maxWidth: 960 }}>
+          <div style={{ padding: isMobile ? "20px 16px" : "32px 40px", maxWidth: 960 }}>
 
-          {/* ─── GREETING + PROGRESS ─── */}
-          <h1 style={{ fontFamily: fonts.heading, fontSize: 28, fontWeight: 700, color: colors.cream, margin: "0 0 4px" }}>{greeting}</h1>
-          <p style={{ fontSize: 14, color: colors.gray300, margin: "0 0 20px", fontStyle: "italic" }}>Your leadership formation journey — from design to destiny.</p>
+            {/* ─── GREETING + PROGRESS ─── */}
+            <h1 style={{ fontFamily: fonts.heading, fontSize: 28, fontWeight: 700, color: colors.cream, margin: "0 0 4px" }}>{greeting}</h1>
+            <p style={{ fontSize: 14, color: colors.gray300, margin: "0 0 20px", fontStyle: "italic" }}>Your leadership formation journey — from design to destiny.</p>
 
-          <Card style={{ marginBottom: 28 }} padding="16px 20px">
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: colors.cream }}>Overall Progress</span>
-              <span style={{ fontSize: 13, fontWeight: 700, color: colors.gold }}>{overallPercent}%</span>
-            </div>
-            <ProgressBar percent={overallPercent} accent={colors.gold} height={8} />
-          </Card>
+            <Card style={{ marginBottom: 28 }} padding="16px 20px">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: colors.cream }}>Overall Progress</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: colors.gold }}>{overallPercent}%</span>
+              </div>
+              <ProgressBar percent={overallPercent} accent={colors.gold} height={8} />
+            </Card>
 
-          {/* ─── START HERE / CONTINUE (contextual next-up card) ─── */}
-          {(function() {
-            // Find the next incomplete module
-            var nextMod = null;
-            for (var mi = 0; mi < modules.length; mi++) {
-              var m = modules[mi];
-              if (m.id === 6) continue; // skip bonus
-              var locked = !m.free && !paid;
-              if (locked) continue;
-              var stepsDone = progress[m.id] || 0;
-              var stepsTotal = TOTAL_STEPS[m.id] || 8;
-              var pct = stepsDone === 0 ? 0 : Math.min(Math.round(((stepsDone + 1) / stepsTotal) * 100), 100);
-              if (pct < 100) { nextMod = { mod: m, percent: pct, index: mi }; break; }
-            }
-            if (!nextMod) return null;
-            var isFirstTime = !progress[0];
-            var nm = nextMod.mod;
-            var acc = accents[nextMod.index];
-            return (
-              <Card variant="highlight" style={{ marginBottom: 24, textAlign: isFirstTime ? "center" : "left" }} padding={24}>
-                <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>{isFirstTime ? "START HERE" : "CONTINUE"}</div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: colors.cream, marginBottom: 4, fontFamily: fonts.heading }}>
-                  {isFirstTime ? "Begin with the Introduction" : nm.title + (nextMod.percent > 0 ? " — " + nextMod.percent + "% complete" : "")}
+            {/* ─── START HERE / CONTINUE ─── */}
+            {(function() {
+              var nextMod = null;
+              for (var mi = 0; mi < modules.length; mi++) {
+                var m = modules[mi];
+                if (m.id === 6) continue;
+                var locked = !m.free && !paid;
+                if (locked) continue;
+                var stepsDone = progress[m.id] || 0;
+                var stepsTotal = TOTAL_STEPS[m.id] || 8;
+                var pct = stepsDone === 0 ? 0 : Math.min(Math.round(((stepsDone + 1) / stepsTotal) * 100), 100);
+                if (pct < 100) { nextMod = { mod: m, percent: pct, index: mi }; break; }
+              }
+              if (!nextMod) return null;
+              var isFirstTime = !progress[0];
+              var nm = nextMod.mod;
+              return (
+                <Card variant="highlight" style={{ marginBottom: 24, textAlign: isFirstTime ? "center" : "left" }} padding={24}>
+                  <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>{isFirstTime ? "START HERE" : "CONTINUE"}</div>
+                  <div style={{ fontSize: 16, fontWeight: 700, color: colors.cream, marginBottom: 4, fontFamily: fonts.heading }}>
+                    {isFirstTime ? "Begin with the Introduction" : nm.title + (nextMod.percent > 0 ? " — " + nextMod.percent + "% complete" : "")}
+                  </div>
+                  <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16 }}>
+                    {isFirstTime ? "Understand the framework before entering the modules." : (nm.question || nm.subtitle)}
+                  </div>
+                  {!isFirstTime && nextMod.percent > 0 && (
+                    <div style={{ marginBottom: 16 }}><ProgressBar percent={nextMod.percent} accent={colors.gold} height={6} /></div>
+                  )}
+                  <Button onClick={function() { window.location.href = nm.href; }}>
+                    {isFirstTime ? "Begin" : nextMod.percent > 0 ? "Continue" : "Start"}
+                  </Button>
+                </Card>
+              );
+            })()}
+
+            {/* ─── MID-JOURNEY BLUEPRINT CARD ─── */}
+            {paid && (progress[4] || 0) >= 7 && (
+              <Card style={{ marginBottom: 24, borderLeft: "3px solid " + colors.gold }} padding="20px 24px">
+                <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.1em", fontWeight: 600, marginBottom: 6 }}>MID-JOURNEY BLUEPRINT</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: colors.cream, marginBottom: 8, fontFamily: fonts.heading }}>
+                  Your Formation Diagnostic is Ready
                 </div>
-                <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16 }}>
-                  {isFirstTime ? "Understand the framework before entering the modules." : (nm.question || nm.subtitle)}
+                <div style={{ fontSize: 13, color: colors.gray300, marginBottom: 16, lineHeight: 1.6 }}>
+                  You've completed Capacity. Your personalized prophetic-strategic formation report has been generated.
                 </div>
-                {!isFirstTime && nextMod.percent > 0 && (
-                  <div style={{ marginBottom: 16 }}><ProgressBar percent={nextMod.percent} accent={colors.gold} height={6} /></div>
-                )}
-                <Button onClick={function() { window.location.href = nm.href; }}>
-                  {isFirstTime ? "Begin" : nextMod.percent > 0 ? "Continue" : "Start"}
+                <Button onClick={function() { window.location.href = '/mid-journey-report'; }}>
+                  View My Mid-Journey Blueprint →
                 </Button>
               </Card>
-            );
-          })()}
+            )}
 
-          {/* ─── ASSESSMENT HISTORY ─── */}
-          {assessHist.length > 0 && (
-            <Card style={{ marginBottom: 24 }} padding="20px 24px">
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: colors.cream }}>Assessment History</span>
-                <a href="/assessment" style={{ fontSize: 12, color: colors.gold, textDecoration: "none" }}>Retake →</a>
-              </div>
-              {assessHist.map(function(a, i) {
-                var pct = Math.round((a.total_score / (a.max_possible || 125)) * 100);
-                var date = new Date(a.taken_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-                var dims = ["calling", "connection", "competency", "capacity", "convergence"];
-                var scores = a.dimension_scores || {};
-                return (
-                  <div key={a.id} style={{ marginBottom: i < assessHist.length - 1 ? 12 : 0, paddingBottom: i < assessHist.length - 1 ? 12 : 0, borderBottom: i < assessHist.length - 1 ? "1px solid " + colors.navyMid : "none" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                      <span style={{ fontSize: 12, color: colors.gray300 }}>{date}</span>
-                      <span style={{ fontSize: 13, fontWeight: 700, color: colors.cream }}>{a.total_score}/125 <span style={{ fontSize: 11, color: colors.gold, fontWeight: 600 }}>({pct}%)</span></span>
-                    </div>
-                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                      {dims.map(function(d) {
-                        var s = scores[d] || 0;
-                        return (
-                          <div key={d} style={{ fontSize: 10, padding: "2px 8px", borderRadius: 4, background: colors.navyMid, border: "1px solid rgba(253,210,13,0.15)", color: colors.gray300 }}>
-                            {d.charAt(0).toUpperCase() + d.slice(1)}: <span style={{ fontWeight: 700, color: colors.gold }}>{s}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
-            </Card>
-          )}
-
-          {/* ─── MARKETING / UNLOCK CTA ─── */}
-          {!paid && !loading && (
-            <Card variant="highlight" style={{ marginBottom: 28, background: "linear-gradient(135deg, #021A35 0%, #0a2a4d 100%)" }} padding={isMobile ? 20 : 28}>
-              <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.12em", fontWeight: 700, marginBottom: 10 }}>THE 5C LEADERSHIP BLUEPRINT</div>
-              <div style={{ fontFamily: fonts.heading, fontSize: 22, fontWeight: 700, color: colors.white, lineHeight: 1.35, marginBottom: 12 }}>
-                Most leaders are overcommitted and underaligned. This training changes that.
-              </div>
-              <p style={{ fontSize: 13, color: colors.gray300, lineHeight: 1.7, margin: "0 0 10px" }}>
-                The 5C Blueprint is a formation experience — not a course. Five integrated dimensions that move you from scattered potential to focused, sustainable impact. Each module builds on the last. By the end, you will have a personalized leadership blueprint anchored in your calling, sharpened by honest self-assessment, and ready to deploy.
-              </p>
-              <p style={{ fontSize: 13, color: colors.gray300, lineHeight: 1.7, margin: "0 0 20px" }}>
-                Personalized summaries. Pre-and-post diagnostics that show your growth. A downloadable blueprint document you can revisit for years. Built for Kingdom entrepreneurs, pastors, prophetic voices, and emerging leaders who are done with surface-level development.
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 20 }}>
-                {["Calling — Who you are", "Connection — Whose you are", "Competency — What you carry", "Capacity — What you sustain", "Convergence — Where it all aligns"].map(function(item, i) {
+            {/* ─── ASSESSMENT HISTORY ─── */}
+            {assessHist.length > 0 && (
+              <Card style={{ marginBottom: 24 }} padding="20px 24px">
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: colors.cream }}>Assessment History</span>
+                  <a href="/assessment" style={{ fontSize: 12, color: colors.gold, textDecoration: "none" }}>Retake →</a>
+                </div>
+                {assessHist.map(function(a, i) {
+                  var pct = Math.round((a.total_score / (a.max_possible || 125)) * 100);
+                  var date = new Date(a.taken_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+                  var dims = ["calling", "connection", "competency", "capacity", "convergence"];
+                  var scores = a.dimension_scores || {};
                   return (
-                    <div key={i} style={{ fontSize: 12, padding: "5px 12px", background: "rgba(253,210,13,0.12)", border: "1px solid rgba(253,210,13,0.25)", borderRadius: 6, color: colors.gold, fontWeight: 500 }}>
-                      {item}
+                    <div key={a.id} style={{ marginBottom: i < assessHist.length - 1 ? 12 : 0, paddingBottom: i < assessHist.length - 1 ? 12 : 0, borderBottom: i < assessHist.length - 1 ? "1px solid " + colors.navyMid : "none" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                        <span style={{ fontSize: 12, color: colors.gray300 }}>{date}</span>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: colors.cream }}>{a.total_score}/125 <span style={{ fontSize: 11, color: colors.gold, fontWeight: 600 }}>({pct}%)</span></span>
+                      </div>
+                      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                        {dims.map(function(d) {
+                          var s = scores[d] || 0;
+                          return (
+                            <div key={d} style={{ fontSize: 10, padding: "2px 8px", borderRadius: 4, background: colors.navyMid, border: "1px solid rgba(253,210,13,0.15)", color: colors.gray300 }}>
+                              {d.charAt(0).toUpperCase() + d.slice(1)}: <span style={{ fontWeight: 700, color: colors.gold }}>{s}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   );
                 })}
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-                <Button onClick={() => handleCheckout('individual')} style={{ whiteSpace: "nowrap" }}>
-                  Unlock Full Access — $79.99
-                </Button>
-                <span style={{ fontSize: 12, color: colors.gray500 }}>Introduction module is free. Full access unlocks all 5 modules + bonus Commissioning module.</span>
-              </div>
-              <p style={{ fontSize: 11, color: colors.gray500, marginTop: 10 }}>
-                7-day satisfaction guarantee. If the Blueprint is not what you expected, email <a href="mailto:info@awakeningdestiny.global" style={{ color: colors.gold }}>info@awakeningdestiny.global</a> within 7 days for a full refund — no questions asked.
-              </p>
-            </Card>
-          )}
+              </Card>
+            )}
 
-          {/* ─── MODULE GRID ─── */}
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 16, marginBottom: 24 }}>
-            {modules.map(function(m, i) {
-              var locked = !m.free && !paid;
-              var stepsDone = progress[m.id] || 0;
-              var stepsTotal = TOTAL_STEPS[m.id] || 8;
-              var modPercent = stepsDone === 0 ? 0 : Math.min(Math.round(((stepsDone + 1) / stepsTotal) * 100), 100);
-              return (
-                <Card key={m.id}
-                  variant={locked ? "default" : "accent"}
-                  onClick={locked ? undefined : function() { window.location.href = m.href; }}
-                  style={{ opacity: locked ? 0.5 : 1, position: "relative" }}>
-                  {locked && (
-                    <div style={{ position: "absolute", top: 12, right: 12, fontSize: 11, color: colors.gray500, fontWeight: 600, letterSpacing: "0.08em" }}>LOCKED</div>
-                  )}
-                  {m.bonus && !locked && (
-                    <div style={{ position: "absolute", top: 12, right: 12, fontSize: 10, fontWeight: 700, background: colors.gold, color: colors.navy, padding: "2px 8px", borderRadius: 4, letterSpacing: "0.08em" }}>BONUS</div>
-                  )}
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
-                    <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(253,210,13,0.1)", border: "1px solid rgba(253,210,13,0.25)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, fontWeight: 700, color: colors.gold, flexShrink: 0 }}>{m.id === 0 ? "—" : m.id === 6 ? "+" : m.id}</div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 15, fontWeight: 700, color: colors.cream }}>{m.title}</div>
-                      <div style={{ fontSize: 12, color: colors.gray300, fontStyle: "italic" }}>{m.subtitle}</div>
-                      <div style={{ fontSize: 11, color: colors.gray500, marginTop: 2 }}>{m.timeEstimate}</div>
-                    </div>
-                  </div>
-                  {!locked && (
-                    <div style={{ marginBottom: 8 }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                        <span style={{ fontSize: 11, color: colors.gray300 }}>{modPercent === 100 ? "Complete" : modPercent > 0 ? "In progress" : "Not started"}</span>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: colors.gold }}>{modPercent}%</span>
+            {/* ─── MARKETING / UNLOCK CTA ─── */}
+            {!paid && !loading && (
+              <Card variant="highlight" style={{ marginBottom: 28, background: "linear-gradient(135deg, #021A35 0%, #0a2a4d 100%)" }} padding={isMobile ? 20 : 28}>
+                <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.12em", fontWeight: 700, marginBottom: 10 }}>THE 5C LEADERSHIP BLUEPRINT</div>
+                <div style={{ fontFamily: fonts.heading, fontSize: 22, fontWeight: 700, color: colors.white, lineHeight: 1.35, marginBottom: 12 }}>
+                  Most leaders are overcommitted and underaligned. This training changes that.
+                </div>
+                <p style={{ fontSize: 13, color: colors.gray300, lineHeight: 1.7, margin: "0 0 10px" }}>
+                  The 5C Blueprint is a formation experience — not a course. Five integrated dimensions that move you from scattered potential to focused, sustainable impact. Each module builds on the last. By the end, you will have a personalized leadership blueprint anchored in your calling, sharpened by honest self-assessment, and ready to deploy.
+                </p>
+                <p style={{ fontSize: 13, color: colors.gray300, lineHeight: 1.7, margin: "0 0 20px" }}>
+                  Personalized summaries. Pre-and-post diagnostics that show your growth. A downloadable blueprint document you can revisit for years. Built for Kingdom entrepreneurs, pastors, prophetic voices, and emerging leaders who are done with surface-level development.
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 20 }}>
+                  {["Calling — Who you are", "Connection — Whose you are", "Competency — What you carry", "Capacity — What you sustain", "Convergence — Where it all aligns"].map(function(item, i) {
+                    return (
+                      <div key={i} style={{ fontSize: 12, padding: "5px 12px", background: "rgba(253,210,13,0.12)", border: "1px solid rgba(253,210,13,0.25)", borderRadius: 6, color: colors.gold, fontWeight: 500 }}>
+                        {item}
                       </div>
-                      <ProgressBar percent={modPercent} accent={colors.gold} height={4} />
+                    );
+                  })}
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+                  <Button onClick={() => handleCheckout('individual')} style={{ whiteSpace: "nowrap" }}>
+                    Unlock Full Access — $79.99
+                  </Button>
+                  <span style={{ fontSize: 12, color: colors.gray500 }}>Introduction module is free. Full access unlocks all 5 modules + bonus Commissioning module.</span>
+                </div>
+                <p style={{ fontSize: 11, color: colors.gray500, marginTop: 10 }}>
+                  7-day satisfaction guarantee. If the Blueprint is not what you expected, email <a href="mailto:info@awakeningdestiny.global" style={{ color: colors.gold }}>info@awakeningdestiny.global</a> within 7 days for a full refund — no questions asked.
+                </p>
+              </Card>
+            )}
+
+            {/* ─── MODULE GRID ─── */}
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 16, marginBottom: 24 }}>
+              {modules.map(function(m, i) {
+                var locked = !m.free && !paid;
+                var stepsDone = progress[m.id] || 0;
+                var stepsTotal = TOTAL_STEPS[m.id] || 8;
+                var modPercent = stepsDone === 0 ? 0 : Math.min(Math.round(((stepsDone + 1) / stepsTotal) * 100), 100);
+                return (
+                  <Card key={m.id}
+                    variant={locked ? "default" : "accent"}
+                    onClick={locked ? undefined : function() { window.location.href = m.href; }}
+                    style={{ opacity: locked ? 0.5 : 1, position: "relative" }}>
+                    {locked && (
+                      <div style={{ position: "absolute", top: 12, right: 12, fontSize: 11, color: colors.gray500, fontWeight: 600, letterSpacing: "0.08em" }}>LOCKED</div>
+                    )}
+                    {m.bonus && !locked && (
+                      <div style={{ position: "absolute", top: 12, right: 12, fontSize: 10, fontWeight: 700, background: colors.gold, color: colors.navy, padding: "2px 8px", borderRadius: 4, letterSpacing: "0.08em" }}>BONUS</div>
+                    )}
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
+                      <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(253,210,13,0.1)", border: "1px solid rgba(253,210,13,0.25)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, fontWeight: 700, color: colors.gold, flexShrink: 0 }}>{m.id === 0 ? "—" : m.id === 6 ? "+" : m.id}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 15, fontWeight: 700, color: colors.cream }}>{m.title}</div>
+                        <div style={{ fontSize: 12, color: colors.gray300, fontStyle: "italic" }}>{m.subtitle}</div>
+                        <div style={{ fontSize: 11, color: colors.gray500, marginTop: 2 }}>{m.timeEstimate}</div>
+                      </div>
                     </div>
-                  )}
-                  {m.question && (
-                    <div style={{ fontSize: 13, color: colors.gold, fontStyle: "italic", fontFamily: fonts.heading, borderTop: "1px solid " + colors.navyMid, paddingTop: 10 }}>{m.question}</div>
-                  )}
-                </Card>
-              );
-            })}
+                    {!locked && (
+                      <div style={{ marginBottom: 8 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                          <span style={{ fontSize: 11, color: colors.gray300 }}>{modPercent === 100 ? "Complete" : modPercent > 0 ? "In progress" : "Not started"}</span>
+                          <span style={{ fontSize: 11, fontWeight: 600, color: colors.gold }}>{modPercent}%</span>
+                        </div>
+                        <ProgressBar percent={modPercent} accent={colors.gold} height={4} />
+                      </div>
+                    )}
+                    {m.question && (
+                      <div style={{ fontSize: 13, color: colors.gold, fontStyle: "italic", fontFamily: fonts.heading, borderTop: "1px solid " + colors.navyMid, paddingTop: 10 }}>{m.question}</div>
+                    )}
+                  </Card>
+                );
+              })}
+            </div>
+
           </div>
-
-
         </div>
       </div>
-    </div>
     </>
   );
 }
