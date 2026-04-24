@@ -384,6 +384,36 @@ export default function ModuleTemplate({ config }) {
     return function() { clearTimeout(t); };
   }, [resumeToast]);
 
+  // ─── MID-JOURNEY REPORT AUTO-TRIGGER ─────────────────────────────
+  // Fires once when Capacity (module 4) reaches the Blueprint step.
+  // Fire-and-forget — generates report + sends email in background.
+  var mjTriggeredRef = useRef(false);
+  useEffect(function() {
+    if (!resumeLoaded) return;
+    if (moduleNum !== 4) return;
+    if (step !== STEPS.length - 1) return;
+    if (mjTriggeredRef.current) return;
+    mjTriggeredRef.current = true;
+    async function triggerReport() {
+      try {
+        var sr = await supabase.auth.getSession();
+        var ss = sr.data.session;
+        if (!ss || !ss.user) return;
+        fetch('/api/mid-journey/trigger-report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: ss.user.id,
+            email: ss.user.email,
+            moduleId: moduleNum,
+            stepNumber: step,
+          }),
+        }).catch(function(e) { console.error('Mid-journey trigger failed:', e); });
+      } catch(e) {}
+    }
+    triggerReport();
+  }, [step, moduleNum, resumeLoaded]);
+  
   if (!isFree && payLoading) {
     return (<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#021A35" }}><p style={{ color: "#6b7280", fontSize: 14 }}>Loading...</p></div>);
   }
