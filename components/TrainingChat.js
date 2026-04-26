@@ -45,6 +45,7 @@ export default function TrainingChat({ defaultModule }) {
   const detectedModule = ROUTE_MODULE_MAP[router.pathname] || defaultModule || "";
   const [selectedModule, setSelectedModule] = useState(detectedModule);
   const [loading, setLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -53,6 +54,23 @@ export default function TrainingChat({ defaultModule }) {
     const detected = ROUTE_MODULE_MAP[router.pathname] || defaultModule || "";
     setSelectedModule(detected);
   }, [router.pathname, defaultModule]);
+
+  // Track mobile viewport so the C-Help button clears the fixed bottom nav
+  // (Previous / Next bar) on module pages instead of overlapping it.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 768px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    if (mq.addEventListener) {
+      mq.addEventListener("change", update);
+      return () => mq.removeEventListener("change", update);
+    } else {
+      // Safari < 14 fallback
+      mq.addListener(update);
+      return () => mq.removeListener(update);
+    }
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -142,7 +160,7 @@ export default function TrainingChat({ defaultModule }) {
         onClick={() => setIsOpen(!isOpen)}
         style={{
           position: "fixed",
-          bottom: "24px",
+          bottom: isMobile ? "104px" : "24px",
           right: "24px",
           height: "44px",
           paddingLeft: isOpen ? "12px" : "14px",
@@ -193,12 +211,12 @@ export default function TrainingChat({ defaultModule }) {
         <div
           style={{
             position: "fixed",
-            bottom: "100px",
+            bottom: isMobile ? "180px" : "100px",
             right: "24px",
             width: "400px",
             maxWidth: "calc(100vw - 48px)",
             height: "560px",
-            maxHeight: "calc(100vh - 140px)",
+            maxHeight: isMobile ? "calc(100vh - 220px)" : "calc(100vh - 140px)",
             borderRadius: "16px",
             overflow: "hidden",
             boxShadow: "0 8px 40px rgba(2, 26, 53, 0.25)",

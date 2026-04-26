@@ -33,7 +33,7 @@ export default async function handler(req, res) {
             product_data: {
               name: 'Called to Carry — Founder Cohort',
               description:
-                '10-week live formation cohort for Kingdom leaders. Includes 5C portal access, prophetic business coaching, Blueprint export, and Founder community.',
+                '8-week live formation cohort for Kingdom leaders. Includes 5C portal access, prophetic business coaching, Blueprint export, and Founder community.',
               images: [
                 // Replace with your actual product image URL once available
                 `${baseUrl}/images/cohort-og.jpg`,
@@ -61,6 +61,7 @@ export default async function handler(req, res) {
       },
       // Stripe will collect billing address — useful for records
       billing_address_collection: 'auto',
+      allow_promotion_codes: true,
     });
 
     return res.status(200).json({ url: session.url });
