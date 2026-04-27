@@ -1,158 +1,81 @@
-// pages/called-to-carry/founders/apply.js
-import Head from 'next/head';
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+// pages/api/called-to-carry/founders/apply.js
+import { Resend } from 'resend';
 
-const NAVY = '#021A35';
-const GOLD = '#C8A951';
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-export default function FoundersApply() {
-  const router = useRouter();
-  const [form, setForm] = useState({
-    firstName: '', lastName: '', email: '',
-    phone: '', archetype: '', why: '',
-    building: '', referral: '',
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  // Pre-fill archetype + email from query params if coming from results page
-  useEffect(() => {
-    if (router.query.archetype) setForm(f => ({ ...f, archetype: router.query.archetype }));
-    if (router.query.email) setForm(f => ({ ...f, email: router.query.email }));
-  }, [router.query]);
-
-  function update(field) {
-    return e => setForm(prev => ({ ...prev, [field]: e.target.value }));
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    try {
-      const res = await fetch('/api/called-to-carry/founders/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Submission failed');
-      router.push('/called-to-carry/founders/thank-you');
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-    }
+  const { firstName, lastName, email, phone, archetype, why, building, referral } = req.body;
+
+  if (!firstName || !lastName || !email || !phone || !why) {
+    return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  const inputStyle = {
-    width: '100%', padding: '14px 16px', borderRadius: 8,
-    border: '1px solid #CBD5E1', background: 'white',
-    fontSize: '0.95rem', boxSizing: 'border-box',
-    fontFamily: "'Outfit', sans-serif", color: NAVY,
-  };
-  const labelStyle = {
-    display: 'block', fontSize: '0.82rem', fontWeight: 600,
-    color: '#475569', textTransform: 'uppercase',
-    letterSpacing: '0.05em', marginBottom: 6,
-  };
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'Will @ ADG <will@awakeningdestiny.global>';
+  const adminEmail = 'info@awakeningdestiny.global';
 
-  return (
-    <>
-      <Head>
-        <title>Apply — Founders Cohort · Called to Carry</title>
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-      </Head>
+  try {
+    await resend.emails.send({
+      from: fromEmail,
+      to: adminEmail,
+      replyTo: email,
+      subject: `New Founders Cohort application: ${firstName} ${lastName}`,
+      html: `
+        <div style="font-family:Georgia,serif;max-width:640px;margin:0 auto;padding:2rem;background:#FDF8F0;color:#021A35;">
+          <p style="font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:#C8A951;margin:0 0 0.5rem;font-weight:600;">New Application · Founders Cohort</p>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;margin:0 0 1.5rem;">${firstName} ${lastName}</h1>
+          <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem;">
+            <tr><td style="padding:0.5rem 0;font-weight:600;width:140px;">Email:</td><td><a href="mailto:${email}">${email}</a></td></tr>
+            <tr><td style="padding:0.5rem 0;font-weight:600;">Phone:</td><td>${phone}</td></tr>
+            ${archetype ? `<tr><td style="padding:0.5rem 0;font-weight:600;">Archetype:</td><td>${archetype}</td></tr>` : ''}
+            ${referral ? `<tr><td style="padding:0.5rem 0;font-weight:600;">Heard via:</td><td>${referral}</td></tr>` : ''}
+          </table>
+          <hr style="border:none;border-top:1px solid rgba(2,26,53,0.15);margin:1.5rem 0;" />
+          <p style="font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:#C8A951;font-weight:600;margin:0 0 0.5rem;">Why this cohort, why now?</p>
+          <p style="font-size:1rem;line-height:1.7;white-space:pre-wrap;margin:0 0 1.5rem;">${why.replace(/</g, '&lt;')}</p>
+          ${building ? `
+            <p style="font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:#C8A951;font-weight:600;margin:0 0 0.5rem;">Currently building / leading</p>
+            <p style="font-size:1rem;line-height:1.7;white-space:pre-wrap;margin:0 0 1.5rem;">${building.replace(/</g, '&lt;')}</p>
+          ` : ''}
+          <hr style="border:none;border-top:1px solid rgba(2,26,53,0.15);margin:1.5rem 0;" />
+          <p style="font-size:0.78rem;color:#666;font-style:italic;margin:0;">Reply to this email to respond to ${firstName} directly. Submitted ${new Date().toLocaleString('en-US', { dateStyle: 'long', timeStyle: 'short' })}.</p>
+        </div>
+      `,
+    });
 
-      <div style={{ background: '#F8F9FA', minHeight: '100vh', fontFamily: "'Outfit', sans-serif" }}>
-
-        {/* Header */}
-        <div style={{ background: NAVY, padding: '20px 24px', textAlign: 'center' }}>
-          <p style={{ color: GOLD, fontFamily: "'Cormorant Garamond', serif", fontSize: '1rem', fontStyle: 'italic', margin: 0 }}>
-            Founders Cohort
+    await resend.emails.send({
+      from: fromEmail,
+      to: email,
+      subject: 'Your Founders Cohort application is received',
+      html: `
+        <div style="background:#021A35;color:#FDF8F0;font-family:Georgia,serif;max-width:600px;margin:0 auto;padding:3rem 2rem;">
+          <p style="font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:#C8A951;margin:0 0 1.5rem;">Founders Cohort · Application Received</p>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;line-height:1.2;color:#FDF8F0;margin:0 0 1.5rem;">${firstName}, your application has been received.</h1>
+          <p style="font-size:1rem;line-height:1.75;color:rgba(253,248,240,0.85);margin:0 0 1.25rem;">
+            Will reviews every Founders Cohort application personally — usually within 48 hours. He will reach out to you directly to talk through fit, timing, and what walking the cohort together would look like.
           </p>
-          <h1 style={{ color: 'white', fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', fontWeight: 700, margin: '8px 0 0' }}>
-            Application
-          </h1>
+          <p style="font-size:1rem;line-height:1.75;color:rgba(253,248,240,0.85);margin:0 0 1.25rem;">
+            This is intentional. The cohort is a relational commitment, not a transaction. The application is the beginning of a conversation — not the end of one.
+          </p>
+          <p style="font-size:1rem;line-height:1.75;color:rgba(253,248,240,0.85);margin:0 0 2rem;">
+            In the meantime, sit with what was stirred when you took the assessment. Notice what is rising. The Spirit is doing something. Pay attention.
+          </p>
+          <hr style="border:none;border-top:1px solid rgba(200,169,81,0.2);margin:2rem 0;" />
+          <p style="font-size:0.9rem;color:#C8A951;margin:0 0 0.5rem;">— Will, Founder · Awakening Destiny Global</p>
+          <p style="font-size:0.72rem;color:rgba(253,248,240,0.4);margin:1.5rem 0 0;">
+            Questions? Reply to this email.<br/>
+            © ${new Date().getFullYear()} Awakening Destiny Global · awakeningdestiny.global
+          </p>
         </div>
+      `,
+    });
 
-        {/* Form */}
-        <div style={{ maxWidth: 620, margin: '0 auto', padding: '40px 24px' }}>
-          <div style={{ background: 'white', borderRadius: 16, padding: '40px 32px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
-            <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: 32, marginTop: 0 }}>
-              Every seat in this cohort is intentional. Will reviews each application personally and will be in touch within 48 hours. Takes 5 minutes.
-            </p>
-
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-
-              {/* Name */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                <div>
-                  <label style={labelStyle}>First Name *</label>
-                  <input required type="text" value={form.firstName} onChange={update('firstName')} placeholder="First" style={inputStyle} />
-                </div>
-                <div>
-                  <label style={labelStyle}>Last Name *</label>
-                  <input required type="text" value={form.lastName} onChange={update('lastName')} placeholder="Last" style={inputStyle} />
-                </div>
-              </div>
-
-              <div>
-                <label style={labelStyle}>Email Address *</label>
-                <input required type="email" value={form.email} onChange={update('email')} placeholder="your@email.com" style={inputStyle} />
-              </div>
-
-              <div>
-                <label style={labelStyle}>Phone *</label>
-                <input required type="tel" value={form.phone} onChange={update('phone')} placeholder="+1 (555) 000-0000" style={inputStyle} />
-              </div>
-
-              <div>
-                <label style={labelStyle}>Your Called to Carry Archetype</label>
-                <input type="text" value={form.archetype} onChange={update('archetype')} placeholder="e.g. The Apostolic Builder" style={inputStyle} />
-                <p style={{ color: '#94a3b8', fontSize: '0.78rem', margin: '6px 0 0' }}>
-                  Take the free assessment at <Link href="/called-to-carry/assessment" style={{ color: GOLD }}>calledtocarry.awakeningdestiny.global/assessment</Link> if you have not yet.
-                </p>
-              </div>
-
-              <div>
-                <label style={labelStyle}>What Are You Building or Leading?</label>
-                <textarea value={form.building} onChange={update('building')} rows={3}
-                  placeholder="Describe your ministry, business, or current assignment..."
-                  style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.5 }} />
-              </div>
-
-              <div>
-                <label style={labelStyle}>Why This Cohort, Why Now? *</label>
-                <textarea required value={form.why} onChange={update('why')} rows={4}
-                  placeholder="What is stirring in you right now? What weight are you carrying?"
-                  style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.5 }} />
-              </div>
-
-              <div>
-                <label style={labelStyle}>How Did You Hear About This?</label>
-                <input type="text" value={form.referral} onChange={update('referral')} placeholder="Optional" style={inputStyle} />
-              </div>
-
-              {error && (
-                <p style={{ color: '#DC2626', fontSize: '0.88rem', margin: 0, padding: '10px 14px', background: '#FEE2E2', borderRadius: 8 }}>
-                  {error}
-                </p>
-              )}
-
-              <button type="submit" disabled={loading}
-                style={{ background: NAVY, color: GOLD, border: 'none', padding: '18px', borderRadius: 8, fontSize: '1rem', fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1, marginTop: 8 }}>
-                {loading ? 'Submitting...' : 'Submit Application →'}
-              </button>
-
-              <p style={{ color: '#94a3b8', fontSize: '0.78rem', textAlign: 'center', margin: 0 }}>
-                Applications reviewed within 48 hours. No payment collected at this step.
-              </p>
-            </form>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+    return res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error('Founders application error:', err);
+    return res.status(500).json({ error: 'Could not submit application. Please try again or email info@awakeningdestiny.global directly.' });
+  }
 }
