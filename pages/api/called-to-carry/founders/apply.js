@@ -1,7 +1,7 @@
 // pages/api/called-to-carry/founders/apply.js
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
-import { randomUUID } from 'crypto';
+import crypto from 'crypto';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -23,9 +23,8 @@ export default async function handler(req, res) {
   }
 
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'meier.will@gmail.com';
-  const approvalToken = randomUUID();
+  const approvalToken = crypto.randomUUID();
 
-  // Save to Supabase
   const { data: app, error } = await supabase
     .from('cohort_applications')
     .insert({
@@ -51,10 +50,9 @@ export default async function handler(req, res) {
   const approveUrl = `${BASE_URL}/api/called-to-carry/founders/approve?token=${approvalToken}`;
 
   try {
-    // Notify Will with approve link
     await resend.emails.send({
       from: fromEmail,
-      to: 'info@awakeningdestiny.global',
+      to: 'meier.will@gmail.com',
       replyTo: email,
       subject: `New Founders Cohort application: ${firstName} ${lastName}`,
       html: `
@@ -73,11 +71,11 @@ export default async function handler(req, res) {
             ✓ Approve &amp; Send Payment Link
           </a>
           <p style="font-size:0.78rem;color:#666;margin-top:1rem;">Clicking approve will automatically send ${firstName} a Stripe payment link for $497.</p>
+          <p style="margin-top:1rem;word-break:break-all;font-size:0.85rem;">Or copy this link: <a href="${approveUrl}">${approveUrl}</a></p>
         </div>
       `,
     });
 
-    // Confirm to applicant
     await resend.emails.send({
       from: fromEmail,
       to: email,
