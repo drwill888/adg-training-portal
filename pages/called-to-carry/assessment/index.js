@@ -234,7 +234,7 @@ const handleSubmit = async (e) => {
       throw new Error(data.error || 'Submission failed.');
     }
 
-    router.push(`/assessment/results/${data.submissionId}`);
+    router.push(`/called-to-carry/assessment/results/${data.submissionId}`);
   } catch (err) {
     setError(err.message);
     setLoading(false);
