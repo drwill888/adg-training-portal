@@ -1,137 +1,99 @@
-// pages/called-to-carry/sprint/apply.js
-import Head from 'next/head';
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+// pages/api/called-to-carry/sprint/apply.js
+import { createClient } from '@supabase/supabase-js';
+import { Resend } from 'resend';
+import crypto from 'crypto';
 
-const NAVY = '#021A35';
-const GOLD = '#C8A951';
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-export default function SprintApply() {
-  const router = useRouter();
-  const [form, setForm] = useState({
-    firstName: '', lastName: '', email: '',
-    phone: '', archetype: '', why: '',
-    building: '', referral: '',
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+const BASE_URL = 'https://5cblueprint.awakeningdestiny.global';
 
-  useEffect(() => {
-    if (router.query.archetype) setForm(f => ({ ...f, archetype: router.query.archetype }));
-    if (router.query.email) setForm(f => ({ ...f, email: router.query.email }));
-  }, [router.query]);
-
-  function update(field) {
-    return e => setForm(prev => ({ ...prev, [field]: e.target.value }));
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    try {
-      const res = await fetch('/api/called-to-carry/sprint/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Submission failed');
-      router.push('/called-to-carry/sprint/thank-you');
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-    }
+  const { firstName, lastName, email, phone, archetype, why, building, referral } = req.body;
+
+  if (!firstName || !lastName || !email || !phone || !why) {
+    return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  const inputStyle = {
-    width: '100%', padding: '14px 16px', borderRadius: 8,
-    border: '1px solid #CBD5E1', background: 'white',
-    fontSize: '0.95rem', boxSizing: 'border-box',
-    fontFamily: "'Outfit', sans-serif", color: NAVY,
-  };
-  const labelStyle = {
-    display: 'block', fontSize: '0.82rem', fontWeight: 600,
-    color: '#475569', textTransform: 'uppercase',
-    letterSpacing: '0.05em', marginBottom: 6,
-  };
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'will@awakeningdestiny.global';
+  const approvalToken = crypto.randomUUID();
 
-  return (
-    <>
-      <Head>
-        <title>Apply — 21-Day Sprint · Called to Carry</title>
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-      </Head>
-      <div style={{ background: '#F8F9FA', minHeight: '100vh', fontFamily: "'Outfit', sans-serif" }}>
-        <div style={{ background: NAVY, padding: '20px 24px', textAlign: 'center' }}>
-          <p style={{ color: GOLD, fontFamily: "'Cormorant Garamond', serif", fontSize: '1rem', fontStyle: 'italic', margin: 0 }}>
-            21-Day Sprint
-          </p>
-          <h1 style={{ color: 'white', fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', fontWeight: 700, margin: '8px 0 0' }}>
-            Application
-          </h1>
+  const { data: app, error } = await supabase
+    .from('cohort_applications')
+    .insert({
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      phone,
+      archetype: archetype || null,
+      why_now: why,
+      business_or_ministry: building || null,
+      status: 'pending',
+      tier: 'sprint',
+      approval_token: approvalToken,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Supabase error:', error);
+    return res.status(500).json({ error: 'Failed to save application.' });
+  }
+
+  const approveUrl = `${BASE_URL}/api/called-to-carry/sprint/approve?token=${approvalToken}`;
+
+  try {
+    await resend.emails.send({
+      from: fromEmail,
+      to: 'meier.will@gmail.com',
+      replyTo: email,
+      subject: `New 21-Day Sprint application: ${firstName} ${lastName}`,
+      html: `
+        <div style="font-family:Georgia,serif;max-width:640px;margin:0 auto;padding:2rem;background:#FDF8F0;color:#021A35;">
+          <p style="font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;color:#C8A951;font-weight:600;">New Application · 21-Day Sprint</p>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;">${firstName} ${lastName}</h1>
+          <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+          <p><strong>Phone:</strong> ${phone}</p>
+          ${archetype ? `<p><strong>Archetype:</strong> ${archetype}</p>` : ''}
+          ${building ? `<p><strong>Building:</strong> ${building}</p>` : ''}
+          <hr style="border:none;border-top:1px solid #ddd;margin:1.5rem 0;"/>
+          <p><strong>Why now:</strong></p>
+          <p style="line-height:1.7;">${why}</p>
+          <hr style="border:none;border-top:1px solid #ddd;margin:1.5rem 0;"/>
+          <a href="${approveUrl}" style="display:inline-block;background:#021A35;color:#C8A951;padding:14px 28px;border-radius:6px;text-decoration:none;font-weight:700;font-size:1rem;">
+            ✓ Approve &amp; Send Payment Link
+          </a>
+          <p style="font-size:0.78rem;color:#666;margin-top:1rem;">Clicking approve will send ${firstName} a Stripe payment link for $997.</p>
+          <p style="margin-top:1rem;word-break:break-all;font-size:0.85rem;">Or copy this link: <a href="${approveUrl}">${approveUrl}</a></p>
         </div>
-        <div style={{ maxWidth: 620, margin: '0 auto', padding: '40px 24px' }}>
-          <div style={{ background: 'white', borderRadius: 16, padding: '40px 32px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
-            <p style={{ color: '#475569', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: 32, marginTop: 0 }}>
-              Will reviews every Sprint application personally. This is not open enrollment — capacity is limited and each seat is confirmed individually. Takes 5 minutes.
-            </p>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                <div>
-                  <label style={labelStyle}>First Name *</label>
-                  <input required type="text" value={form.firstName} onChange={update('firstName')} placeholder="First" style={inputStyle} />
-                </div>
-                <div>
-                  <label style={labelStyle}>Last Name *</label>
-                  <input required type="text" value={form.lastName} onChange={update('lastName')} placeholder="Last" style={inputStyle} />
-                </div>
-              </div>
-              <div>
-                <label style={labelStyle}>Email Address *</label>
-                <input required type="email" value={form.email} onChange={update('email')} placeholder="your@email.com" style={inputStyle} />
-              </div>
-              <div>
-                <label style={labelStyle}>Phone *</label>
-                <input required type="tel" value={form.phone} onChange={update('phone')} placeholder="+1 (555) 000-0000" style={inputStyle} />
-              </div>
-              <div>
-                <label style={labelStyle}>Your Called to Carry Archetype</label>
-                <input type="text" value={form.archetype} onChange={update('archetype')} placeholder="e.g. The Apostolic Builder" style={inputStyle} />
-              </div>
-              <div>
-                <label style={labelStyle}>What Are You Building or Leading?</label>
-                <textarea value={form.building} onChange={update('building')} rows={3}
-                  placeholder="Describe your ministry, business, or current assignment..."
-                  style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.5 }} />
-              </div>
-              <div>
-                <label style={labelStyle}>Why the Sprint, Why Now? *</label>
-                <textarea required value={form.why} onChange={update('why')} rows={4}
-                  placeholder="What threshold are you at? What weight are you carrying that needs direct counsel?"
-                  style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.5 }} />
-              </div>
-              <div>
-                <label style={labelStyle}>How Did You Hear About This?</label>
-                <input type="text" value={form.referral} onChange={update('referral')} placeholder="Optional" style={inputStyle} />
-              </div>
-              {error && (
-                <p style={{ color: '#DC2626', fontSize: '0.88rem', margin: 0, padding: '10px 14px', background: '#FEE2E2', borderRadius: 8 }}>
-                  {error}
-                </p>
-              )}
-              <button type="submit" disabled={loading}
-                style={{ background: NAVY, color: GOLD, border: 'none', padding: '18px', borderRadius: 8, fontSize: '1rem', fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1, marginTop: 8 }}>
-                {loading ? 'Submitting...' : 'Submit Application →'}
-              </button>
-              <p style={{ color: '#94a3b8', fontSize: '0.78rem', textAlign: 'center', margin: 0 }}>
-                Applications reviewed within 48 hours. No payment collected at this step.
-              </p>
-            </form>
-          </div>
+      `,
+    });
+
+    await resend.emails.send({
+      from: fromEmail,
+      to: email,
+      subject: 'Your 21-Day Sprint application is received',
+      html: `
+        <div style="background:#021A35;color:#FDF8F0;font-family:Georgia,serif;max-width:600px;margin:0 auto;padding:3rem 2rem;">
+          <p style="color:#C8A951;text-transform:uppercase;letter-spacing:0.15em;font-size:0.75rem;">21-Day Sprint · Application Received</p>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:#FDF8F0;">${firstName}, your application has been received.</h1>
+          <p style="color:rgba(253,248,240,0.85);line-height:1.75;">Will reviews every Sprint application personally — usually within 48 hours. This is not open enrollment. He will reach out directly to confirm fit and next steps.</p>
+          <p style="color:rgba(253,248,240,0.85);line-height:1.75;">No payment is collected at this step. Enrollment is finalized after Will confirms your seat.</p>
+          <p style="color:#C8A951;margin-top:2rem;">— Will, Founder · Awakening Destiny Global</p>
         </div>
-      </div>
-    </>
-  );
+      `,
+    });
+
+    return res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error('Sprint application error:', err);
+    return res.status(500).json({ error: 'Could not submit application. Please try again.' });
+  }
 }

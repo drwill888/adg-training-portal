@@ -1,6 +1,5 @@
 // pages/called-to-carry/sprint/apply.js
 import Head from 'next/head';
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
