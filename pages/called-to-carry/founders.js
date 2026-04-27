@@ -1,7 +1,17 @@
+// pages/called-to-carry/founders.js
+// Founders Cohort marketing landing page — $497, 8 weeks, application-required.
+// Migrated from pages/cohort/index.js with corrected paths.
+
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
 import styles from '../../styles/Cohort.module.css';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 const INCLUDED_ITEMS = [
   {
@@ -67,9 +77,8 @@ const FAQS = [
   },
 ];
 
-export default function CohortPage({ cohortOpen }) {
+export default function FoundersPage({ cohortOpen }) {
   const [openFaq, setOpenFaq] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   // Waitlist state
   const [waitlistEmail, setWaitlistEmail] = useState('');
@@ -77,38 +86,17 @@ export default function CohortPage({ cohortOpen }) {
   const [waitlistStatus, setWaitlistStatus] = useState('idle'); // idle | loading | success | error
   const [waitlistError, setWaitlistError] = useState('');
 
-  const handleCheckout = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/cohort/create-checkout-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setLoading(false);
-      }
-    } catch (err) {
-      console.error('Checkout error:', err);
-      setLoading(false);
-    }
-  };
-
   const handleWaitlist = async (e) => {
     e.preventDefault();
     setWaitlistStatus('loading');
     setWaitlistError('');
 
     try {
-      const res = await fetch('/api/cohort/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: waitlistEmail, firstName: waitlistFirstName }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to join waitlist.');
+      const { error } = await supabase.from('cohort_waitlist').upsert(
+        { email: waitlistEmail, first_name: waitlistFirstName || null },
+        { onConflict: 'email' }
+      );
+      if (error) throw new Error(error.message);
       setWaitlistStatus('success');
     } catch (err) {
       setWaitlistStatus('error');
@@ -119,7 +107,7 @@ export default function CohortPage({ cohortOpen }) {
   return (
     <>
       <Head>
-        <title>Called to Carry Cohort — Called to Carry</title>
+        <title>Founders Cohort — Called to Carry</title>
         <meta
           name="description"
           content="8 weeks of live formation, prophetic business coaching, and Kingdom leadership development for leaders built to carry more."
@@ -138,7 +126,7 @@ export default function CohortPage({ cohortOpen }) {
           <Link href="/" className={styles.navLogo}>
             <span className={styles.navLogoText}>Called to Carry</span>
           </Link>
-          <Link href="/assessment" className={styles.navLink}>
+          <Link href="/called-to-carry/assessment" className={styles.navLink}>
             Take the Assessment
           </Link>
         </nav>
@@ -153,7 +141,7 @@ export default function CohortPage({ cohortOpen }) {
               </div>
             )}
             <p className={styles.heroPretitle}>
-              Called to Carry Cohort · {cohortOpen ? 'Limited Enrollment' : 'Next Cohort Coming Soon'}
+              Founders Cohort · {cohortOpen ? 'Limited Enrollment' : 'Next Cohort Coming Soon'}
             </p>
             <h1 className={styles.heroHeadline}>
               You Were Not Built to<br />
@@ -165,7 +153,7 @@ export default function CohortPage({ cohortOpen }) {
             </p>
             {cohortOpen ? (
               <div className={styles.heroCtas}>
-                <Link href="/cohort/apply" className={styles.btnPrimary}>
+                <Link href="/called-to-carry/founders/apply" className={styles.btnPrimary}>
                   Apply for the Cohort
                 </Link>
                 <a href="#what-is-this" className={styles.btnGhost}>
@@ -178,13 +166,13 @@ export default function CohortPage({ cohortOpen }) {
                   Join the Waitlist
                 </a>
                 <Link href="/self-paced" className={styles.btnGhost}>
-                  Start Self-Paced — $67
+                  Start Self-Paced — $97
                 </Link>
               </div>
             )}
             <p className={styles.heroNote}>
               Not sure if you're ready?{' '}
-              <Link href="/assessment" className={styles.inlineLink}>
+              <Link href="/called-to-carry/assessment" className={styles.inlineLink}>
                 Take the Called to Carry Assessment first →
               </Link>
             </p>
@@ -213,7 +201,7 @@ export default function CohortPage({ cohortOpen }) {
                   That weight is not a problem to fix — it's an assignment to steward.
                 </p>
                 <p>
-                  The Called to Carry Cohort is built for Kingdom leaders who are ready to stop
+                  The Founders Cohort is built for Kingdom leaders who are ready to stop
                   managing their calling in isolation and start building it with clarity, covenant
                   community, and the kind of formation that actually changes you.
                 </p>
@@ -276,7 +264,7 @@ export default function CohortPage({ cohortOpen }) {
 
               {cohortOpen ? (
                 <>
-                  <p className={styles.eyebrowLight}>Called to Carry Cohort Investment</p>
+                  <p className={styles.eyebrowLight}>Founders Cohort Investment</p>
                   <h2 className={styles.pricingHeadline}>
                     One Decision.<br />Eight Weeks of Transformation.
                   </h2>
@@ -290,16 +278,9 @@ export default function CohortPage({ cohortOpen }) {
                     Limited seats per cohort to protect depth of community.
                   </p>
                   <div className={styles.pricingActions}>
-                    <Link href="/cohort/apply" className={styles.btnPrimaryLarge}>
+                    <Link href="/called-to-carry/founders/apply" className={styles.btnPrimaryLarge}>
                       Apply Now — Secure Your Seat
                     </Link>
-                    <button
-                      className={styles.btnGhostLarge}
-                      onClick={handleCheckout}
-                      disabled={loading}
-                    >
-                      {loading ? 'Redirecting...' : 'Skip to Checkout'}
-                    </button>
                   </div>
                   <p className={styles.pricingDisclaimer}>
                     Seats are confirmed upon application review. Payment is collected at confirmation.
@@ -307,7 +288,7 @@ export default function CohortPage({ cohortOpen }) {
                 </>
               ) : (
                 <>
-                  <p className={styles.eyebrowLight}>Called to Carry Cohort</p>
+                  <p className={styles.eyebrowLight}>Founders Cohort</p>
                   <h2 className={styles.pricingHeadline}>
                     This Cohort Is Full.<br />The Next One Is Coming.
                   </h2>
@@ -322,7 +303,7 @@ export default function CohortPage({ cohortOpen }) {
                       <p style={{ marginTop: '1rem', fontSize: '0.875rem' }}>
                         In the meantime —{' '}
                         <Link href="/self-paced" className={styles.pricingLink}>
-                          start the Self-Paced Journey for $67 →
+                          start the Self-Paced Journey for $97 →
                         </Link>
                       </p>
                     </div>
@@ -359,7 +340,7 @@ export default function CohortPage({ cohortOpen }) {
                   <p className={styles.pricingDisclaimer}>
                     Want formation now?{' '}
                     <Link href="/self-paced" className={styles.pricingLink}>
-                      Start the Self-Paced Journey for $67 →
+                      Start the Self-Paced Journey for $97 →
                     </Link>
                   </p>
                 </>
@@ -391,7 +372,7 @@ export default function CohortPage({ cohortOpen }) {
                   equipping leaders to discover, develop, and deploy their God-given assignment.
                 </p>
                 <p>
-                  The Called to Carry Cohort is an extension of that assignment. Every session
+                  The Founders Cohort is an extension of that assignment. Every session
                   carries the weight of a ministry built to restore, unify, and release.
                 </p>
               </div>
@@ -441,8 +422,8 @@ export default function CohortPage({ cohortOpen }) {
                   Don't let another season pass in isolation. The cohort is designed for
                   leaders who are ready — not perfect, not finished, but willing.
                 </p>
-                <Link href="/cohort/apply" className={styles.btnPrimaryLarge}>
-                  Apply for the Called to Carry Cohort
+                <Link href="/called-to-carry/founders/apply" className={styles.btnPrimaryLarge}>
+                  Apply for the Founders Cohort
                 </Link>
               </>
             ) : (
@@ -456,7 +437,7 @@ export default function CohortPage({ cohortOpen }) {
                   your schedule. Start building clarity today.
                 </p>
                 <Link href="/self-paced" className={styles.btnPrimaryLarge}>
-                  Start the Self-Paced Journey — $67
+                  Start the Self-Paced Journey — $97
                 </Link>
               </>
             )}
@@ -469,8 +450,8 @@ export default function CohortPage({ cohortOpen }) {
             <p>© {new Date().getFullYear()} Awakening Destiny Global · All Rights Reserved</p>
             <div className={styles.footerLinks}>
               <Link href="/">Home</Link>
-              <Link href="/assessment">Assessment</Link>
-              <Link href="/cohort/apply">Apply</Link>
+              <Link href="/called-to-carry/assessment">Assessment</Link>
+              <Link href="/called-to-carry/founders/apply">Apply</Link>
             </div>
           </div>
         </footer>

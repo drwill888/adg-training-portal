@@ -188,13 +188,78 @@ export default function AssessmentResults({ submission }) {
           </section>
         )}
 
-        {/* CTA */}
-        <div style={styles.ctaSection}>
-          <Link href={archetype.cta.primary.href} style={styles.ctaBtn}>
-            {archetype.cta.primary.label}
-          </Link>
+      {/* TIER CHOICE — Three Pathways */}
+        <div style={styles.tierSection}>
+          <p style={styles.tierEyebrow}>Choose Your Path Forward</p>
+          <h2 style={styles.tierHeading}>Three Ways to Walk This Out.</h2>
+          <p style={styles.tierIntro}>
+            Your archetype is named. The next step is choosing how you want to walk the formation. All three pathways take you through the same 5C Leadership Blueprint &mdash; the difference is who walks beside you.
+          </p>
+
+          <div style={styles.tierGrid}>
+
+            {/* Self-Paced — $97 */}
+            <div style={styles.tierCard}>
+              <p style={styles.tierLabel}>Self-Paced</p>
+              <p style={styles.tierPrice}>$97</p>
+              <p style={styles.tierTagline}>Walk it at your own pace.</p>
+              <ul style={styles.tierBullets}>
+                <li>All seven modules</li>
+                <li>Text + audio teaching</li>
+                <li>Personalized 5C Blueprint diagnostic</li>
+                <li>Blueprint export + Certificate</li>
+                <li>3 months portal access</li>
+              </ul>
+              <button
+                onClick={() => handleSelfPacedCheckout(submission.email, submission.firstName)}
+                style={styles.tierBtnPrimary}
+              >
+                Start the Journey →
+              </button>
+              <p style={styles.tierNote}>Open enrollment. Begin immediately.</p>
+            </div>
+
+            {/* Founders Cohort — $497 */}
+            <div style={styles.tierCardFeatured}>
+              <p style={styles.tierBadge}>Most Chosen</p>
+              <p style={styles.tierLabel}>Founders Cohort</p>
+              <p style={styles.tierPrice}>$497</p>
+              <p style={styles.tierTagline}>Walk it with a cohort.</p>
+              <ul style={styles.tierBullets}>
+                <li>Everything in Self-Paced</li>
+                <li>Live Zoom cohort sessions</li>
+                <li>Group processing &amp; community</li>
+                <li>8-week guided rhythm</li>
+                <li>Direct interaction with Will</li>
+              </ul>
+              <Link href={`/called-to-carry/founders/apply?archetype=${submission.archetype}&email=${encodeURIComponent(submission.email)}`} style={styles.tierBtnPrimary}>
+                Apply for the Cohort →
+              </Link>
+              <p style={styles.tierNote}>Application required. Will reviews personally.</p>
+            </div>
+
+            {/* 21-Day Sprint — $997 */}
+            <div style={styles.tierCard}>
+              <p style={styles.tierLabel}>21-Day Sprint</p>
+              <p style={styles.tierPrice}>$997</p>
+              <p style={styles.tierTagline}>Walk it directly with Will.</p>
+              <ul style={styles.tierBullets}>
+                <li>Everything in Self-Paced</li>
+                <li>21 days of direct access to Will</li>
+                <li>Personal apostolic counsel</li>
+                <li>Accelerated formation rhythm</li>
+                <li>Designed for leaders at a threshold</li>
+              </ul>
+              <Link href={`/called-to-carry/sprint/apply?archetype=${submission.archetype}&email=${encodeURIComponent(submission.email)}`} style={styles.tierBtnPrimary}>
+                Apply for the Sprint →
+              </Link>
+              <p style={styles.tierNote}>Application required. Limited capacity.</p>
+            </div>
+
+          </div>
+
           {archetype.cta.fallback && (
-            <p style={styles.ctaNote}>{archetype.cta.fallback}</p>
+            <p style={styles.tierFallback}>{archetype.cta.fallback}</p>
           )}
         </div>
 
