@@ -199,7 +199,7 @@ export default function CalledToCarryLanding() {
             clarity, capacity, and framework to carry it well.
           </p>
           <div className={s.heroCtas}>
-            <Link href="/cohort/apply" className={s.ctaPrimary}>
+            <Link href="/called-to-carry/founders/apply" className={s.ctaPrimary}>
               Claim Your Founder Seat <ArrowIcon />
             </Link>
             <Link href="/assessment" className={s.ctaSecondary}>
