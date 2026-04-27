@@ -1,6 +1,6 @@
 // pages/self-paced/index.js
 // Called to Carry — Self-Paced Journey sales page
-// $67 · 3 months access · 6 modules · No live calls
+// $149 · 3 months access · 6 modules · No live calls
 
 import Head from 'next/head';
 import Link from 'next/link';
@@ -8,42 +8,12 @@ import { useState } from 'react';
 import styles from '../../styles/SelfPaced.module.css';
 
 const MODULES = [
-  {
-    number: '01',
-    name: 'Introduction',
-    color: '#0172BC',
-    desc: 'Discover the framework. Understand what it means to carry an assignment — and why most leaders are carrying the wrong things.',
-  },
-  {
-    number: '02',
-    name: 'Calling',
-    color: '#C8A951',
-    desc: 'Name what you were built for. Identify your point of origin and establish your true north — the anchor that everything else builds from.',
-  },
-  {
-    number: '03',
-    name: 'Connection',
-    color: '#0172BC',
-    desc: 'Understand the relational architecture of your assignment. Who you are connected to shapes what you are able to build.',
-  },
-  {
-    number: '04',
-    name: 'Competency',
-    color: '#F47722',
-    desc: 'Audit your gifts, skills, and gaps with honesty. Build from what you actually carry — not what you think you should have.',
-  },
-  {
-    number: '05',
-    name: 'Capacity',
-    color: '#EE3124',
-    desc: 'Confront the internal limits that slow your build. Address pressure, forgiveness, rest, and sustainability at the root.',
-  },
-  {
-    number: '06',
-    name: 'Convergence',
-    color: '#0172BC',
-    desc: 'Find your sweet spot — the intersection of calling, competency, and capacity. Define what you carry and what you release.',
-  },
+  { number: '01', name: 'Introduction', color: '#0172BC', desc: 'Discover the framework. Understand what it means to carry an assignment — and why most leaders are carrying the wrong things.' },
+  { number: '02', name: 'Calling', color: '#C8A951', desc: 'Name what you were built for. Identify your point of origin and establish your true north — the anchor that everything else builds from.' },
+  { number: '03', name: 'Connection', color: '#0172BC', desc: 'Understand the relational architecture of your assignment. Who you are connected to shapes what you are able to build.' },
+  { number: '04', name: 'Competency', color: '#F47722', desc: 'Audit your gifts, skills, and gaps with honesty. Build from what you actually carry — not what you think you should have.' },
+  { number: '05', name: 'Capacity', color: '#EE3124', desc: 'Confront the internal limits that slow your build. Address pressure, forgiveness, rest, and sustainability at the root.' },
+  { number: '06', name: 'Convergence', color: '#0172BC', desc: 'Find your sweet spot — the intersection of calling, competency, and capacity. Define what you carry and what you release.' },
 ];
 
 const INCLUDED = [
@@ -56,26 +26,11 @@ const INCLUDED = [
 ];
 
 const FAQS = [
-  {
-    q: 'How long does it take to complete?',
-    a: 'Most leaders complete one module per week, finishing in 6 weeks. You have 3 months — go at the pace that serves your formation, not your schedule.',
-  },
-  {
-    q: 'Is there any live interaction?',
-    a: 'This tier is fully self-paced. No live calls, no group sessions. You have access to the AI training assistant for content questions. For live formation with Will, see the Called to Carry Cohort.',
-  },
-  {
-    q: "What's the difference between this and the Cohort?",
-    a: 'The Self-Paced Journey gives you the full formation content on your own time. The Cohort adds 8 weeks of live group sessions, covenant community, and direct coaching. Same content — different depth of experience.',
-  },
-  {
-    q: 'What happens after 3 months?',
-    a: 'Your access expires. Your Blueprint documents and Certificate remain yours. Many leaders use the 3-month window as motivation to complete the journey with focus and intention.',
-  },
-  {
-    q: 'Do I need to take the assessment first?',
-    a: 'The Called to Carry Assessment is free and takes 15 minutes. It gives you your archetype before you begin — which makes the portal experience significantly richer. We recommend it as your first step.',
-  },
+  { q: 'How long does it take to complete?', a: 'Most leaders complete one module per week, finishing in 6 weeks. You have 3 months — go at the pace that serves your formation, not your schedule.' },
+  { q: 'Is there any live interaction?', a: 'This tier is fully self-paced. No live calls, no group sessions. You have access to the AI training assistant for content questions. For live formation with Will, see the Founders Cohort.' },
+  { q: "What's the difference between this and the Cohort?", a: 'The Self-Paced Journey gives you the full formation content on your own time. The Founders Cohort adds 8 weeks of live group sessions, covenant community, and direct coaching. Same content — different depth of experience.' },
+  { q: 'What happens after 3 months?', a: 'Your access expires. Your Blueprint documents and Certificate remain yours. Many leaders use the 3-month window as motivation to complete the journey with focus and intention.' },
+  { q: 'Do I need to take the assessment first?', a: 'The Called to Carry Assessment is free and takes 15 minutes. It gives you your archetype before you begin — which makes the portal experience significantly richer. We recommend it as your first step.' },
 ];
 
 export default function SelfPacedPage() {
@@ -106,16 +61,10 @@ export default function SelfPacedPage() {
     <>
       <Head>
         <title>Self-Paced Journey — Called to Carry</title>
-        <meta
-          name="description"
-          content="Six modules. Three months. Discover what you were called to carry — on your schedule, at your pace."
-        />
+        <meta name="description" content="Six modules. Three months. Discover what you were called to carry — on your schedule, at your pace." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap"
-          rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
       </Head>
 
       <div className={styles.page}>
@@ -123,8 +72,8 @@ export default function SelfPacedPage() {
         <nav className={styles.nav}>
           <Link href="/" className={styles.navLogo}>Called to Carry</Link>
           <div className={styles.navLinks}>
-            <Link href="/assessment" className={styles.navLink}>Free Assessment</Link>
-            <Link href="/cohort" className={styles.navLink}>Cohort</Link>
+            <Link href="/called-to-carry/assessment" className={styles.navLink}>Free Assessment</Link>
+            <Link href="/called-to-carry/founders" className={styles.navLink}>Cohort</Link>
           </div>
         </nav>
 
@@ -138,23 +87,17 @@ export default function SelfPacedPage() {
               <em>On Your Schedule.</em>
             </h1>
             <p className={styles.heroSub}>
-              Six modules of Kingdom leadership formation — designed to help you name
-              your calling, audit your capacity, and converge on what you were actually
-              built to carry. No live calls. No deadlines. Just you and the work.
+              Six modules of Kingdom leadership formation — designed to help you name your calling, audit your capacity, and converge on what you were actually built to carry. No live calls. No deadlines. Just you and the work.
             </p>
             <div className={styles.heroCtas}>
-              <button
-                className={styles.btnPrimary}
-                onClick={handleCheckout}
-                disabled={loading}
-              >
-                {loading ? 'Redirecting...' : 'Start the Journey — $67'}
+              <button className={styles.btnPrimary} onClick={handleCheckout} disabled={loading}>
+                {loading ? 'Redirecting...' : 'Start the Journey — $149'}
               </button>
               <a href="#modules" className={styles.btnGhost}>See the Modules</a>
             </div>
             <p className={styles.heroNote}>
               Haven't taken the assessment yet?{' '}
-              <Link href="/assessment" className={styles.inlineLink}>
+              <Link href="/called-to-carry/assessment" className={styles.inlineLink}>
                 Start there — it's free →
               </Link>
             </p>
@@ -168,8 +111,7 @@ export default function SelfPacedPage() {
               <div className={styles.forLeft}>
                 <p className={styles.eyebrow}>This Is For You</p>
                 <h2 className={styles.sectionHeading}>
-                  You know something<br />
-                  is stirring.<br />
+                  You know something<br />is stirring.<br />
                   <em>You just need language.</em>
                 </h2>
               </div>
@@ -201,10 +143,7 @@ export default function SelfPacedPage() {
             <div className={styles.modulesGrid}>
               {MODULES.map((mod) => (
                 <div key={mod.number} className={styles.moduleCard}>
-                  <div
-                    className={styles.moduleAccent}
-                    style={{ background: mod.color }}
-                  />
+                  <div className={styles.moduleAccent} style={{ background: mod.color }} />
                   <span className={styles.moduleNumber}>{mod.number}</span>
                   <h3 className={styles.moduleName}>{mod.name}</h3>
                   <p className={styles.moduleDesc}>{mod.desc}</p>
@@ -218,8 +157,7 @@ export default function SelfPacedPage() {
         <section className={styles.quoteBlock}>
           <div className={styles.container}>
             <blockquote className={styles.quote}>
-              "Before I formed you in the womb I knew you,
-              before you were born I set you apart."
+              "Before I formed you in the womb I knew you, before you were born I set you apart."
               <cite>Jeremiah 1:5</cite>
             </blockquote>
           </div>
@@ -232,13 +170,10 @@ export default function SelfPacedPage() {
               <div className={styles.includedLeft}>
                 <p className={styles.eyebrow}>What You Receive</p>
                 <h2 className={styles.sectionHeading}>
-                  Everything you need.<br />
-                  Nothing you don't.
+                  Everything you need.<br />Nothing you don't.
                 </h2>
                 <p className={styles.includedIntro}>
-                  The Self-Paced Journey is intentionally lean. No fluff,
-                  no filler — just the formation content, the diagnostics,
-                  and the tools to build from what you discover.
+                  The Self-Paced Journey is intentionally lean. No fluff, no filler — just the formation content, the diagnostics, and the tools to build from what you discover.
                 </p>
               </div>
               <div className={styles.includedRight}>
@@ -264,37 +199,28 @@ export default function SelfPacedPage() {
                 <div className={styles.pricingLeft}>
                   <p className={styles.eyebrowLight}>Self-Paced Journey</p>
                   <h2 className={styles.pricingHeadline}>
-                    One investment.<br />
-                    Three months of formation.
+                    One investment.<br />Three months of formation.
                   </h2>
                   <p className={styles.pricingCaption}>
-                    Six modules. Full portal access. Blueprint export.
-                    Certificate of Completion. Everything included — no upsells,
-                    no hidden costs.
+                    Six modules. Full portal access. Blueprint export. Certificate of Completion. Everything included — no upsells, no hidden costs.
                   </p>
                   <p className={styles.pricingDisclaimer}>
                     Want live formation with Will?{' '}
-                    <Link href="/cohort" className={styles.pricingLink}>
-                      See the Called to Carry Cohort →
+                    <Link href="/called-to-carry/founders" className={styles.pricingLink}>
+                      See the Founders Cohort →
                     </Link>
                   </p>
                 </div>
                 <div className={styles.pricingRight}>
                   <div className={styles.pricingAmount}>
                     <span className={styles.pricingCurrency}>$</span>
-                    <span className={styles.pricingNumber}>67</span>
+                    <span className={styles.pricingNumber}>149</span>
                   </div>
                   <p className={styles.pricingPer}>one-time · 3 months access</p>
-                  <button
-                    className={styles.btnPrimaryLarge}
-                    onClick={handleCheckout}
-                    disabled={loading}
-                  >
+                  <button className={styles.btnPrimaryLarge} onClick={handleCheckout} disabled={loading}>
                     {loading ? 'Redirecting...' : 'Start the Journey'}
                   </button>
-                  <p className={styles.pricingSecure}>
-                    Secure checkout via Stripe
-                  </p>
+                  <p className={styles.pricingSecure}>Secure checkout via Stripe</p>
                 </div>
               </div>
             </div>
@@ -308,21 +234,12 @@ export default function SelfPacedPage() {
             <h2 className={styles.sectionHeading}>Before you begin.</h2>
             <div className={styles.faqList}>
               {FAQS.map((item, i) => (
-                <div
-                  key={i}
-                  className={`${styles.faqItem} ${openFaq === i ? styles.faqOpen : ''}`}
-                >
-                  <button
-                    className={styles.faqQuestion}
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    aria-expanded={openFaq === i}
-                  >
+                <div key={i} className={`${styles.faqItem} ${openFaq === i ? styles.faqOpen : ''}`}>
+                  <button className={styles.faqQuestion} onClick={() => setOpenFaq(openFaq === i ? null : i)} aria-expanded={openFaq === i}>
                     <span>{item.q}</span>
                     <span className={styles.faqCaret}>{openFaq === i ? '−' : '+'}</span>
                   </button>
-                  <div className={styles.faqAnswer}>
-                    <p>{item.a}</p>
-                  </div>
+                  <div className={styles.faqAnswer}><p>{item.a}</p></div>
                 </div>
               ))}
             </div>
@@ -337,15 +254,9 @@ export default function SelfPacedPage() {
               The clarity you need<br />
               <em>is already inside the journey.</em>
             </h2>
-            <p className={styles.finalSub}>
-              $67. Three months. Six modules. Start today.
-            </p>
-            <button
-              className={styles.btnPrimaryLarge}
-              onClick={handleCheckout}
-              disabled={loading}
-            >
-              {loading ? 'Redirecting...' : 'Start the Journey — $67'}
+            <p className={styles.finalSub}>$149. Three months. Six modules. Start today.</p>
+            <button className={styles.btnPrimaryLarge} onClick={handleCheckout} disabled={loading}>
+              {loading ? 'Redirecting...' : 'Start the Journey — $149'}
             </button>
           </div>
         </section>
@@ -356,8 +267,8 @@ export default function SelfPacedPage() {
             <p>© {new Date().getFullYear()} Awakening Destiny Global · All Rights Reserved</p>
             <div className={styles.footerLinks}>
               <Link href="/">Home</Link>
-              <Link href="/assessment">Assessment</Link>
-              <Link href="/cohort">Cohort</Link>
+              <Link href="/called-to-carry/assessment">Assessment</Link>
+              <Link href="/called-to-carry/founders">Cohort</Link>
             </div>
           </div>
         </footer>
