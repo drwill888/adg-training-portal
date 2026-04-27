@@ -607,3 +607,6 @@ const btnPrimary = {
   cursor: 'pointer',
   display: 'inline-block',
 };
+export async function getServerSideProps() {
+  return { props: {} }
+}
