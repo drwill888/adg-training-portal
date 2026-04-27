@@ -42,7 +42,7 @@ export default function SprintThankYou() {
               ))}
             </ul>
           </div>
-          <Link href="/called-to-carry"
+          <Link href="/called-to-carry/sprint"
             style={{ display: 'inline-block', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.6)', padding: '12px 28px', borderRadius: 8, fontSize: '0.9rem', textDecoration: 'none' }}>
             Return to Called to Carry
           </Link>
