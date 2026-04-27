@@ -1,130 +1,40 @@
 // pages/api/called-to-carry/founders/apply.js
-// Founders Cohort application — saves to Supabase, creates Stripe checkout at $497,
-// emails Will + sends applicant confirmation via Resend.
-
-import { createClient } from '@supabase/supabase-js';
-import Stripe from 'stripe';
 import { Resend } from 'resend';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const BASE_URL = 'https://5cblueprint.awakeningdestiny.global';
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'info@awakeningdestiny.global';
-
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
-  const {
-    first_name, last_name, email, phone, city,
-    archetype, leadership_stage, business_or_ministry,
-    why_now, commitment_confirmed,
-  } = req.body;
-
-  if (!first_name || !last_name || !email || !leadership_stage || !business_or_ministry || !why_now) {
-    return res.status(400).json({ error: 'Please complete all required fields.' });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Save application to Supabase
-  const { data: app, error } = await supabase
-    .from('cohort_applications')
-    .insert({
-      first_name, last_name, email,
-      phone: phone || null,
-      city: city || null,
-      archetype: archetype || 'unknown',
-      leadership_stage,
-      business_or_ministry,
-      why_now,
-      commitment_confirmed: !!commitment_confirmed,
-      status: 'pending',
-      tier: 'founders',
-    })
-    .select()
-    .single();
+  const { firstName, lastName, email, phone, archetype, why, building, referral } = req.body;
 
-  if (error) {
-    console.error('Supabase insert error:', error);
-    return res.status(500).json({ error: 'Failed to save application.' });
+  if (!firstName || !lastName || !email || !phone || !why) {
+    return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  // Notify Will
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'will@awakeningdestiny.global';
+
   try {
     await resend.emails.send({
-      from: FROM_EMAIL,
+      from: fromEmail,
       to: 'info@awakeningdestiny.global',
-      subject: `New Founders Cohort Application — ${first_name} ${last_name}`,
-      html: `
-        <h2>New Founders Cohort Application</h2>
-        <p><strong>Name:</strong> ${first_name} ${last_name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-        <p><strong>City:</strong> ${city || 'Not provided'}</p>
-        <p><strong>Archetype:</strong> ${archetype || 'Not taken'}</p>
-        <p><strong>Leadership Stage:</strong> ${leadership_stage}</p>
-        <p><strong>Assignment:</strong> ${business_or_ministry}</p>
-        <p><strong>Why Now:</strong> ${why_now}</p>
-      `,
+      replyTo: email,
+      subject: `New Founders Cohort application: ${firstName} ${lastName}`,
+      html: `<div style="font-family:Georgia,serif;max-width:640px;margin:0 auto;padding:2rem;background:#FDF8F0;color:#021A35;"><h2 style="color:#021A35;">${firstName} ${lastName}</h2><p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p><p><strong>Phone:</strong> ${phone}</p>${archetype ? `<p><strong>Archetype:</strong> ${archetype}</p>` : ''}${building ? `<p><strong>Building:</strong> ${building}</p>` : ''}${referral ? `<p><strong>Heard via:</strong> ${referral}</p>` : ''}<hr/><p><strong>Why now:</strong></p><p>${why}</p></div>`,
     });
-  } catch (emailErr) {
-    console.error('Resend notification error:', emailErr);
-    // Don't block — continue to Stripe checkout
-  }
 
-  // Send applicant confirmation
-  try {
     await resend.emails.send({
-      from: FROM_EMAIL,
+      from: fromEmail,
       to: email,
-      subject: 'Your Founders Cohort Application Was Received',
-      html: `
-        <h2>Application Received</h2>
-        <p>Hi ${first_name},</p>
-        <p>Your application for the Founders Cohort has been received. Will reviews each application personally and will be in touch within 48 hours.</p>
-        <p>Once confirmed, you will receive a secure payment link to complete your enrollment at $497.</p>
-        <p><em>The burden you carry was given to you on purpose.</em></p>
-        <p>— Awakening Destiny Global</p>
-      `,
-    });
-  } catch (emailErr) {
-    console.error('Resend confirmation error:', emailErr);
-    // Don't block — continue to Stripe checkout
-  }
-
-  // Create Stripe checkout session
-  try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'payment',
-      customer_email: email,
-      line_items: [{
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: 'Founders Cohort',
-            description: 'Eight-week apostolic formation cohort with Will Meier',
-          },
-          unit_amount: 49700,
-        },
-        quantity: 1,
-      }],
-      metadata: { application_id: app.id, type: 'founders_cohort' },
-      success_url: `${BASE_URL}/called-to-carry/founders/thank-you?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${BASE_URL}/called-to-carry/founders/apply`,
+      subject: 'Your Founders Cohort application is received',
+      html: `<div style="background:#021A35;color:#FDF8F0;font-family:Georgia,serif;max-width:600px;margin:0 auto;padding:3rem 2rem;"><p style="color:#C8A951;text-transform:uppercase;letter-spacing:0.15em;font-size:0.75rem;">Founders Cohort · Application Received</p><h1 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:#FDF8F0;">${firstName}, your application has been received.</h1><p style="color:rgba(253,248,240,0.85);line-height:1.75;">Will reviews every application personally — usually within 48 hours. He will reach out to you directly to talk through fit and next steps.</p><p style="color:rgba(253,248,240,0.85);line-height:1.75;">In the meantime, pay attention to what is stirring. The Spirit is doing something.</p><p style="color:#C8A951;">— Will, Founder · Awakening Destiny Global</p></div>`,
     });
 
-    await supabase
-      .from('cohort_applications')
-      .update({ stripe_session_id: session.id })
-      .eq('id', app.id);
-
-    return res.status(200).json({ checkoutUrl: session.url });
-  } catch (stripeError) {
-    console.error('Stripe error:', stripeError);
-    return res.status(500).json({ error: 'Failed to create checkout session.' });
+    return res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error('Founders application error:', err);
+    return res.status(500).json({ error: 'Could not submit application. Please try again.' });
   }
 }
