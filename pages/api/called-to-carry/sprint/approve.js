@@ -57,7 +57,7 @@ export default async function handler(req, res) {
         quantity: 1,
       }],
       metadata: { application_id: app.id, tier: 'sprint' },
-      success_url: `${BASE_URL}/called-to-carry/sprint/thank-you?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${BASE_URL}/dashboard`,
       cancel_url: `${BASE_URL}/called-to-carry/sprint/apply`,
     });
 
