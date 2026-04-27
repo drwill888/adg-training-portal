@@ -198,10 +198,10 @@ export default function AssessmentResults({ submission }) {
 
           <div style={styles.tierGrid}>
 
-            {/* Self-Paced — $97 */}
+            {/* Self-Paced — $149 */}
             <div style={styles.tierCard}>
               <p style={styles.tierLabel}>Self-Paced</p>
-              <p style={styles.tierPrice}>$97</p>
+              <p style={styles.tierPrice}>$149</p>
               <p style={styles.tierTagline}>Walk it at your own pace.</p>
               <ul style={styles.tierBullets}>
                 <li>All seven modules</li>
