@@ -31,7 +31,7 @@ export default function FoundersThankYou() {
           </h1>
 
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '1.05rem', lineHeight: 1.7, marginBottom: 16 }}>
-            Payment confirmed. Your spot in the Founders Cohort is secured.
+            Your application has been received.
           </p>
 
           <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.95rem', lineHeight: 1.7, marginBottom: 40 }}>
@@ -42,7 +42,7 @@ export default function FoundersThankYou() {
             <p style={{ color: GOLD, fontWeight: 600, margin: '0 0 12px', fontSize: '0.95rem' }}>What happens next:</p>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
-                'Check your email for a payment confirmation from Stripe',
+                'Check your email for an application confirmation from Will',
                 'Will reviews your application within 48 hours',
                 'You will receive onboarding details and cohort schedule',
                 'Portal access is granted before the first session',
