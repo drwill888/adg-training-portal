@@ -26,7 +26,6 @@ const TOTAL_STEPS = { 0: 7, 1: 8, 2: 8, 3: 8, 4: 8, 5: 8, 6: 8 };
 function Sidebar({ currentPage, setCurrentPage, open, onClose, paid }) {
   const isMobile = useIsMobile();
 
-  // Nav order: Dashboard → Introduction → 1-4 → Mid-Journey → 5 → Commissioning → Final Blueprint
   const navItems = [
     { key: "dashboard", label: "Dashboard", icon: null, isDash: true },
     { key: "mod-0", label: "Introduction", icon: "—", href: "/modules/introduction", locked: false },
@@ -108,7 +107,6 @@ async function handleCheckout(pathway) {
   }
 }
 
-// Report milestone card — same grid size as module cards
 function ReportCard({ type, unlocked, href }) {
   const isMidJourney = type === 'mid-journey';
   const label = isMidJourney ? 'MID-JOURNEY BLUEPRINT' : 'FINAL BLUEPRINT';
@@ -150,6 +148,9 @@ export default function Dashboard() {
   const [page, setPage] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { paid, loading } = usePaymentStatus();
+  const [bannerDismissed, setBannerDismissed] = useState(
+    typeof window !== 'undefined' && !!localStorage.getItem('adg_banner_dismissed')
+  );
 
   useEffect(() => {
     async function checkAuth() {
@@ -250,20 +251,15 @@ export default function Dashboard() {
   var midJourneyUnlocked = paid && (progress[4] || 0) >= 7;
   var finalBlueprintUnlocked = paid && (progress[6] || 0) >= 7;
 
-  // Build interleaved grid items:
-  // Introduction → Calling → Connection → Competency → Capacity
-  // → Mid-Journey Report card
-  // → Convergence → Commissioning
-  // → Final Blueprint card
   var gridItems = [
-    { type: 'module', data: modules[0] }, // Introduction
-    { type: 'module', data: modules[1] }, // Calling
-    { type: 'module', data: modules[2] }, // Connection
-    { type: 'module', data: modules[3] }, // Competency
-    { type: 'module', data: modules[4] }, // Capacity
+    { type: 'module', data: modules[0] },
+    { type: 'module', data: modules[1] },
+    { type: 'module', data: modules[2] },
+    { type: 'module', data: modules[3] },
+    { type: 'module', data: modules[4] },
     { type: 'report', reportType: 'mid-journey', unlocked: midJourneyUnlocked, href: '/mid-journey-report' },
-    { type: 'module', data: modules[5] }, // Convergence
-    { type: 'module', data: modules[6] }, // Commissioning
+    { type: 'module', data: modules[5] },
+    { type: 'module', data: modules[6] },
     { type: 'report', reportType: 'final-blueprint', unlocked: finalBlueprintUnlocked, href: '/final-blueprint' },
   ];
 
@@ -306,6 +302,28 @@ export default function Dashboard() {
           </div>
 
           <div style={{ padding: isMobile ? "20px 16px" : "32px 40px", maxWidth: 960 }}>
+
+            {/* ─── EARLY ACCESS BANNER ─── */}
+            {!bannerDismissed && (
+              <div style={{ background: "rgba(253,210,13,0.08)", border: "1px solid rgba(253,210,13,0.25)", borderRadius: 12, padding: "14px 20px", marginBottom: 24, display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+                <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                  <span style={{ fontSize: 18, flexShrink: 0 }}>🚀</span>
+                  <div>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: colors.gold }}>Early Access Launch — </span>
+                    <span style={{ fontSize: 13, color: colors.gray300 }}>We just launched. If you encounter anything unexpected, email </span>
+                    <a href="mailto:info@awakeningdestiny.global" style={{ fontSize: 13, color: colors.gold }}>info@awakeningdestiny.global</a>
+                    <span style={{ fontSize: 13, color: colors.gray300 }}> and we will make it right.</span>
+                  </div>
+                </div>
+                <button
+                  onClick={function() {
+                    localStorage.setItem('adg_banner_dismissed', '1');
+                    setBannerDismissed(true);
+                  }}
+                  style={{ background: "none", border: "none", cursor: "pointer", color: colors.gray500, fontSize: 20, flexShrink: 0, padding: 0, lineHeight: 1 }}>×
+                </button>
+              </div>
+            )}
 
             {/* ─── GREETING + PROGRESS ─── */}
             <h1 style={{ fontFamily: fonts.heading, fontSize: 28, fontWeight: 700, color: colors.cream, margin: "0 0 4px" }}>{greeting}</h1>
@@ -421,6 +439,7 @@ export default function Dashboard() {
                 </p>
               </Card>
             )}
+
             {/* ─── UPGRADE PATH — visible to paid users ─── */}
             {paid && (
               <Card style={{ marginBottom: 28, background: "linear-gradient(135deg, #021A35 0%, #0a2a4d 100%)", border: "1px solid rgba(253,210,13,0.25)" }} padding={isMobile ? 20 : 28}>
@@ -449,11 +468,11 @@ export default function Dashboard() {
                 </div>
               </Card>
             )}
+
             {/* ─── MODULE + REPORT GRID ─── */}
             <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 16, marginBottom: 24 }}>
               {gridItems.map(function(item, idx) {
 
-                // Report milestone card
                 if (item.type === 'report') {
                   return (
                     <ReportCard
@@ -465,7 +484,6 @@ export default function Dashboard() {
                   );
                 }
 
-                // Module card
                 var m = item.data;
                 var locked = !m.free && !paid;
                 var stepsDone = progress[m.id] || 0;
