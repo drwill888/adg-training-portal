@@ -18,10 +18,8 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
   const { token } = req.query;
-
   if (!token) return res.status(400).send('Missing token.');
 
-  // Find application by token
   const { data: app, error } = await supabase
     .from('cohort_applications')
     .select('*')
@@ -40,28 +38,20 @@ export default async function handler(req, res) {
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'will@awakeningdestiny.global';
 
   try {
-    // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
       customer_email: app.email,
       line_items: [{
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: '21-Day Sprint',
-            description: '21 days of direct access to Will Meier — apostolic counsel and accelerated formation',
-          },
-          unit_amount: 99700,
-        },
+        price: process.env.STRIPE_SPRINT_PRICE_ID,
         quantity: 1,
       }],
       metadata: { application_id: app.id, tier: 'sprint' },
+      allow_promotion_codes: true,
       success_url: `${BASE_URL}/dashboard`,
       cancel_url: `${BASE_URL}/called-to-carry/sprint/apply`,
     });
 
-    // Mark as approved in Supabase
     await supabase
       .from('cohort_applications')
       .update({
@@ -71,7 +61,6 @@ export default async function handler(req, res) {
       })
       .eq('id', app.id);
 
-    // Email applicant with payment link
     await resend.emails.send({
       from: fromEmail,
       to: app.email,
@@ -92,7 +81,6 @@ export default async function handler(req, res) {
       `,
     });
 
-    // Confirm to Will
     return res.status(200).send(`
       <html><body style="font-family:Georgia,serif;max-width:600px;margin:4rem auto;padding:2rem;background:#FDF8F0;color:#021A35;">
         <h2 style="color:#021A35;">✓ Approved</h2>
