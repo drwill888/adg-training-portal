@@ -3,18 +3,30 @@ import Head from "next/head";
 import ModuleTemplate from "../../components/ModuleTemplate";
 
 const diagnostic = [
-  { num: 1,  cat: "Formation Posture",  text: "I am entering this course looking for formation, not just information." },
-  { num: 2,  cat: "Formation Posture",  text: "I am willing to let this process expose areas in me that need to change." },
-  { num: 3,  cat: "Formation Posture",  text: "I understand that real growth requires internal change, not just new knowledge." },
-  { num: 4,  cat: "Self-Awareness",     text: "I can honestly assess my leadership strengths without defaulting to pride or deflection." },
-  { num: 5,  cat: "Self-Awareness",     text: "I can honestly name at least one thing in my leadership that is not working right now." },
-  { num: 6,  cat: "Self-Awareness",     text: "I am not entering this course to confirm what I already believe — I am open to correction." },
-  { num: 7,  cat: "Commitment Level",   text: "I have made space in my schedule to process, reflect, and apply what I receive.", ref: "Luke 14:28" },
-  { num: 8,  cat: "Commitment Level",   text: "I have a mentor, covenant partner, or community to process this material with." },
-  { num: 9,  cat: "Commitment Level",   text: "I am ready to make specific, written commitments that will require accountability." },
-  { num: 10, cat: "Baseline Clarity",   text: "I can articulate, at least broadly, what I believe I am called to build." },
-  { num: 11, cat: "Baseline Clarity",   text: "I am entering this course with honesty, not performance." },
-  { num: 12, cat: "Baseline Clarity",   text: "I am ready to begin." },
+  { num: 1,  cat: "Formation Posture",
+    text: "I am entering this course willing to be changed — not just informed." },
+  { num: 2,  cat: "Formation Posture",
+    text: "There are areas in my leadership I already know need to change — and I am no longer avoiding them." },
+  { num: 3,  cat: "Formation Posture",
+    text: "I have completed leadership development before and actually made lasting internal changes as a result." },
+  { num: 4,  cat: "Self-Awareness",
+    text: "When mature leaders point out blind spots in me, my first response is to genuinely consider them — not explain them away." },
+  { num: 5,  cat: "Self-Awareness",
+    text: "I can name at least one specific thing in my leadership that is not working — and I have told someone about it." },
+  { num: 6,  cat: "Self-Awareness",
+    text: "I am entering this course to be challenged, not to have what I already believe confirmed." },
+  { num: 7,  cat: "Commitment Level", ref: "Luke 14:28",
+    text: "I have made protected time in my schedule to process, reflect, and apply what I receive here — not just consume it." },
+  { num: 8,  cat: "Commitment Level",
+    text: "I have someone specific who will process this material with me and hold me to what I discover." },
+  { num: 9,  cat: "Commitment Level",
+    text: "I have a track record of making written commitments and following through on them over time." },
+  { num: 10, cat: "Baseline Clarity",
+    text: "If someone asked me right now what I am specifically called to build in this season, I could answer without hedging." },
+  { num: 11, cat: "Baseline Clarity",
+    text: "I am entering this course willing to be fully honest — not presenting the polished version of my leadership story." },
+  { num: 12, cat: "Baseline Clarity",
+    text: "I am ready to begin — not just inspired to begin." },
 ];
 
 const principles = [
@@ -118,7 +130,6 @@ const applicationQuestions = [
 const bookChapter = {
   title: "Called to Run the Race",
   source: "From Leaders for Life (updated) by Will Meier — Awakening Destiny Global",
-  // Edited from Leaders for Life - updated
   paragraphs: [
     { type: "text", text: "It was the Wednesday before a long vacation when my wife and I watched the movie Secretariat. It is an award-winning film about the legendary horse who won the Triple Crown against all odds. Although the story ends in triumph, the beginning is marked by loss, pressure, and near collapse. The horse farm that owned Secretariat was on the verge of bankruptcy, and nearly the entire family—except for one person, Penny Chenery—wanted to shut it down because it was bleeding money. As I watched the story unfold, something deep within me stirred, and I wept." },
     { type: "scripture", text: "Deep calls to deep at the noise of Your waterfalls; all Your waves and Your billows have gone over me. — Psalm 42:7" },

@@ -198,6 +198,34 @@ async function downloadBlueprint(title, commitments, summary) {
   saveAs(blob, title + "-Blueprint.docx");
 }
 
+function parseFormationSummary(text) {
+  if (!text) return null;
+  var divider = "---FORMATION SUMMARY---";
+  var idx = text.indexOf(divider);
+  if (idx === -1) return null;
+  var prose = text.slice(0, idx).trim();
+  var structured = text.slice(idx + divider.length).trim();
+  var sections = {};
+  var patterns = [
+    { key: "carrying", header: "WHAT I AM CARRYING" },
+    { key: "strong",   header: "WHERE I AM STRONG" },
+    { key: "forming",  header: "WHERE I AM BEING FORMED" },
+    { key: "nextStep", header: "MY NEXT STEP" },
+  ];
+  patterns.forEach(function(p, pidx) {
+    var start = structured.indexOf(p.header);
+    if (start === -1) return;
+    var contentStart = start + p.header.length;
+    var end = -1;
+    for (var ni = pidx + 1; ni < patterns.length; ni++) {
+      var nextPos = structured.indexOf(patterns[ni].header);
+      if (nextPos > -1) { end = nextPos; break; }
+    }
+    sections[p.key] = (end === -1 ? structured.slice(contentStart) : structured.slice(contentStart, end)).trim();
+  });
+  return { prose: prose, sections: sections };
+}
+
 export default function ModuleTemplate({ config }) {
   var moduleNum        = config.moduleNum;
   var title            = config.title;
@@ -254,6 +282,8 @@ export default function ModuleTemplate({ config }) {
   var ptS   = useState(false);   var purposeThreadsOpen = ptS[0]; var setPurposeThreadsOpen = ptS[1];
   // ─── userId for PurposeThreadsForm ────────────────────────────────────────
   var uidS  = useState(null);    var currentUserId = uidS[0];   var setCurrentUserId = uidS[1];
+  // ─── Diagnostic comment (post-check reflection) ───────────────────────────
+  var dcS   = useState("");      var diagComment = dcS[0];      var setDiagComment = dcS[1];
 
   var reflectionsRef = useRef({});
   var topRef  = useRef(null);
@@ -300,7 +330,7 @@ export default function ModuleTemplate({ config }) {
             if (r.data.commitments && Object.keys(r.data.commitments).length > 0) { setCommitments(r.data.commitments); } else { try { var lsCom2 = localStorage.getItem("adg_com_" + moduleNum); if (lsCom2) { var co2 = JSON.parse(lsCom2); if (Object.keys(co2).length > 0) setCommitments(co2); } } catch(e) {} }
             if (r.data.ai_summary) setAiSummary(r.data.ai_summary);
             var dbReflections = r.data.reflections || {};
-            if (Object.keys(dbReflections).length > 0) { reflectionsRef.current = dbReflections; setReflections(dbReflections); } else { try { var ls = localStorage.getItem(lsKey); if (ls) { var lsR = JSON.parse(ls); reflectionsRef.current = lsR; setReflections(lsR); } } catch(e) {} }
+            if (Object.keys(dbReflections).length > 0) { reflectionsRef.current = dbReflections; setReflections(dbReflections); if (dbReflections["diag_comment"]) setDiagComment(dbReflections["diag_comment"]); } else { try { var ls = localStorage.getItem(lsKey); if (ls) { var lsR = JSON.parse(ls); reflectionsRef.current = lsR; setReflections(lsR); } } catch(e) {} }
             if (savedStep > 0) {
               var stepList = moduleNum === 0 ? STEPS_INTRO : STEPS_DEFAULT;
               var stepName = stepList[savedStep] ? stepList[savedStep].label : ("step " + savedStep);
@@ -397,7 +427,8 @@ export default function ModuleTemplate({ config }) {
       var shiftNote = hasPreScores ? " Where there is meaningful growth (positive shift), affirm the movement. Where there is little change or regression, gently invite deeper formation." : "";
       diagNote = "\n\nFormation Diagnostic Scores (Post-Teaching):\n" + catLines.join("\n") + "\nReference these scores specifically — acknowledge strengths and gently name areas needing most attention." + shiftNote;
     }
-    var prompt = "Write a personalized Leadership Blueprint Summary for this leader completing the " + title + " module of the 5C Leadership Blueprint.\n\nTarget length: 350–450 words. Write in natural paragraphs — no headers, no bullet points, no bold or markdown.\n\nSTRUCTURE (follow this flow, but let it read naturally — not like a template):\n\n1. REFLECT BACK — Open by naming something specific they wrote. Paraphrase a key phrase or idea from their actual responses that reveals something true about where they are. Make them feel genuinely heard and seen — not summarized.\n\n2. NAME THE PATTERN — Identify the central theme, tension, or formation edge you see across their responses. Is there a gap between their stated calling and their current confidence? A strength they are underusing? A recurring word or phrase that points to something deeper? Name it clearly and pastorally.\n\n3. DIAGNOSTIC INSIGHT — If scores are provided, speak directly to what the numbers reveal about their formation. Don't just list them — interpret them. What does a low score in a specific area tell you about what they most need? What does a high score tell you about where God has already been working?\n\n4. GROWTH EDGE — Name one to two specific areas where the greatest formation work remains. Frame these as invitations into deeper development, not failures. Use the language of formation, not deficiency.\n\n5. CALL FORWARD — End with a clear, prophetically grounded word that calls this leader into their assignment. Be specific about the " + title + " dimension. Give them something to carry with them — a conviction, a next step, a Kingdom perspective on who they are becoming.\n\nIMPORTANT:\n- Quote or paraphrase at least one specific thing they actually wrote.\n- Do NOT begin with a salutation, greeting, or 'Dear [name]'.\n- Do NOT be generic. If this summary could apply to any leader, rewrite it.\n- Strengthen without flattering. Challenge without shaming.\n- Sound like a seasoned apostolic-prophetic coach, not a performance review.\n\n" + aiPromptContext + diagNote + "\n\nTheir Responses and Commitments:\n" + commitStr + blankNote + "\n\nBegin immediately with substantive content.";
+    var diagCommentNote = diagComment.trim() ? "\n\nPost-Diagnostic Reflection from the leader: \"" + diagComment.trim() + "\"\nThis is what they noticed as they rated themselves. Use it as a window into their self-awareness." : "";
+    var prompt = "Write a Leadership Blueprint for this leader completing the " + title + " module of the 5C Leadership Blueprint.\n\nThis Blueprint has TWO PARTS. Write them in order:\n\nPART ONE (250-350 words, natural prose paragraphs, no headers or bullets):\n\n1. REFLECT BACK: Open by naming something specific they wrote. Make them feel heard and seen.\n\n2. NAME THE PATTERN: Identify the central formation edge across their responses.\n\n3. DIAGNOSTIC INSIGHT: Speak to what the scores and pre/post delta reveal. Where movement was small, name what that reveals. Where growth happened, affirm it specifically.\n\n4. CALL FORWARD: End with a clear, prophetically grounded word specific to the " + title + " dimension.\n\nThen write this EXACT divider on its own line:\n---FORMATION SUMMARY---\n\nPART TWO (structured bullets):\n\nWHAT I AM CARRYING\n- [key takeaway 1 - one sentence, leader voice starting with I]\n- [key takeaway 2]\n- [key takeaway 3]\n\nWHERE I AM STRONG\n- [specific strength 1]\n- [specific strength 2]\n\nWHERE I AM BEING FORMED\n- [growth edge 1, framed as invitation]\n- [growth edge 2]\n\nMY NEXT STEP\n[One specific concrete action within 7 days. Not a principle - a real action.]\n\nRULES: Quote or paraphrase something they actually wrote. Do NOT begin with a salutation. Do NOT be generic. Sound like a seasoned apostolic-prophetic coach.\n\n" + aiPromptContext + diagNote + diagCommentNote + "\n\nTheir Responses and Commitments:\n" + commitStr + blankNote + "\n\nBegin immediately with Part One.";
     fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt, systemPrompt: ADG_SYSTEM_PROMPT }) })
       .then(function(r) { return r.json(); }).then(function(d) { setAiSummary(d.response || ""); })
       .catch(function(e) { console.error("Failed to generate AI summary:", e); setSummaryError("Summary unavailable right now — your responses are saved and you can continue."); })
@@ -750,6 +781,22 @@ export default function ModuleTemplate({ config }) {
                 <p style={{ fontSize: 12, color: "#6b7280", marginTop: 18, lineHeight: 1.6, fontStyle: "italic" }}>Strong ≥ 80% &nbsp;·&nbsp; Developing ≥ 55% &nbsp;·&nbsp; Needs Attention &lt; 55%</p>
               </div>
             )}
+            {/* ─── Post-diagnostic comment field ──────────────────────────── */}
+            <div style={{ background: "rgba(10,45,82,0.4)", border: "1px solid rgba(253,210,13,0.12)", borderRadius: 12, padding: "18px 20px" }}>
+              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: GOLD, margin: "0 0 6px" }}>Your Reflection</p>
+              <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 10px", lineHeight: 1.5 }}>What surprised you most? What felt most true — or most uncomfortable? This note will inform your Blueprint summary.</p>
+              <textarea
+                style={{ width: "100%", padding: "10px 12px", fontSize: 13, color: "#FDF8F0", backgroundColor: "rgba(2,26,53,0.5)", border: "1px solid rgba(253,210,13,0.15)", borderRadius: 8, resize: "vertical", lineHeight: 1.6, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box", minHeight: 80 }}
+                rows={3}
+                placeholder="Write what surfaced for you as you worked through these questions..."
+                value={diagComment}
+                onChange={function(e) {
+                  var val = e.target.value;
+                  setDiagComment(val);
+                  makeAutoSave("diag_comment")(val, function() {});
+                }}
+              />
+            </div>
           </div>
         );
       }
@@ -803,7 +850,45 @@ export default function ModuleTemplate({ config }) {
                     <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: GOLD, color: NAVY, fontSize: 14, fontWeight: 700 }}>5C</div>
                     <p className="font-bold" style={{ color: "#FDF8F0", fontFamily: fonts.heading, fontSize: 17 }}>Your {title} Blueprint</p>
                   </div>
-                  <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#FDF8F0" }}>{para}</p>; })}</div>
+                  {(function() {
+                    var parsed = parseFormationSummary(aiSummary);
+                    if (!parsed) {
+                      return <div>{aiSummary.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#FDF8F0" }}>{para}</p>; })}</div>;
+                    }
+                    return (
+                      <div>
+                        <div className="mb-5">
+                          {parsed.prose.split("\n\n").map(function(para, i) { return <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: "#FDF8F0" }}>{para}</p>; })}
+                        </div>
+                        <div style={{ background: "rgba(2,26,53,0.6)", borderRadius: 10, padding: "18px 20px", border: "1px solid rgba(253,210,13,0.2)" }}>
+                          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: GOLD, margin: "0 0 16px" }}>Formation Summary</p>
+                          {[
+                            { key: "carrying", label: "What I Am Carrying" },
+                            { key: "strong",   label: "Where I Am Strong" },
+                            { key: "forming",  label: "Where I Am Being Formed" },
+                            { key: "nextStep", label: "My Next Step" },
+                          ].map(function(s) {
+                            if (!parsed.sections[s.key]) return null;
+                            var isNextStep = s.key === "nextStep";
+                            return (
+                              <div key={s.key} style={{ marginBottom: 14 }}>
+                                <p style={{ fontSize: 10, fontWeight: 700, color: GOLD, letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 6px" }}>{s.label}</p>
+                                {isNextStep ? (
+                                  <p style={{ fontSize: 13, color: "#FDF8F0", lineHeight: 1.7, fontWeight: 600 }}>{parsed.sections[s.key]}</p>
+                                ) : (
+                                  <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                                    {parsed.sections[s.key].split("\n").filter(function(l) { return l.trim().length > 0; }).map(function(line, i) {
+                                      return <p key={i} style={{ fontSize: 13, color: "#c8cdd6", lineHeight: 1.6, paddingLeft: 12, borderLeft: "2px solid rgba(253,210,13,0.3)", margin: 0 }}>{line.replace(/^[-•]\s*/, "")}</p>;
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </Card>
                 <Button variant="outline" size="full" onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} style={{ marginTop: 12 }}>Download Blueprint (.docx)</Button>
                 {enhanceCount < 3 && (
@@ -863,6 +948,22 @@ export default function ModuleTemplate({ config }) {
                 <p style={{ fontSize: 12, color: "#6b7280", marginTop: 18, lineHeight: 1.6, fontStyle: "italic" }}>Strong ≥ 80% &nbsp;·&nbsp; Developing ≥ 55% &nbsp;·&nbsp; Needs Attention &lt; 55%</p>
               </div>
             )}
+            {/* ─── Assessment comment field ────────────────────────────────── */}
+            <div style={{ background: "rgba(10,45,82,0.4)", border: "1px solid rgba(253,210,13,0.12)", borderRadius: 12, padding: "18px 20px" }}>
+              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: GOLD, margin: "0 0 6px" }}>Your Reflection</p>
+              <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 10px", lineHeight: 1.5 }}>What surprised you most? What felt most true — or most uncomfortable? This will inform your Blueprint summary.</p>
+              <textarea
+                style={{ width: "100%", padding: "10px 12px", fontSize: 13, color: "#FDF8F0", backgroundColor: "rgba(2,26,53,0.5)", border: "1px solid rgba(253,210,13,0.15)", borderRadius: 8, resize: "vertical", lineHeight: 1.6, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box", minHeight: 80 }}
+                rows={3}
+                placeholder="Write what surfaced for you as you worked through these questions..."
+                value={diagComment}
+                onChange={function(e) {
+                  var val = e.target.value;
+                  setDiagComment(val);
+                  makeAutoSave("diag_comment")(val, function() {});
+                }}
+              />
+            </div>
           </div>
         );
       }
