@@ -421,7 +421,34 @@ export default function Dashboard() {
                 </p>
               </Card>
             )}
-
+            {/* ─── UPGRADE PATH — visible to paid users ─── */}
+            {paid && (
+              <Card style={{ marginBottom: 28, background: "linear-gradient(135deg, #021A35 0%, #0a2a4d 100%)", border: "1px solid rgba(253,210,13,0.25)" }} padding={isMobile ? 20 : 28}>
+                <div style={{ fontSize: 11, color: colors.gold, letterSpacing: "0.12em", fontWeight: 700, marginBottom: 10 }}>READY TO GO DEEPER?</div>
+                <div style={{ fontFamily: fonts.heading, fontSize: 20, fontWeight: 700, color: colors.white, lineHeight: 1.35, marginBottom: 10 }}>
+                  Graduate to the Next Level
+                </div>
+                <p style={{ fontSize: 13, color: colors.gray300, lineHeight: 1.7, margin: "0 0 20px" }}>
+                  The Self-Paced Blueprint is your foundation. When you are ready to go further — with direct access to Will, a cohort of aligned Kingdom leaders, or an intensive 21-day formation sprint — your next step is available.
+                </p>
+                <p style={{ fontSize: 12, color: colors.gold, fontStyle: "italic", margin: "0 0 20px", lineHeight: 1.6 }}>
+                  Already completed Self-Paced? Your $149 investment applies as a credit toward either tier. Reach out directly to receive your personal upgrade code.
+                </p>
+                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                  <Button
+                    onClick={() => window.location.href = '/called-to-carry/founders/apply'}
+                    style={{ whiteSpace: "nowrap" }}>
+                    Apply — Founders Cohort $497 →
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => window.location.href = '/called-to-carry/sprint/apply'}
+                    style={{ whiteSpace: "nowrap" }}>
+                    Apply — 21-Day Sprint $997 →
+                  </Button>
+                </div>
+              </Card>
+            )}
             {/* ─── MODULE + REPORT GRID ─── */}
             <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: 16, marginBottom: 24 }}>
               {gridItems.map(function(item, idx) {
