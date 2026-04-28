@@ -160,7 +160,7 @@ export default function TrainingChat({ defaultModule }) {
         onClick={() => setIsOpen(!isOpen)}
         style={{
           position: "fixed",
-          bottom: isMobile ? "104px" : "24px",
+          bottom: isMobile ? "160px" : "80px",
           right: "24px",
           height: "44px",
           paddingLeft: isOpen ? "12px" : "14px",
@@ -211,7 +211,7 @@ export default function TrainingChat({ defaultModule }) {
         <div
           style={{
             position: "fixed",
-            bottom: isMobile ? "180px" : "100px",
+            bottom: isMobile ? "230px" : "150px",
             right: "24px",
             width: "400px",
             maxWidth: "calc(100vw - 48px)",
