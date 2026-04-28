@@ -12,6 +12,7 @@ import { BookIcon, PrayerIcon, CertificateIcon, CheckIcon, StarIcon, WarningIcon
 import Button from "./ui/Button";
 import Card from "./ui/Card";
 import PurposeThreadsForm from "./PurposeThreadsForm";
+import TrainingChat from "./TrainingChat";
 
 var NAVY = t.navy;
 var GOLD = t.gold;
@@ -1063,6 +1064,8 @@ export default function ModuleTemplate({ config }) {
         </div>
         <p className="text-center text-xs mt-1.5" style={{ color: "#4a5568" }}>© 2026 Awakening Destiny Global</p>
       </div>
+        <TrainingChat />
     </div>
+   
   );
 }
