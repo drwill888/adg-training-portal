@@ -256,6 +256,7 @@ var config = {
     ],
     prayer: `Father of glory, I ask that You release the spirit of wisdom and revelation in the knowledge of You.\n\nEnlighten the eyes of my understanding.\n\nLet me see clearly the hope of Your calling. Anchor me in identity, not performance.\n\nI break agreement with confusion, striving, and misalignment. I decree that clarity is established and purpose is awakened.\n\nI will know who I am. I will walk in the hope of my calling.`,
   },
+  showPurposeThreads: true,
 };
 
 export default function CallingModule() {
@@ -277,4 +278,3 @@ export default function CallingModule() {
     </>
   );
 }
-showPurposeThreads: true,
