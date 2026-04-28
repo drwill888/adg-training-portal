@@ -11,6 +11,7 @@ import { colors as t, fonts } from "../styles/tokens";
 import { BookIcon, PrayerIcon, CertificateIcon, CheckIcon, StarIcon, WarningIcon } from "./Icons";
 import Button from "./ui/Button";
 import Card from "./ui/Card";
+import PurposeThreadsForm from "./PurposeThreadsForm";
 
 var NAVY = t.navy;
 var GOLD = t.gold;
@@ -34,6 +35,19 @@ var STEPS_INTRO = [
   { id: "commitment", label: "Commitment" },
   { id: "assessment", label: "Assessment" },
   { id: "summary", label: "Blueprint" },
+];
+
+// ─── CALLING MODULE — includes Purpose Threads as final step ─────────────────
+var STEPS_CALLING = [
+  { id: "activation",      label: "Activation"     },
+  { id: "pre-diagnostic",  label: "Pre-Check"      },
+  { id: "teaching",        label: "Teaching"       },
+  { id: "exemplar",        label: "Exemplar"       },
+  { id: "stages",          label: "Stages"         },
+  { id: "post-diagnostic", label: "Post-Check"     },
+  { id: "commitment",      label: "Commitment"     },
+  { id: "summary",         label: "Blueprint"      },
+  { id: "purpose-threads", label: "Purpose Threads"},
 ];
 
 function Modal({ open, onClose, children }) {
@@ -247,7 +261,9 @@ export default function ModuleTemplate({ config }) {
   var paid = payStatus.paid;
   var payLoading = payStatus.loading;
   var isFree = moduleNum === 0;
-  var STEPS = moduleNum === 0 ? STEPS_INTRO : STEPS_DEFAULT;
+
+  // ─── STEP LIST — module-specific ─────────────────────────────────────────────
+  var STEPS = moduleNum === 0 ? STEPS_INTRO : moduleNum === 1 ? STEPS_CALLING : STEPS_DEFAULT;
 
   var stepS = useState(0); var step = stepS[0]; var setStep = stepS[1];
   var preS = useState({}); var preScores = preS[0]; var setPreScores = preS[1];
@@ -267,6 +283,9 @@ export default function ModuleTemplate({ config }) {
   var ecS = useState(0); var enhanceCount = ecS[0]; var setEnhanceCount = ecS[1];
   var efS = useState(""); var enhanceFeedback = efS[0]; var setEnhanceFeedback = efS[1];
   var opS = useState({ 0: true }); var openPrinciples = opS[0]; var setOpenPrinciples = opS[1];
+  // ─── userId for PurposeThreadsForm ───────────────────────────────────────────
+  var uidS = useState(null); var currentUserId = uidS[0]; var setCurrentUserId = uidS[1];
+
   var reflectionsRef = useRef({});
   var topRef = useRef(null);
   var cur = STEPS[step];
@@ -307,6 +326,8 @@ export default function ModuleTemplate({ config }) {
         var sr = await supabase.auth.getSession();
         var ss = sr.data.session;
         if (ss && ss.user) {
+          // ─── Capture userId for PurposeThreadsForm ──────────────────────────
+          setCurrentUserId(ss.user.id);
           var r = await supabase.from("user_progress").select("*").eq("user_id", ss.user.id).eq("module_id", moduleNum).single();
           if (r.data) {
             loadedFromDB = true;
@@ -328,7 +349,7 @@ export default function ModuleTemplate({ config }) {
               try { var ls = localStorage.getItem(lsKey); if (ls) { var lsR = JSON.parse(ls); reflectionsRef.current = lsR; setReflections(lsR); } } catch(e) {}
             }
             if (savedStep > 0) {
-              var stepList = moduleNum === 0 ? STEPS_INTRO : STEPS_DEFAULT;
+              var stepList = moduleNum === 0 ? STEPS_INTRO : moduleNum === 1 ? STEPS_CALLING : STEPS_DEFAULT;
               var stepName = stepList[savedStep] ? stepList[savedStep].label : ("step " + savedStep);
               setResumeToast("Welcome back! Resuming from " + stepName);
             }
@@ -449,12 +470,11 @@ export default function ModuleTemplate({ config }) {
   if (!isFree && !paid) {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#021A35", fontFamily: "'Outfit', sans-serif" }}>
-  
         <div style={{ textAlign: "center", maxWidth: 440, padding: 40 }}>
           <div style={{ fontSize: 11, color: GOLD, letterSpacing: "0.15em", fontWeight: 700, marginBottom: 16 }}>LOCKED</div>
           <h1 style={{ fontFamily: fonts.heading, color: "#FDF8F0", fontSize: "2rem", marginBottom: 12 }}>This Module Requires Full Access</h1>
           <p style={{ color: "#9ca3af", fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>Unlock all five modules of the 5C Leadership Blueprint to continue your formation journey.</p>
-          <Button onClick={function() { fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pathway: 'individual' }) }).then(function(r) { return r.json(); }).then(function(d) { if (d.url) window.location.href = d.url; }).catch(function() { alert('Something went wrong.'); }); }} style={{ marginBottom: 12 }}>Unlock — $79.99</Button>
+          <Button onClick={function() { fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pathway: 'individual' }) }).then(function(r) { return r.json(); }).then(function(d) { if (d.url) window.location.href = d.url; }).catch(function() { alert('Something went wrong.'); }); }} style={{ marginBottom: 12 }}>Unlock — $149</Button>
           <br /><a href="/dashboard" style={{ color: "#9ca3af", fontSize: 13 }}>← Back to Dashboard</a>
         </div>
       </div>
@@ -1029,6 +1049,10 @@ export default function ModuleTemplate({ config }) {
         );
       }
 
+      // ─── PURPOSE THREADS — Calling module only ──────────────────────────────
+      case "purpose-threads":
+        return <PurposeThreadsForm userId={currentUserId} />;
+
       default:
         return null;
     }
@@ -1036,7 +1060,6 @@ export default function ModuleTemplate({ config }) {
 
   return (
     <div className="min-h-screen" style={{ background: NAVY, fontFamily: fonts.body }}>
-
 
       <Modal open={showScriptures} onClose={function() { setShowScriptures(false); }}>
         <ScriptureContent scriptures={scriptures} />
