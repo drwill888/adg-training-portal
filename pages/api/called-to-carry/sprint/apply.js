@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'will@awakeningdestiny.global';
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'meier.will@gmail.com';
   const approvalToken = crypto.randomUUID();
 
   const { data: app, error } = await supabase
