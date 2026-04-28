@@ -9,53 +9,53 @@ const supabase = createClient(
 const QUESTIONS = [
   {
     id: 1,
-    label: 'The Burden Question',
-    text: 'What injustice, gap, or brokenness in the world makes you angry in a way others around you don't seem to feel as deeply?'
+    label: "The Burden Question",
+    text: "What injustice, gap, or brokenness in the world makes you angry in a way others around you do not seem to feel as deeply?"
   },
   {
     id: 2,
-    label: 'The Trusted Question',
-    text: 'What have people repeatedly come to you for — even before you considered yourself qualified to help?'
+    label: "The Trusted Question",
+    text: "What have people repeatedly come to you for — even before you considered yourself qualified to help?"
   },
   {
     id: 3,
-    label: 'The Flow Question',
-    text: 'What kind of work makes you lose track of time and feel most fully like yourself?'
+    label: "The Flow Question",
+    text: "What kind of work makes you lose track of time and feel most fully like yourself?"
   },
   {
     id: 4,
-    label: 'The Becoming Question',
-    text: 'What do you want to become on the inside — not what you want to do, but who you are being shaped into?'
+    label: "The Becoming Question",
+    text: "What do you want to become on the inside — not what you want to do, but who you are being shaped into?"
   },
   {
     id: 5,
-    label: 'The Appointment Question',
-    text: 'Where have you been trusted with responsibility, leadership, or influence before you felt fully prepared for it?'
+    label: "The Appointment Question",
+    text: "Where have you been trusted with responsibility, leadership, or influence before you felt fully prepared for it?"
   },
   {
     id: 6,
-    label: 'The Assignment Question',
-    text: 'Who are the specific people you feel an unexplainable pull toward — to serve, speak into, or fight for?'
+    label: "The Assignment Question",
+    text: "Who are the specific people you feel an unexplainable pull toward — to serve, speak into, or fight for?"
   },
   {
     id: 7,
-    label: 'The Persistent Vision Question',
-    text: 'What vision, idea, or assignment has stayed with you for years — one you've tried to set down but couldn't?'
+    label: "The Persistent Vision Question",
+    text: "What vision, idea, or assignment has stayed with you for years — one you have tried to set down but could not?"
   },
   {
     id: 8,
-    label: 'The Legacy Question',
-    text: 'Twenty years from now, what do you want to have built, changed, or made possible for the next generation?'
+    label: "The Legacy Question",
+    text: "Twenty years from now, what do you want to have built, changed, or made possible for the next generation?"
   },
   {
     id: 9,
-    label: 'The Resistance Question',
-    text: 'What is the most persistent lie you believe about yourself that has slowed your assignment down the most?'
+    label: "The Resistance Question",
+    text: "What is the most persistent lie you believe about yourself that has slowed your assignment down the most?"
   },
   {
     id: 10,
-    label: 'The Pattern Question',
-    text: 'Looking back across your life — what single word, image, or theme keeps showing up in your most significant moments?'
+    label: "The Pattern Question",
+    text: "Looking back across your life — what single word, image, or theme keeps showing up in your most significant moments?"
   }
 ];
 
