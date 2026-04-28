@@ -284,6 +284,8 @@ export default function ModuleTemplate({ config }) {
   var uidS  = useState(null);    var currentUserId = uidS[0];   var setCurrentUserId = uidS[1];
   // ─── Diagnostic comment (post-check reflection) ───────────────────────────
   var dcS   = useState("");      var diagComment = dcS[0];      var setDiagComment = dcS[1];
+  // ─── Pre-diagnostic comment ──────────────────────────────────────────────────
+  var pcS   = useState("");      var preDiagComment = pcS[0];   var setPreDiagComment = pcS[1];
 
   var reflectionsRef = useRef({});
   var topRef  = useRef(null);
@@ -330,7 +332,7 @@ export default function ModuleTemplate({ config }) {
             if (r.data.commitments && Object.keys(r.data.commitments).length > 0) { setCommitments(r.data.commitments); } else { try { var lsCom2 = localStorage.getItem("adg_com_" + moduleNum); if (lsCom2) { var co2 = JSON.parse(lsCom2); if (Object.keys(co2).length > 0) setCommitments(co2); } } catch(e) {} }
             if (r.data.ai_summary) setAiSummary(r.data.ai_summary);
             var dbReflections = r.data.reflections || {};
-            if (Object.keys(dbReflections).length > 0) { reflectionsRef.current = dbReflections; setReflections(dbReflections); if (dbReflections["diag_comment"]) setDiagComment(dbReflections["diag_comment"]); } else { try { var ls = localStorage.getItem(lsKey); if (ls) { var lsR = JSON.parse(ls); reflectionsRef.current = lsR; setReflections(lsR); } } catch(e) {} }
+            if (Object.keys(dbReflections).length > 0) { reflectionsRef.current = dbReflections; setReflections(dbReflections); if (dbReflections["diag_comment"]) setDiagComment(dbReflections["diag_comment"]); if (dbReflections["pre_diag_comment"]) setPreDiagComment(dbReflections["pre_diag_comment"]); } else { try { var ls = localStorage.getItem(lsKey); if (ls) { var lsR = JSON.parse(ls); reflectionsRef.current = lsR; setReflections(lsR); } } catch(e) {} }
             if (savedStep > 0) {
               var stepList = moduleNum === 0 ? STEPS_INTRO : STEPS_DEFAULT;
               var stepName = stepList[savedStep] ? stepList[savedStep].label : ("step " + savedStep);
@@ -427,8 +429,9 @@ export default function ModuleTemplate({ config }) {
       var shiftNote = hasPreScores ? " Where there is meaningful growth (positive shift), affirm the movement. Where there is little change or regression, gently invite deeper formation." : "";
       diagNote = "\n\nFormation Diagnostic Scores (Post-Teaching):\n" + catLines.join("\n") + "\nReference these scores specifically — acknowledge strengths and gently name areas needing most attention." + shiftNote;
     }
+    var preDiagCommentNote = preDiagComment.trim() ? "\n\nPre-Teaching Reflection (their honest starting point before the content): \"" + preDiagComment.trim() + "\"\nUse this to show how far the teaching moved them — or where they are still stuck." : "";
     var diagCommentNote = diagComment.trim() ? "\n\nPost-Diagnostic Reflection from the leader: \"" + diagComment.trim() + "\"\nThis is what they noticed as they rated themselves. Use it as a window into their self-awareness." : "";
-    var prompt = "Write a Leadership Blueprint for this leader completing the " + title + " module of the 5C Leadership Blueprint.\n\nThis Blueprint has TWO PARTS. Write them in order:\n\nPART ONE (250-350 words, natural prose paragraphs, no headers or bullets):\n\n1. REFLECT BACK: Open by naming something specific they wrote. Make them feel heard and seen.\n\n2. NAME THE PATTERN: Identify the central formation edge across their responses.\n\n3. DIAGNOSTIC INSIGHT: Speak to what the scores and pre/post delta reveal. Where movement was small, name what that reveals. Where growth happened, affirm it specifically.\n\n4. CALL FORWARD: End with a clear, prophetically grounded word specific to the " + title + " dimension.\n\nThen write this EXACT divider on its own line:\n---FORMATION SUMMARY---\n\nPART TWO (structured bullets):\n\nWHAT I AM CARRYING\n- [key takeaway 1 - one sentence, leader voice starting with I]\n- [key takeaway 2]\n- [key takeaway 3]\n\nWHERE I AM STRONG\n- [specific strength 1]\n- [specific strength 2]\n\nWHERE I AM BEING FORMED\n- [growth edge 1, framed as invitation]\n- [growth edge 2]\n\nMY NEXT STEP\n[One specific concrete action within 7 days. Not a principle - a real action.]\n\nRULES: Quote or paraphrase something they actually wrote. Do NOT begin with a salutation. Do NOT be generic. Sound like a seasoned apostolic-prophetic coach.\n\n" + aiPromptContext + diagNote + diagCommentNote + "\n\nTheir Responses and Commitments:\n" + commitStr + blankNote + "\n\nBegin immediately with Part One.";
+    var prompt = "Write a Leadership Blueprint for this leader completing the " + title + " module of the 5C Leadership Blueprint.\n\nThis Blueprint has TWO PARTS. Write them in order:\n\nPART ONE (250-350 words, natural prose paragraphs, no headers or bullets):\n\n1. REFLECT BACK: Open by naming something specific they wrote. Make them feel heard and seen.\n\n2. NAME THE PATTERN: Identify the central formation edge across their responses.\n\n3. DIAGNOSTIC INSIGHT: Speak to what the scores and pre/post delta reveal. Where movement was small, name what that reveals. Where growth happened, affirm it specifically.\n\n4. CALL FORWARD: End with a clear, prophetically grounded word specific to the " + title + " dimension.\n\nThen write this EXACT divider on its own line:\n---FORMATION SUMMARY---\n\nPART TWO (structured bullets):\n\nWHAT I AM CARRYING\n- [key takeaway 1 - one sentence, leader voice starting with I]\n- [key takeaway 2]\n- [key takeaway 3]\n\nWHERE I AM STRONG\n- [specific strength 1]\n- [specific strength 2]\n\nWHERE I AM BEING FORMED\n- [growth edge 1, framed as invitation]\n- [growth edge 2]\n\nMY NEXT STEP\n[One specific concrete action within 7 days. Not a principle - a real action.]\n\nRULES: Quote or paraphrase something they actually wrote. Do NOT begin with a salutation. Do NOT be generic. Sound like a seasoned apostolic-prophetic coach.\n\n" + aiPromptContext + diagNote + preDiagCommentNote + diagCommentNote + "\n\nTheir Responses and Commitments:\n" + commitStr + blankNote + "\n\nBegin immediately with Part One.";
     fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt, systemPrompt: ADG_SYSTEM_PROMPT }) })
       .then(function(r) { return r.json(); }).then(function(d) { setAiSummary(d.response || ""); })
       .catch(function(e) { console.error("Failed to generate AI summary:", e); setSummaryError("Summary unavailable right now — your responses are saved and you can continue."); })
@@ -528,7 +531,26 @@ export default function ModuleTemplate({ config }) {
         );
 
       case "pre-diagnostic":
-        return <DiagnosticSection diagnostic={diagnostic} scores={preScores} setScores={setPreScores} accent={accent} label="Pre-Teaching Self-Assessment" />;
+        return (
+          <div className="space-y-6">
+            <DiagnosticSection diagnostic={diagnostic} scores={preScores} setScores={setPreScores} accent={accent} label="Pre-Teaching Self-Assessment" />
+            <div style={{ background: "rgba(10,45,82,0.4)", border: "1px solid rgba(253,210,13,0.12)", borderRadius: 12, padding: "18px 20px" }}>
+              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: GOLD, margin: "0 0 6px" }}>Before You Continue</p>
+              <p style={{ fontSize: 13, color: "#9ca3af", margin: "0 0 10px", lineHeight: 1.5 }}>What stands out before the teaching? Where do you sense the greatest tension or gap right now?</p>
+              <textarea
+                style={{ width: "100%", padding: "10px 12px", fontSize: 13, color: "#FDF8F0", backgroundColor: "rgba(2,26,53,0.5)", border: "1px solid rgba(253,210,13,0.15)", borderRadius: 8, resize: "vertical", lineHeight: 1.6, fontFamily: "'Outfit', sans-serif", outline: "none", boxSizing: "border-box", minHeight: 80 }}
+                rows={3}
+                placeholder="Write your honest starting point..."
+                value={preDiagComment}
+                onChange={function(e) {
+                  var val = e.target.value;
+                  setPreDiagComment(val);
+                  makeAutoSave("pre_diag_comment")(val, function() {});
+                }}
+              />
+            </div>
+          </div>
+        );
 
       case "teaching":
         return (
