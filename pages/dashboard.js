@@ -412,7 +412,7 @@ export default function Dashboard() {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
                   <Button onClick={() => handleCheckout('individual')} style={{ whiteSpace: "nowrap" }}>
-                    Unlock Full Access — $79.99
+                    Unlock Full Access — $149
                   </Button>
                   <span style={{ fontSize: 12, color: colors.gray500 }}>Introduction module is free. Full access unlocks all 5 modules + bonus Commissioning module.</span>
                 </div>
