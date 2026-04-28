@@ -39,6 +39,7 @@ export default async function handler(req, res) {
       payment_method_types: ['card'],
       mode: 'payment',
       line_items: [{ ...priceData, quantity: 1 }],
+      allow_promotion_codes: true,   // ← ADD THIS LINE
       success_url: `${baseUrl}/self-paced/thank-you?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/self-paced?canceled=true`,
       customer_email: req.body.email || undefined,
