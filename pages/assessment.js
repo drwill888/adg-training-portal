@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { supabase } from '../lib/supabase';
 import { colors as t, fonts } from '../styles/tokens';
+import { useRouter } from 'next/router';
 
 // ════════════════════════════════════════
 // BRAND COLORS (mapped from shared tokens)
@@ -143,6 +144,18 @@ function useIsMobile(breakpoint = 768) {
 // ════════════════════════════════════════
 export default function Assessment() {
   const isMobile = useIsMobile();
+  const router = useRouter();
+
+  useEffect(() => {
+    async function checkAuth() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) {
+        router.push('/called-to-carry/assessment');
+      }
+    }
+    checkAuth();
+  }, []);
+
   const [screen, setScreen] = useState('intro'); // intro | assessment | gate | results
   const [answers, setAnswers] = useState({});
   const [userData, setUserData] = useState({ firstName: '', lastName: '', email: '' });
