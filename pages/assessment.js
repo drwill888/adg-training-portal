@@ -145,16 +145,36 @@ function useIsMobile(breakpoint = 768) {
 export default function Assessment() {
   const isMobile = useIsMobile();
   const router = useRouter();
-
-  useEffect(() => {
-    async function checkAuth() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) {
-        router.push('/called-to-carry/assessment');
-      }
+  
+useEffect(() => {
+  async function checkAccess() {
+    // Step 1 — check for Supabase session
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) {
+      router.push('/called-to-carry/assessment');
+      return;
     }
-    checkAuth();
-  }, []);
+
+    // Step 2 — check for completed payment using email
+    const email = session.user.email;
+    const { data: payment, error } = await supabase
+      .from('payments')
+      .select('id')
+      .eq('email', email)
+      .eq('status', 'completed')
+      .limit(1)
+      .single();
+
+    if (error || !payment) {
+      // Logged in but no completed payment — send to qualifier
+      router.push('/called-to-carry/assessment');
+      return;
+    }
+
+    // Step 3 — paid user confirmed, allow access
+  }
+  checkAccess();
+}, []);
 
   const [screen, setScreen] = useState('intro'); // intro | assessment | gate | results
   const [answers, setAnswers] = useState({});
