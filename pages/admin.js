@@ -190,8 +190,8 @@ export default function AdminDashboard() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 16 }}>
           {[
             { label: "Self-Paced", sublabel: "$149", count: selfPacedPay.length, rev: selfPacedRev, color: TIER_COLORS["self-paced"] },
-            { label: "Founders Cohort", sublabel: "$497", count: foundersPay.length, rev: foundersRev, color: TIER_COLORS["founders"] },
-            { label: "21-Day Sprint", sublabel: "$997", count: sprintPay.length, rev: sprintRev, color: TIER_COLORS["sprint"] },
+            { label: "Founders Cohort", sublabel: "$997", count: foundersPay.length, rev: foundersRev, color: TIER_COLORS["founders"] },
+            { label: "21-Day Sprint", sublabel: "$497", count: sprintPay.length, rev: sprintRev, color: TIER_COLORS["sprint"] },
             { label: "Scholarships", sublabel: "discounted", count: scholarPay.length, rev: 0, color: TIER_COLORS["scholarship"] },
           ].map(function(card) {
             return (
