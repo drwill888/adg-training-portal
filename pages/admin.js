@@ -20,8 +20,8 @@ var TIER_LABELS = { "self-paced": "Self-Paced $149", "founders": "Founders $497"
 function inferTier(payment) {
   if (payment.tier && payment.tier !== "self-paced") return payment.tier;
   var amt = payment.amount || 0;
-  if (amt >= 99700) return "sprint";
-  if (amt >= 49700) return "founders";
+  if (amt >= 49700) return "sprint";
+  if (amt >= 99700) return "founders";
   if (amt >= 14900) return "self-paced";
   return "scholarship";
 }

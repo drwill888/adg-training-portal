@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       : {
           price_data: {
             currency: 'usd',
-            unit_amount: 49700, // $497.00
+            unit_amount: 99700, // $997.00
             product_data: {
               name: 'Called to Carry — Founder Cohort',
               description:

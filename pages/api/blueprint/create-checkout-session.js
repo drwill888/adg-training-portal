@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       : {
           price_data: {
             currency: 'usd',
-            unit_amount: 99700, // $997.00
+            unit_amount: 49700, // $497.00
             product_data: {
               name: 'Called to Carry Blueprint',
               description: '21-day intensive. All 7 modules, 3 live group calls, private 30-min session with Will, Blueprint export, Certificate, lifetime portal access.',
