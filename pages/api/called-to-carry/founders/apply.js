@@ -70,7 +70,7 @@ export default async function handler(req, res) {
           <a href="${approveUrl}" style="display:inline-block;background:#021A35;color:#C8A951;padding:14px 28px;border-radius:6px;text-decoration:none;font-weight:700;font-size:1rem;">
             ✓ Approve &amp; Send Payment Link
           </a>
-          <p style="font-size:0.78rem;color:#666;margin-top:1rem;">Clicking approve will automatically send ${firstName} a Stripe payment link for $497.</p>
+          <p style="font-size:0.78rem;color:#666;margin-top:1rem;">Clicking approve will automatically send ${firstName} a Stripe payment link for $997.</p>
           <p style="margin-top:1rem;word-break:break-all;font-size:0.85rem;">Or copy this link: <a href="${approveUrl}">${approveUrl}</a></p>
         </div>
       `,
