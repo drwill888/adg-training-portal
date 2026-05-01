@@ -103,16 +103,16 @@ export default function LoginPage({ session }) {
             <div style={{ marginBottom: 16 }}>
               <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: colors.cream, marginBottom: 6 }}>Email</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-              autoComplete="username"
-              style={{ width: '100%', padding: '10px 12px'...
-              placeholder="your@email.com" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
+               autoComplete="username"
+               style={{ width: '100%', padding: '10px 12px', border: '1px solid rgba(253,210,13,0.2)', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none', background: colors.navyMid, color: colors.cream }}
+               placeholder="your@email.com" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
             </div>
             {!isForgot && (
               <div style={{ marginBottom: 24 }}>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: colors.cream, marginBottom: 6 }}>Password</label>
                 <input type="password" value={password} onChange={e => setPassword(e.target.value)}
                 autoComplete="current-password"
-                 style={{ width: '100%', padding: '10px 12px'...
+                 style={{ width: '100%', padding: '10px 12px', border: '1px solid rgba(253,210,13,0.2)', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none', background: colors.navyMid, color: colors.cream }}
                 placeholder="••••••••" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
               </div>  
             )}
