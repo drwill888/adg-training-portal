@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   try {
     await resend.emails.send({
       from: 'Called to Carry <noreply@awakeningdestiny.global>',
-      to: 'will@awakeningdestiny.global',
+      to: 'meier.will@gmail.com',
       subject: `Advisory Inquiry — ${name}`,
       html: `<div style="font-family:sans-serif;max-width:600px">
         <h2 style="color:#021A35">New Advisory Inquiry</h2>

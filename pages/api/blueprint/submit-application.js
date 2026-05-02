@@ -89,7 +89,7 @@ export default async function handler(req, res) {
   try {
     await resend.emails.send({
       from: 'Called to Carry <noreply@awakeningdestiny.global>',
-      to: process.env.NOTIFICATION_EMAIL || 'will@awakeningdestiny.global',
+      to: process.env.NOTIFICATION_EMAIL || 'meier.will@gmail.com',
       subject: `New Blueprint Application — ${fullName}`,
       html: `
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:2rem;">
