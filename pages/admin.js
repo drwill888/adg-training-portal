@@ -26,6 +26,18 @@ function inferTier(payment) {
   return "scholarship";
 }
 
+// Case-insensitive email match
+function emailMatch(a, b) {
+  if (!a || !b) return false;
+  return a.toLowerCase().trim() === b.toLowerCase().trim();
+}
+
+// Format archetype_id: "apostolic_builder" → "Apostolic Builder"
+function formatArchetype(str) {
+  if (!str) return "—";
+  return str.replace(/_/g, " ").replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+}
+
 export default function AdminDashboard() {
   var authState = useState(null); var user = authState[0]; var setUser = authState[1];
   var loadingState = useState(true); var loading = loadingState[0]; var setLoading = loadingState[1];
@@ -93,7 +105,6 @@ export default function AdminDashboard() {
   progress.forEach(function(p) { if (uniqueUserIds.indexOf(p.user_id) === -1) uniqueUserIds.push(p.user_id); });
   var totalUsers = profiles.length > 0 ? profiles.length : uniqueUserIds.length;
 
-  // Tier breakdowns
   var selfPacedPay = payments.filter(function(p) { return inferTier(p) === "self-paced"; });
   var foundersPay  = payments.filter(function(p) { return inferTier(p) === "founders"; });
   var sprintPay    = payments.filter(function(p) { return inferTier(p) === "sprint"; });
@@ -106,9 +117,12 @@ export default function AdminDashboard() {
   var pendingApps  = applications.filter(function(a){return a.status==="pending";}).length;
   var approvedApps = applications.filter(function(a){return a.status==="approved";}).length;
 
+  // Email lookup — profiles first, payments as fallback
   function emailFor(userId) {
-    var p = profiles.find(function(p) { return p.id === userId; });
-    return p ? (p.email || p.full_name || userId.slice(0, 8) + "…") : userId.slice(0, 8) + "…";
+    var profile = profiles.find(function(p) { return p.id === userId; });
+    if (profile && profile.email) return profile.email;
+    if (profile && profile.full_name) return profile.full_name;
+    return userId.slice(0, 8) + "…";
   }
 
   function getUserProgress(userId) {
@@ -161,19 +175,9 @@ export default function AdminDashboard() {
   function exportSubmissionsCSV() {
     var rows = [["Name", "Email", "Office", "Overlay", "Archetype", "Paid", "Tier", "Applied", "Date"]];
     submissions.forEach(function(s) {
-      var payment = payments.find(function(p) { return p.email === s.email && p.status === "completed"; });
-      var application = applications.find(function(a) { return a.email === s.email; });
-      rows.push([
-        s.first_name,
-        s.email,
-        s.office || "",
-        s.overlay || "",
-        s.archetype_id || "",
-        payment ? "Yes" : "No",
-        payment ? (TIER_LABELS[inferTier(payment)] || inferTier(payment)) : "Free",
-        application ? application.tier + " — " + application.status : "No",
-        s.created_at ? new Date(s.created_at).toLocaleDateString() : ""
-      ]);
+      var payment = payments.find(function(p) { return emailMatch(p.email, s.email) && p.status === "completed"; });
+      var application = applications.find(function(a) { return emailMatch(a.email, s.email); });
+      rows.push([s.first_name, s.email, s.office || "", s.overlay || "", s.archetype_id || "", payment ? "Yes" : "No", payment ? (TIER_LABELS[inferTier(payment)] || inferTier(payment)) : "Free", application ? application.tier + " — " + application.status : "No", s.created_at ? new Date(s.created_at).toLocaleDateString() : ""]);
     });
     var csv = rows.map(function(r) { return r.join(","); }).join("\n");
     var blob = new Blob([csv], { type: "text/csv" });
@@ -193,7 +197,7 @@ export default function AdminDashboard() {
         <a href="/" style={{ fontSize: 13, color: GOLD, textDecoration: "none" }}>← Dashboard</a>
       </div>
 
-      {/* Summary Cards — Row 1: Core */}
+      {/* Summary Cards Row 1 */}
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "32px 24px 0" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 16, marginBottom: 16 }}>
           {[
@@ -212,7 +216,7 @@ export default function AdminDashboard() {
           })}
         </div>
 
-        {/* Tier Cards — Row 2 */}
+        {/* Tier Cards Row 2 */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 16 }}>
           {[
             { label: "Self-Paced", sublabel: "$149", count: selfPacedPay.length, rev: selfPacedRev, color: TIER_COLORS["self-paced"] },
@@ -278,7 +282,7 @@ export default function AdminDashboard() {
             {uniqueUserIds.map(function(userId) {
               var userMods = getUserProgress(userId);
               var userEmail = emailFor(userId);
-              var userPayment = payments.find(function(p) { return p.email === userEmail && p.status === "completed"; });
+              var userPayment = payments.find(function(p) { return emailMatch(p.email, userEmail) && p.status === "completed"; });
               var isPaid = !!userPayment;
               var tier = userPayment ? inferTier(userPayment) : null;
               return (
@@ -319,9 +323,7 @@ export default function AdminDashboard() {
         {tab === "funnel" && (
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY }}>
-                Called to Carry — 10-Q Funnel
-              </h2>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY }}>Called to Carry — 10-Q Funnel</h2>
               <button onClick={exportSubmissionsCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>↓ Export CSV</button>
             </div>
 
@@ -329,9 +331,9 @@ export default function AdminDashboard() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12, marginBottom: 20 }}>
               {[
                 { label: "Total Submissions", value: submissions.length, color: "#0172BC" },
-                { label: "Free Only", value: submissions.filter(function(s) { return !payments.find(function(p) { return p.email === s.email && p.status === "completed"; }); }).length, color: "#888" },
-                { label: "Converted to Paid", value: submissions.filter(function(s) { return !!payments.find(function(p) { return p.email === s.email && p.status === "completed"; }); }).length, color: "#16a34a" },
-                { label: "Applied", value: submissions.filter(function(s) { return !!applications.find(function(a) { return a.email === s.email; }); }).length, color: GOLD },
+                { label: "Free Only", value: submissions.filter(function(s) { return !payments.find(function(p) { return emailMatch(p.email, s.email) && p.status === "completed"; }); }).length, color: "#888" },
+                { label: "Converted to Paid", value: submissions.filter(function(s) { return !!payments.find(function(p) { return emailMatch(p.email, s.email) && p.status === "completed"; }); }).length, color: "#16a34a" },
+                { label: "Applied", value: submissions.filter(function(s) { return !!applications.find(function(a) { return emailMatch(a.email, s.email); }); }).length, color: GOLD },
               ].map(function(card) {
                 return (
                   <div key={card.label} style={{ background: "#fff", borderRadius: 10, padding: "16px 20px", border: "1px solid #e5e7eb", borderTop: "3px solid " + card.color }}>
@@ -342,24 +344,30 @@ export default function AdminDashboard() {
               })}
             </div>
 
-            {submissions.length === 0 && (
-              <p style={{ color: "#888", fontSize: 14, padding: 24, textAlign: "center" }}>No 10-Q submissions yet.</p>
-            )}
+            {submissions.length === 0 && <p style={{ color: "#888", fontSize: 14, padding: 24, textAlign: "center" }}>No 10-Q submissions yet.</p>}
 
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {submissions.map(function(s) {
-                var payment = payments.find(function(p) { return p.email === s.email && p.status === "completed"; });
-                var application = applications.find(function(a) { return a.email === s.email; });
+                var payment = payments.find(function(p) { return emailMatch(p.email, s.email) && p.status === "completed"; });
+                var application = applications.find(function(a) { return emailMatch(a.email, s.email); });
                 var isPaid = !!payment;
                 var tier = payment ? inferTier(payment) : null;
-                var archetypeDisplay = s.custom_label || s.archetype_id || (s.office && s.overlay ? s.office + " / " + s.overlay : "—");
                 var borderColor = isPaid ? "#16a34a" : application ? GOLD : "#e5e7eb";
+
+                // Single archetype display — no duplicates
+                var archetypeLabel = s.custom_label
+                  ? s.custom_label
+                  : s.archetype_id
+                    ? formatArchetype(s.archetype_id)
+                    : (s.office && s.overlay)
+                      ? formatArchetype(s.office) + " " + formatArchetype(s.overlay)
+                      : "—";
 
                 return (
                   <div key={s.id} style={{ background: "#fff", borderRadius: 12, padding: "18px 24px", border: "1px solid #e5e7eb", borderLeft: "4px solid " + borderColor }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10 }}>
 
-                      {/* Left — identity */}
+                      {/* Identity */}
                       <div style={{ flex: 1, minWidth: 180 }}>
                         <div style={{ fontSize: 15, fontWeight: 700, color: NAVY }}>{s.first_name}</div>
                         <div style={{ fontSize: 13, color: "#555" }}>{s.email}</div>
@@ -368,37 +376,23 @@ export default function AdminDashboard() {
                         </div>
                       </div>
 
-                      {/* Center — archetype */}
-                      <div style={{ flex: 1, minWidth: 180 }}>
+                      {/* Archetype — single clean display */}
+                      <div style={{ flex: 1, minWidth: 160 }}>
                         <div style={{ fontSize: 10, color: "#888", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600, marginBottom: 4 }}>Archetype</div>
-                        <div style={{ fontSize: 13, fontWeight: 600, color: NAVY, textTransform: "capitalize" }}>
-                          {archetypeDisplay.replace(/_/g, " ")}
-                        </div>
-                        {s.office && s.overlay && (
-                          <div style={{ fontSize: 11, color: "#888", marginTop: 2, textTransform: "capitalize" }}>
-                            {s.office} · {s.overlay}
-                          </div>
-                        )}
+                        <div style={{ fontSize: 14, fontWeight: 700, color: NAVY }}>{archetypeLabel}</div>
                       </div>
 
-                      {/* Right — status badges */}
+                      {/* Status badges */}
                       <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
-                        {/* Paid status */}
                         <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 12px", borderRadius: 12, background: isPaid ? "#dcfce7" : "#f3f4f6", color: isPaid ? "#16a34a" : "#888", border: "1px solid " + (isPaid ? "#bbf7d0" : "#e5e7eb") }}>
                           {isPaid ? "✓ Paid — " + (TIER_LABELS[tier] || tier) : "Free"}
                         </span>
-
-                        {/* Application status */}
                         {application && (
                           <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 12px", borderRadius: 12, background: application.status === "approved" ? "#dcfce7" : application.status === "paid" ? "#dbeafe" : "#FFF3CD", color: application.status === "approved" ? "#16a34a" : application.status === "paid" ? "#1d4ed8" : "#92400e", border: "1px solid " + (application.status === "approved" ? "#bbf7d0" : application.status === "paid" ? "#bfdbfe" : "#fde68a") }}>
                             {application.status === "approved" ? "✓ Approved" : application.status === "paid" ? "✓ Enrolled" : "⏳ Pending"} — {application.tier === "sprint" ? "Sprint" : "Founders"}
                           </span>
                         )}
-
-                        {/* Email sent indicator */}
-                        <span style={{ fontSize: 11, color: "#0172BC", fontWeight: 600 }}>
-                          ✉ Archetype email sent
-                        </span>
+                        <span style={{ fontSize: 11, color: "#0172BC", fontWeight: 600 }}>✉ Archetype email sent</span>
                       </div>
 
                     </div>
@@ -461,7 +455,6 @@ export default function AdminDashboard() {
               </h2>
               <button onClick={exportApplicationsCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>↓ Export CSV</button>
             </div>
-
             {applications.length === 0 && <p style={{ color: "#888", fontSize: 14, padding: 24, textAlign: "center" }}>No applications yet.</p>}
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {applications.map(function(a) {
@@ -488,21 +481,9 @@ export default function AdminDashboard() {
                         <div style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>{a.why_now}</div>
                       </div>
                     )}
-                    {a.business_or_ministry && (
-                      <div style={{ marginTop: 8, fontSize: 12, color: "#555" }}>
-                        <span style={{ fontWeight: 600 }}>Building: </span>{a.business_or_ministry}
-                      </div>
-                    )}
-                    {a.archetype && (
-                      <div style={{ marginTop: 4, fontSize: 12, color: "#555" }}>
-                        <span style={{ fontWeight: 600 }}>Archetype: </span>{a.archetype}
-                      </div>
-                    )}
-                    {a.approved_at && (
-                      <div style={{ marginTop: 8, fontSize: 11, color: "#16a34a" }}>
-                        Approved {new Date(a.approved_at).toLocaleDateString()}
-                      </div>
-                    )}
+                    {a.business_or_ministry && <div style={{ marginTop: 8, fontSize: 12, color: "#555" }}><span style={{ fontWeight: 600 }}>Building: </span>{a.business_or_ministry}</div>}
+                    {a.archetype && <div style={{ marginTop: 4, fontSize: 12, color: "#555" }}><span style={{ fontWeight: 600 }}>Archetype: </span>{formatArchetype(a.archetype)}</div>}
+                    {a.approved_at && <div style={{ marginTop: 8, fontSize: 11, color: "#16a34a" }}>Approved {new Date(a.approved_at).toLocaleDateString()}</div>}
                   </div>
                 );
               })}
@@ -552,7 +533,6 @@ export default function AdminDashboard() {
         {tab === "analytics" && (
           <div>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY, marginBottom: 24 }}>Analytics</h2>
-
             <div style={{ background: "#fff", borderRadius: 12, padding: "24px", border: "1px solid #e5e7eb", marginBottom: 20 }}>
               <h3 style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 16, textTransform: "uppercase", letterSpacing: "0.05em" }}>Module Completion Funnel</h3>
               {MODULE_NAMES.map(function(modName, idx) {
