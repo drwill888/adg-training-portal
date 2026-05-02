@@ -492,42 +492,72 @@ export default function AdminDashboard() {
         )}
 
         {/* Progress */}
-        {tab === "progress" && (
-          <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY }}>Detailed Progress</h2>
-              <button onClick={exportCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>↓ Export CSV</button>
+{tab === "progress" && (
+  <div>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY }}>Detailed Progress</h2>
+      <button onClick={exportCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>↓ Export CSV</button>
+    </div>
+    {uniqueUserIds.length === 0 && <p style={{ color: "#888", fontSize: 14, padding: 24, textAlign: "center" }}>No progress data yet.</p>}
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {uniqueUserIds.map(function(userId) {
+        var userEmail = emailFor(userId);
+        var userMods = getUserProgress(userId);
+        var userPayment = payments.find(function(p) { return emailMatch(p.email, userEmail) && p.status === "completed"; });
+        var isPaid = !!userPayment;
+        var tier = userPayment ? inferTier(userPayment) : null;
+        var lastUpdated = progress
+          .filter(function(p) { return p.user_id === userId; })
+          .map(function(p) { return p.updated_at; })
+          .sort()
+          .reverse()[0];
+        return (
+          <div key={userId} style={{ background: "#fff", borderRadius: 12, padding: "20px 24px", border: "1px solid #e5e7eb" }}>
+            {/* Header row */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: NAVY }}>{userEmail}</div>
+                <div style={{ fontSize: 11, color: "#aaa", marginTop: 2 }}>
+                  Last active: {lastUpdated ? new Date(lastUpdated).toLocaleString() : "—"}
+                </div>
+              </div>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, padding: "2px 10px", borderRadius: 12, background: isPaid ? "#dcfce7" : "#f3f4f6", color: isPaid ? "#16a34a" : "#888", border: "1px solid " + (isPaid ? "#bbf7d0" : "#e5e7eb") }}>
+                  {isPaid ? "Paid — " + (TIER_LABELS[tier] || tier) : "Free tier"}
+                </span>
+              </div>
             </div>
-            {progress.length === 0 && <p style={{ color: "#888", fontSize: 14, padding: 24, textAlign: "center" }}>No progress data yet.</p>}
-            <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
-                <thead>
-                  <tr style={{ background: "#f9fafb" }}>
-                    {["Email", "Module", "Current Step", "Commitments", "Blueprint", "Last Updated"].map(function(h) {
-                      return <th key={h} style={{ padding: "12px 16px", fontSize: 12, fontWeight: 700, color: "#555", textAlign: "left", borderBottom: "1px solid #e5e7eb" }}>{h}</th>;
-                    })}
-                  </tr>
-                </thead>
-                <tbody>
-                  {progress.map(function(p, i) {
-                    var hasCommit = p.commitments && Object.keys(p.commitments).length > 0;
-                    var hasSummary = !!p.ai_summary;
-                    return (
-                      <tr key={i} style={{ borderBottom: "1px solid #f0f0f0" }}>
-                        <td style={{ padding: "12px 16px", fontSize: 13, color: NAVY }}>{emailFor(p.user_id)}</td>
-                        <td style={{ padding: "12px 16px", fontSize: 13, color: NAVY, fontWeight: 600 }}>{MODULE_NAMES[p.module_id] || "Module " + p.module_id}</td>
-                        <td style={{ padding: "12px 16px", fontSize: 12, color: "#555" }}>{getStepLabel(p.current_step || 0)}</td>
-                        <td style={{ padding: "12px 16px", fontSize: 12 }}><span style={{ color: hasCommit ? "#16a34a" : "#9ca3af" }}>{hasCommit ? "Yes" : "—"}</span></td>
-                        <td style={{ padding: "12px 16px", fontSize: 12 }}><span style={{ color: hasSummary ? "#16a34a" : "#9ca3af" }}>{hasSummary ? "Generated" : "—"}</span></td>
-                        <td style={{ padding: "12px 16px", fontSize: 12, color: "#888" }}>{p.updated_at ? new Date(p.updated_at).toLocaleString() : ""}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+            {/* Module progress row */}
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {MODULE_NAMES.map(function(name, idx) {
+                var mod = userMods[idx];
+                var stepNum = mod ? mod.step : -1;
+                var completed = stepNum >= (TOTAL_STEPS[idx] || 10);
+                var inProgress = stepNum > 0 && !completed;
+                var hasBlueprint = mod && mod.hasSummary;
+                var hasCommit = mod && mod.hasCommitments;
+                var bg = completed ? "#dcfce7" : inProgress ? "#FFF9E6" : "#f3f4f6";
+                var color = completed ? "#16a34a" : inProgress ? "#92400e" : "#9ca3af";
+                var border = completed ? "#bbf7d0" : inProgress ? "#fde68a" : "#e5e7eb";
+                return (
+                  <div key={idx} style={{ padding: "6px 12px", borderRadius: 6, fontSize: 11, fontWeight: 600, background: bg, color: color, border: "1px solid " + border, display: "flex", flexDirection: "column", alignItems: "center", minWidth: 80 }}>
+                    <span>{name}{completed ? " ✓" : ""}</span>
+                    {inProgress && <span style={{ fontSize: 10, fontWeight: 400, marginTop: 2 }}>{getStepLabel(stepNum)}</span>}
+                    {(hasBlueprint || hasCommit) && (
+                      <span style={{ fontSize: 9, marginTop: 2, color: "#0172BC" }}>
+                        {hasBlueprint ? "📄" : ""}{hasCommit ? "✏️" : ""}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
-        )}
+        );
+      })}
+    </div>
+  </div>
+)}
 
         {/* Analytics */}
         {tab === "analytics" && (
