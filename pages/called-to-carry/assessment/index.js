@@ -1,12 +1,20 @@
 // pages/called-to-carry/assessment/index.js
-// Redesigned 10-Q Called to Carry Assessment
-// Two tracks: Office (5Q) + Overlay (5Q) = 25 combinations
+// Called to Carry — 10-Q Assessment with 5 Coaching Layers
+// Path B: inline results (no redirect to results/[id].js)
+//
+// Layer 1: Enhanced intro screen
+// Layer 2: Helper text per question (collapsible)
+// Layer 3: Mid-reflection after Q5 (Claude API)
+// Layer 4: Prophetic mirror at reveal (Claude API + archetypes.js)
+// Layer 5: Tier routing card (archetype-aware)
 
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import styles from '../../../styles/Assessment.module.css';
+import c from '../../../styles/AssessmentCoaching.module.css';
+import { QUESTION_HELPER_TEXT } from '../../../lib/coaching-prompts';
+import { getRecommendedTier } from '../../../lib/routing-logic';
 
 // ─── OFFICE QUESTIONS (5) ─────────────────────────────────────────────────
 const OFFICE_QUESTIONS = [
@@ -143,59 +151,77 @@ for (let i = 0; i < 5; i++) {
   QUESTIONS.push(OVERLAY_QUESTIONS[i]);
 }
 
-// ─── SCORING LOGIC ────────────────────────────────────────────────────────
+// ─── SCORING ──────────────────────────────────────────────────────────────
 function calculateArchetype(answers) {
   const officeScores = { apostolic: 0, prophetic: 0, evangelistic: 0, pastoral: 0, teaching: 0 };
   const overlayScores = { builder: 0, burden_bearer: 0, reformer: 0, covenant_keeper: 0, equipper: 0 };
 
   answers.forEach((answer, idx) => {
     const question = QUESTIONS[idx];
-    if (question.track === 'office') {
-      officeScores[answer.score] += 1;
-    } else {
-      overlayScores[answer.score] += 1;
-    }
+    if (question.track === 'office') officeScores[answer.score] += 1;
+    else overlayScores[answer.score] += 1;
   });
 
-  // Find top office
   const topOffice = Object.keys(officeScores).reduce((a, b) =>
     officeScores[a] > officeScores[b] ? a : b
   );
-
-  // Find top overlay
   const topOverlay = Object.keys(overlayScores).reduce((a, b) =>
     overlayScores[a] > overlayScores[b] ? a : b
   );
 
-  return {
-    office: topOffice,
-    overlay: topOverlay,
-    officeScores,
-    overlayScores,
-    archetypeId: `${topOffice}_${topOverlay}`,
-  };
+  return { office: topOffice, overlay: topOverlay, officeScores, overlayScores,
+    archetypeId: `${topOffice}_${topOverlay}` };
 }
+
+// Office display labels
+const OFFICE_LABELS = {
+  apostolic: 'Apostolic', prophetic: 'Prophetic', evangelistic: 'Evangelistic',
+  pastoral: 'Pastoral', teaching: 'Teaching',
+};
+const OVERLAY_LABELS = {
+  builder: 'Builder', burden_bearer: 'Burden Bearer', reformer: 'Reformer',
+  covenant_keeper: 'Covenant Keeper', equipper: 'Equipper',
+};
 
 // ─── COMPONENT ────────────────────────────────────────────────────────────
 export default function AssessmentPage() {
-  const router = useRouter();
   const [started, setStarted] = useState(false);
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [gateData, setGateData] = useState({ firstName: '', email: '' });
-  const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleAnswer = (option) => {
-    const newAnswers = [...answers, option];
-    setAnswers(newAnswers);
+  // Layer 2
+  const [helperOpen, setHelperOpen] = useState(false);
 
-    if (currentQ < QUESTIONS.length - 1) {
-      setCurrentQ(currentQ + 1);
+  // Layer 3
+  const [midReflectionLoading, setMidReflectionLoading] = useState(false);
+  const [midReflectionText, setMidReflectionText] = useState('');
+  const [midReflectionDone, setMidReflectionDone] = useState(false);
+
+  // Layer 4 + 5
+  const [mirrorPhase, setMirrorPhase] = useState('idle'); // 'idle' | 'loading' | 'done'
+  const [mirrorText, setMirrorText] = useState('');
+  const [archetypeResult, setArchetypeResult] = useState(null);
+  const [tierData, setTierData] = useState(null);
+
+  // ── Answer a question ────────────────────────────────────────────────────
+  const handleAnswer = (option) => {
+    const newAnswers = [...answers, { ...option, question: QUESTIONS[currentQ].question }];
+    setAnswers(newAnswers);
+    setHelperOpen(false);
+
+    const nextQ = currentQ + 1;
+
+    // Trigger mid-reflection after Q5 (index 4 answered → next is index 5)
+    if (nextQ === 5 && !midReflectionDone) {
+      setCurrentQ(5);
+      triggerMidReflection(newAnswers, gateData.firstName);
+    } else if (nextQ >= QUESTIONS.length) {
+      setCurrentQ(QUESTIONS.length); // gate
     } else {
-      // All questions answered — ready for gate
-      setCurrentQ(QUESTIONS.length); // triggers gate view
+      setCurrentQ(nextQ);
     }
   };
 
@@ -203,62 +229,111 @@ export default function AssessmentPage() {
     if (currentQ > 0 && currentQ < QUESTIONS.length) {
       setAnswers(answers.slice(0, -1));
       setCurrentQ(currentQ - 1);
+      setHelperOpen(false);
     }
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setError('');
-
-  try {
-    const result = calculateArchetype(answers);
-
-    const res = await fetch('/api/called-to-carry/submit-archetype', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        firstName: gateData.firstName,
-        email: gateData.email,
-        office: result.office,
-        overlay: result.overlay,
-        archetypeId: result.archetypeId,
-        officeScores: result.officeScores,
-        overlayScores: result.overlayScores,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.error || 'Submission failed.');
+  // ── Layer 3 — mid-reflection ─────────────────────────────────────────────
+  const triggerMidReflection = async (currentAnswers, firstName) => {
+    setMidReflectionLoading(true);
+    try {
+      const res = await fetch('/api/called-to-carry/mid-reflection', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ answers: currentAnswers, firstName }),
+      });
+      const data = await res.json();
+      setMidReflectionText(data.reflection || '');
+    } catch {
+      setMidReflectionText('');
+    } finally {
+      setMidReflectionLoading(false);
     }
+  };
 
-    router.push(`/called-to-carry/assessment/results/${data.submissionId}`);
-  } catch (err) {
-    setError(err.message);
-    setLoading(false);
-  }
-};
-  // ── VIEW: LANDING ──────────────────────────────────────────────────────
+  // ── Gate submit ──────────────────────────────────────────────────────────
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const result = calculateArchetype(answers);
+
+      // 1. Write to DB + send archetype email (existing endpoint)
+      const res = await fetch('/api/called-to-carry/submit-archetype', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: gateData.firstName,
+          email: gateData.email,
+          office: result.office,
+          overlay: result.overlay,
+          archetypeId: result.archetypeId,
+          officeScores: result.officeScores,
+          overlayScores: result.overlayScores,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Submission failed.');
+
+      // 2. Non-blocking Icegram capture
+      fetch('/api/called-to-carry/capture-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: gateData.email, firstName: gateData.firstName }),
+      }).catch(() => {});
+
+      // 3. Build archetype display data
+      const displayName = `${OFFICE_LABELS[result.office] || result.office} ${OVERLAY_LABELS[result.overlay] || result.overlay}`;
+      const archetype = { ...result, displayName };
+      setArchetypeResult(archetype);
+      setTierData(getRecommendedTier(result.office, result.overlay));
+
+      // 4. Layer 4 — fetch prophetic mirror
+      setMirrorPhase('loading');
+      const mirrorRes = await fetch('/api/called-to-carry/prophetic-mirror', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ archetype, answers, firstName: gateData.firstName }),
+      });
+      const mirrorData = await mirrorRes.json();
+      setMirrorText(mirrorData.mirror || '');
+      setMirrorPhase('done');
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  // ════════════════════════════════════════════════════════════════════════
+  // VIEWS
+  // ════════════════════════════════════════════════════════════════════════
+
+  // ── Layer 1: Enhanced intro ──────────────────────────────────────────────
   if (!started) {
     return (
       <>
-        <Head><title>Called to Carry Assessment</title></Head>
+        <Head><title>Called to Carry Assessment — Awakening Destiny Global</title></Head>
         <div className={styles.page}>
           <div className={styles.landingInner}>
             <p className={styles.eyebrow}>The Called to Carry Assessment</p>
             <h1 className={styles.title}>Discover What You Were Built to Carry.</h1>
             <p className={styles.subtitle}>
-              Ten questions. Two tracks. One archetype. Discover the grace on your
-              leadership and the way you were built to carry your assignment.
+              Ten questions. Two tracks. One archetype that names the grace on your
+              leadership and the weight you were built to carry.
             </p>
             <ul className={styles.benefits}>
               <li>5 Offices × 5 Overlays = 25 unique archetype combinations</li>
-              <li>Personalized identity insight rooted in Scripture</li>
-              <li>Your results delivered to your inbox</li>
+              <li>Personalised identity insight rooted in Scripture</li>
+              <li>A prophetic word spoken over your specific archetype</li>
               <li>Takes less than 5 minutes</li>
             </ul>
+            <p className={styles.subtitle} style={{ fontSize: '14px', opacity: 0.6, marginTop: '-8px' }}>
+              Answer from who you actually are — not who you are trying to become.
+              There are no wrong answers. There is only your truth.
+            </p>
             <button onClick={() => setStarted(true)} className={styles.btnPrimary}>
               Begin the Assessment →
             </button>
@@ -268,18 +343,51 @@ const handleSubmit = async (e) => {
     );
   }
 
-  // ── VIEW: GATE (after questions, before results) ──────────────────────
-  if (currentQ >= QUESTIONS.length) {
+  // ── Layer 3: Mid-reflection (after Q5, before Q6) ────────────────────────
+  if (currentQ === 5 && !midReflectionDone) {
     return (
       <>
-        <Head><title>Your Results — Called to Carry</title></Head>
+        <Head><title>Halfway — Called to Carry</title></Head>
+        <div className={styles.page}>
+          <div className={c.midReflectionWrap}>
+            {midReflectionLoading || !midReflectionText ? (
+              <>
+                <p className={c.midReflectionEyebrow}>Listening to what you have shared…</p>
+                <div className={c.midReflectionSpinner} />
+                <p className={c.midReflectionLoadText}>A word is forming.</p>
+              </>
+            ) : (
+              <>
+                <p className={c.midReflectionEyebrow}>Halfway through</p>
+                <div className={c.midReflectionCard}>
+                  <p className={c.midReflectionText}>{midReflectionText}</p>
+                  <button
+                    className={c.midReflectionContinue}
+                    onClick={() => setMidReflectionDone(true)}
+                  >
+                    Continue → <span style={{ opacity: 0.7 }}>5 questions remaining</span>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // ── Gate ─────────────────────────────────────────────────────────────────
+  if (currentQ >= QUESTIONS.length && mirrorPhase === 'idle') {
+    return (
+      <>
+        <Head><title>Your Archetype — Called to Carry</title></Head>
         <div className={styles.page}>
           <div className={styles.gateInner}>
-            <p className={styles.eyebrow}>Your Results Are Ready</p>
-            <h1 className={styles.title}>Where should we send your archetype?</h1>
+            <p className={styles.eyebrow}>Your Archetype Is Ready</p>
+            <h1 className={styles.title}>Where should we send your results?</h1>
             <p className={styles.subtitle}>
               Enter your name and email to receive your Called to Carry archetype
-              with personalized insight.
+              with a personalised prophetic word.
             </p>
             <form onSubmit={handleSubmit} className={styles.gateForm}>
               <input
@@ -300,11 +408,9 @@ const handleSubmit = async (e) => {
               />
               {error && <p className={styles.error}>{error}</p>}
               <button type="submit" disabled={loading} className={styles.btnPrimary}>
-                {loading ? 'Revealing Your Archetype...' : 'Reveal My Archetype →'}
+                {loading ? 'Processing…' : 'Reveal My Archetype →'}
               </button>
-              <p className={styles.privacyNote}>
-                We respect your inbox. No spam, ever.
-              </p>
+              <p className={styles.privacyNote}>We respect your inbox. No spam, ever.</p>
             </form>
           </div>
         </div>
@@ -312,9 +418,85 @@ const handleSubmit = async (e) => {
     );
   }
 
-  // ── VIEW: QUESTION ─────────────────────────────────────────────────────
+  // ── Layer 4 + 5: Mirror loading → reveal ────────────────────────────────
+  if (mirrorPhase === 'loading' || mirrorPhase === 'done') {
+    const { primary, secondary } = tierData || {};
+
+    return (
+      <>
+        <Head><title>Your Archetype — Called to Carry</title></Head>
+        <div className={styles.page}>
+          {mirrorPhase === 'loading' ? (
+            <div className={c.mirrorLoadWrap}>
+              <div className={c.mirrorSpinner} />
+              <p className={c.mirrorLoadText}>Speaking your prophetic word…</p>
+            </div>
+          ) : (
+            <div className={c.mirrorWrap}>
+              {/* Archetype identity */}
+              <div className={c.mirrorArchetypeLabel}>
+                <span className={c.mirrorEyebrow}>Your Archetype</span>
+                <h1 className={c.mirrorArchetypeName}>{archetypeResult?.displayName}</h1>
+                <div className={c.mirrorDivider} />
+              </div>
+
+              {/* Layer 4: Prophetic mirror */}
+              {mirrorText && (
+                <div className={c.mirrorCard}>
+                  <p className={c.mirrorSectionLabel}>A Word for You</p>
+                  <p className={c.mirrorText}>{mirrorText}</p>
+                </div>
+              )}
+
+              {/* Layer 5: Tier routing */}
+              {primary && (
+                <div className={c.tierWrap}>
+                  <h2 className={c.tierHeading}>Your Recommended Next Step</h2>
+                  <p className={c.tierSubheading}>
+                    Based on your archetype, here is where this journey continues.
+                  </p>
+
+                  {/* Primary tier */}
+                  <div className={`${c.tierCard} ${c.tierCardPrimary}`}>
+                    <span className={c.tierBadge}>{primary.badge}</span>
+                    <p className={c.tierName}>{primary.name}</p>
+                    <p className={c.tierPrice}>{primary.price}</p>
+                    <p className={c.tierTagline}>{primary.tagline}</p>
+                    <Link href={primary.href} className={c.tierCta}>
+                      {primary.cta} →
+                    </Link>
+                  </div>
+
+                  {/* Secondary tier */}
+                  {secondary && (
+                    <div className={c.tierCard}>
+                      <p className={c.tierName}>{secondary.name}</p>
+                      <p className={c.tierPrice}>{secondary.price}</p>
+                      <p className={c.tierTagline}>{secondary.tagline}</p>
+                      <Link href={secondary.href} className={`${c.tierCta} ${c.tierCtaSecondary}`}>
+                        {secondary.cta} →
+                      </Link>
+                    </div>
+                  )}
+
+                  <p style={{ textAlign: 'center', marginTop: 32, fontSize: 13,
+                    color: 'rgba(253,248,240,0.35)', fontFamily: 'Outfit, sans-serif' }}>
+                    Your full archetype — including Your Strength, Your Temptation,
+                    and Your Scripture — is waiting inside the portal.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </>
+    );
+  }
+
+  // ── Question view ────────────────────────────────────────────────────────
   const question = QUESTIONS[currentQ];
   const progress = ((currentQ + 1) / QUESTIONS.length) * 100;
+  const helperText = QUESTION_HELPER_TEXT[question?.id];
 
   return (
     <>
@@ -326,9 +508,27 @@ const handleSubmit = async (e) => {
           </div>
           <p className={styles.progressText}>
             Question {currentQ + 1} of {QUESTIONS.length}
-            <span className={styles.trackBadge}>{question.track === 'office' ? 'Office' : 'Overlay'}</span>
+            <span className={styles.trackBadge}>
+              {question.track === 'office' ? 'Office' : 'Overlay'}
+            </span>
           </p>
           <h2 className={styles.questionText}>{question.question}</h2>
+
+          {/* Layer 2: Helper text toggle */}
+          {helperText && (
+            <>
+              <button
+                className={c.helperToggle}
+                onClick={() => setHelperOpen(!helperOpen)}
+                type="button"
+              >
+                <span className={c.helperToggleIcon}>{helperOpen ? '−' : '?'}</span>
+                {helperOpen ? 'Hide guidance' : 'How should I answer this?'}
+              </button>
+              {helperOpen && <p className={c.helperText}>{helperText}</p>}
+            </>
+          )}
+
           <div className={styles.options}>
             {question.options.map((option, idx) => (
               <button
@@ -342,9 +542,7 @@ const handleSubmit = async (e) => {
             ))}
           </div>
           {currentQ > 0 && (
-            <button onClick={handleBack} className={styles.btnBack}>
-              ← Back
-            </button>
+            <button onClick={handleBack} className={styles.btnBack}>← Back</button>
           )}
         </div>
       </div>
