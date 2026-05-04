@@ -2,6 +2,7 @@
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 import { buffer } from 'micro';
+import { Resend } from 'resend';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -9,6 +10,9 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+const BASE_URL = 'https://5cblueprint.awakeningdestiny.global';
 
 export const config = {
   api: { bodyParser: false },
@@ -57,7 +61,7 @@ export default async function handler(req, res) {
         console.error('Payment insert error:', paymentError);
       }
 
-      // If Founders or Sprint — update application status
+      // If Founders or Sprint — update application status + auto-send magic link
       if (applicationId) {
         const { error: appError } = await supabase
           .from('cohort_applications')
@@ -69,6 +73,49 @@ export default async function handler(req, res) {
 
         if (appError) {
           console.error('Application update error:', appError);
+        }
+
+        // Auto-send magic link so user can log in immediately after paying
+        try {
+          const fromEmail = process.env.RESEND_FROM_EMAIL || 'will@awakeningdestiny.global';
+
+          const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
+            type: 'magiclink',
+            email: email,
+            options: {
+              redirectTo: `${BASE_URL}/dashboard`,
+            },
+          });
+
+          if (linkError) {
+            console.error('Magic link generation error:', linkError);
+          } else if (linkData?.properties?.action_link) {
+            const tierLabel = tier === 'founders' ? 'Founders Cohort' : '21-Day Sprint';
+            const tierAmount = tier === 'founders' ? '$997' : '$497';
+
+            await resend.emails.send({
+              from: fromEmail,
+              to: email,
+              subject: `Welcome to the ${tierLabel} — your access is ready`,
+              html: `
+                <div style="background:#021A35;color:#FDF8F0;font-family:Georgia,serif;max-width:600px;margin:0 auto;padding:3rem 2rem;">
+                  <p style="color:#C8A951;text-transform:uppercase;letter-spacing:0.15em;font-size:0.75rem;">${tierLabel} · Payment Confirmed</p>
+                  <h1 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:#FDF8F0;">You're in. Welcome aboard.</h1>
+                  <p style="color:rgba(253,248,240,0.85);line-height:1.75;">Your payment of ${tierAmount} is confirmed and your seat is secured. Click below to enter your portal — no password needed.</p>
+                  <div style="margin:2rem 0;text-align:center;">
+                    <a href="${linkData.properties.action_link}" style="display:inline-block;background:#C8A951;color:#021A35;padding:16px 32px;border-radius:6px;text-decoration:none;font-weight:700;font-size:1rem;">Enter the Portal →</a>
+                  </div>
+                  <p style="color:rgba(253,248,240,0.5);font-size:0.8rem;text-align:center;margin-top:0.5rem;">⚠️ This link expires in 24 hours. If it lapses, visit <a href="${BASE_URL}/login" style="color:#C8A951;">${BASE_URL}/login</a> and request a new one with your email.</p>
+                  <p style="color:rgba(253,248,240,0.85);line-height:1.75;margin-top:2rem;">Once inside, head to <strong>Module 0 — Introduction</strong> to begin. I'll walk with you the whole way.</p>
+                  <p style="color:#C8A951;margin-top:2rem;">— Will, Founder · Awakening Destiny Global</p>
+                </div>
+              `,
+            });
+
+            console.log(`Welcome email + magic link sent to ${email} for ${tier}`);
+          }
+        } catch (err) {
+          console.error('Auto magic link error:', err);
         }
       }
 
