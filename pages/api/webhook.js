@@ -61,6 +61,19 @@ export default async function handler(req, res) {
         console.error('Payment insert error:', paymentError);
       }
 
+      // ─── Stop drip emails the moment someone pays ─────────────────────────
+      const { error: dripStopError } = await supabase
+        .from('drip_queue')
+        .update({ stopped: true })
+        .eq('email', email)
+        .is('sent_at', null)
+        .eq('stopped', false);
+
+      if (dripStopError) {
+        console.error('Failed to stop drip for:', email, dripStopError);
+      }
+      // ─────────────────────────────────────────────────────────────────────
+
       // If Founders or Sprint — update application status + auto-send magic link
       if (applicationId) {
         const { error: appError } = await supabase

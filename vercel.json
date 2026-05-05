@@ -3,6 +3,10 @@
     {
       "path": "/api/called-to-carry/assessment/email-cron",
       "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/called-to-carry/drip-send",
+      "schedule": "0 12 * * *"
     }
   ]
 }

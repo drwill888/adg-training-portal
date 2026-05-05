@@ -1,0 +1,405 @@
+/* styles/AssessmentCoaching.module.css */
+/* All 5 coaching layer enhancements — ADG brand: navy #021A35, gold #C8A951, cream #FDF8F0 */
+
+/* ── Helper text (Layer 2) ──────────────────────────────────────────────── */
+.helperToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 12px;
+  font-family: 'Outfit', sans-serif;
+  color: rgba(200, 169, 81, 0.7);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease;
+}
+
+.helperToggle:hover {
+  color: #C8A951;
+}
+
+.helperToggleIcon {
+  width: 14px;
+  height: 14px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.helperText {
+  margin-top: 10px;
+  padding: 12px 16px;
+  background: rgba(200, 169, 81, 0.06);
+  border-left: 2px solid rgba(200, 169, 81, 0.4);
+  border-radius: 0 6px 6px 0;
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  color: rgba(253, 248, 240, 0.7);
+  font-style: italic;
+  line-height: 1.6;
+  animation: fadeIn 0.2s ease;
+}
+
+/* ── Mid-reflection (Layer 3) ───────────────────────────────────────────── */
+.midReflectionWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.midReflectionEyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #C8A951;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.midReflectionSpinner {
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(200, 169, 81, 0.2);
+  border-top-color: #C8A951;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+  margin: 0 auto 20px;
+}
+
+.midReflectionLoadText {
+  font-size: 14px;
+  color: rgba(253, 248, 240, 0.5);
+  font-family: 'Outfit', sans-serif;
+}
+
+.midReflectionCard {
+  max-width: 540px;
+  background: rgba(200, 169, 81, 0.06);
+  border: 1px solid rgba(200, 169, 81, 0.2);
+  border-radius: 12px;
+  padding: 36px 40px;
+  animation: fadeUp 0.5s ease;
+}
+
+.midReflectionText {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  line-height: 1.65;
+  color: #FDF8F0;
+  font-style: italic;
+  margin-bottom: 32px;
+}
+
+.midReflectionContinue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: #C8A951;
+  color: #021A35;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.midReflectionContinue:hover {
+  opacity: 0.88;
+}
+
+/* ── Mirror reveal (Layer 4) ────────────────────────────────────────────── */
+.mirrorWrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.mirrorLoadWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+  text-align: center;
+}
+
+.mirrorSpinner {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(200, 169, 81, 0.15);
+  border-top-color: #C8A951;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+.mirrorLoadText {
+  font-size: 14px;
+  color: rgba(253, 248, 240, 0.45);
+  font-family: 'Outfit', sans-serif;
+}
+
+.mirrorArchetypeLabel {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.mirrorEyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #C8A951;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.mirrorArchetypeName {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 600;
+  color: #FDF8F0;
+  line-height: 1.2;
+}
+
+.mirrorDivider {
+  width: 48px;
+  height: 1px;
+  background: rgba(200, 169, 81, 0.4);
+  margin: 20px auto 32px;
+}
+
+.mirrorCard {
+  background: rgba(200, 169, 81, 0.05);
+  border: 1px solid rgba(200, 169, 81, 0.18);
+  border-radius: 12px;
+  padding: 36px 40px;
+  margin-bottom: 32px;
+  animation: fadeUp 0.6s ease;
+}
+
+.mirrorSectionLabel {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(200, 169, 81, 0.6);
+  font-family: 'Outfit', sans-serif;
+  margin-bottom: 16px;
+}
+
+.mirrorText {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  line-height: 1.75;
+  color: #FDF8F0;
+  font-style: italic;
+}
+
+/* ── Tier routing card (Layer 5) ────────────────────────────────────────── */
+.tierWrap {
+  animation: fadeUp 0.6s ease 0.3s both;
+}
+
+.tierHeading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  color: #FDF8F0;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.tierSubheading {
+  font-size: 14px;
+  color: rgba(253, 248, 240, 0.5);
+  font-family: 'Outfit', sans-serif;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.tierCard {
+  border: 1px solid rgba(200, 169, 81, 0.35);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 16px;
+  position: relative;
+  background: rgba(2, 26, 53, 0.6);
+}
+
+.tierCardPrimary {
+  border-color: #C8A951;
+  background: rgba(200, 169, 81, 0.07);
+}
+
+.tierBadge {
+  position: absolute;
+  top: -11px;
+  left: 24px;
+  background: #C8A951;
+  color: #021A35;
+  font-size: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.tierName {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #FDF8F0;
+  margin-bottom: 4px;
+}
+
+.tierPrice {
+  font-size: 13px;
+  color: #C8A951;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.tierTagline {
+  font-size: 14px;
+  color: rgba(253, 248, 240, 0.65);
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.tierCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 24px;
+  background: #C8A951;
+  color: #021A35;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.tierCta:hover {
+  opacity: 0.88;
+}
+
+.tierCtaSecondary {
+  background: transparent;
+  color: rgba(253, 248, 240, 0.65);
+  border: 1px solid rgba(253, 248, 240, 0.2);
+}
+
+.tierCtaSecondary:hover {
+  color: #FDF8F0;
+  border-color: rgba(253, 248, 240, 0.4);
+  opacity: 1;
+}
+
+/* ── Animations ─────────────────────────────────────────────────────────── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Written archetype sections (Who You Are, Assignment) ───────────────── */
+.archetypeSection {
+  margin-bottom: 32px;
+  animation: fadeUp 0.5s ease;
+}
+
+.archetypeSectionLabel {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(200, 169, 81, 0.7);
+  font-family: 'Outfit', sans-serif;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.archetypeSectionBody {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(253, 248, 240, 0.85);
+  margin-bottom: 12px;
+}
+
+/* ── Scripture card ─────────────────────────────────────────────────────── */
+.scriptureCard {
+  background: rgba(200, 169, 81, 0.06);
+  border-left: 3px solid rgba(200, 169, 81, 0.5);
+  border-radius: 0 8px 8px 0;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  animation: fadeUp 0.5s ease;
+}
+
+.scriptureText {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: #FDF8F0;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.scriptureRef {
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  color: #C8A951;
+  letter-spacing: 0.06em;
+}
+
+/* ── Locked sections ────────────────────────────────────────────────────── */
+.lockedSection {
+  margin-bottom: 24px;
+  padding: 20px 24px;
+  border: 1px dashed rgba(253, 248, 240, 0.1);
+  border-radius: 8px;
+  background: rgba(253, 248, 240, 0.02);
+  animation: fadeUp 0.5s ease;
+}
+
+.lockedBody {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  color: rgba(253, 248, 240, 0.35);
+  line-height: 1.6;
+  font-style: italic;
+}
