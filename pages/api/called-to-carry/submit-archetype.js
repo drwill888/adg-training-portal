@@ -10,7 +10,7 @@ const supabase = createClient(
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM = process.env.RESEND_FROM_EMAIL || 'Will @ ADG <will@awakeningdestiny.global>';
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+const JOURNEY_URL = 'https://5cblueprint.awakeningdestiny.global/called-to-carry';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -46,7 +46,6 @@ export default async function handler(req, res) {
   }
 
   const submissionId = data.id;
-  const journeyUrl = `${SITE_URL}/called-to-carry`;
   const archetypeName = `${capitalize(office)} ${formatOverlay(overlay)}`;
 
   // ─── Email 1: Send archetype result immediately ───────────────────────────
@@ -55,7 +54,7 @@ export default async function handler(req, res) {
       from: FROM,
       to: email,
       subject: `Your archetype is in. This is who you are, ${firstName}.`,
-      html: emailOneHtml({ firstName, archetypeName, journeyUrl }),
+      html: emailOneHtml({ firstName, archetypeName }),
     });
   } catch (emailErr) {
     console.error('Email 1 error:', emailErr);
@@ -68,7 +67,6 @@ export default async function handler(req, res) {
   const day14 = addDays(today, 14);
 
   try {
-    // Clear any existing unsent drip rows for this email (re-enrollment)
     await supabase
       .from('drip_queue')
       .delete()
@@ -76,7 +74,6 @@ export default async function handler(req, res) {
       .is('sent_at', null)
       .eq('stopped', false);
 
-    // Insert fresh drip rows
     await supabase.from('drip_queue').insert([
       { email, first_name: firstName, archetype_name: archetypeName, email_number: 2, scheduled_for: day3.toISOString().split('T')[0] },
       { email, first_name: firstName, archetype_name: archetypeName, email_number: 3, scheduled_for: day7.toISOString().split('T')[0] },
@@ -89,14 +86,12 @@ export default async function handler(req, res) {
   return res.status(200).json({ success: true, archetypeId, submissionId });
 }
 
-// ─── Date helper ─────────────────────────────────────────────────────────────
 function addDays(date, days) {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
 }
 
-// ─── String helpers ───────────────────────────────────────────────────────────
 function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -105,7 +100,6 @@ function formatOverlay(s) {
   return s.split('_').map(capitalize).join(' ');
 }
 
-// ─── Shared email wrapper ─────────────────────────────────────────────────────
 function emailWrapper(content) {
   return `
     <div style="background:#021A35;color:#FDF8F0;font-family:'Georgia',serif;max-width:600px;margin:0 auto;padding:3rem 2rem;">
@@ -122,9 +116,9 @@ function emailWrapper(content) {
   `;
 }
 
-function ctaButton(href, label) {
+function ctaButton(label) {
   return `
-    <a href="${href}"
+    <a href="${JOURNEY_URL}"
        style="display:inline-block;background:#C8A951;color:#021A35;font-family:sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;padding:0.9rem 2rem;margin:1.5rem 0;">
       ${label}
     </a>
@@ -143,8 +137,7 @@ function scripture(text) {
   return `<p style="font-size:0.95rem;font-style:italic;color:#C8A951;border-left:2px solid #C8A951;padding-left:1rem;margin:1.5rem 0;">${text}</p>`;
 }
 
-// ─── Email 1 HTML ─────────────────────────────────────────────────────────────
-function emailOneHtml({ firstName, archetypeName, journeyUrl }) {
+function emailOneHtml({ firstName, archetypeName }) {
   return emailWrapper(`
     ${heading(`Your archetype is in. This is who you are, ${firstName}.`)}
     ${bodyText(`You just completed something most people never do.`)}
@@ -156,7 +149,7 @@ function emailOneHtml({ firstName, archetypeName, journeyUrl }) {
     ${scripture(`The Hebrew word <em>nasa</em> means to lift, to carry, to bear a burden with authority. It's the same word used when God placed His name upon His people. What you carry isn't incidental. It's assigned.`)}
     ${bodyText(`Your archetype tells us how you're wired to build, lead, influence, and serve in this season. But an archetype without formation is a blueprint without a builder.`)}
     ${bodyText(`That's why Called to Carry exists.`)}
-    ${ctaButton(journeyUrl, 'Enter the Journey →')}
+    ${ctaButton('Enter the Journey →')}
     ${bodyText(`There's nothing to buy yet. Just the next step.`)}
   `);
 }
