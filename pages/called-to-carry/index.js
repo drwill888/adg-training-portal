@@ -4,6 +4,7 @@
 
 import Head from 'next/head';
 import Link from 'next/link';
+import { useState } from 'react';
 import s from '../../styles/called-to-carry-landing.module.css';
 
 function CheckIcon() {
@@ -83,6 +84,24 @@ const FAQ_ITEMS = [
 ];
 
 export default function CalledToCarryLanding() {
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+
+  async function handleSelfPacedCheckout() {
+    setCheckoutLoading(true);
+    try {
+      const res = await fetch('/api/self-paced/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch (err) {
+      console.error('Checkout error:', err);
+      setCheckoutLoading(false);
+    }
+  }
+
   return (
     <div className={s.page}>
       <Head>
@@ -226,9 +245,14 @@ export default function CalledToCarryLanding() {
                   </li>
                 ))}
               </ul>
-              <Link href="/called-to-carry/assessment" className={s.ctaPrimary} style={{ display: 'block', textAlign: 'center', marginTop: '1.5rem' }}>
-                Start the Journey <ArrowIcon />
-              </Link>
+              <button
+                onClick={handleSelfPacedCheckout}
+                disabled={checkoutLoading}
+                className={s.ctaPrimary}
+                style={{ display: 'block', textAlign: 'center', marginTop: '1.5rem', width: '100%', cursor: 'pointer', border: 'none' }}
+              >
+                {checkoutLoading ? 'Redirecting…' : 'Start the Journey →'}
+              </button>
               <p className={s.pricingFootnote}>No application required</p>
             </div>
 
@@ -255,7 +279,7 @@ export default function CalledToCarryLanding() {
                 ))}
               </ul>
               <Link href="/called-to-carry/sprint/apply" className={s.ctaPrimary} style={{ display: 'block', textAlign: 'center', marginTop: '1.5rem' }}>
-                Apply for the Sprint <ArrowIcon />
+                Apply for the Sprint →
               </Link>
               <p className={s.pricingFootnote}>Application required · Limited capacity</p>
             </div>
@@ -285,7 +309,7 @@ export default function CalledToCarryLanding() {
                 ))}
               </ul>
               <Link href="/called-to-carry/founders/apply" className={s.ctaPrimary} style={{ display: 'block', textAlign: 'center', marginTop: '1.5rem' }}>
-                Apply for the Cohort <ArrowIcon />
+                Apply for the Cohort →
               </Link>
               <p className={s.pricingFootnote}>Application required · Will reviews personally</p>
             </div>
