@@ -1,7 +1,7 @@
 // pages/called-to-carry/assessment/index.js
 // Called to Carry — 10-Q Assessment + Inline Results
 // Preserves original results/[id].js layout exactly
-// Adds 5 Coaching Layers: enhanced intro, helper text, mid-reflection, prophetic mirror, tier routing
+// Adds 5 Coaching Layers: enhanced intro, helper text, mid-reflection, personalised summary, tier routing
 
 import Head from 'next/head';
 import Link from 'next/link';
@@ -170,7 +170,12 @@ export default function AssessmentPage() {
               </p>
             </div>
             <ul style={{ listStyle: 'none', padding: 0, marginBottom: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {['5 Offices × 5 Overlays = 25 unique archetype combinations', 'Personalised identity insight rooted in Scripture', 'A prophetic word spoken over your specific archetype', 'Takes less than 5 minutes'].map(item => (
+              {[
+                '5 Offices × 5 Overlays = 25 unique archetype combinations',
+                'Personalised identity insight rooted in Scripture',
+                'A personalised summary of clarity spoken over your archetype',
+                'Takes less than 5 minutes'
+              ].map(item => (
                 <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', fontSize: '1rem', lineHeight: 1.6, opacity: 0.85 }}>
                   <span style={{ color: '#C8A951', marginTop: '2px' }}>✦</span>
                   <span>{item}</span>
@@ -198,9 +203,9 @@ export default function AssessmentPage() {
           <div style={{ ...s.main, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', textAlign: 'center' }}>
             {midLoading || !midText ? (
               <>
-                <p style={s.eyebrow}>Listening to what you have shared…</p>
+                <p style={s.eyebrow}>Processing what you have shared…</p>
                 <div style={s.spinner} />
-                <p style={{ opacity: 0.45, fontFamily: "'Outfit', sans-serif", fontSize: '0.9rem' }}>A word is forming.</p>
+                <p style={{ opacity: 0.45, fontFamily: "'Outfit', sans-serif", fontSize: '0.9rem' }}>Your reflection is forming.</p>
               </>
             ) : (
               <>
@@ -229,7 +234,7 @@ export default function AssessmentPage() {
             <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
               <p style={s.eyebrow}>Your Archetype Is Ready</p>
               <h1 style={s.archetypeName}>Where should we send your results?</h1>
-              <p style={s.subtitle}>Enter your name and email to receive your Called to Carry archetype with a personalised prophetic word.</p>
+              <p style={s.subtitle}>Enter your name and email to receive your Called to Carry archetype with a personalised summary of clarity.</p>
             </div>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '420px', margin: '0 auto' }}>
               <input type="text" required placeholder="First name" value={gateData.firstName} onChange={e => setGateData({ ...gateData, firstName: e.target.value })} style={s.input} />
@@ -250,7 +255,7 @@ export default function AssessmentPage() {
       <div style={s.page}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', gap: '1.25rem' }}>
           <div style={s.spinner} />
-          <p style={{ opacity: 0.45, fontFamily: "'Outfit', sans-serif", fontSize: '0.9rem' }}>Speaking your prophetic word…</p>
+          <p style={{ opacity: 0.45, fontFamily: "'Outfit', sans-serif", fontSize: '0.9rem' }}>Preparing your personalised summary…</p>
         </div>
       </div>
     );
@@ -290,10 +295,10 @@ export default function AssessmentPage() {
             {saving && <span style={s.savingIndicator}>Saving…</span>}
           </div>
 
-          {/* Layer 4: Prophetic mirror */}
+          {/* Layer 4: Personalised Summary */}
           {mirrorText && (
             <div style={{ background: 'rgba(200,169,81,0.07)', border: '1px solid rgba(200,169,81,0.25)', borderRadius: '8px', padding: '2rem 1.75rem', marginBottom: '2.5rem' }}>
-              <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A951', marginBottom: '1rem', fontWeight: 600 }}>A Word for You</p>
+              <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: '0.72rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C8A951', marginBottom: '1rem', fontWeight: 600 }}>Your Summary</p>
               <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.15rem', lineHeight: 1.8, fontStyle: 'italic', opacity: 0.95 }}>{mirrorText}</p>
             </div>
           )}
@@ -490,7 +495,7 @@ export default function AssessmentPage() {
 
 const FALLBACK_REFLECTION = 'What I am seeing in you so far: a leader who carries more than they have yet been given language for. The weight is real. The assignment is forming. Continue — the second half will bring it into clarity.';
 
-// ─── INLINE STYLES (matches original results/[id].js exactly) ────────────
+// ─── INLINE STYLES ────────────────────────────────────────────────────────
 const s = {
   page: { background: '#021A35', minHeight: '100vh', color: '#FDF8F0', fontFamily: "'Georgia', serif" },
   main: { maxWidth: '680px', margin: '0 auto', padding: '4rem 1.5rem 6rem' },
