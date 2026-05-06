@@ -1,5 +1,6 @@
 // pages/called-to-carry/index.js
-// Called to Carry — landing/sales page (Phase 2)
+// Called to Carry — landing/sales page
+// Three tiers: $149 Self-Paced / $497 21-Day Sprint / $997 Founders Cohort
 
 import Head from 'next/head';
 import Link from 'next/link';
@@ -41,19 +42,11 @@ function PlusIcon({ open }) {
 }
 
 const FRAMEWORK_CARDS = [
-  { step: '01', title: 'Clarity', body: 'Understand what you are actually carrying — the weight, the assignment, the season.' },
-  { step: '02', title: 'Capacity', body: 'Build the internal structure to hold what God has entrusted to you without collapsing under it.' },
-  { step: '03', title: 'Calibration', body: 'Align your pace, priorities, and posture to the actual demands of your assignment.' },
-  { step: '04', title: 'Contribution', body: 'Move from private preparation to public impact — releasing what you carry into the world.' },
-  { step: '05', title: 'Continuity', body: 'Build the systems and succession that ensure your assignment outlasts your current season.' },
-];
-
-const INCLUDED_ITEMS = [
-  { title: '10-Question Archetype Assessment', body: 'Identify exactly where you are in your leadership journey — and what is actually holding you back.' },
-  { title: 'Personalised Results Report', body: 'A detailed breakdown of your archetype, your specific growth edges, and your clearest next step.' },
-  { title: '8-Week Cohort Experience', body: 'Live sessions with Will Meier, structured around the 5C Framework, delivered in a small cohort of serious leaders.' },
-  { title: 'Private Community Access', body: 'Ongoing conversation and accountability with the other leaders in your cohort.' },
-  { title: 'Lifetime Access to Session Recordings', body: 'Review any session at any time. The material compounds — you will return to it.' },
+  { title: 'Calling', body: 'Understand what you are actually carrying — the weight, the assignment, the season.' },
+  { title: 'Connection', body: 'Build the relational authority that multiplies your reach and holds your community together.' },
+  { title: 'Competency', body: 'Refine the capacity that makes your grace trustworthy and your leadership credible.' },
+  { title: 'Capacity', body: 'Build the internal structure to hold what God has entrusted to you without collapsing under it.' },
+  { title: 'Convergence', body: 'Move from preparation to deployment — the moment everything aligns for impact.' },
 ];
 
 const OUTCOMES = [
@@ -69,8 +62,8 @@ const FOR_ITEMS = [
   'Leaders who feel the weight of what they carry but lack language for it',
   'Those in transition between seasons and needing to recalibrate',
   'People who are spiritually awake but practically stuck',
-  'Leaders who want structured development, not just inspiration',
-  'Those ready to invest seriously in their own growth',
+  'Leaders who want structured formation, not just inspiration',
+  'Those ready to invest seriously in their own development',
 ];
 
 const NOT_FOR_ITEMS = [
@@ -81,12 +74,12 @@ const NOT_FOR_ITEMS = [
 ];
 
 const FAQ_ITEMS = [
-  { q: 'When does the cohort start?', a: 'The next cohort begins soon. Exact dates are confirmed with accepted applicants. Spots are limited to maintain the quality of the cohort experience.' },
-  { q: 'Is this a course or a coaching programme?', a: 'Neither — it is a cohort. You will do the work alongside a small group of other leaders, with live facilitation from Will. It is structured like a course but feels like a conversation.' },
-  { q: 'What is the time commitment?', a: 'Approximately 3–4 hours per week across 8 weeks. This includes live sessions, personal reflection, and optional community engagement.' },
-  { q: 'Do I need to take the assessment first?', a: 'Yes. The assessment is part of the cohort experience. It gives you and Will a shared vocabulary before the first session and ensures the cohort is calibrated to the people in it.' },
-  { q: 'What if I cannot attend a live session?', a: 'All sessions are recorded and available within 24 hours. You will not lose access to the material, though live attendance significantly increases the value.' },
-  { q: 'Is there a payment plan?', a: 'Yes. A two-payment option is available at checkout. Full details are on the application page.' },
+  { q: 'Which path is right for me?', a: 'If you need to start now and work at your own pace, choose Self-Paced. If you are at a significant threshold and want direct access to Will in an intensive 21-day formation window, choose the Sprint. If you want a covenant community of serious leaders over 8 weeks, the Founders Cohort is for you.' },
+  { q: 'What is the difference between the Sprint and the Cohort?', a: 'The 21-Day Sprint is intensive, personal, and fast — 21 days of direct access to Will designed for leaders at a threshold moment. The Founders Cohort is an 8-week covenant community experience with live sessions, group processing, and deep peer relationships.' },
+  { q: 'Do I need to take the assessment first?', a: 'Yes. The 10-Q Assessment is the starting point for all three paths. It takes less than 5 minutes and gives you and Will a shared vocabulary before the journey begins.' },
+  { q: 'Is there a payment plan?', a: 'Yes. A two-payment option is available at checkout for the Sprint and Founders Cohort. Full details are on the application page.' },
+  { q: 'What is the time commitment?', a: 'Self-Paced is fully flexible — go at your own rhythm. The 21-Day Sprint is intensive by design. The Founders Cohort requires approximately 3–4 hours per week across 8 weeks.' },
+  { q: 'What if I cannot attend a live Cohort session?', a: 'All Cohort sessions are recorded and available within 24 hours. Live attendance significantly increases the value, but you will not lose access to the material.' },
 ];
 
 export default function CalledToCarryLanding() {
@@ -94,9 +87,9 @@ export default function CalledToCarryLanding() {
     <div className={s.page}>
       <Head>
         <title>Called to Carry — Awakening Destiny Global</title>
-        <meta name="description" content="An 8-week cohort for leaders who carry more than they currently have language for. Discover your archetype and your clearest next step." />
-        <meta property="og:title" content="Called to Carry" />
-        <meta property="og:description" content="An 8-week cohort for leaders who carry more than they currently have language for." />
+        <meta name="description" content="Gain Clarity for Commissioning. Three paths to walk out your assignment — Self-Paced, 21-Day Sprint, or Founders Cohort." />
+        <meta property="og:title" content="Called to Carry — Gain Clarity for Commissioning" />
+        <meta property="og:description" content="Three paths. One destination. Commissioning." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -106,32 +99,32 @@ export default function CalledToCarryLanding() {
       <nav className={s.nav}>
         <div className={s.navInner}>
           <span className={s.navLogo}>Awakening Destiny Global</span>
-          <Link href="/called-to-carry/assessment" className={s.navCta}>Take the Assessment</Link>
+          <Link href="/called-to-carry/assessment" className={s.navCta}>Take the Free Assessment</Link>
         </div>
       </nav>
 
       {/* ── Hero ── */}
       <section className={s.hero}>
         <div className={s.heroInner}>
-          <p className={s.heroEyebrow}>Called to Carry · Founders Cohort</p>
+          <p className={s.heroEyebrow}>Called to Carry · Gain Clarity for Commissioning</p>
           <h1 className={s.heroHeadline}>
             You are carrying something<br />
             <em>larger than your current language for it.</em>
           </h1>
           <p className={s.heroSub}>
-            An 8-week cohort for leaders who sense their assignment is expanding — and need the clarity, capacity, and framework to carry it well.
+            A formation journey for leaders who sense their assignment is expanding — and need the clarity, capacity, and framework to carry it well.
           </p>
           <div className={s.heroCtas}>
-            <Link href="/called-to-carry/founders/apply" className={s.ctaPrimary}>
-              Claim Your Founder Seat <ArrowIcon />
+            <Link href="/called-to-carry/assessment" className={s.ctaPrimary}>
+              Take the Free Assessment <ArrowIcon />
             </Link>
-            <Link href="/called-to-carry/assessment" className={s.ctaSecondary}>
-              Take the Free Assessment
-            </Link>
+            <a href="#pricing" className={s.ctaSecondary}>
+              View the Three Paths
+            </a>
           </div>
           <p className={s.heroScarcity}>
             <span className={s.scarcityDot} />
-            Enrollment is limited — seats confirmed individually
+            Three tiers. One destination. Commissioning.
           </p>
         </div>
       </section>
@@ -153,33 +146,13 @@ export default function CalledToCarryLanding() {
       <section className={s.framework}>
         <div className={s.sectionInner}>
           <p className={s.sectionLabel}>The Framework</p>
-          <h2 className={s.sectionHeadline}>The 5C Framework for Leaders</h2>
-          <p className={s.sectionSub}>Every session in the cohort maps to one of five dimensions of leadership development. Together they form a complete architecture for carrying your assignment well.</p>
+          <h2 className={s.sectionHeadline}>The 5C Leadership Blueprint</h2>
+          <p className={s.sectionSub}>Five dimensions that form the complete architecture of your calling. Every module maps to one dimension. Together they take you from identity to commissioning.</p>
           <div className={s.frameworkGrid}>
             {FRAMEWORK_CARDS.map((card) => (
-              <div key={card.step} className={s.frameworkCard}>
-                <span className={s.frameworkStep}>{card.step}</span>
+              <div key={card.title} className={s.frameworkCard}>
                 <h3 className={s.frameworkTitle}>{card.title}</h3>
                 <p className={s.frameworkBody}>{card.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Included ── */}
-      <section className={s.included}>
-        <div className={s.sectionInner}>
-          <p className={s.sectionLabel}>What&apos;s Included</p>
-          <h2 className={s.sectionHeadline}>Everything you need. Nothing you don&apos;t.</h2>
-          <div className={s.includedGrid}>
-            {INCLUDED_ITEMS.map((item) => (
-              <div key={item.title} className={s.includedCard}>
-                <CheckIcon />
-                <div>
-                  <h3 className={s.includedTitle}>{item.title}</h3>
-                  <p className={s.includedBody}>{item.body}</p>
-                </div>
               </div>
             ))}
           </div>
@@ -220,31 +193,103 @@ export default function CalledToCarryLanding() {
         </div>
       </section>
 
-      {/* ── Pricing ── */}
+      {/* ── Three Paths Pricing ── */}
       <section className={s.pricing} id="pricing">
         <div className={s.sectionInner}>
           <p className={s.sectionLabel}>Investment</p>
-          <h2 className={s.sectionHeadline}>Founders Cohort</h2>
-          <p className={s.sectionSub}>Seats are limited and confirmed individually. Application required.</p>
-          <div className={s.pricingCard}>
-            <div className={s.pricingBadge}>Application Required</div>
-            <div className={s.pricingAmount}>
-              <span className={s.pricingCurrency}>$</span>
-              <span className={s.pricingNumber}>497</span>
+          <h2 className={s.sectionHeadline}>Three Paths. One Destination.</h2>
+          <p className={s.sectionSub}>Every path walks the same 5C Leadership Blueprint. The difference is pace, access, and community.</p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginTop: '2.5rem' }}>
+
+            {/* Self-Paced $149 */}
+            <div className={s.pricingCard} style={{ display: 'flex', flexDirection: 'column' }}>
+              <p className={s.sectionLabel} style={{ marginBottom: '0.5rem' }}>Self-Paced</p>
+              <div className={s.pricingAmount}>
+                <span className={s.pricingCurrency}>$</span>
+                <span className={s.pricingNumber}>149</span>
+              </div>
+              <p className={s.pricingNote} style={{ marginBottom: '1.5rem' }}>Open enrollment. Begin immediately.</p>
+              <ul className={s.pricingList} style={{ flexGrow: 1 }}>
+                {[
+                  'All seven formation modules',
+                  'Text + audio teaching',
+                  'Personalised 5C Blueprint diagnostic',
+                  'Pre + Post 25-Q assessment',
+                  'Transformation Report',
+                  'Certificate of Commissioning',
+                  '3 months portal access',
+                ].map((item) => (
+                  <li key={item} className={s.pricingListItem}>
+                    <CheckIcon />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/called-to-carry/assessment" className={s.ctaPrimary} style={{ display: 'block', textAlign: 'center', marginTop: '1.5rem' }}>
+                Start the Journey <ArrowIcon />
+              </Link>
+              <p className={s.pricingFootnote}>No application required</p>
             </div>
-            <p className={s.pricingNote}>Limited seats per cohort</p>
-            <ul className={s.pricingList}>
-              {INCLUDED_ITEMS.map((item) => (
-                <li key={item.title} className={s.pricingListItem}>
-                  <CheckIcon />
-                  <span>{item.title}</span>
-                </li>
-              ))}
-            </ul>
-            <Link href="/called-to-carry/founders/apply" className={s.ctaPrimary}>
-              Claim Your Founder Seat <ArrowIcon />
-            </Link>
-            <p className={s.pricingFootnote}>Secure checkout · Application reviewed within 48 hours</p>
+
+            {/* 21-Day Sprint $497 */}
+            <div className={s.pricingCard} style={{ display: 'flex', flexDirection: 'column' }}>
+              <p className={s.sectionLabel} style={{ marginBottom: '0.5rem' }}>21-Day Sprint</p>
+              <div className={s.pricingAmount}>
+                <span className={s.pricingCurrency}>$</span>
+                <span className={s.pricingNumber}>497</span>
+              </div>
+              <p className={s.pricingNote} style={{ marginBottom: '1.5rem' }}>Intensive. Personal. 21 days live with Will.</p>
+              <ul className={s.pricingList} style={{ flexGrow: 1 }}>
+                {[
+                  'Everything in Self-Paced',
+                  '21 days of direct access to Will',
+                  'Personal apostolic counsel',
+                  'Accelerated formation rhythm',
+                  'Designed for leaders at a threshold',
+                ].map((item) => (
+                  <li key={item} className={s.pricingListItem}>
+                    <CheckIcon />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/called-to-carry/sprint/apply" className={s.ctaPrimary} style={{ display: 'block', textAlign: 'center', marginTop: '1.5rem' }}>
+                Apply for the Sprint <ArrowIcon />
+              </Link>
+              <p className={s.pricingFootnote}>Application required · Limited capacity</p>
+            </div>
+
+            {/* Founders Cohort $997 */}
+            <div className={s.pricingCard} style={{ display: 'flex', flexDirection: 'column', background: 'rgba(200,169,81,0.08)', border: '1px solid rgba(200,169,81,0.5)' }}>
+              <div className={s.pricingBadge} style={{ marginBottom: '0.75rem' }}>Most Transformative</div>
+              <p className={s.sectionLabel} style={{ marginBottom: '0.5rem' }}>Founders Cohort</p>
+              <div className={s.pricingAmount}>
+                <span className={s.pricingCurrency}>$</span>
+                <span className={s.pricingNumber}>997</span>
+              </div>
+              <p className={s.pricingNote} style={{ marginBottom: '1.5rem' }}>8-week covenant community. Will reviews personally.</p>
+              <ul className={s.pricingList} style={{ flexGrow: 1 }}>
+                {[
+                  'Everything in Self-Paced',
+                  'Live Zoom cohort sessions with Will',
+                  'Group processing and community',
+                  '8-week guided formation rhythm',
+                  'Direct interaction with Will',
+                  'Covenant community of serious leaders',
+                ].map((item) => (
+                  <li key={item} className={s.pricingListItem}>
+                    <CheckIcon />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/called-to-carry/founders/apply" className={s.ctaPrimary} style={{ display: 'block', textAlign: 'center', marginTop: '1.5rem' }}>
+                Apply for the Cohort <ArrowIcon />
+              </Link>
+              <p className={s.pricingFootnote}>Application required · Will reviews personally</p>
+            </div>
+
           </div>
         </div>
       </section>
@@ -254,7 +299,7 @@ export default function CalledToCarryLanding() {
         <div className={s.sectionInner}>
           <div className={s.guaranteeCard}>
             <h2 className={s.guaranteeTitle}>The Clarity Guarantee</h2>
-            <p className={s.guaranteeBody}>If after the first two sessions you do not feel you have gained meaningful clarity on what you are carrying and your next step, we will refund your investment in full — no questions asked.</p>
+            <p className={s.guaranteeBody}>If after completing the first two modules you do not feel you have gained meaningful clarity on what you are carrying and your next step, we will refund your investment in full — no questions asked.</p>
             <p className={s.guaranteeBody}>We are confident in the value of this work. We want you to be too.</p>
           </div>
         </div>
@@ -292,17 +337,13 @@ export default function CalledToCarryLanding() {
             <em>It is time to do it well.</em>
           </h2>
           <div className={s.heroCtas}>
-            <Link href="/called-to-carry/founders/apply" className={s.ctaPrimary}>
-              Claim Your Founder Seat <ArrowIcon />
+            <Link href="/called-to-carry/assessment" className={s.ctaPrimary}>
+              Take the Free Assessment <ArrowIcon />
             </Link>
-            <Link href="/called-to-carry/assessment" className={s.ctaSecondary}>
-              Take the Free Assessment First
-            </Link>
+            <a href="#pricing" className={s.ctaSecondary}>
+              View the Three Paths
+            </a>
           </div>
-          <p className={s.heroScarcity}>
-            <span className={s.scarcityDot} />
-            Enrollment is limited — seats confirmed individually
-          </p>
         </div>
       </section>
 
@@ -331,7 +372,8 @@ export default function CalledToCarryLanding() {
           <p className={s.footerLogo}>Awakening Destiny Global</p>
           <nav className={s.footerNav}>
             <Link href="/called-to-carry/assessment">Take the Assessment</Link>
-            <Link href="/called-to-carry/founders/apply">Apply for the Cohort</Link>
+            <Link href="/called-to-carry/sprint/apply">Apply — 21-Day Sprint</Link>
+            <Link href="/called-to-carry/founders/apply">Apply — Founders Cohort</Link>
             <a href="mailto:will@awakeningdestiny.global">Contact</a>
           </nav>
           <p className={s.footerLegal}>&copy; {new Date().getFullYear()} Awakening Destiny Global. All rights reserved.</p>
