@@ -199,7 +199,7 @@ export default function CalledToCarryLanding() {
         <div className={s.sectionInner}>
           <div className={s.authorGrid}>
             <div className={s.authorPhoto}>
-             <img src="/images/will-meier.jpg" alt="Will Meier" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
+             <img src="/images/will-meier.jpg" alt="Will Meier" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', borderRadius: '8px' }} />
             </div>
             <div className={s.authorContent}>
               <p className={s.sectionLabel}>Your Guide</p>
