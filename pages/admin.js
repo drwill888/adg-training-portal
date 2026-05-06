@@ -392,7 +392,11 @@ export default function AdminDashboard() {
                             {application.status === "approved" ? "✓ Approved" : application.status === "paid" ? "✓ Enrolled" : "⏳ Pending"} — {application.tier === "sprint" ? "Sprint" : "Founders"}
                           </span>
                         )}
-                        <span style={{ fontSize: 11, color: "#0172BC", fontWeight: 600 }}>✉ Archetype email sent</span>
+                        <a href={"/called-to-carry/assessment/results/" + s.id} target="_blank" rel="noreferrer"
+  style={{ fontSize: 11, color: GOLD, fontWeight: 600, textDecoration: "none" }}>
+  → View Archetype Report
+</a>
+<span style={{ fontSize: 11, color: "#0172BC", fontWeight: 600 }}>✉ Archetype email sent</span>
                       </div>
 
                     </div>
