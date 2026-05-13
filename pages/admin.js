@@ -48,6 +48,16 @@ export default function AdminDashboard() {
   var applicationsState = useState([]); var applications = applicationsState[0]; var setApplications = applicationsState[1];
   var submissionsState = useState([]); var submissions = submissionsState[0]; var setSubmissions = submissionsState[1];
   var tabState = useState("overview"); var tab = tabState[0]; var setTab = tabState[1];
+  var mobileState = useState(false); var isMobile = mobileState[0]; var setIsMobile = mobileState[1];
+
+  useEffect(function() {
+    if (typeof window === "undefined") return;
+    var mq = window.matchMedia("(max-width: 640px)");
+    var update = function() { setIsMobile(mq.matches); };
+    update();
+    if (mq.addEventListener) { mq.addEventListener("change", update); return function() { mq.removeEventListener("change", update); }; }
+    else { mq.addListener(update); return function() { mq.removeListener(update); }; }
+  }, []);
 
   useEffect(function() {
     async function checkAuth() {
@@ -189,7 +199,7 @@ export default function AdminDashboard() {
     <div style={{ minHeight: "100vh", background: tok.cream, fontFamily: "'Outfit', sans-serif" }}>
 
       {/* Header */}
-      <div style={{ background: NAVY, padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ background: NAVY, padding: isMobile ? "14px 16px" : "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
           <div style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>5C Blueprint — Admin</div>
           <div style={{ fontSize: 11, color: GOLD, fontStyle: "italic" }}>Awakening Destiny Global</div>
@@ -198,7 +208,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Summary Cards Row 1 */}
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "32px 24px 0" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "20px 12px 0" : "32px 24px 0" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 16, marginBottom: 16 }}>
           {[
             { label: "Total Students", value: totalUsers, color: GOLD },
@@ -247,15 +257,15 @@ export default function AdminDashboard() {
       </div>
 
       {/* Tabs */}
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "8px 24px" }}>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "8px 12px" : "8px 24px" }}>
+        <div style={{ display: "flex", gap: 8, flexWrap: isMobile ? "nowrap" : "wrap", overflowX: isMobile ? "auto" : "visible", WebkitOverflowScrolling: "touch", paddingBottom: isMobile ? 6 : 0 }}>
           {["overview", "funnel", "payments", "applications", "progress", "analytics"].map(function(t) {
             var badge = t === "applications" && pendingApps > 0 ? pendingApps : null;
             var funnelBadge = t === "funnel" && submissions.length > 0 ? submissions.length : null;
             var activeBadge = badge || funnelBadge;
             return (
               <button key={t} onClick={function() { setTab(t); }}
-                style={{ padding: "8px 20px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", background: tab === t ? NAVY : "transparent", color: tab === t ? GOLD_BRIGHT : "#888", border: tab === t ? "none" : "1px solid #e5e7eb", position: "relative" }}>
+                style={{ padding: isMobile ? "7px 14px" : "8px 20px", borderRadius: 8, fontSize: isMobile ? 12 : 13, fontWeight: 600, cursor: "pointer", background: tab === t ? NAVY : "transparent", color: tab === t ? GOLD_BRIGHT : "#888", border: tab === t ? "none" : "1px solid #e5e7eb", position: "relative", flexShrink: 0, whiteSpace: "nowrap" }}>
                 {t === "funnel" ? "Called to Carry" : t.charAt(0).toUpperCase() + t.slice(1)}
                 {activeBadge && (
                   <span style={{ position: "absolute", top: -6, right: -6, background: t === "funnel" ? "#0172BC" : "#EE3124", color: "#fff", borderRadius: "50%", width: 18, height: 18, fontSize: 10, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -269,14 +279,14 @@ export default function AdminDashboard() {
       </div>
 
       {/* Tab Content */}
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "16px 24px 48px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "12px 12px 48px" : "16px 24px 48px" }}>
 
         {/* Overview */}
         {tab === "overview" && (
           <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY }}>User Progress Overview</h2>
-              <button onClick={exportCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>↓ Export CSV</button>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "center", flexDirection: isMobile ? "column" : "row", gap: 10, marginBottom: 16 }}>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY, margin: 0 }}>User Progress Overview</h2>
+              <button onClick={exportCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", alignSelf: isMobile ? "flex-start" : "auto" }}>↓ Export CSV</button>
             </div>
             {uniqueUserIds.length === 0 && <p style={{ color: "#888", fontSize: 14, padding: 24, textAlign: "center" }}>No user progress data yet.</p>}
             {uniqueUserIds.map(function(userId) {
@@ -322,9 +332,9 @@ export default function AdminDashboard() {
         {/* Called to Carry Funnel */}
         {tab === "funnel" && (
           <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY }}>Called to Carry — 10-Q Funnel</h2>
-              <button onClick={exportSubmissionsCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>↓ Export CSV</button>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "center", flexDirection: isMobile ? "column" : "row", gap: 10, marginBottom: 16 }}>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY, margin: 0 }}>Called to Carry — 10-Q Funnel</h2>
+              <button onClick={exportSubmissionsCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", alignSelf: isMobile ? "flex-start" : "auto" }}>↓ Export CSV</button>
             </div>
 
             {/* Summary strip */}
@@ -410,9 +420,9 @@ export default function AdminDashboard() {
         {/* Payments */}
         {tab === "payments" && (
           <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY }}>Payment Records</h2>
-              <button onClick={exportPaymentsCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>↓ Export CSV</button>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "center", flexDirection: isMobile ? "column" : "row", gap: 10, marginBottom: 16 }}>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY, margin: 0 }}>Payment Records</h2>
+              <button onClick={exportPaymentsCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", alignSelf: isMobile ? "flex-start" : "auto" }}>↓ Export CSV</button>
             </div>
             {payments.length === 0 && <p style={{ color: "#888", fontSize: 14, padding: 24, textAlign: "center" }}>No payments recorded yet.</p>}
             <div style={{ overflowX: "auto" }}>
@@ -429,7 +439,7 @@ export default function AdminDashboard() {
                     var tier = inferTier(p);
                     return (
                       <tr key={i} style={{ borderBottom: "1px solid #f0f0f0" }}>
-                        <td style={{ padding: "12px 16px", fontSize: 13, color: NAVY }}>{p.email}</td>
+                        <td style={{ padding: "12px 16px", fontSize: 13, color: NAVY, maxWidth: isMobile ? 120 : "none", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.email}</td>
                         <td style={{ padding: "12px 16px" }}>
                           <span style={{ fontSize: 11, fontWeight: 700, padding: "2px 10px", borderRadius: 12, background: (TIER_COLORS[tier] || "#888") + "22", color: TIER_COLORS[tier] || "#888", border: "1px solid " + (TIER_COLORS[tier] || "#888") + "44" }}>
                             {TIER_LABELS[tier] || tier}
@@ -452,12 +462,12 @@ export default function AdminDashboard() {
         {/* Applications */}
         {tab === "applications" && (
           <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "center", flexDirection: isMobile ? "column" : "row", gap: 10, marginBottom: 16 }}>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY, margin: 0 }}>
                 Cohort Applications
                 {pendingApps > 0 && <span style={{ marginLeft: 10, fontSize: 13, background: "#EE3124", color: "#fff", borderRadius: 12, padding: "2px 10px", fontFamily: "Outfit, sans-serif" }}>{pendingApps} pending</span>}
               </h2>
-              <button onClick={exportApplicationsCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>↓ Export CSV</button>
+              <button onClick={exportApplicationsCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", alignSelf: isMobile ? "flex-start" : "auto" }}>↓ Export CSV</button>
             </div>
             {applications.length === 0 && <p style={{ color: "#888", fontSize: 14, padding: 24, textAlign: "center" }}>No applications yet.</p>}
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -498,9 +508,9 @@ export default function AdminDashboard() {
         {/* Progress */}
 {tab === "progress" && (
   <div>
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY }}>Detailed Progress</h2>
-      <button onClick={exportCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>↓ Export CSV</button>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "center", flexDirection: isMobile ? "column" : "row", gap: 10, marginBottom: 16 }}>
+      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: NAVY, margin: 0 }}>Detailed Progress</h2>
+      <button onClick={exportCSV} style={{ padding: "8px 16px", background: NAVY, color: GOLD_BRIGHT, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", alignSelf: isMobile ? "flex-start" : "auto" }}>↓ Export CSV</button>
     </div>
     {uniqueUserIds.length === 0 && <p style={{ color: "#888", fontSize: 14, padding: 24, textAlign: "center" }}>No progress data yet.</p>}
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -644,9 +654,9 @@ export default function AdminDashboard() {
                     {keys.map(function(key) {
                       var m = monthMap[key];
                       return (
-                        <div key={key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #f0f0f0" }}>
+                        <div key={key} style={{ display: "flex", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "center", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 6 : 0, padding: "12px 0", borderBottom: "1px solid #f0f0f0" }}>
                           <span style={{ fontSize: 13, fontWeight: 600, color: NAVY }}>{m.label}</span>
-                          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                          <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
                             <div style={{ display: "flex", gap: 6 }}>
                               {Object.entries(m.tiers).map(function(entry) {
                                 return (
