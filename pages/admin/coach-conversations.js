@@ -253,10 +253,10 @@ export default function CoachConversationsAdmin() {
                   background: selectedId === c.id ? "rgba(2,26,53,0.04)" : "transparent",
                 }}
               >
-                <div style={{ fontSize: 13, fontWeight: 600, color: NAVY }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: NAVY, wordBreak: "break-word" }}>
                   {c.lead ? `${c.lead.first_name || ""} ${c.lead.last_name || ""}`.trim() || c.lead.email : "Anonymous visitor"}
                 </div>
-                <div style={{ fontSize: 12, color: "rgba(2,26,53,0.6)", marginTop: 2 }}>
+                <div style={{ fontSize: 12, color: "rgba(2,26,53,0.6)", marginTop: 2, wordBreak: "break-all" }}>
                   {c.lead?.email || c.session_id.slice(0, 12) + "…"}
                 </div>
                 <div style={{ fontSize: 11, color: "rgba(2,26,53,0.5)", marginTop: 4 }}>
@@ -371,7 +371,7 @@ export default function CoachConversationsAdmin() {
                         </button>
                       )}
                     </div>
-                    <div style={{ fontSize: 14, lineHeight: 1.55, whiteSpace: "pre-wrap", color: NAVY }}>
+                    <div style={{ fontSize: 14, lineHeight: 1.55, whiteSpace: "pre-wrap", overflowWrap: "anywhere", color: NAVY }}>
                       {m.content}
                     </div>
                   </div>
