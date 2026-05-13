@@ -51,6 +51,7 @@ export default function AdminDashboard() {
   var tabState = useState("overview"); var tab = tabState[0]; var setTab = tabState[1];
   var sendEmailState = useState({ email: "", name: "", status: "" }); var sendEmail = sendEmailState[0]; var setSendEmail = sendEmailState[1];
   var resendingState = useState(null); var resending = resendingState[0]; var setResending = resendingState[1];
+  var resendPaymentState = useState(null); var resendingPayment = resendPaymentState[0]; var setResendingPayment = resendPaymentState[1];
 
   useEffect(function() {
     async function checkAuth() {
@@ -169,6 +170,26 @@ export default function AdminDashboard() {
       return { ok: false, error: e.message };
     } finally {
       setResending(null);
+    }
+  }
+
+  async function resendPaymentLink(applicationId) {
+    setResendingPayment(applicationId);
+    try {
+      var { data: s } = await supabase.auth.getSession();
+      var token = s.session ? s.session.access_token : "";
+      var res = await fetch("/api/admin/resend-payment-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+        body: JSON.stringify({ applicationId }),
+      });
+      var json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Failed");
+      alert("Fresh payment link sent to " + json.email);
+    } catch (e) {
+      alert("Error: " + e.message);
+    } finally {
+      setResendingPayment(null);
     }
   }
 
@@ -567,7 +588,20 @@ export default function AdminDashboard() {
                     )}
                     {a.business_or_ministry && <div style={{ marginTop: 8, fontSize: 12, color: "#555" }}><span style={{ fontWeight: 600 }}>Building: </span>{a.business_or_ministry}</div>}
                     {a.archetype && <div style={{ marginTop: 4, fontSize: 12, color: "#555" }}><span style={{ fontWeight: 600 }}>Archetype: </span>{formatArchetype(a.archetype)}</div>}
-                    {a.approved_at && <div style={{ marginTop: 8, fontSize: 11, color: "#16a34a" }}>Approved {new Date(a.approved_at).toLocaleDateString()}</div>}
+                    {a.approved_at && (
+                      <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                        <span style={{ fontSize: 11, color: "#16a34a" }}>Approved {new Date(a.approved_at).toLocaleDateString()}</span>
+                        {a.status === "approved" && (
+                          <button
+                            onClick={function() { resendPaymentLink(a.id); }}
+                            disabled={resendingPayment === a.id}
+                            style={{ padding: "5px 14px", background: "transparent", border: "1px solid #C8A951", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer", color: "#92400e", whiteSpace: "nowrap" }}
+                          >
+                            {resendingPayment === a.id ? "Sending…" : "Resend Payment Link"}
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })}
