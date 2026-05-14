@@ -148,6 +148,14 @@ const css = `
   #adg-5c .leader-credentials { display: flex !important; flex-wrap: wrap !important; gap: 0.5rem !important; margin-top: 1.5rem !important; }
   #adg-5c .cred-tag { font-size: 0.72rem !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; border: 1px solid rgba(2,26,53,0.25) !important; color: rgba(2,26,53,0.6) !important; padding: 0.3rem 0.75rem !important; background: transparent !important; }
 
+  #adg-5c #testimony { padding: 7rem 2rem !important; background: var(--navy) !important; position: relative !important; overflow: hidden !important; }
+  #adg-5c #testimony::before { content: '\\201C' !important; position: absolute !important; top: 2rem !important; left: 50% !important; transform: translateX(-50%) !important; font-family: 'Cormorant Garamond', serif !important; font-size: 16rem !important; font-weight: 700 !important; color: rgba(253,210,13,0.06) !important; line-height: 1 !important; pointer-events: none !important; }
+  #adg-5c .testimony-inner { max-width: 820px !important; margin: 0 auto !important; text-align: center !important; position: relative !important; z-index: 2 !important; }
+  #adg-5c .testimony-quote { font-family: 'Cormorant Garamond', serif !important; font-size: clamp(1.4rem, 2.6vw, 2rem) !important; font-style: italic !important; line-height: 1.5 !important; color: var(--cream) !important; margin: 2rem 0 !important; }
+  #adg-5c .testimony-quote .accent { color: var(--gold) !important; font-style: italic !important; }
+  #adg-5c .testimony-attr { font-size: 0.8rem !important; letter-spacing: 0.18em !important; text-transform: uppercase !important; color: var(--gold) !important; font-weight: 600 !important; display: block !important; }
+  #adg-5c .testimony-role { font-size: 0.75rem !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; color: rgba(253,248,240,0.45) !important; margin-top: 0.4rem !important; display: block !important; }
+
   #adg-5c #faq { padding: 7rem 2rem !important; background: var(--navy-light) !important; }
   #adg-5c .faq-list { max-width: 740px !important; margin-top: 3rem !important; }
   #adg-5c .faq-item { border-bottom: 1px solid rgba(253,210,13,0.15) !important; padding: 1.75rem 0 !important; border-top: none !important; border-left: none !important; border-right: none !important; background: transparent !important; }
@@ -488,6 +496,19 @@ export default function LandingPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ═══ SECTION 9.5 — TESTIMONY ═══ */}
+        <section id="testimony">
+          <div className="container testimony-inner">
+            <div className="section-badge">In Their Words</div>
+            <p className="testimony-quote">
+              I can confidently say that I am the leader I am today because of Awakening Destiny. This ministry never tried to force me into an existing mold — they recognized the <span className="accent">unique call of God on my life</span> and helped me mature into all that God created me to be. Their culture of authenticity, accountability, and vulnerability has shaped the way I show up in ministry, in my career, and in my relationships. The 5C&apos;s training in particular has been an invaluable tool for gaining <span className="accent">clarity, recognizing calling, and growing into it</span> with confidence and maturity.
+            </p>
+            <div className="gold-line center"></div>
+            <span className="testimony-attr">Aaron B.</span>
+            <span className="testimony-role">Translator</span>
           </div>
         </section>
 
