@@ -258,9 +258,47 @@ tr:hover td{{background:rgba(99,102,241,.04)}}
 .scard .sl{{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}}
 .scard .sv{{font-size:18px;font-weight:700}}
 canvas{{display:block}}
+.gloss-toggle{{cursor:pointer;font-size:13px;font-weight:700;letter-spacing:.06em;color:#f8fafc;text-transform:uppercase;margin:24px 0 12px}}
+.gloss-arrow{{font-size:10px;color:#64748b;font-weight:400;text-transform:none;letter-spacing:0;margin-left:8px}}
+.gloss-body{{display:none}}
+.cube-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin:8px 0 16px}}
+.cube-face{{border:1px solid;border-radius:6px;padding:10px;background:rgba(255,255,255,0.02);position:relative}}
+.cf-tag{{position:absolute;top:8px;right:8px;font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px}}
+.cf-name{{font-size:11px;font-weight:700;color:#e2e8f0;margin-bottom:6px;padding-right:50px}}
+.cf-q{{font-size:9px;color:#94a3b8;font-style:italic;line-height:1.4}}
+.gloss-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}}
+.gloss-card{{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:12px}}
+.gc-t{{font-size:11px;font-weight:700;margin-bottom:6px}}
+.gc-d{{font-size:9px;color:#94a3b8;line-height:1.5;margin-bottom:8px}}
+.gc-f{{font-size:8px;color:#cbd5e1;font-family:monospace;background:rgba(0,0,0,0.25);padding:5px 8px;border-radius:3px;border-left:2px solid rgba(99,102,241,0.5);margin-bottom:8px}}
+.gc-rg{{display:flex;gap:8px;flex-wrap:wrap}}
+.gc-rg span{{font-size:8px;padding:2px 6px;border-radius:3px}}
 </style></head><body>
 <h1>Money Flow Analytics Dashboard</h1>
 <div class="sub">{n_scans} scans in history | range: {date_range}</div>
+
+<div class="gloss-toggle" onclick="var b=document.getElementById('gloss');var a=document.getElementById('garrow');b.style.display=b.style.display==='none'||b.style.display===''?'block':'none';a.textContent=b.style.display==='block'?'▲ tap to collapse':'▼ tap to expand'">Definitions &amp; Rubik's Cube Guide<span id="garrow" class="gloss-arrow">▼ tap to expand</span></div>
+<div id="gloss" class="gloss-body">
+<div style="font-size:10px;color:#cbd5e1;margin-bottom:8px;line-height:1.6">Every trade has 6 independent dimensions, like the faces of a Rubik's cube. The cube is "solved" only when every face turns green together. If one face is red — the cube isn't solved. Don't force a trade.</div>
+<div class="cube-grid">
+<div class="cube-face" style="border-color:#6366f1"><div class="cf-tag" style="background:#6366f1;color:#fff">RS 20</div><div class="cf-name">Relative Strength</div><div class="cf-q">Is this stock leading the market?</div></div>
+<div class="cube-face" style="border-color:#22d3ee"><div class="cf-tag" style="background:#22d3ee;color:#000">FLOW 30</div><div class="cf-name">Money Flow ★</div><div class="cf-q">Where is institutional money going?</div></div>
+<div class="cube-face" style="border-color:#a78bfa"><div class="cf-tag" style="background:#a78bfa;color:#000">MA 15</div><div class="cf-name">Moving Averages</div><div class="cf-q">Is the trend structure intact?</div></div>
+<div class="cube-face" style="border-color:#fbbf24"><div class="cf-tag" style="background:#fbbf24;color:#000">PB 10</div><div class="cf-name">Pullback Quality</div><div class="cf-q">Is this a clean entry?</div></div>
+<div class="cube-face" style="border-color:#34d399"><div class="cf-tag" style="background:#34d399;color:#000">MOM 15</div><div class="cf-name">Momentum</div><div class="cf-q">Is RSI in the sweet spot?</div></div>
+<div class="cube-face" style="border-color:#f97316"><div class="cf-tag" style="background:#f97316;color:#fff">SHORT 10</div><div class="cf-name">Short Pressure</div><div class="cf-q">Are shorts trapped or right?</div></div>
+</div>
+<div class="gloss-grid">
+<div class="gloss-card"><div class="gc-t" style="color:#22d3ee">CMF — Chaikin Money Flow (20)</div><div class="gc-d">Where close lands in the day's range × volume, summed 20 days. Captures HOW MUCH buying vs selling. Range -1 to +1.</div><div class="gc-f">CMF = Σ[((C-L)-(H-C))/(H-L) × V] / ΣV  over 20d</div><div class="gc-rg"><span style="background:rgba(34,197,94,.15);color:#4ade80">&gt;+.15 strong buy</span><span style="background:rgba(148,163,184,.15);color:#94a3b8">±.05 neutral</span><span style="background:rgba(239,68,68,.15);color:#f87171">&lt;-.15 distrib</span></div></div>
+<div class="gloss-card"><div class="gc-t" style="color:#a78bfa">MFI — Money Flow Index (14)</div><div class="gc-d">RSI applied to (Typical Price × Volume). Catches overbought/oversold conditions that RSI misses. Range 0-100.</div><div class="gc-f">MFI = 100 - 100/(1 + posMF/negMF) over 14d  (using TP×V)</div><div class="gc-rg"><span style="background:rgba(34,197,94,.15);color:#4ade80">55-75 sweet</span><span style="background:rgba(239,68,68,.15);color:#f87171">&gt;80 overbought</span><span style="background:rgba(239,68,68,.15);color:#f87171">&lt;30 weak</span></div></div>
+<div class="gloss-card"><div class="gc-t" style="color:#34d399">RSI — Relative Strength Index (14)</div><div class="gc-d">Pure price momentum, no volume. Use with MFI: RSI says "is price moving fast", MFI says "is volume backing it". Range 0-100.</div><div class="gc-f">RSI = 100 - 100/(1 + avg_gain/avg_loss)  over 14d</div><div class="gc-rg"><span style="background:rgba(34,197,94,.15);color:#4ade80">55-70 sweet</span><span style="background:rgba(239,68,68,.15);color:#f87171">&gt;75 overbought</span><span style="background:rgba(239,68,68,.15);color:#f87171">&lt;30 oversold</span></div></div>
+<div class="gloss-card"><div class="gc-t" style="color:#fbbf24">OBV Divergence</div><div class="gc-d">On-Balance Volume tracks cumulative buy/sell pressure. When OBV and price disagree, OBV wins — it's where the money actually went.</div><div class="gc-f">OBV today = OBV yesterday ± today's volume (sign = up/down close)</div><div class="gc-rg"><span style="background:rgba(34,197,94,.15);color:#4ade80">HIDDEN ACC ★</span><span style="background:rgba(239,68,68,.15);color:#f87171">DISTRIB ⚠</span></div></div>
+<div class="gloss-card"><div class="gc-t" style="color:#5eead4">Up/Down Volume Ratio (20)</div><div class="gc-d">Volume on up-close days ÷ volume on down-close days over 20 sessions. Pure pressure signal without price direction bias.</div><div class="gc-f">UD = Σ(vol up days) / Σ(vol down days)  over 20d</div><div class="gc-rg"><span style="background:rgba(34,197,94,.15);color:#4ade80">&gt;1.8 buying</span><span style="background:rgba(148,163,184,.15);color:#94a3b8">.8-1.3 balanced</span><span style="background:rgba(239,68,68,.15);color:#f87171">&lt;.5 selling</span></div></div>
+<div class="gloss-card"><div class="gc-t" style="color:#f97316">FINRA Short % (Dark Pool)</div><div class="gc-d">Daily short sale volume as % of off-exchange trades. Baseline 40-60% (market maker activity). Deviations signal pressure.</div><div class="gc-f">Short% = (FINRA short vol / FINRA total vol) × 100, daily</div><div class="gc-rg"><span style="background:rgba(34,197,94,.15);color:#4ade80">&lt;35% longs ctrl</span><span style="background:rgba(239,68,68,.15);color:#f87171">&gt;55% elevated</span></div></div>
+<div class="gloss-card"><div class="gc-t" style="color:#6366f1">RS Percentile Rank</div><div class="gc-d">Where this stock ranks vs all 110 stocks by 1-month return. True ranking signal, not raw return.</div><div class="gc-f">RS%ile = percentile rank of 1-month return across 110 stocks</div><div class="gc-rg"><span style="background:rgba(34,197,94,.15);color:#4ade80">&gt;75 top quart</span><span style="background:rgba(239,68,68,.15);color:#f87171">&lt;25 laggard</span></div></div>
+<div class="gloss-card"><div class="gc-t" style="color:#e2e8f0">Velocity &amp; Acceleration</div><div class="gc-d">Velocity = score Δ vs 5 scans ago. Acceleration = 3+ consecutive rising scans. Cross-scan trend signals.</div><div class="gc-f">velocity = score_now − score_5_scans_ago</div><div class="gc-rg"><span style="background:rgba(34,197,94,.15);color:#4ade80">+10 strong gainer</span><span style="background:rgba(239,68,68,.15);color:#f87171">−10 strong loser</span></div></div>
+</div>
+</div>
 
 <div class="summary" style="margin-top:20px">
 <div class="scard"><div class="sl">Scans in history</div><div class="sv">{n_scans}</div></div>
