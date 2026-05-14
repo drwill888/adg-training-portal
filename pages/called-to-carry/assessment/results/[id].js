@@ -114,7 +114,7 @@ export default function AssessmentResults({ submission }) {
             <div style={styles.tierCardFeatured}>
               <p style={styles.tierBadge}>Most Chosen</p>
               <p style={styles.tierLabel}>Founders Cohort</p>
-              <p style={styles.tierPrice}>$497</p>
+              <p style={styles.tierPrice}>$997</p>
               <p style={styles.tierTagline}>Walk it with a cohort.</p>
               <ul style={styles.tierBullets}>
                 <li>Everything in Self-Paced</li>
@@ -128,7 +128,7 @@ export default function AssessmentResults({ submission }) {
             </div>
             <div style={styles.tierCard}>
               <p style={styles.tierLabel}>21-Day Sprint</p>
-              <p style={styles.tierPrice}>$997</p>
+              <p style={styles.tierPrice}>$497</p>
               <p style={styles.tierTagline}>Walk it directly with Will.</p>
               <ul style={styles.tierBullets}>
                 <li>Everything in Self-Paced</li>

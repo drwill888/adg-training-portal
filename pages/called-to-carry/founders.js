@@ -1,5 +1,5 @@
 // pages/called-to-carry/founders.js
-// Founders Cohort marketing landing page — $497, 8 weeks, application-required.
+// Founders Cohort marketing landing page — $997, 8 weeks, application-required.
 // Migrated from pages/cohort/index.js with corrected paths.
 
 import Head from 'next/head';
@@ -270,7 +270,7 @@ export default function FoundersPage({ cohortOpen }) {
                   </h2>
                   <div className={styles.pricingAmount}>
                     <span className={styles.pricingCurrency}>$</span>
-                    <span className={styles.pricingNumber}>497</span>
+                    <span className={styles.pricingNumber}>997</span>
                     <span className={styles.pricingPer}>/ cohort</span>
                   </div>
                   <p className={styles.pricingCaption}>

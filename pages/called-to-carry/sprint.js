@@ -1,5 +1,5 @@
 // pages/called-to-carry/sprint.js
-// 21-Day Sprint marketing landing page — $997, application-only, direct with Will.
+// 21-Day Sprint marketing landing page — $497, application-only, direct with Will.
 
 import Head from 'next/head';
 import Link from 'next/link';
@@ -255,7 +255,7 @@ export default function SprintPage({ sprintOpen }) {
                   </h2>
                   <div className={styles.pricingAmount}>
                     <span className={styles.pricingCurrency}>$</span>
-                    <span className={styles.pricingNumber}>997</span>
+                    <span className={styles.pricingNumber}>497</span>
                     <span className={styles.pricingPer}>/ sprint</span>
                   </div>
                   <p className={styles.pricingCaption}>
