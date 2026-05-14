@@ -417,6 +417,19 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* ═══ SECTION 6.5 — TESTIMONY ═══ */}
+        <section id="testimony">
+          <div className="container testimony-inner">
+            <div className="section-badge">In Their Words</div>
+            <p className="testimony-quote">
+              I can confidently say that I am the leader I am today because of Awakening Destiny. This ministry never tried to force me into an existing mold — they recognized the <span className="accent">unique call of God on my life</span> and helped me mature into all that God created me to be. Their culture of authenticity, accountability, and vulnerability has shaped the way I show up in ministry, in my career, and in my relationships. The 5C&apos;s training in particular has been an invaluable tool for gaining <span className="accent">clarity, recognizing calling, and growing into it</span> with confidence and maturity.
+            </p>
+            <div className="gold-line center"></div>
+            <span className="testimony-attr">Aaron B.</span>
+            <span className="testimony-role">Translator</span>
+          </div>
+        </section>
+
         {/* ═══ SECTION 7 — WHAT YOU GET (3x3 GRID) ═══ */}
         <section id="deliverables">
           <div className="container">
@@ -496,19 +509,6 @@ export default function LandingPage() {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* ═══ SECTION 9.5 — TESTIMONY ═══ */}
-        <section id="testimony">
-          <div className="container testimony-inner">
-            <div className="section-badge">In Their Words</div>
-            <p className="testimony-quote">
-              I can confidently say that I am the leader I am today because of Awakening Destiny. This ministry never tried to force me into an existing mold — they recognized the <span className="accent">unique call of God on my life</span> and helped me mature into all that God created me to be. Their culture of authenticity, accountability, and vulnerability has shaped the way I show up in ministry, in my career, and in my relationships. The 5C&apos;s training in particular has been an invaluable tool for gaining <span className="accent">clarity, recognizing calling, and growing into it</span> with confidence and maturity.
-            </p>
-            <div className="gold-line center"></div>
-            <span className="testimony-attr">Aaron B.</span>
-            <span className="testimony-role">Translator</span>
           </div>
         </section>
 
