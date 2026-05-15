@@ -548,6 +548,160 @@ def generate_picks(db, date_str, mom_map, turn_map, regime):
 # ============================================================
 # HTML REPORT
 # ============================================================
+PICKS_GUIDE_HTML = '''
+<div class="tt" id="guide-toggle" onclick="toggleGuide()" style="cursor:pointer">
+  How to Read This Report <span id="guide-arrow" style="font-size:11px;color:#64748b"> &#9660; tap to expand</span>
+</div>
+<div id="guide-body" style="display:none">
+
+<div class="guide-section" style="border:2px solid rgba(167,139,250,0.35);background:rgba(167,139,250,0.04)">
+  <div class="guide-title" style="color:#a78bfa">THE PICKS CUBE &mdash; 3 SIGNAL TYPES &times; 3 CONVICTION LEVELS</div>
+  <div style="font-size:10px;color:#cbd5e1;margin-bottom:12px;line-height:1.6">
+    Every pick is classified by type (what signal fired) and conviction (how strong the alignment is). The cube is &ldquo;solved&rdquo; when momentum, turnaround, and flow all agree simultaneously &mdash; that is a CONFLUENCE HIGH pick, the highest-conviction entry. Size positions to conviction level.
+  </div>
+  <div class="cube-grid">
+    <div class="cube-face" style="border-color:#a78bfa">
+      <div class="cf-tag" style="background:#a78bfa;color:#000">CONFL</div>
+      <div class="cf-name">Confluence &#9733;&#9733;&#9733;</div>
+      <div class="cf-q">&ldquo;Both screeners agree simultaneously&rdquo;</div>
+      <div class="cf-pts">Momentum &#8805; 58 AND Turnaround &#8805; 58 &bull; composite = 55% mom + 45% turn</div>
+    </div>
+    <div class="cube-face" style="border-color:#22d3ee">
+      <div class="cf-tag" style="background:#22d3ee;color:#000">MOM</div>
+      <div class="cf-name">Momentum</div>
+      <div class="cf-q">&ldquo;Strong trend, flow confirmed&rdquo;</div>
+      <div class="cf-pts">Screener &#8805; 70 &bull; composite = 85% mom + 15% turn</div>
+    </div>
+    <div class="cube-face" style="border-color:#fb923c">
+      <div class="cf-tag" style="background:#fb923c;color:#000">TURN</div>
+      <div class="cf-name">Turnaround</div>
+      <div class="cf-q">&ldquo;Beaten-down, smart money accumulating&rdquo;</div>
+      <div class="cf-pts">Turnaround &#8805; 62 &bull; composite = 15% mom + 85% turn</div>
+    </div>
+    <div class="cube-face" style="border-color:#22c55e">
+      <div class="cf-tag" style="background:#22c55e;color:#000">HIGH</div>
+      <div class="cf-name">HIGH &#9733;&#9733;&#9733;</div>
+      <div class="cf-q">&ldquo;Full standard position size&rdquo;</div>
+      <div class="cf-pts">Confluence &#8805; 72 &bull; Momentum &#8805; 79 &bull; Turnaround &#8805; 70</div>
+    </div>
+    <div class="cube-face" style="border-color:#fbbf24">
+      <div class="cf-tag" style="background:#fbbf24;color:#000">MED</div>
+      <div class="cf-name">MEDIUM &#9733;&#9733;</div>
+      <div class="cf-q">&ldquo;Half position. Add on confirmation.&rdquo;</div>
+      <div class="cf-pts">Confluence &#8805; 58 &bull; Momentum &#8805; 70 &bull; Turnaround &#8805; 63</div>
+    </div>
+    <div class="cube-face" style="border-color:#94a3b8">
+      <div class="cf-tag" style="background:#94a3b8;color:#000">SPEC</div>
+      <div class="cf-name">SPECULATIVE &#9733;</div>
+      <div class="cf-q">&ldquo;Quarter position or watch only&rdquo;</div>
+      <div class="cf-pts">Passes threshold but composite below HIGH/MEDIUM</div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="guide-title">RISK MANAGEMENT &mdash; EVERY PICK, EVERY TIME</div>
+  <div class="cube-grid">
+    <div class="cube-face" style="border-color:#ef4444">
+      <div class="cf-name" style="color:#f87171">Stop Loss</div>
+      <div class="cf-q">&ldquo;Non-negotiable exit&rdquo;</div>
+      <div class="cf-pts">Entry &minus; 1.5 &times; ATR(14) &bull; ATR adapts to each stock&apos;s own volatility &bull; Shown as % risk on every card</div>
+    </div>
+    <div class="cube-face" style="border-color:#22c55e">
+      <div class="cf-name" style="color:#4ade80">Target</div>
+      <div class="cf-q">&ldquo;Profit exit level&rdquo;</div>
+      <div class="cf-pts">Momentum / Confluence: 2.5 : 1 reward/risk &bull; Turnaround: 2.0 : 1 &bull; Shown as % upside on every card</div>
+    </div>
+    <div class="cube-face" style="border-color:#94a3b8">
+      <div class="cf-name" style="color:#94a3b8">Time Stop</div>
+      <div class="cf-q">&ldquo;Dead money exit&rdquo;</div>
+      <div class="cf-pts">Close after 25 sessions if P&amp;L &lt; 3% &bull; Capital working elsewhere beats dead weight</div>
+    </div>
+    <div class="cube-face" style="border-color:#f97316">
+      <div class="cf-name" style="color:#fb923c">Signal Expiry</div>
+      <div class="cf-q">&ldquo;Thesis broken&rdquo;</div>
+      <div class="cf-pts">Close momentum pick if score drops 12+ pts from entry &bull; Score collapse = institutions exiting</div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="guide-title">REGIME &rarr; SIZING GUIDANCE</div>
+  <div class="guide-grid2">
+    <div class="guide-rule green-rule">
+      <div class="gr-title">TRENDING UP (SPY above rising 50+200MA, VIX &lt; 20)</div>
+      <div class="gr-items">
+        <div>&#8594; Lead with MOMENTUM picks &bull; CONFLUENCE = full size</div>
+        <div>&#8594; TURNAROUND = half size (trend is your friend elsewhere)</div>
+        <div>&#8594; HIGH conviction only &mdash; plenty of candidates in bull markets</div>
+      </div>
+    </div>
+    <div class="guide-rule yellow-rule">
+      <div class="gr-title">CHOPPY / CORRECTING (VIX 20&ndash;28, SPY mixed)</div>
+      <div class="gr-items">
+        <div>&#8594; Lead with TURNAROUND + CONFLUENCE picks</div>
+        <div>&#8594; MOMENTUM = half size (trends fail faster in choppy tape)</div>
+        <div>&#8594; Tighten mental stops &mdash; reversals are sharper</div>
+      </div>
+    </div>
+    <div class="guide-rule red-rule">
+      <div class="gr-title">RISK-OFF / BEAR (SPY below 200MA, VIX &#8805; 30)</div>
+      <div class="gr-items">
+        <div>&#8594; CONFLUENCE HIGH only &mdash; nothing else qualifies</div>
+        <div>&#8594; Quarter positions maximum</div>
+        <div>&#8594; When in doubt, sit out. Cash is a position.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="guide-title">KEY SIGNAL RANGES &mdash; QUICK REFERENCE</div>
+  <div class="guide-grid">
+    <div class="guide-card">
+      <div class="gc-title" style="color:#22d3ee">CMF &mdash; Chaikin Money Flow</div>
+      <div class="gc-rows">
+        <div class="gc-row"><span class="gc-val green">&gt; +0.15</span><span class="gc-label">Strong accumulation &mdash; institutions loading</span></div>
+        <div class="gc-row"><span class="gc-val green">+0.05 to +0.15</span><span class="gc-label">Mild accumulation &mdash; continue watching</span></div>
+        <div class="gc-row"><span class="gc-val muted">&minus;0.05 to +0.05</span><span class="gc-label">Neutral &mdash; no directional conviction</span></div>
+        <div class="gc-row"><span class="gc-val red">&lt; &minus;0.10</span><span class="gc-label">Distribution &mdash; picks.py skips these automatically</span></div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <div class="gc-title" style="color:#34d399">RSI &mdash; Momentum</div>
+      <div class="gc-rows">
+        <div class="gc-row"><span class="gc-val green">50 &ndash; 65</span><span class="gc-label">Momentum sweet spot &mdash; strong but not overheated</span></div>
+        <div class="gc-row"><span class="gc-val green">40 &ndash; 60</span><span class="gc-label">Turnaround recovery zone &mdash; curling up ideal</span></div>
+        <div class="gc-row"><span class="gc-val red">&gt; 75</span><span class="gc-label">Overbought &mdash; pullback risk. Turnaround penalised.</span></div>
+        <div class="gc-row"><span class="gc-val muted">&lt; 30</span><span class="gc-label">Oversold &mdash; watch for first bounce signal</span></div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <div class="gc-title" style="color:#fbbf24">OBV Divergence &mdash; Smart Money</div>
+      <div class="gc-rows">
+        <div class="gc-row"><span class="gc-val" style="color:#22c55e">HIDDEN ACC &#9733;</span><span class="gc-label">Price down, OBV up &mdash; best signal in the system</span></div>
+        <div class="gc-row"><span class="gc-val green">CONF BULL</span><span class="gc-label">Price + OBV both up &mdash; trend confirmed, safe to add</span></div>
+        <div class="gc-row"><span class="gc-val muted">NEUTRAL</span><span class="gc-label">No divergence &mdash; wait</span></div>
+        <div class="gc-row"><span class="gc-val red">DISTRIB &#9888;</span><span class="gc-label">Price up, OBV down &mdash; do not enter</span></div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <div class="gc-title" style="color:#a78bfa">Composite Score Ranges</div>
+      <div class="gc-rows">
+        <div class="gc-row"><span class="gc-val green">&#8805; 79</span><span class="gc-label">HIGH conviction momentum &mdash; full size</span></div>
+        <div class="gc-row"><span class="gc-val green">&#8805; 72</span><span class="gc-label">HIGH conviction confluence &mdash; full size</span></div>
+        <div class="gc-row"><span class="gc-val green">&#8805; 70</span><span class="gc-label">HIGH conviction turnaround &mdash; full size</span></div>
+        <div class="gc-row"><span class="gc-val muted">60 &ndash; 72</span><span class="gc-label">MEDIUM &mdash; half position, wait for confirmation</span></div>
+        <div class="gc-row"><span class="gc-val red">&lt; 60</span><span class="gc-label">SPECULATIVE &mdash; quarter or watch only</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+'''
+
+
 def _pick_card(p, is_new=False):
     """Render one pick card for HTML. Works for new, open, and closed picks."""
     ptype  = p.get("pick_type", "?")
@@ -806,9 +960,37 @@ body { font-family:'JetBrains Mono',monospace; background:#080c14; color:#e2e8f0
            border-bottom:1px solid rgba(255,255,255,0.06) }
 .jtbl td { padding:6px 8px; border-bottom:1px solid rgba(255,255,255,0.04) }
 .jtbl tbody tr:hover { background:rgba(255,255,255,0.02) }
-@media (max-width:600px) {
-  .stat-row { grid-template-columns:repeat(3,1fr) }
-}
+@media (max-width:600px) { .stat-row { grid-template-columns:repeat(3,1fr) } }
+.guide-section { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06);
+                 border-radius:6px; padding:16px; margin-bottom:10px }
+.guide-title { font-size:10px; font-weight:700; color:#94a3b8; letter-spacing:.1em;
+               text-transform:uppercase; margin-bottom:12px }
+.guide-grid  { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+               gap:10px; margin-top:8px }
+.guide-grid2 { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+               gap:10px; margin-top:8px }
+.guide-card  { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06);
+               border-radius:6px; padding:12px }
+.gc-title { font-size:11px; font-weight:700; margin-bottom:8px }
+.gc-rows  { display:flex; flex-direction:column; gap:5px }
+.gc-row   { display:flex; gap:10px; align-items:baseline }
+.gc-val   { font-size:9px; font-weight:700; min-width:90px; flex-shrink:0 }
+.gc-label { font-size:9px; color:#64748b }
+.cube-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+             gap:8px; margin-top:8px }
+.cube-face { border:1px solid; border-radius:6px; padding:10px;
+             background:rgba(255,255,255,0.02); position:relative }
+.cf-tag  { position:absolute; top:8px; right:8px; font-size:8px; font-weight:700;
+           padding:2px 6px; border-radius:3px }
+.cf-name { font-size:11px; font-weight:700; color:#e2e8f0; margin-bottom:6px; padding-right:52px }
+.cf-q    { font-size:9px; color:#94a3b8; font-style:italic; margin-bottom:6px; line-height:1.4 }
+.cf-pts  { font-size:8px; color:#64748b; line-height:1.5 }
+.guide-rule  { border-radius:6px; padding:12px }
+.green-rule  { background:rgba(34,197,94,0.05);  border:1px solid rgba(34,197,94,0.2) }
+.red-rule    { background:rgba(239,68,68,0.05);  border:1px solid rgba(239,68,68,0.2) }
+.yellow-rule { background:rgba(251,191,36,0.05); border:1px solid rgba(251,191,36,0.2) }
+.gr-title { font-size:10px; font-weight:700; color:#94a3b8; letter-spacing:.06em; margin-bottom:8px }
+.gr-items { display:flex; flex-direction:column; gap:5px; font-size:9px; color:#94a3b8 }
 '''
 
     return f'''<!DOCTYPE html><html lang="en"><head>
@@ -832,6 +1014,8 @@ body { font-family:'JetBrains Mono',monospace; background:#080c14; color:#e2e8f0
   {bench_html}
 </div>
 
+{PICKS_GUIDE_HTML}
+
 <div class="tt">New Picks Today &mdash; {len(new_picks)} Signal{"s" if len(new_picks) != 1 else ""}</div>
 {new_html}
 
@@ -852,6 +1036,15 @@ body { font-family:'JetBrains Mono',monospace; background:#080c14; color:#e2e8f0
   Time stop: {TIME_STOP_SESSIONS} sessions &nbsp;|&nbsp;
   Not financial advice.
 </div>
+<script>
+function toggleGuide(){{
+  var b=document.getElementById('guide-body');
+  var a=document.getElementById('guide-arrow');
+  var open=b.style.display==='block';
+  b.style.display=open?'none':'block';
+  a.innerHTML=open?'▼ tap to expand':'▲ tap to collapse';
+}}
+</script>
 </body></html>'''
 
 

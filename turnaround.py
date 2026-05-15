@@ -253,6 +253,84 @@ GUIDE_HTML = '''
 </div>
 <div id="guide-body" style="display:none">
 
+<div class="guide-section" style="border:2px solid rgba(34,197,94,0.35);background:rgba(34,197,94,0.04)">
+  <div class="guide-title" style="color:#4ade80">THE TURNAROUND CUBE &mdash; 5 FACES MUST ALIGN</div>
+  <div style="font-size:10px;color:#cbd5e1;margin-bottom:12px;line-height:1.6">
+    A genuine turnaround requires all 5 conditions simultaneously. A stock can have strong accumulation but still be in free-fall (Recovery = 0). Or it can be beaten-down but with zero accumulation (smart money hasn&apos;t arrived yet). Score 60+ = emerging. 75+ = strong. The cube is solved when all 5 faces are green.
+  </div>
+  <div class="cube-grid">
+    <div class="cube-face" style="border-color:#6366f1">
+      <div class="cf-tag" style="background:#6366f1;color:#fff">REC 25</div>
+      <div class="cf-name">Recovery Zone</div>
+      <div class="cf-q">&ldquo;Is it genuinely beaten down?&rdquo;</div>
+      <div class="cf-pts">8&ndash;35% off 52w high = sweet spot &bull; &lt;8% = scores 0 (not a turnaround) &bull; &gt;65% = falling knife</div>
+    </div>
+    <div class="cube-face" style="border-color:#a78bfa">
+      <div class="cf-tag" style="background:#a78bfa;color:#000">STAB 20</div>
+      <div class="cf-name">Stabilization</div>
+      <div class="cf-q">&ldquo;Has it stopped falling?&rdquo;</div>
+      <div class="cf-pts">Price reclaiming 50MA from below = best signal &bull; 20MA curling up &bull; 50MA flattening</div>
+    </div>
+    <div class="cube-face" style="border-color:#22d3ee">
+      <div class="cf-tag" style="background:#22d3ee;color:#000">ACC 30</div>
+      <div class="cf-name">Accumulation &#9733;</div>
+      <div class="cf-q">&ldquo;Is smart money quietly buying?&rdquo;</div>
+      <div class="cf-pts">HIDDEN ACC (price down, OBV up) = highest weight &bull; CMF crossover neg&rarr;pos &bull; MFI 40&ndash;60</div>
+    </div>
+    <div class="cube-face" style="border-color:#fbbf24">
+      <div class="cf-tag" style="background:#fbbf24;color:#000">BASE 15</div>
+      <div class="cf-name">Base Quality</div>
+      <div class="cf-q">&ldquo;Is it building a base?&rdquo;</div>
+      <div class="cf-pts">ATR contracting (panic over) &bull; Higher low forming &bull; Price above 3-month low</div>
+    </div>
+    <div class="cube-face" style="border-color:#34d399">
+      <div class="cf-tag" style="background:#34d399;color:#000">MOM 10</div>
+      <div class="cf-name">Momentum Turn</div>
+      <div class="cf-q">&ldquo;Is the turn confirming?&rdquo;</div>
+      <div class="cf-pts">RSI 40&ndash;60 curling up = recovery zone &bull; RSI &gt;75 = penalised (move already happened)</div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="guide-title">KEY SIGNAL RANGES &mdash; QUICK REFERENCE</div>
+  <div class="guide-grid">
+    <div class="guide-card">
+      <div class="gc-title" style="color:#22d3ee">CMF &mdash; Chaikin Money Flow</div>
+      <div class="gc-rows">
+        <div class="gc-row"><span class="gc-val green">&gt; +0.05 and rising</span><span class="gc-label">CMF crossover &mdash; money turning before price does</span></div>
+        <div class="gc-row"><span class="gc-val muted">0 to +0.05</span><span class="gc-label">Neutral &mdash; accumulation just beginning</span></div>
+        <div class="gc-row"><span class="gc-val red">&lt; &minus;0.10</span><span class="gc-label">Strong distribution &mdash; smart money not here yet</span></div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <div class="gc-title" style="color:#34d399">RSI &mdash; Momentum Oscillator</div>
+      <div class="gc-rows">
+        <div class="gc-row"><span class="gc-val green">40 &ndash; 60</span><span class="gc-label">Recovery zone &mdash; curling up from oversold is ideal</span></div>
+        <div class="gc-row"><span class="gc-val muted">&lt; 30</span><span class="gc-label">Oversold &mdash; watch for first bounce signal</span></div>
+        <div class="gc-row"><span class="gc-val red">&gt; 75</span><span class="gc-label">Overbought &mdash; turnaround already done, scored down</span></div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <div class="gc-title" style="color:#fbbf24">OBV Divergence &mdash; Smart Money</div>
+      <div class="gc-rows">
+        <div class="gc-row"><span class="gc-val" style="color:#22c55e">HIDDEN ACC &#9733;</span><span class="gc-label">Price down, OBV up &mdash; institutions buying dips</span></div>
+        <div class="gc-row"><span class="gc-val muted">NEUTRAL</span><span class="gc-label">No signal yet &mdash; wait</span></div>
+        <div class="gc-row"><span class="gc-val red">DISTRIB / CONF BEAR</span><span class="gc-label">Institutions still selling &mdash; too early</span></div>
+      </div>
+    </div>
+    <div class="guide-card">
+      <div class="gc-title" style="color:#6366f1">Score Thresholds</div>
+      <div class="gc-rows">
+        <div class="gc-row"><span class="gc-val green">75+</span><span class="gc-label">STRONG TURNAROUND &mdash; all 5 faces aligned</span></div>
+        <div class="gc-row"><span class="gc-val green">60 &ndash; 74</span><span class="gc-label">EMERGING TURN &mdash; most signals aligned, enter carefully</span></div>
+        <div class="gc-row"><span class="gc-val muted">45 &ndash; 59</span><span class="gc-label">EARLY / WATCH &mdash; let it develop</span></div>
+        <div class="gc-row"><span class="gc-val red">&lt; 45</span><span class="gc-label">Still falling or falling knife &mdash; avoid</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="guide-section" style="border:2px solid rgba(34,197,94,0.30);background:rgba(34,197,94,0.04)">
   <div class="guide-title" style="color:#4ade80">TWO SCREENERS, TWO QUESTIONS</div>
   <div class="recon-grid">
@@ -493,6 +571,12 @@ new Chart(document.getElementById('v-'+sym),{type:'bar',data:{labels:lb,datasets
 .gc-title{{font-size:11px;font-weight:700;margin-bottom:8px}}.gc-body{{font-size:9px;color:#94a3b8;margin-bottom:10px;line-height:1.5}}
 .gc-rows{{display:flex;flex-direction:column;gap:5px}}.gc-row{{display:flex;gap:10px;align-items:baseline}}
 .gc-val{{font-size:9px;font-weight:700;min-width:95px;flex-shrink:0}}.gc-label{{font-size:9px;color:#64748b}}
+.cube-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:8px}}
+.cube-face{{border:1px solid;border-radius:6px;padding:10px;background:rgba(255,255,255,0.02);position:relative}}
+.cf-tag{{position:absolute;top:8px;right:8px;font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px}}
+.cf-name{{font-size:11px;font-weight:700;color:#e2e8f0;margin-bottom:6px;padding-right:52px}}
+.cf-q{{font-size:9px;color:#94a3b8;font-style:italic;margin-bottom:6px;line-height:1.4}}
+.cf-pts{{font-size:8px;color:#64748b;line-height:1.5}}
 .guide-grid2{{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-top:8px}}
 .guide-rule{{border-radius:6px;padding:12px}}
 .green-rule{{background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2)}}
