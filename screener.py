@@ -13,7 +13,7 @@ UPGRADES FROM v2.0:
   - Up/Down volume ratio — buying vs selling pressure split
   - FINRA daily short sale volume (off-exchange short pressure)
   - Short interest from yfinance (days-to-cover, float %)
-  - Cross-sectional RS percentile rank across 110-stock universe
+  - Cross-sectional RS percentile rank across 300-stock universe (15 sectors × 20)
   - SQLite persistence: score history + rank trajectory signal
   - Scoring rebuilt: Flow bucket = 30pts (replaces crude vol/A-D)
   - CMF chart panel added per symbol
@@ -67,19 +67,41 @@ SECTOR_ETFS = [
     ("XLY","Consumer Disc.","#fbbf24"),("XLP","Consumer Staples","#94a3b8"),
     ("XLU","Utilities","#fb923c"),("XLRE","Real Estate","#c084fc"),
     ("XLB","Materials","#2dd4bf"),
+    ("XBI","Biotech","#f472b6"),("KRE","Reg. Banks","#67e8f9"),
+    ("SOXX","Semiconductors","#818cf8"),("XME","Metals/Mining","#fcd34d"),
 ]
 SECTOR_STOCKS = {
-    "XLK":["AAPL","MSFT","NVDA","AVGO","CRM","ADBE","AMD","ORCL","CSCO","INTC"],
-    "XLF":["JPM","V","MA","BAC","WFC","GS","MS","AXP","C","BLK"],
-    "XLE":["XOM","CVX","COP","SLB","EOG","MPC","PSX","VLO","OXY","HAL"],
-    "XLV":["UNH","JNJ","LLY","PFE","ABBV","MRK","TMO","ABT","DHR","BMY"],
-    "XLI":["GE","CAT","HON","UNP","RTX","DE","BA","LMT","FDX","WM"],
-    "XLC":["META","GOOGL","NFLX","DIS","CMCSA","T","VZ","TMUS","EA","TTWO"],
-    "XLY":["AMZN","TSLA","HD","MCD","NKE","LOW","SBUX","TJX","BKNG","CMG"],
-    "XLP":["PG","KO","PEP","COST","WMT","PM","MO","CL","MDLZ","GIS"],
-    "XLU":["NEE","SO","DUK","SRE","AEP","D","EXC","XEL","ED","WEC"],
-    "XLRE":["PLD","AMT","CCI","EQIX","PSA","SPG","O","WELL","DLR","AVB"],
-    "XLB":["LIN","APD","SHW","ECL","FCX","NEM","NUE","DOW","DD","VMC"],
+    "XLK":["AAPL","MSFT","NVDA","AVGO","CRM","ADBE","AMD","ORCL","CSCO","INTC",
+           "NOW","INTU","PANW","MU","QCOM","TXN","KLAC","SNPS","CDNS","AMAT"],
+    "XLF":["JPM","V","MA","BAC","WFC","GS","MS","AXP","C","BLK",
+           "SCHW","USB","PNC","TFC","COF","SPGI","MCO","ICE","CB","MET"],
+    "XLE":["XOM","CVX","COP","SLB","EOG","MPC","PSX","VLO","OXY","HAL",
+           "DVN","FANG","MRO","BKR","HES","WMB","CTRA","OVV","APA","KMI"],
+    "XLV":["UNH","JNJ","LLY","PFE","ABBV","MRK","TMO","ABT","DHR","BMY",
+           "CVS","CI","HUM","ELV","ISRG","MDT","BSX","SYK","ZBH","BAX"],
+    "XLI":["GE","CAT","HON","UNP","RTX","DE","BA","LMT","FDX","WM",
+           "EMR","ITW","ETN","PCAR","CTAS","GD","NOC","NSC","CSX","MMM"],
+    "XLC":["META","GOOGL","NFLX","DIS","CMCSA","T","VZ","TMUS","EA","TTWO",
+           "WBD","PARA","FOXA","LYV","OMC","IPG","ZM","SNAP","PINS","NWSA"],
+    "XLY":["AMZN","TSLA","HD","MCD","NKE","LOW","SBUX","TJX","BKNG","CMG",
+           "GM","F","RCL","CCL","MGM","YUM","DRI","ULTA","GPC","ROST"],
+    "XLP":["PG","KO","PEP","COST","WMT","PM","MO","CL","MDLZ","GIS",
+           "STZ","HSY","CPB","CAG","KHC","CHD","CLX","SJM","MKC","BG"],
+    "XLU":["NEE","SO","DUK","SRE","AEP","D","EXC","XEL","ED","WEC",
+           "ES","AWK","CMS","PEG","PPL","FE","NI","EVRG","AEE","LNT"],
+    "XLRE":["PLD","AMT","CCI","EQIX","PSA","SPG","O","WELL","DLR","AVB",
+            "EQR","ESS","MAA","UDR","EXR","CUBE","VICI","GLPI","WPC","NNN"],
+    "XLB":["LIN","APD","SHW","ECL","FCX","NEM","NUE","DOW","DD","VMC",
+           "MLM","PKG","IP","IFF","CE","ALB","EMN","OLN","RPM","CCK"],
+    # ---- NEW SECTORS ----
+    "XBI":["MRNA","REGN","VRTX","BIIB","ILMN","BMRN","ALNY","INCY","NBIX","SRPT",
+           "RARE","HALO","IONS","EXAS","ACAD","CRSP","RXRX","PCVX","TGTX","ARWR"],
+    "KRE":["KEY","RF","CFG","HBAN","MTB","ZION","CMA","FITB","FHN","WAL",
+           "WTFC","SNV","GBCI","BOKF","FFIN","CVBF","IBTX","FNB","UMBF","BOH"],
+    "SOXX":["LRCX","MRVL","ON","MPWR","SWKS","QRVO","MCHP","ADI","NXPI","WOLF",
+            "ENTG","MKSI","ONTO","ACLS","FORM","CAMT","ASML","RMBS","SLAB","ALGM"],
+    "XME":["AA","CLF","MP","X","CMC","RS","STLD","HCC","HL","PAAS",
+           "KGC","WPM","FNV","RGLD","GOLD","AEM","AGI","MAG","SILV","TECK"],
 }
 
 # ============================================================
