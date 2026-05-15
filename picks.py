@@ -47,7 +47,7 @@ except ImportError:
 
 from screener import (
     SECTOR_ETFS, SECTOR_STOCKS, BENCHMARK, DB_PATH,
-    fetch_data, fetch_macro, classify_regime,
+    fetch_data, fetch_macro, classify_regime, fetch_fundamentals,
     calc_atr, calc_return, calc_cmf, calc_mfi,
     calc_obv_divergence, calc_updown_vol, calc_rsi, calc_sma,
     sf, fmt, fmt_pct, pc, safe_json,
@@ -347,6 +347,13 @@ def assess_candidate(sym, mom, turn, sector, sector_name):
 
     # Flow distribution filter — don't fight strong selling pressure
     if cmf is not None and cmf < -0.10:
+        return None
+
+    # Earnings filter — never open a position right before an earnings event.
+    # A gap through the stop overnight is unmanageable.
+    fu = fetch_fundamentals(sym)
+    if fu.get("earnings_soon"):
+        print(f"EARNINGS SKIP", end=" ")
         return None
 
     mom_sc  = mom.get("mom_score",  0) or 0
