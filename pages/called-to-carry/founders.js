@@ -270,7 +270,7 @@ export default function FoundersPage({ cohortOpen }) {
                   </h2>
                   <div className={styles.pricingAmount}>
                     <span className={styles.pricingCurrency}>$</span>
-                    <span className={styles.pricingNumber}>497</span>
+                    <span className={styles.pricingNumber}>997</span>
                     <span className={styles.pricingPer}>/ cohort</span>
                   </div>
                   <p className={styles.pricingCaption}>

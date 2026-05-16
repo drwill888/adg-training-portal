@@ -8,19 +8,22 @@ const nextConfig = {
   // calledtocarry.awakeningdestiny.global/<path> → pages/called-to-carry/<path>
   // Two rules handle nested + top-level paths. Exclusions keep /api, /_next,
   // and shared portal routes (blueprint, self-paced, login, etc.) on the main app.
+  // `called-to-carry` is excluded so already-prefixed links don't get doubled
+  // (e.g. /called-to-carry/founders/apply → would otherwise rewrite to
+  // /called-to-carry/called-to-carry/founders/apply and 404).
   async rewrites() {
     return {
       beforeFiles: [
         // Nested paths: /a/b/c → /called-to-carry/a/b/c
         {
           has: [{ type: 'host', value: 'calledtocarry.awakeningdestiny.global' }],
-          source: '/:path((?!api|_next|_vercel|favicon\\.ico|self-paced|blueprint|login|dashboard|modules|auth|success|admin)[^/]+)/:rest*',
+          source: '/:path((?!api|_next|_vercel|favicon\\.ico|called-to-carry|self-paced|blueprint|login|dashboard|modules|auth|success|admin)[^/]+)/:rest*',
           destination: '/called-to-carry/:path/:rest*',
         },
         // Top-level paths: /a → /called-to-carry/a
         {
           has: [{ type: 'host', value: 'calledtocarry.awakeningdestiny.global' }],
-          source: '/:path((?!api|_next|_vercel|favicon\\.ico|self-paced|blueprint|login|dashboard|modules|auth|success|admin)[^/]+)',
+          source: '/:path((?!api|_next|_vercel|favicon\\.ico|called-to-carry|self-paced|blueprint|login|dashboard|modules|auth|success|admin)[^/]+)',
           destination: '/called-to-carry/:path',
         },
       ],

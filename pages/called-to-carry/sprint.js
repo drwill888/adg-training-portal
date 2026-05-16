@@ -16,7 +16,7 @@ const INCLUDED_ITEMS = [
   {
     icon: '✦',
     title: '21 Days of Direct Access to Will',
-    desc: 'Daily rhythm, direct input, and personal apostolic counsel — not recorded sessions, not a group call. You, Will, and your assignment.',
+    desc: 'Daily rhythm, direct input, and personal apostolic counsel — live and built around your assignment, not recorded content you consume alone.',
   },
   {
     icon: '✦',
@@ -46,7 +46,7 @@ const INCLUDED_ITEMS = [
 ];
 
 const FOR_WHOM = [
-  'You are at a threshold and you know it — this is not the season for a group experience',
+  'You are at a threshold and you know it — and you need formation that moves at the speed of your assignment',
   'You need direct apostolic input on a specific decision, transition, or assignment',
   'You have been building alone and it is costing you more than you can afford to pay',
   'You carry weight that requires more than content — it requires counsel',
@@ -56,11 +56,11 @@ const FOR_WHOM = [
 const FAQS = [
   {
     q: 'What does 21 days of direct access look like?',
-    a: 'You and Will work together over 21 days through a combination of live sessions, direct communication, and structured formation work. The rhythm is built around your assignment, your pace, and what you are carrying.',
+    a: 'Over 21 days you move through live sessions, direct communication with Will, and structured formation work — a small, focused intensive built around your assignment and what you are carrying.',
   },
   {
     q: 'How is this different from the Founders Cohort?',
-    a: 'The Founders Cohort is a group experience — covenant community, shared formation, 8 weeks. The Sprint is one-on-one. Direct access to Will, accelerated rhythm, and counsel built around your specific assignment.',
+    a: 'The Founders Cohort is an 8-week covenant community — shared formation, built for depth. The Sprint is a 21-day intensive — smaller, faster, built for momentum when you are at a threshold and need to move now.',
   },
   {
     q: 'Is this only for experienced leaders?',
@@ -138,7 +138,7 @@ export default function SprintPage({ sprintOpen }) {
               <em>Require Direct Counsel.</em>
             </h1>
             <p className={styles.heroSub}>
-              21 days of direct access to Will — apostolic counsel, accelerated formation, and strategic coaching built around your specific assignment. Not a group. Not a course. You and Will.
+              21 days of direct, high-access formation with Will — apostolic counsel, accelerated rhythm, and strategic coaching built around your specific assignment. A small, focused intensive for leaders who need to move now.
             </p>
             {sprintOpen ? (
               <div className={styles.heroCtas}>
@@ -183,10 +183,10 @@ export default function SprintPage({ sprintOpen }) {
               </div>
               <div className={styles.tensionRight}>
                 <p>
-                  There are seasons when content is not enough. When a group experience, however good, does not reach what you are actually carrying.
+                  There are seasons when content is not enough. When the timeline matters as much as the teaching — and you can't afford to wait a quarter to move.
                 </p>
                 <p>
-                  The 21-Day Sprint is built for those moments. Direct access. Personal counsel. A formation rhythm that moves with your assignment, not around it.
+                  The 21-Day Sprint is built for those moments. Direct access to Will. A small, focused cohort. A formation rhythm that moves with your assignment, not around it.
                 </p>
                 <p>
                   This is not coaching in the conventional sense. It is apostolic accompaniment — 21 days of walking alongside someone who can see what you carry and help you carry it with greater precision, courage, and clarity.
@@ -255,7 +255,7 @@ export default function SprintPage({ sprintOpen }) {
                   </h2>
                   <div className={styles.pricingAmount}>
                     <span className={styles.pricingCurrency}>$</span>
-                    <span className={styles.pricingNumber}>997</span>
+                    <span className={styles.pricingNumber}>497</span>
                     <span className={styles.pricingPer}>/ sprint</span>
                   </div>
                   <p className={styles.pricingCaption}>
