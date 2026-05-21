@@ -13,7 +13,7 @@ UPGRADES FROM v2.0:
   - Up/Down volume ratio — buying vs selling pressure split
   - FINRA daily short sale volume (off-exchange short pressure)
   - Short interest from yfinance (days-to-cover, float %)
-  - Cross-sectional RS percentile rank across 300-stock universe (15 sectors × 20)
+  - Cross-sectional RS percentile rank across 450-stock universe (15 sectors × 30)
   - SQLite persistence: score history + rank trajectory signal
   - Scoring rebuilt: Flow bucket = 30pts (replaces crude vol/A-D)
   - CMF chart panel added per symbol
@@ -72,36 +72,51 @@ SECTOR_ETFS = [
 ]
 SECTOR_STOCKS = {
     "XLK":["AAPL","MSFT","NVDA","AVGO","CRM","ADBE","AMD","ORCL","CSCO","INTC",
-           "NOW","INTU","PANW","MU","QCOM","TXN","KLAC","SNPS","CDNS","AMAT"],
+           "NOW","INTU","PANW","MU","QCOM","TXN","KLAC","SNPS","CDNS","AMAT",
+           "ADSK","WDAY","TEAM","DDOG","SNOW","CRWD","ZS","FTNT","ANET","NET"],
     "XLF":["JPM","V","MA","BAC","WFC","GS","MS","AXP","C","BLK",
-           "SCHW","USB","PNC","TFC","COF","SPGI","MCO","ICE","CB","MET"],
+           "SCHW","USB","PNC","TFC","COF","SPGI","MCO","ICE","CB","MET",
+           "ALL","PGR","AON","MMC","AJG","AIG","TRV","PRU","HIG","AFL"],
     "XLE":["XOM","CVX","COP","SLB","EOG","MPC","PSX","VLO","OXY","HAL",
-           "DVN","FANG","MRO","BKR","HES","WMB","CTRA","OVV","APA","KMI"],
+           "DVN","FANG","MRO","BKR","HES","WMB","CTRA","OVV","APA","KMI",
+           "OKE","EQT","TRGP","WES","ET","EPD","MPLX","DINO","CRGY","MTDR"],
     "XLV":["UNH","JNJ","LLY","PFE","ABBV","MRK","TMO","ABT","DHR","BMY",
-           "CVS","CI","HUM","ELV","ISRG","MDT","BSX","SYK","ZBH","BAX"],
+           "CVS","CI","HUM","ELV","ISRG","MDT","BSX","SYK","ZBH","BAX",
+           "GILD","AMGN","BDX","EW","RMD","IDXX","IQV","MTD","RVTY","DXCM"],
     "XLI":["GE","CAT","HON","UNP","RTX","DE","BA","LMT","FDX","WM",
-           "EMR","ITW","ETN","PCAR","CTAS","GD","NOC","NSC","CSX","MMM"],
+           "EMR","ITW","ETN","PCAR","CTAS","GD","NOC","NSC","CSX","MMM",
+           "PH","ROK","IR","FAST","ODFL","GWW","URI","JCI","DOV","AME"],
     "XLC":["META","GOOGL","NFLX","DIS","CMCSA","T","VZ","TMUS","EA","TTWO",
-           "WBD","PARA","FOXA","LYV","OMC","IPG","ZM","SNAP","PINS","NWSA"],
+           "WBD","PARA","FOXA","LYV","OMC","IPG","ZM","SNAP","PINS","NWSA",
+           "ROKU","SPOT","BIDU","NTES","SE","TWLO","TRIP","YELP","SIRI","IAC"],
     "XLY":["AMZN","TSLA","HD","MCD","NKE","LOW","SBUX","TJX","BKNG","CMG",
-           "GM","F","RCL","CCL","MGM","YUM","DRI","ULTA","GPC","ROST"],
+           "GM","F","RCL","CCL","MGM","YUM","DRI","ULTA","GPC","ROST",
+           "ABNB","EBAY","DASH","MAR","HLT","ORLY","AZO","BBY","KMX","DPZ"],
     "XLP":["PG","KO","PEP","COST","WMT","PM","MO","CL","MDLZ","GIS",
-           "STZ","HSY","CPB","CAG","KHC","CHD","CLX","SJM","MKC","BG"],
+           "STZ","HSY","CPB","CAG","KHC","CHD","CLX","SJM","MKC","BG",
+           "KR","SYY","ADM","TGT","DLTR","DG","KDP","MNST","TSN","HRL"],
     "XLU":["NEE","SO","DUK","SRE","AEP","D","EXC","XEL","ED","WEC",
-           "ES","AWK","CMS","PEG","PPL","FE","NI","EVRG","AEE","LNT"],
+           "ES","AWK","CMS","PEG","PPL","FE","NI","EVRG","AEE","LNT",
+           "ATO","CNP","DTE","ETR","NRG","PNW","OGE","NWE","SWX","AGR"],
     "XLRE":["PLD","AMT","CCI","EQIX","PSA","SPG","O","WELL","DLR","AVB",
-            "EQR","ESS","MAA","UDR","EXR","CUBE","VICI","GLPI","WPC","NNN"],
+            "EQR","ESS","MAA","UDR","EXR","CUBE","VICI","GLPI","WPC","NNN",
+            "HST","ARE","IRM","INVH","BXP","KIM","REG","FRT","EPR","NLY"],
     "XLB":["LIN","APD","SHW","ECL","FCX","NEM","NUE","DOW","DD","VMC",
-           "MLM","PKG","IP","IFF","CE","ALB","EMN","OLN","RPM","CCK"],
+           "MLM","PKG","IP","IFF","CE","ALB","EMN","OLN","RPM","CCK",
+           "BALL","AVY","CF","MOS","LYB","SEE","CTVA","GPK","PPG","ICL"],
     # ---- NEW SECTORS ----
     "XBI":["MRNA","REGN","VRTX","BIIB","ILMN","BMRN","ALNY","INCY","NBIX","SRPT",
-           "RARE","HALO","IONS","EXAS","ACAD","CRSP","RXRX","PCVX","TGTX","ARWR"],
+           "RARE","HALO","IONS","EXAS","ACAD","CRSP","RXRX","PCVX","TGTX","ARWR",
+           "ARGX","MDGL","VKTX","BPMC","CYTK","JAZZ","NTLA","BEAM","EDIT","NUVL"],
     "KRE":["KEY","RF","CFG","HBAN","MTB","ZION","CMA","FITB","FHN","WAL",
-           "WTFC","SNV","GBCI","BOKF","FFIN","CVBF","IBTX","FNB","UMBF","BOH"],
+           "WTFC","SNV","GBCI","BOKF","FFIN","CVBF","IBTX","FNB","UMBF","BOH",
+           "ASB","PB","BPOP","CADE","VLY","CFR","HOMB","TCBI","PNFP","SSB"],
     "SOXX":["LRCX","MRVL","ON","MPWR","SWKS","QRVO","MCHP","ADI","NXPI","WOLF",
-            "ENTG","MKSI","ONTO","ACLS","FORM","CAMT","ASML","RMBS","SLAB","ALGM"],
+            "ENTG","MKSI","ONTO","ACLS","FORM","CAMT","ASML","RMBS","SLAB","ALGM",
+            "ARM","TSM","AMKR","POWI","DIOD","LSCC","SMTC","VECO","AMBA","CEVA"],
     "XME":["AA","CLF","MP","X","CMC","RS","STLD","HCC","HL","PAAS",
-           "KGC","WPM","FNV","RGLD","GOLD","AEM","AGI","MAG","SILV","TECK"],
+           "KGC","WPM","FNV","RGLD","GOLD","AEM","AGI","MAG","SILV","TECK",
+           "BTU","ARCH","AMR","MTRN","VALE","RIO","BHP","SBSW","HBM","IAG"],
 }
 
 # ============================================================
