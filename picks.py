@@ -54,19 +54,23 @@ from screener import (
 )
 
 # ============================================================
-# CONFIG
+# CONFIG  (tuned after first-week diagnosis — wider stops, looser
+# signal-expiry, true turnaround quality required for confluence)
 # ============================================================
-MOMENTUM_THRESH    = 70    # min screener score → momentum pick
+MOMENTUM_THRESH    = 75    # min screener score → momentum pick (was 70 — more selective)
 TURNAROUND_THRESH  = 62    # min turnaround score → turnaround pick
-CONFLUENCE_MOM_TH  = 58    # both scores must exceed these for confluence
-CONFLUENCE_TURN_TH = 58
-HOLD_DROP          = 12    # close momentum pick if score drops this many pts
-ATR_STOP_MULT      = 1.5   # stop = entry − N × ATR(14)
+CONFLUENCE_MOM_TH  = 60    # both scores must exceed these for confluence (was 58)
+CONFLUENCE_TURN_TH = 62    # require true turnaround quality (was 58 — too loose)
+HOLD_DROP          = 20    # close momentum pick if score drops this many pts (was 12)
+HOLD_MIN_SESSIONS  = 5     # don't signal-expire in first N sessions — let trade work
+HOLD_MIN_LOSS_PCT  = -3.0  # don't signal-expire if loss is smaller than this %
+ATR_STOP_MULT      = 2.5   # stop = entry − N × ATR(14) (was 1.5 — too tight for swing)
 REWARD_RISK_MOM    = 2.5   # target R:R for momentum / confluence
-REWARD_RISK_TURN   = 2.0   # target R:R for turnaround-only
-TIME_STOP_SESSIONS = 25    # max sessions before time stop
+REWARD_RISK_TURN   = 2.5   # target R:R for turnaround (was 2.0 — same R:R now)
+TIME_STOP_SESSIONS = 30    # max sessions before time stop (was 25)
 TIME_STOP_MIN_PNL  = 3.0   # only time-stop when P&L below this %
 MAX_OPEN_PICKS     = 20    # hard cap on concurrent open positions
+MAX_NEW_PER_DAY    = 5     # pace entries — don't pile-load on one day
 MAX_PER_SECTOR     = 2     # max picks per sector (open + new combined)
 MIN_AVG_VOLUME     = 400_000   # skip illiquid stocks
 
@@ -446,7 +450,14 @@ def update_open_positions(db, date_str, mom_map, turn_map):
             reason = "TARGET_HIT"
         elif sessions >= TIME_STOP_SESSIONS and pnl_pct < TIME_STOP_MIN_PNL:
             reason = "TIME_STOP"
-        elif p["pick_type"] in ("MOMENTUM", "CONFLUENCE") and mom_sc is not None:
+        elif (p["pick_type"] in ("MOMENTUM", "CONFLUENCE")
+              and mom_sc is not None
+              and sessions >= HOLD_MIN_SESSIONS
+              and pnl_pct <= HOLD_MIN_LOSS_PCT):
+            # Only exit on signal collapse when (a) trade has had at least
+            # HOLD_MIN_SESSIONS to work, (b) we're actually losing money, and
+            # (c) the score has collapsed by HOLD_DROP+ pts — three gates
+            # together prevent premature shake-outs on normal pullbacks.
             entry_ms = p.get("momentum_score") or 0
             if mom_sc < entry_ms - HOLD_DROP:
                 reason = "SIGNAL_EXPIRED"
@@ -521,12 +532,12 @@ def generate_picks(db, date_str, mom_map, turn_map, regime):
             print("filtered")
         time.sleep(0.08)
 
-    # Sort: conviction first, then type (CONFLUENCE > MOMENTUM > TURNAROUND), then composite
-    type_rank = {"CONFLUENCE": 2, "MOMENTUM": 1, "TURNAROUND": 0}
+    # Sort by conviction then composite. No type-rank tie-breaker — pure
+    # turnarounds shouldn't be crowded out by momentum picks with the same
+    # conviction level. Composite score is the fair tiebreaker.
     conv_rank = {"HIGH": 2, "MEDIUM": 1, "SPECULATIVE": 0}
     candidates.sort(key=lambda x: (
         conv_rank.get(x["conviction"], 0),
-        type_rank.get(x["pick_type"],  0),
         x["composite"]
     ), reverse=True)
 
@@ -535,6 +546,8 @@ def generate_picks(db, date_str, mom_map, turn_map, regime):
     for c in candidates:
         if open_count + len(new_picks) >= MAX_OPEN_PICKS:
             break
+        if len(new_picks) >= MAX_NEW_PER_DAY:
+            break  # pace entries — never pile-load in one day
         sec = c["sector"]
         already = open_by_sec.get(sec, 0) + new_by_sec.get(sec, 0)
         if already >= MAX_PER_SECTOR:
@@ -1028,11 +1041,12 @@ body { font-family:'JetBrains Mono',monospace; background:#080c14; color:#e2e8f0
 {closed_html}
 
 <div class="ft">
-  Picks Engine v1.0 &nbsp;|&nbsp;
+  Picks Engine v1.1 &nbsp;|&nbsp;
   Confluence: mom×0.55 + turn×0.45 &nbsp;|&nbsp;
   Stop: {ATR_STOP_MULT}× ATR(14) &nbsp;|&nbsp;
-  Target: {REWARD_RISK_MOM}:1 (mom/conf) / {REWARD_RISK_TURN}:1 (turn) &nbsp;|&nbsp;
-  Max {MAX_OPEN_PICKS} open, {MAX_PER_SECTOR} per sector &nbsp;|&nbsp;
+  Target: {REWARD_RISK_MOM}:1 &nbsp;|&nbsp;
+  Max {MAX_OPEN_PICKS} open ({MAX_NEW_PER_DAY}/day), {MAX_PER_SECTOR} per sector &nbsp;|&nbsp;
+  Signal-expire: only after {HOLD_MIN_SESSIONS}+ sessions &amp; {HOLD_MIN_LOSS_PCT}% loss &nbsp;|&nbsp;
   Time stop: {TIME_STOP_SESSIONS} sessions &nbsp;|&nbsp;
   Not financial advice.
 </div>
