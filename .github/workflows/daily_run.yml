@@ -15,7 +15,7 @@ jobs:
           python-version: '3.11'
       - name: Install dependencies
         run: pip install yfinance pandas numpy openpyxl requests
-      - name: Run screener (300-stock universe)
+      - name: Run screener (450-stock universe)
         run: python screener.py
       - name: Run turnaround screener
         run: python turnaround.py
@@ -25,6 +25,14 @@ jobs:
         run: python tracker.py
       - name: Run dashboard
         run: python dashboard.py
+      - name: Run compounders screener (Fridays only)
+        run: |
+          if [ "$(date -u +%u)" = "5" ]; then
+            echo "Friday COB — running weekly compounders scan..."
+            python compounders.py
+          else
+            echo "Not Friday — skipping compounders (runs weekly at Friday close)"
+          fi
       - name: Commit results back to repo
         run: |
           git config user.name "github-actions[bot]"
@@ -34,7 +42,8 @@ jobs:
                      turnaround_report.html \
                      picks_report.html \
                      tracker_report.html \
-                     analytics_dashboard.html 2>/dev/null || true
+                     analytics_dashboard.html \
+                     compounders_report.html 2>/dev/null || true
           git diff --staged --quiet || git commit -m "Daily run $(date -u +%Y-%m-%d)"
           git push
       - uses: actions/upload-artifact@v4
@@ -46,4 +55,5 @@ jobs:
             picks_report.html
             tracker_report.html
             analytics_dashboard.html
+            compounders_report.html
           retention-days: 90
