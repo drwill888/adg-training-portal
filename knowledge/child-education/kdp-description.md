@@ -34,6 +34,8 @@ Then it shows you how to weave all nine into a simple weekly rhythm that forms t
 
 Each chapter closes with six reflection and coaching questions — 72 in all — designed for parents, teachers, coaches, leaders, and your own ongoing formation.
 
+The book also opens a door beyond the page. Ezra — a companion AI coach trained on the full manuscript and paired with a free planning template — turns each chapter into personalized, grounded coaching for your specific child, classroom, or team. Meet Ezra at ezra.edu.awakeningdestiny.global.
+
 This is education that forms more than grades. It forms the next generation.
 
 ---
@@ -62,6 +64,7 @@ KDP's description field accepts a limited set of HTML tags. This version renders
 </ul>
 <p>Then it shows you how to weave all nine into a simple weekly rhythm that forms the whole person, not just the report card. These principles reach far beyond the classroom. They transfer into the workplace, into ministry, into leadership teams, and into the way we keep forming ourselves.</p>
 <p>Each chapter closes with six reflection and coaching questions &mdash; <b>72 in all</b> &mdash; designed for parents, teachers, coaches, leaders, and your own ongoing formation.</p>
+<p>The book also opens a door beyond the page. <i>Ezra</i> &mdash; a companion AI coach trained on the full manuscript and paired with a free planning template &mdash; turns each chapter into personalized, grounded coaching for your specific child, classroom, or team. Meet Ezra at <b>ezra.edu.awakeningdestiny.global</b>.</p>
 <p><b>This is education that forms more than grades. It forms the next generation.</b></p>
 ```
 
@@ -77,7 +80,8 @@ Drawn from four decades of leadership work, parenting, and developing leaders in
 
 ## Notes for the KDP listing
 
-- **Character count (HTML version):** ~2,750 characters, well within KDP's 4,000-character limit.
+- **Character count (HTML version):** ~3,100 characters, well within KDP's 4,000-character limit.
+- **Ezra note:** KDP does not make links in the description clickable, so `ezra.edu.awakeningdestiny.global` renders as plain text — shoppers can still read and type it. For a *clickable* link, put the URL in the book's "Meet Ezra Edu" back matter, where Kindle makes it tappable.
 - **Supported tags used:** `<h4>`, `<p>`, `<b>`, `<i>`, `<ul>`, `<li>`. These are all on KDP's allowed list. Avoid `<div>`, `<span>`, inline styles, or headings above `<h4>` — KDP strips them.
 - **The list now breaks out all nine enhancements as their own bullets, in book order** (Sections 1–9), so the count matches the "nine practical enhancements" line above it. The weekly rhythm moved into the sentence after the list so the bullets map one-to-one to the chapters.
 - Optional 7 keywords to consider for the backend fields: *whole-person education*, *raising resilient children*, *Christian parenting and education*, *talent development*, *leadership formation*, *homeschool philosophy*, *multiple intelligences*.
