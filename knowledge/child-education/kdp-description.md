@@ -84,5 +84,22 @@ Drawn from four decades of leadership work, parenting, and developing leaders in
 - **Ezra note:** KDP does not make links in the description clickable, so `ezra.edu.awakeningdestiny.global` renders as plain text — shoppers can still read and type it. For a *clickable* link, put the URL in the book's "Meet Ezra Edu" back matter, where Kindle makes it tappable.
 - **Supported tags used:** `<h4>`, `<p>`, `<b>`, `<i>`, `<ul>`, `<li>`. These are all on KDP's allowed list. Avoid `<div>`, `<span>`, inline styles, or headings above `<h4>` — KDP strips them.
 - **The list now breaks out all nine enhancements as their own bullets, in book order** (Sections 1–9), so the count matches the "nine practical enhancements" line above it. The weekly rhythm moved into the sentence after the list so the bullets map one-to-one to the chapters.
-- Optional 7 keywords to consider for the backend fields: *whole-person education*, *raising resilient children*, *Christian parenting and education*, *talent development*, *leadership formation*, *homeschool philosophy*, *multiple intelligences*.
-- Suggested categories: *Education > Philosophy & Social Aspects*; *Religion & Spirituality > Christian Living > Parenting & Family*; *Business & Money > Leadership*.
+### Final 7 keywords (each ≤ 50 characters)
+
+1. christian parenting equipping children purpose
+2. how to find your child gifting and passion
+3. shepherding heart parenting faith formation
+4. raising leaders next generation Kingdom kids
+5. multiple intelligences learning styles kids
+6. raising resilient children through adversity
+7. homeschool christian whole child formation
+
+Changed from the current KDP list: dropped "child development Christian education **workbook**," "talent development coaching **worksheet download**," and "homeschool **curriculum** Christian whole child" — the book is not a workbook, worksheet pack, or curriculum, and "download" is a wasted keyword word. "Talent development" was dropped because it already appears in the subtitle and is indexed automatically. Optional swap: replace #6 with `child development planning template` if you want to point at the free companion template.
+
+### Final 3 categories (keep current)
+
+1. Kindle Books › Religion & Spirituality › Christian Books & Bibles › Christian Living › Family
+2. Kindle Books › Religion & Spirituality › Christian Books & Bibles › Education › General
+3. Kindle Books › Education & Teaching › Teacher Resources › Education Theory › General
+
+Optional: swap #3 for *Business & Money › Leadership* only if you want to chase the workplace/leadership crossover instead of the education-theory reader.
