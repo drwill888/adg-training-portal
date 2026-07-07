@@ -25,11 +25,12 @@ Inside this book you will learn how to:
 - Walk a learner through adversity in a way that builds identity, not shame
 - Shepherd the heart — the soil from which behavior, motivation, and character grow
 - Understand different learning pathways without trapping a child inside one
-- Activate creativity, humor, and collaboration as essentials, not extras
+- Activate creativity as an essential capacity, not a reward for finishing the "real" work
+- Use humor and joy to build the psychological safety that deep learning requires
+- Build together, forming collaborators and leaders instead of only solo test-takers
 - Train critical thinking that produces wisdom, not cynicism
-- Build a weekly rhythm that forms the whole person, not just the report card
 
-These principles reach far beyond the classroom. They transfer into the workplace, into ministry, into leadership teams, and into the way we keep forming ourselves.
+Then it shows you how to weave all nine into a simple weekly rhythm that forms the whole person, not just the report card. These principles reach far beyond the classroom. They transfer into the workplace, into ministry, into leadership teams, and into the way we keep forming ourselves.
 
 Each chapter closes with six reflection and coaching questions — 72 in all — designed for parents, teachers, coaches, leaders, and your own ongoing formation.
 
@@ -54,11 +55,12 @@ KDP's description field accepts a limited set of HTML tags. This version renders
 <li>Walk a learner through adversity in a way that builds identity, not shame</li>
 <li>Shepherd the heart &mdash; the soil from which behavior, motivation, and character grow</li>
 <li>Understand different learning pathways without trapping a child inside one</li>
-<li>Activate creativity, humor, and collaboration as essentials, not extras</li>
+<li>Activate creativity as an essential capacity, not a reward for finishing the "real" work</li>
+<li>Use humor and joy to build the psychological safety that deep learning requires</li>
+<li>Build together, forming collaborators and leaders instead of only solo test-takers</li>
 <li>Train critical thinking that produces wisdom, not cynicism</li>
-<li>Build a weekly rhythm that forms the whole person, not just the report card</li>
 </ul>
-<p>These principles reach far beyond the classroom. They transfer into the workplace, into ministry, into leadership teams, and into the way we keep forming ourselves.</p>
+<p>Then it shows you how to weave all nine into a simple weekly rhythm that forms the whole person, not just the report card. These principles reach far beyond the classroom. They transfer into the workplace, into ministry, into leadership teams, and into the way we keep forming ourselves.</p>
 <p>Each chapter closes with six reflection and coaching questions &mdash; <b>72 in all</b> &mdash; designed for parents, teachers, coaches, leaders, and your own ongoing formation.</p>
 <p><b>This is education that forms more than grades. It forms the next generation.</b></p>
 ```
@@ -75,8 +77,8 @@ Drawn from four decades of leadership work, parenting, and developing leaders in
 
 ## Notes for the KDP listing
 
-- **Character count (HTML version):** ~2,600 characters, well within KDP's 4,000-character limit.
+- **Character count (HTML version):** ~2,750 characters, well within KDP's 4,000-character limit.
 - **Supported tags used:** `<h4>`, `<p>`, `<b>`, `<i>`, `<ul>`, `<li>`. These are all on KDP's allowed list. Avoid `<div>`, `<span>`, inline styles, or headings above `<h4>` — KDP strips them.
-- **The blurb intentionally groups creativity, humor, and collaboration into one bullet** (they are Sections 6, 7, and 8) so the "how to" list stays scannable at eight lines. All nine enhancements are still represented.
+- **The list now breaks out all nine enhancements as their own bullets, in book order** (Sections 1–9), so the count matches the "nine practical enhancements" line above it. The weekly rhythm moved into the sentence after the list so the bullets map one-to-one to the chapters.
 - Optional 7 keywords to consider for the backend fields: *whole-person education*, *raising resilient children*, *Christian parenting and education*, *talent development*, *leadership formation*, *homeschool philosophy*, *multiple intelligences*.
 - Suggested categories: *Education > Philosophy & Social Aspects*; *Religion & Spirituality > Christian Living > Parenting & Family*; *Business & Money > Leadership*.
