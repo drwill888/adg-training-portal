@@ -30,7 +30,9 @@ Inside this book you will learn how to:
 - Build together, forming collaborators and leaders instead of only solo test-takers
 - Train critical thinking that produces wisdom, not cynicism
 
-Then it shows you how to weave all nine into a simple weekly rhythm that forms the whole person, not just the report card. These principles reach far beyond the classroom. They transfer into the workplace, into ministry, into leadership teams, and into the way we keep forming ourselves.
+Then it shows you how to weave all nine into a simple weekly rhythm that forms the whole person, not just the report card.
+
+This is not only a parenting book. Every one of the nine chapters closes with its own Workplace Parallel — showing how the same principle that forms a child also forms an employee, a team, or an organization: adversity that builds identity instead of shame, humor that builds psychological safety, critical thinking that decides whether an organization rises or falls. A working father leading a team by day and forming his children by night will find the same nine threads running through both rooms of his life.
 
 Each chapter closes with six reflection and coaching questions — 72 in all — designed for parents, teachers, coaches, leaders, and your own ongoing formation.
 
@@ -62,7 +64,8 @@ KDP's description field accepts a limited set of HTML tags. This version renders
 <li>Build together, forming collaborators and leaders instead of only solo test-takers</li>
 <li>Train critical thinking that produces wisdom, not cynicism</li>
 </ul>
-<p>Then it shows you how to weave all nine into a simple weekly rhythm that forms the whole person, not just the report card. These principles reach far beyond the classroom. They transfer into the workplace, into ministry, into leadership teams, and into the way we keep forming ourselves.</p>
+<p>Then it shows you how to weave all nine into a simple weekly rhythm that forms the whole person, not just the report card.</p>
+<p>This is not only a parenting book. Every one of the nine chapters closes with its own <b>Workplace Parallel</b> &mdash; showing how the same principle that forms a child also forms an employee, a team, or an organization: adversity that builds identity instead of shame, humor that builds psychological safety, critical thinking that decides whether an organization rises or falls. A working father leading a team by day and forming his children by night will find the same nine threads running through both rooms of his life.</p>
 <p>Each chapter closes with six reflection and coaching questions &mdash; <b>72 in all</b> &mdash; designed for parents, teachers, coaches, leaders, and your own ongoing formation.</p>
 <p>The book also opens a door beyond the page. <i>Ezra</i> &mdash; a companion AI coach trained on the full manuscript and paired with a free planning template &mdash; turns each chapter into personalized, grounded coaching for your specific child, classroom, or team. Meet Ezra at <b>ezra.edu.awakeningdestiny.global</b>.</p>
 <p><b>This is education that forms more than grades. It forms the next generation.</b></p>
@@ -80,7 +83,8 @@ Drawn from four decades of leadership work, parenting, and developing leaders in
 
 ## Notes for the KDP listing
 
-- **Character count (HTML version):** ~3,100 characters, well within KDP's 4,000-character limit.
+- **Character count (HTML version):** ~3,400 characters, well within KDP's 4,000-character limit.
+- **Workplace paragraph:** replaced the throwaway "they transfer into the workplace" clause with a full paragraph naming the book's actual "Workplace Parallel" section that closes every chapter, and calling out the working-parent/professional reader directly — grounded in the manuscript, not added claims.
 - **Ezra note:** KDP does not make links in the description clickable, so `ezra.edu.awakeningdestiny.global` renders as plain text — shoppers can still read and type it. For a *clickable* link, put the URL in the book's "Meet Ezra Edu" back matter, where Kindle makes it tappable.
 - **Supported tags used:** `<h4>`, `<p>`, `<b>`, `<i>`, `<ul>`, `<li>`. These are all on KDP's allowed list. Avoid `<div>`, `<span>`, inline styles, or headings above `<h4>` — KDP strips them.
 - **The list now breaks out all nine enhancements as their own bullets, in book order** (Sections 1–9), so the count matches the "nine practical enhancements" line above it. The weekly rhythm moved into the sentence after the list so the bullets map one-to-one to the chapters.
