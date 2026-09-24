@@ -177,7 +177,7 @@ function SectionHead({ children, sub }) {
 
 async function downloadBlueprint(title, commitments, summary) {
   var { pdf, Document, Page, View, Text, StyleSheet } = await import("@react-pdf/renderer");
-  var { saveAs } = await import("file-saver");
+  var saveAs = (await import("file-saver")).default;
   var React = (await import("react")).default;
 
   var styles = StyleSheet.create({
