@@ -176,27 +176,58 @@ function SectionHead({ children, sub }) {
 }
 
 async function downloadBlueprint(title, commitments, summary) {
-  var { Document, Packer, Paragraph, TextRun, HeadingLevel, BorderStyle } = await import("docx");
+  var { pdf, Document, Page, View, Text, StyleSheet } = await import("@react-pdf/renderer");
   var { saveAs } = await import("file-saver");
-  var children = [];
-  children.push(new Paragraph({ heading: HeadingLevel.TITLE, children: [new TextRun({ text: title + " Blueprint", bold: true, size: 48, color: "021A35" })] }));
-  children.push(new Paragraph({ children: [new TextRun({ text: "5C Leadership Blueprint — Awakening Destiny Global", bold: true, size: 22, color: "6b7280" })] }));
-  children.push(new Paragraph({ children: [new TextRun({ text: "Generated " + new Date().toLocaleDateString(), italics: true, size: 20, color: "999999" })] }));
-  children.push(new Paragraph({ text: "" }));
-  if (summary) {
-    children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: "Leadership Analysis", bold: true, size: 28, color: "021A35" })] }));
-    summary.split("\n\n").forEach(function(para) { children.push(new Paragraph({ spacing: { after: 120 }, children: [new TextRun({ text: para, size: 22 })] })); });
-    children.push(new Paragraph({ text: "" }));
-  }
-  children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun({ text: "Your Commitments", bold: true, size: 28, color: "021A35" })] }));
-  Object.entries(commitments).forEach(function(entry) {
-    children.push(new Paragraph({ spacing: { after: 80 }, children: [new TextRun({ text: entry[0].replace(/_/g, " ") + ": ", bold: true, size: 22 }), new TextRun({ text: entry[1] || "(not completed)", size: 22 })] }));
+  var React = (await import("react")).default;
+
+  var styles = StyleSheet.create({
+    page: { padding: 56, fontFamily: "Helvetica" },
+    title: { fontFamily: "Times-Bold", fontSize: 26, color: "#021A35", marginBottom: 4 },
+    subtitle: { fontFamily: "Helvetica-Bold", fontSize: 11, color: "#6b7280", marginBottom: 2 },
+    dateLine: { fontFamily: "Helvetica-Oblique", fontSize: 10, color: "#999999", marginBottom: 20 },
+    h1: { fontFamily: "Times-Bold", fontSize: 14, color: "#021A35", marginTop: 16, marginBottom: 8 },
+    para: { fontFamily: "Helvetica", fontSize: 11, lineHeight: 1.5, color: "#1A1A1A", marginBottom: 6 },
+    commitLabel: { fontFamily: "Helvetica-Bold" },
+    footer: { marginTop: 24, paddingTop: 10, borderTopWidth: 1, borderTopColor: "#DDDDDD" },
+    footerText: { fontFamily: "Helvetica-Oblique", fontSize: 9, color: "#AAAAAA" },
   });
-  children.push(new Paragraph({ text: "" }));
-  children.push(new Paragraph({ border: { top: { style: BorderStyle.SINGLE, size: 1, color: "DDDDDD" } }, spacing: { before: 400 }, children: [new TextRun({ text: "© 2026 Awakening Destiny Global — awakeningdestiny.global", size: 18, color: "AAAAAA", italics: true })] }));
-  var doc = new Document({ sections: [{ properties: {}, children: children }] });
-  var blob = await Packer.toBlob(doc);
-  saveAs(blob, title + "-Blueprint.docx");
+
+  var children = [
+    React.createElement(Text, { key: "title", style: styles.title }, title + " Blueprint"),
+    React.createElement(Text, { key: "sub", style: styles.subtitle }, "5C Leadership Blueprint — Awakening Destiny Global"),
+    React.createElement(Text, { key: "date", style: styles.dateLine }, "Generated " + new Date().toLocaleDateString()),
+  ];
+
+  if (summary) {
+    children.push(React.createElement(Text, { key: "analysis-h", style: styles.h1 }, "Leadership Analysis"));
+    summary.split("\n\n").forEach(function(para, i) {
+      children.push(React.createElement(Text, { key: "sum-" + i, style: styles.para }, para));
+    });
+  }
+
+  children.push(React.createElement(Text, { key: "commit-h", style: styles.h1 }, "Your Commitments"));
+  Object.entries(commitments).forEach(function(entry, i) {
+    children.push(
+      React.createElement(
+        Text,
+        { key: "commit-" + i, style: styles.para },
+        React.createElement(Text, { style: styles.commitLabel }, entry[0].replace(/_/g, " ") + ": "),
+        entry[1] || "(not completed)"
+      )
+    );
+  });
+
+  children.push(
+    React.createElement(
+      View,
+      { key: "footer", style: styles.footer },
+      React.createElement(Text, { style: styles.footerText }, "© " + new Date().getFullYear() + " Awakening Destiny Global — awakeningdestiny.global")
+    )
+  );
+
+  var doc = React.createElement(Document, null, React.createElement(Page, { size: "A4", style: styles.page }, ...children));
+  var blob = await pdf(doc).toBlob();
+  saveAs(blob, title + "-Blueprint.pdf");
 }
 
 function parseFormationSummary(text) {
@@ -913,7 +944,7 @@ export default function ModuleTemplate({ config }) {
                     );
                   })()}
                 </Card>
-                <Button variant="outline" size="full" onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} style={{ marginTop: 12 }}>Download Blueprint (.docx)</Button>
+                <Button variant="outline" size="full" onClick={function() { downloadBlueprint(title, commitments, aiSummary); }} style={{ marginTop: 12 }}>Download Blueprint (PDF)</Button>
                 {enhanceCount < 3 && (
                   <div style={{ marginTop: 14, padding: "14px 16px", background: "rgba(253,210,13,0.06)", border: "1px solid rgba(253,210,13,0.2)", borderRadius: 14 }}>
                     <p style={{ fontSize: 12, fontWeight: 700, color: GOLD, marginBottom: 6 }}>Go Deeper {enhanceCount > 0 ? "(" + (3 - enhanceCount) + " remaining)" : ""}</p>
