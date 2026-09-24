@@ -60,7 +60,7 @@ export default function MidJourneyReportPage() {
 
   function handleDownload() {
     if (!state.userId) return;
-    window.location.href = `/api/mid-journey/download-docx?userId=${state.userId}`;
+    window.location.href = `/api/mid-journey/download-pdf?userId=${state.userId}`;
   }
 
   if (state.loading) {
@@ -111,7 +111,7 @@ export default function MidJourneyReportPage() {
         </div>
         <div style={styles.actionRow}>
           <button onClick={handleDownload} style={styles.downloadBtn}>
-            Download as Word Document
+            Download Blueprint (PDF)
           </button>
           <a href="/dashboard" style={backButtonStyle}>
             ← Back to Dashboard
