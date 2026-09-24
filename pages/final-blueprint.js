@@ -54,7 +54,7 @@ export default function FinalBlueprintPage() {
 
   function handleDownload() {
     if (!state.userId) return;
-    window.location.href = `/api/final-blueprint/download-docx?userId=${state.userId}`;
+    window.location.href = `/api/final-blueprint/download-pdf?userId=${state.userId}`;
   }
 
   if (state.loading) {
@@ -104,7 +104,7 @@ export default function FinalBlueprintPage() {
           <p style={styles.subtitle}>Your capstone document — synthesizing all seven modules of your formation journey.</p>
         </div>
         <div style={styles.actionRow}>
-          <button onClick={handleDownload} style={styles.downloadBtn}>Download as Word Document</button>
+          <button onClick={handleDownload} style={styles.downloadBtn}>Download Your Blueprint (PDF)</button>
           <a href="/dashboard" style={backButtonStyle}>
             ← Back to Dashboard
           </a>
