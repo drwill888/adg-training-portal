@@ -18,7 +18,7 @@ const supabase = createClient(
 );
 
 const CLAUDE_MODEL      = process.env.BOOK_CLAUDE_MODEL || MODELS.standard;
-const CLAUDE_MAX_TOKENS = parseInt(process.env.BOOK_CLAUDE_MAX_TOKENS || '1024', 10);
+const CLAUDE_MAX_TOKENS = parseInt(process.env.BOOK_CLAUDE_MAX_TOKENS || '2048', 10);
 
 const ALLOWED_ORIGINS = [
   'https://awakeningdestiny.global',

@@ -10,8 +10,8 @@ const supabase = createClient(
 );
 
 const REPORT_CONFIG = {
-  full: { tier: 'premium', maxTokens: 4500, validation: REPORT_VALIDATION.finalFull },
-  light: { tier: 'standard', maxTokens: 1500, validation: REPORT_VALIDATION.finalLight },
+  full: { tier: 'premium', maxTokens: 6500, validation: REPORT_VALIDATION.finalFull },
+  light: { tier: 'standard', maxTokens: 3000, validation: REPORT_VALIDATION.finalLight },
 };
 
 export default async function handler(req, res) {

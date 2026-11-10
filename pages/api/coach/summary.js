@@ -70,7 +70,7 @@ export default async function handler(req, res) {
     try {
       const completion = await anthropic.messages.create({
         model: MODELS.fast,
-        max_tokens: 500,
+        max_tokens: 1000,
         system:
           "You analyze ADG website coaching conversations for the Awakening Destiny Global team. Be concrete and faithful to what the visitor actually said. Do not invent details.",
         tools: [SUMMARY_TOOL],

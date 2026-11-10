@@ -136,7 +136,7 @@ export default async function handler(req, res) {
 
     const response = await anthropic.messages.create({
       model:      process.env.BOOK_CLAUDE_MODEL || MODELS.standard,
-      max_tokens: 2048,
+      max_tokens: 4000,
       system:     [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
       messages:   [{ role: 'user', content: `Please write the child profile summary based on this diagnostic data:\n\n${formatted}` }],
     });

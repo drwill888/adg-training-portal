@@ -59,7 +59,7 @@ export default async function handler(req, res) {
       tier: "standard",
       system: SYSTEM,
       cacheSystem: true,
-      maxTokens: 1500,
+      maxTokens: 3000, // ceiling only; the system prompt keeps answers short
       messages: [{ role: "user", content: userPrompt }],
     });
 

@@ -54,7 +54,7 @@ export default async function handler(req, res) {
       tier: "standard",
       system: SYSTEM,
       cacheSystem: true,
-      maxTokens: 1800,
+      maxTokens: 4000, // ceiling only; prompts set the real length
       messages,
     });
 

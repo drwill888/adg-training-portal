@@ -84,7 +84,7 @@ ${formattedAnswers}`;
       tier: 'standard', // a calling-defining word deserves more than the fast tier
       system: systemPrompt + '\n\n' + SCRIPTURE_RULES,
       cacheSystem: true,
-      maxTokens: 1600,
+      maxTokens: 3500,
       messages: [{ role: 'user', content: userPrompt }],
     });
 

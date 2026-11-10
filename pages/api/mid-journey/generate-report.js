@@ -15,8 +15,8 @@ const supabase = createClient(
 // Premium (Opus-class) for full reports (Blueprint + Cohort), standard (Sonnet-class) for light (Self-Paced).
 // Concrete model IDs live in lib/ai/config.js.
 const REPORT_CONFIG = {
-  full: { tier: 'premium', maxTokens: 3500, validation: REPORT_VALIDATION.midFull },
-  light: { tier: 'standard', maxTokens: 1200, validation: REPORT_VALIDATION.midLight },
+  full: { tier: 'premium', maxTokens: 5000, validation: REPORT_VALIDATION.midFull },
+  light: { tier: 'standard', maxTokens: 2500, validation: REPORT_VALIDATION.midLight },
 };
 
 export default async function handler(req, res) {
