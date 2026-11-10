@@ -6,7 +6,6 @@ import FlameMark from "./FlameMark";
 import { usePaymentStatus } from "../lib/usePaymentStatus";
 import { supabase } from "../lib/supabase";
 import { downloadCertificate } from "../lib/certificate";
-import { ADG_SYSTEM_PROMPT } from "../lib/prompts";
 import { colors as t, fonts } from "../styles/tokens";
 import { BookIcon, PrayerIcon, CertificateIcon, CheckIcon, StarIcon, WarningIcon } from "./Icons";
 import Button from "./ui/Button";
@@ -464,8 +463,9 @@ export default function ModuleTemplate({ config }) {
     var preDiagCommentNote = preDiagComment.trim() ? "\n\nPre-Teaching Reflection (their honest starting point before the content): \"" + preDiagComment.trim() + "\"\nUse this to show how far the teaching moved them — or where they are still stuck." : "";
     var diagCommentNote = diagComment.trim() ? "\n\nPost-Diagnostic Reflection from the leader: \"" + diagComment.trim() + "\"\nThis is what they noticed as they rated themselves. Use it as a window into their self-awareness." : "";
     var prompt = "Write a Leadership Blueprint for this leader completing the " + title + " module of the 5C Leadership Blueprint.\n\nThis Blueprint has TWO PARTS. Write them in order:\n\nPART ONE (250-350 words, natural prose paragraphs, no headers or bullets):\n\n1. REFLECT BACK: Open by naming something specific they wrote. Make them feel heard and seen.\n\n2. NAME THE PATTERN: Identify the central formation edge across their responses.\n\n3. DIAGNOSTIC INSIGHT: Speak to what the scores and pre/post delta reveal. Where movement was small, name what that reveals. Where growth happened, affirm it specifically.\n\n4. CALL FORWARD: End with a clear, prophetically grounded word specific to the " + title + " dimension.\n\nThen write this EXACT divider on its own line:\n---FORMATION SUMMARY---\n\nPART TWO (structured bullets):\n\nWHAT I AM CARRYING\n- [key takeaway 1 - one sentence, leader voice starting with I]\n- [key takeaway 2]\n- [key takeaway 3]\n\nWHERE I AM STRONG\n- [specific strength 1]\n- [specific strength 2]\n\nWHERE I AM BEING FORMED\n- [growth edge 1, framed as invitation]\n- [growth edge 2]\n\nMY NEXT STEP\n[One specific concrete action within 7 days. Not a principle - a real action.]\n\nRULES: Quote or paraphrase something they actually wrote. Do NOT begin with a salutation. Do NOT be generic. Sound like a seasoned apostolic-prophetic coach.\n\n" + aiPromptContext + diagNote + preDiagCommentNote + diagCommentNote + "\n\nTheir Responses and Commitments:\n" + commitStr + blankNote + "\n\nBegin immediately with Part One.";
-    fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt, systemPrompt: ADG_SYSTEM_PROMPT }) })
-      .then(function(r) { return r.json(); }).then(function(d) { setAiSummary(d.response || ""); })
+    fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt }) })
+      .then(function(r) { return r.json().then(function(d) { if (!r.ok || !d.response) { throw new Error(d.error || "empty response"); } return d; }); })
+      .then(function(d) { setAiSummary(d.response); })
       .catch(function(e) { console.error("Failed to generate AI summary:", e); setSummaryError("Summary unavailable right now — your responses are saved and you can continue."); })
       .finally(function() { setLoading(false); });
   };
@@ -497,9 +497,10 @@ export default function ModuleTemplate({ config }) {
     var prompt = "Write a REVISED Leadership Blueprint Summary for this leader in the " + title + " module. The leader has reviewed the previous version and wants something deeper and more direct.\n\nTarget length: 400–500 words. Write in natural paragraphs — no headers, no bullet points, no bold or markdown.\n\nTONE SHIFT for this version:\n- Be more direct about what you actually see in their responses.\n- Name tensions, contradictions, or gaps that the previous summary softened or avoided.\n- A trusted mentor who loves them enough to tell them the hard truth, not just the comfortable one.\n- Do not shame — but do not sugarcoat either.\n- If their responses reveal avoidance, vagueness, or incomplete thinking, name it gently but clearly.\n\nSTRUCTURE:\n1. Name something specific from their responses — something that reveals where they actually are, not where they wish they were.\n2. Identify the central formation challenge this leader faces in the " + title + " dimension.\n3. If diagnostic scores are low in any area, name what that likely means for their leadership in concrete terms.\n4. What is the one thing they most need to do, decide, or change?\n5. End with a direct, prophetically grounded call forward — specific to the " + title + " dimension.\n\nIMPORTANT:\n- Quote or paraphrase something they actually wrote.\n- Do NOT begin with a salutation or greeting.\n- Do NOT repeat the previous summary — go deeper, not wider.\n- Sound like a seasoned apostolic-prophetic coach.\n\n" + aiPromptContext + diagNote + previousSummary + feedbackNote + "\n\nTheir Responses and Commitments:\n" + commitStr + blankNote + "\n\nBegin immediately with substantive content.";
     setEnhanceCount(function(c) { return c + 1; });
     setEnhanceFeedback("");
-    fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt, systemPrompt: ADG_SYSTEM_PROMPT }) })
-      .then(function(r) { return r.json(); }).then(function(d) { setAiSummary(d.response || ""); })
-      .catch(function(e) { console.error("Enhance summary failed:", e); })
+    fetch("/api/claude", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt }) })
+      .then(function(r) { return r.json().then(function(d) { if (!r.ok || !d.response) { throw new Error(d.error || "empty response"); } return d; }); })
+      .then(function(d) { setAiSummary(d.response); })
+      .catch(function(e) { console.error("Enhance summary failed (keeping previous summary):", e); })
       .finally(function() { setLoading(false); });
   };
 

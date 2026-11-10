@@ -6,6 +6,7 @@
 
 import { PROPHETIC_MIRROR_SYSTEM } from '../../../lib/coaching-prompts';
 import { ARCHETYPES } from '../../../lib/archetypes';
+import { generate } from '../../../lib/ai/claude';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -66,33 +67,22 @@ ${answers.map((a, i) => `Q${i + 1}: "${a.question}"\nAnswer: "${a.label || a.ans
 Write the prophetic mirror now.`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 400,
-        system: PROPHETIC_MIRROR_SYSTEM,
-        messages: [{ role: 'user', content: userContent }],
-      }),
+    const { text } = await generate({
+      tier: 'standard',
+      system: PROPHETIC_MIRROR_SYSTEM,
+      cacheSystem: true,
+      maxTokens: 2000, // target is ~200 words (prompt-enforced); generous headroom so nothing is ever cut off
+      messages: [{ role: 'user', content: userContent }],
     });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error('[prophetic-mirror] Anthropic error:', JSON.stringify(data));
-      return res.status(200).json({ mirror: getFallbackMirror(archetype, firstName) });
+    if (!text) {
+      console.error('[prophetic-mirror] empty model text — serving fallback');
+      return res.status(200).json({ mirror: getFallbackMirror(archetype, firstName), fallback: true });
     }
-
-    const mirror = data.content?.[0]?.text?.trim() || getFallbackMirror(archetype, firstName);
-    return res.status(200).json({ mirror });
+    return res.status(200).json({ mirror: text });
   } catch (err) {
-    console.error('[prophetic-mirror] Server error:', err);
-    return res.status(200).json({ mirror: getFallbackMirror(archetype, firstName) });
+    console.error('[prophetic-mirror] Claude error:', err?.message || err);
+    return res.status(200).json({ mirror: getFallbackMirror(archetype, firstName), fallback: true });
   }
 }
 

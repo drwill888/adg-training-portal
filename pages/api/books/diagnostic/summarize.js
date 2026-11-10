@@ -2,11 +2,11 @@
 // Paid feature — checks active book access, then generates a 5-7 paragraph
 // AI child profile summary using Claude. Saves summary back to Supabase.
 // POST { email, productSlug, data }
-import Anthropic from '@anthropic-ai/sdk';
+import { anthropic } from '@/lib/ai/claude';
+import { MODELS } from '@/lib/ai/config';
 import { createClient } from '@supabase/supabase-js';
 import { checkProductAccess } from '@/lib/products/access';
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const supabase  = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -135,9 +135,9 @@ export default async function handler(req, res) {
     const formatted = formatDataForClaude(data);
 
     const response = await anthropic.messages.create({
-      model:      process.env.BOOK_CLAUDE_MODEL || 'claude-sonnet-4-5',
-      max_tokens: 2048,
-      system:     SYSTEM,
+      model:      process.env.BOOK_CLAUDE_MODEL || MODELS.standard,
+      max_tokens: 4000,
+      system:     [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
       messages:   [{ role: 'user', content: `Please write the child profile summary based on this diagnostic data:\n\n${formatted}` }],
     });
 

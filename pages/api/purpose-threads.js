@@ -1,9 +1,6 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { generate } from '../../lib/ai/claude';
+import { SCRIPTURE_RULES } from '../../lib/ai/scripture';
 import { createClient } from '@supabase/supabase-js';
-
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -83,16 +80,13 @@ Here are their answers:
 ${formattedAnswers}`;
 
   try {
-    const message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 1000,
-      system: systemPrompt,
-      messages: [
-        { role: 'user', content: userPrompt }
-      ]
+    const { text: report } = await generate({
+      tier: 'standard', // a calling-defining word deserves more than the fast tier
+      system: systemPrompt + '\n\n' + SCRIPTURE_RULES,
+      cacheSystem: true,
+      maxTokens: 3500,
+      messages: [{ role: 'user', content: userPrompt }],
     });
-
-    const report = message.content[0].text;
 
     // Save to Supabase — upsert so they can regenerate
     const { error: saveError } = await supabase
