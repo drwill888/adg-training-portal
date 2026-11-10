@@ -2,17 +2,32 @@
 import { getEmbedding } from "@/lib/embeddings";
 import { matchTrainingChunks } from "@/lib/retrieval";
 import { ADG_SYSTEM_PROMPT, buildUserPrompt } from "@/lib/prompts";
+import { enforceAiRateLimit } from "@/lib/ratelimit";
+import { generate } from "@/lib/ai/claude";
+import { SCRIPTURE_RULES } from "@/lib/ai/scripture";
+
+const SYSTEM = ADG_SYSTEM_PROMPT + "\n\n" + SCRIPTURE_RULES;
+const MAX_QUESTION_CHARS = 2000;
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  const rl = await enforceAiRateLimit(req);
+  if (!rl.ok) {
+    res.setHeader("Retry-After", String(rl.retryAfter));
+    return res.status(429).json({ error: "Too many requests. Please slow down." });
+  }
+
   try {
     const { question, module } = req.body;
 
-    if (!question) {
+    if (!question || typeof question !== "string") {
       return res.status(400).json({ error: "Question is required." });
+    }
+    if (question.length > MAX_QUESTION_CHARS) {
+      return res.status(400).json({ error: "Question is too long." });
     }
 
     // 1. Embed the question
@@ -39,31 +54,14 @@ export default async function handler(req, res) {
       userProfile: null,
     });
 
-    // 5. Call OpenAI
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + process.env.OPENAI_API_KEY,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o",
-        max_tokens: 1500,
-        messages: [
-          { role: "system", content: ADG_SYSTEM_PROMPT },
-          { role: "user", content: userPrompt },
-        ],
-      }),
+    // 5. Generate the answer with Claude (system prompt cached across calls)
+    const { text: answer } = await generate({
+      tier: "standard",
+      system: SYSTEM,
+      cacheSystem: true,
+      maxTokens: 1500,
+      messages: [{ role: "user", content: userPrompt }],
     });
-
-    const data = await response.json();
-
-    if (response.status !== 200) {
-      console.error("OpenAI error:", JSON.stringify(data));
-      return res.status(500).json({ error: "Failed to generate response." });
-    }
-
-    const answer = data.choices?.[0]?.message?.content || "";
 
     // 6. Return answer with source references
     return res.status(200).json({

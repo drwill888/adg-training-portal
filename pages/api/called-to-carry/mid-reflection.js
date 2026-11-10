@@ -2,6 +2,7 @@
 // Layer 3 — Claude call after Q5, brief prophetic mid-point reflection
 
 import { MID_REFLECTION_SYSTEM } from '../../../lib/coaching-prompts';
+import { generate } from '../../../lib/ai/claude';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -30,32 +31,18 @@ ${answers
 Write the mid-point reflection now.`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 150,
-        system: MID_REFLECTION_SYSTEM,
-        messages: [{ role: 'user', content: userContent }],
-      }),
+    const { text } = await generate({
+      tier: 'standard',
+      system: MID_REFLECTION_SYSTEM,
+      cacheSystem: true,
+      maxTokens: 300, // target is 2-3 sentences
+      messages: [{ role: 'user', content: userContent }],
     });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error('[mid-reflection] Anthropic error:', JSON.stringify(data));
-      return res.status(200).json({ reflection: getFallback(firstName) });
-    }
-
-    const reflection = data.content?.[0]?.text?.trim() || getFallback(firstName);
+    const reflection = text || getFallback(firstName);
     return res.status(200).json({ reflection });
   } catch (err) {
-    console.error('[mid-reflection] Server error:', err);
+    console.error('[mid-reflection] Claude error:', err?.message || err);
     return res.status(200).json({ reflection: getFallback(firstName) });
   }
 }

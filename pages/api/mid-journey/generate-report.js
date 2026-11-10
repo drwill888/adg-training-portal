@@ -3,7 +3,7 @@
 // Checks eligibility, tier, assembles data, calls Claude, saves to DB.
 
 import { createClient } from '@supabase/supabase-js';
-import Anthropic from '@anthropic-ai/sdk';
+import { generateValidatedReport, REPORT_VALIDATION } from '../../../lib/ai/report';
 import { assembleReportData, hasCompletedCapacity } from '../../../lib/mid-journey/data-assembly';
 import { buildFullReportPrompt, buildLightReportPrompt } from '../../../lib/mid-journey/prompts';
 
@@ -12,20 +12,11 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-const anthropic = new Anthropic({
-  apiKey: process.env.CLAUDE_API_KEY || process.env.ANTHROPIC_API_KEY,
-});
-
-// Model configs — Opus for full (Blueprint + Cohort), Sonnet for light (Self-Paced)
-const MODEL_CONFIG = {
-  full: {
-    model: 'claude-opus-4-7',
-    max_tokens: 3000,
-  },
-  light: {
-    model: 'claude-sonnet-4-5',
-    max_tokens: 1200,
-  },
+// Premium (Opus-class) for full reports (Blueprint + Cohort), standard (Sonnet-class) for light (Self-Paced).
+// Concrete model IDs live in lib/ai/config.js.
+const REPORT_CONFIG = {
+  full: { tier: 'premium', maxTokens: 3500, validation: REPORT_VALIDATION.midFull },
+  light: { tier: 'standard', maxTokens: 1200, validation: REPORT_VALIDATION.midLight },
 };
 
 export default async function handler(req, res) {
@@ -80,33 +71,19 @@ export default async function handler(req, res) {
       ? buildFullReportPrompt(payload)
       : buildLightReportPrompt(payload);
 
-    const modelConfig = MODEL_CONFIG[payload.reportType];
-
-    // Call Claude
-    const completion = await anthropic.messages.create({
-      model: modelConfig.model,
-      max_tokens: modelConfig.max_tokens,
-      messages: [{ role: 'user', content: prompt }],
+    const cfg = REPORT_CONFIG[payload.reportType];
+    const { content, model, costUsd, check } = await generateValidatedReport({
+      tier: cfg.tier,
+      prompt,
+      maxTokens: cfg.maxTokens,
+      validation: cfg.validation,
     });
 
-    const content = completion.content
-      .filter(b => b.type === 'text')
-      .map(b => b.text)
-      .join('\n\n');
-
     if (!content || content.trim().length < 100) {
-      console.error('Empty or too-short Claude response:', completion);
+      console.error('Empty or too-short Claude response');
       return res.status(500).json({ error: 'AI returned an empty response.' });
     }
-
-    // Compute rough cost estimate for logging (pricing is approximate)
-    const inputTokens = completion.usage?.input_tokens || 0;
-    const outputTokens = completion.usage?.output_tokens || 0;
-    // Full uses Opus 4.7, Light uses Sonnet 4.5
-    const isOpus = modelConfig.model.includes('opus');
-    const inputRate = isOpus ? 15 : 3;     // $/M input tokens
-    const outputRate = isOpus ? 75 : 15;   // $/M output tokens
-    const costUsd = (inputTokens * inputRate / 1_000_000) + (outputTokens * outputRate / 1_000_000);
+    if (!check.ok) console.warn('[mid-journey] saved with unresolved issues:', check.issues);
 
     // Save to DB — upsert on user_id
     const { data: saved, error: dbError } = await supabase
@@ -131,8 +108,8 @@ export default async function handler(req, res) {
           },
           score_snapshot: payload.scoresPostByModule,
           generated_at: new Date().toISOString(),
-          generation_cost_usd: Number(costUsd.toFixed(4)),
-          model_used: modelConfig.model,
+          generation_cost_usd: costUsd,
+          model_used: model,
           updated_at: new Date().toISOString(),
         },
         { onConflict: 'user_id' }

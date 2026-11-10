@@ -3,7 +3,8 @@
 // Embeddings: OpenAI text-embedding-3-small (unchanged)
 // Chat:       Anthropic Claude (warmer, more pastoral coaching tone)
 // The client sends { sessionId, question, email, productSlug } in the request body.
-import Anthropic from '@anthropic-ai/sdk';
+import { anthropic } from '@/lib/ai/claude';
+import { MODELS } from '@/lib/ai/config';
 import { createClient } from '@supabase/supabase-js';
 import { getEmbedding } from '@/lib/embeddings';
 import { matchProductChunks } from '@/lib/products/retrieval';
@@ -16,8 +17,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-const CLAUDE_MODEL      = process.env.BOOK_CLAUDE_MODEL || 'claude-sonnet-4-5';
+const CLAUDE_MODEL      = process.env.BOOK_CLAUDE_MODEL || MODELS.standard;
 const CLAUDE_MAX_TOKENS = parseInt(process.env.BOOK_CLAUDE_MAX_TOKENS || '1024', 10);
 
 const ALLOWED_ORIGINS = [
@@ -163,7 +163,7 @@ ${planBlock}
     const claudeResponse = await anthropic.messages.create({
       model:      CLAUDE_MODEL,
       max_tokens: CLAUDE_MAX_TOKENS,
-      system:     systemPrompt,
+      system:     [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
       messages:   [
         ...historyMessages,
         { role: 'user', content: userPrompt },
