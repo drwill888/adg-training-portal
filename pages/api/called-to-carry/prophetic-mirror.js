@@ -71,15 +71,18 @@ Write the prophetic mirror now.`;
       tier: 'standard',
       system: PROPHETIC_MIRROR_SYSTEM,
       cacheSystem: true,
-      maxTokens: 700, // target is ~200 words; headroom prevents mid-sentence cutoffs
+      maxTokens: 2000, // target is ~200 words (prompt-enforced); generous headroom so nothing is ever cut off
       messages: [{ role: 'user', content: userContent }],
     });
 
-    const mirror = text || getFallbackMirror(archetype, firstName);
-    return res.status(200).json({ mirror });
+    if (!text) {
+      console.error('[prophetic-mirror] empty model text — serving fallback');
+      return res.status(200).json({ mirror: getFallbackMirror(archetype, firstName), fallback: true });
+    }
+    return res.status(200).json({ mirror: text });
   } catch (err) {
     console.error('[prophetic-mirror] Claude error:', err?.message || err);
-    return res.status(200).json({ mirror: getFallbackMirror(archetype, firstName) });
+    return res.status(200).json({ mirror: getFallbackMirror(archetype, firstName), fallback: true });
   }
 }
 

@@ -35,12 +35,15 @@ Write the mid-point reflection now.`;
       tier: 'standard',
       system: MID_REFLECTION_SYSTEM,
       cacheSystem: true,
-      maxTokens: 300, // target is 2-3 sentences
+      maxTokens: 1000, // target is 2-3 sentences (prompt-enforced); generous headroom
       messages: [{ role: 'user', content: userContent }],
     });
 
-    const reflection = text || getFallback(firstName);
-    return res.status(200).json({ reflection });
+    if (!text) {
+      console.error('[mid-reflection] empty model text — serving fallback');
+      return res.status(200).json({ reflection: getFallback(firstName), fallback: true });
+    }
+    return res.status(200).json({ reflection: text });
   } catch (err) {
     console.error('[mid-reflection] Claude error:', err?.message || err);
     return res.status(200).json({ reflection: getFallback(firstName) });
